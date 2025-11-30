@@ -92,49 +92,50 @@ export default function Chatbot() {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+          className="fixed bottom-4 right-4 h-12 w-12 rounded-full shadow-lg z-50 xl:bottom-6 xl:right-6 xl:h-14 xl:w-14"
           size="icon"
         >
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle className="w-5 h-5 xl:w-6 xl:h-6" />
         </Button>
       )}
 
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-96 h-[500px] shadow-2xl z-50 flex flex-col">
-          <CardHeader className="border-b">
+        <Card className="fixed bottom-0 right-0 left-0 h-[calc(100vh-80px)] shadow-2xl z-50 flex flex-col xl:bottom-6 xl:right-6 xl:left-auto xl:w-96 xl:h-[500px]">
+          <CardHeader className="border-b py-3 xl:py-6">
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-base xl:text-lg">
+                  <MessageCircle className="w-4 h-4 text-primary xl:w-5 xl:h-5" />
                   DineQR Assistant
                 </CardTitle>
-                <CardDescription>Ask me anything!</CardDescription>
+                <CardDescription className="text-xs xl:text-sm">Ask me anything!</CardDescription>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
+                className="h-8 w-8 xl:h-10 xl:w-10"
               >
                 <X className="w-4 h-4" />
               </Button>
             </div>
           </CardHeader>
 
-          <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+          <CardContent className="flex-1 overflow-y-auto p-3 space-y-3 xl:p-4 xl:space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[85%] rounded-lg p-2.5 xl:max-w-[80%] xl:p-3 ${
                     message.sender === 'user'
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted'
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
-                  <p className="text-xs opacity-70 mt-1">
+                  <p className="text-xs xl:text-sm">{message.text}</p>
+                  <p className="text-[10px] opacity-70 mt-1 xl:text-xs">
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
@@ -142,19 +143,20 @@ export default function Chatbot() {
             ))}
           </CardContent>
 
-          <div className="border-t p-4">
+          <div className="border-t p-3 xl:p-4">
             <div className="flex gap-2">
               <Input
                 placeholder="Type your message..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
+                className="text-sm xl:text-base"
               />
-              <Button onClick={handleSendMessage} size="icon">
+              <Button onClick={handleSendMessage} size="icon" className="h-9 w-9 xl:h-10 xl:w-10">
                 <Send className="w-4 h-4" />
               </Button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="flex flex-wrap gap-1.5 mt-2 xl:gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -162,6 +164,7 @@ export default function Chatbot() {
                   setInputMessage('How to order?');
                   setTimeout(handleSendMessage, 100);
                 }}
+                className="text-xs h-7 px-2 xl:text-sm xl:h-8 xl:px-3"
               >
                 How to order?
               </Button>
@@ -172,6 +175,7 @@ export default function Chatbot() {
                   setInputMessage('Track my order');
                   setTimeout(handleSendMessage, 100);
                 }}
+                className="text-xs h-7 px-2 xl:text-sm xl:h-8 xl:px-3"
               >
                 Track order
               </Button>
