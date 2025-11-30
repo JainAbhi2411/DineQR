@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { UserRole } from './types/types';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,13 +16,14 @@ import ScanQR from './pages/customer/ScanQR';
 import MenuBrowsing from './pages/customer/MenuBrowsing';
 import Checkout from './pages/customer/Checkout';
 import OrderHistory from './pages/customer/OrderHistory';
-import ProtectedRoute from './components/common/ProtectedRoute';
 
 interface RouteConfig {
   name: string;
   path: string;
   element: ReactNode;
   visible?: boolean;
+  protected?: boolean;
+  allowedRoles?: UserRole[];
 }
 
 const routes: RouteConfig[] = [
@@ -46,142 +48,113 @@ const routes: RouteConfig[] = [
   {
     name: 'Payment Success',
     path: '/payment-success',
-    element: (
-      <ProtectedRoute>
-        <PaymentSuccess />
-      </ProtectedRoute>
-    ),
+    element: <PaymentSuccess />,
     visible: false,
+    protected: true,
   },
   {
     name: 'Owner Dashboard',
     path: '/owner/dashboard',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <OwnerDashboard />
-      </ProtectedRoute>
-    ),
+    element: <OwnerDashboard />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Restaurants',
     path: '/owner/restaurants',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <RestaurantList />
-      </ProtectedRoute>
-    ),
+    element: <RestaurantList />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'New Restaurant',
     path: '/owner/restaurants/new',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <RestaurantForm />
-      </ProtectedRoute>
-    ),
+    element: <RestaurantForm />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Edit Restaurant',
     path: '/owner/restaurants/:id',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <RestaurantForm />
-      </ProtectedRoute>
-    ),
+    element: <RestaurantForm />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Menu Management',
     path: '/owner/menu/:restaurantId',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <MenuManagement />
-      </ProtectedRoute>
-    ),
+    element: <MenuManagement />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Table Management',
     path: '/owner/tables/:restaurantId',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <TableManagement />
-      </ProtectedRoute>
-    ),
+    element: <TableManagement />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Order Management',
     path: '/owner/orders/:restaurantId',
-    element: (
-      <ProtectedRoute allowedRoles={['owner']}>
-        <OrderManagement />
-      </ProtectedRoute>
-    ),
+    element: <OrderManagement />,
     visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
   },
   {
     name: 'Customer Dashboard',
     path: '/customer/dashboard',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <CustomerDashboard />
-      </ProtectedRoute>
-    ),
+    element: <CustomerDashboard />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
   {
     name: 'Scan QR',
     path: '/customer/scan',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <ScanQR />
-      </ProtectedRoute>
-    ),
+    element: <ScanQR />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
   {
     name: 'Menu Browsing',
     path: '/customer/menu/:restaurantId',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <MenuBrowsing />
-      </ProtectedRoute>
-    ),
+    element: <MenuBrowsing />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
   {
     name: 'Checkout',
     path: '/customer/checkout/:restaurantId',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <Checkout />
-      </ProtectedRoute>
-    ),
+    element: <Checkout />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
   {
     name: 'Order History',
     path: '/customer/orders',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <OrderHistory />
-      </ProtectedRoute>
-    ),
+    element: <OrderHistory />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
   {
     name: 'Customer Profile',
     path: '/customer/profile',
-    element: (
-      <ProtectedRoute allowedRoles={['customer']}>
-        <CustomerProfile />
-      </ProtectedRoute>
-    ),
+    element: <CustomerProfile />,
     visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
   },
 ];
 

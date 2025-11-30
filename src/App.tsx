@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
+import ProtectedRoute from './components/common/ProtectedRoute';
 import routes from './routes';
 
 function AppContent() {
@@ -15,7 +16,15 @@ function AppContent() {
             <Route
               key={index}
               path={route.path}
-              element={route.element}
+              element={
+                route.protected ? (
+                  <ProtectedRoute allowedRoles={route.allowedRoles}>
+                    {route.element}
+                  </ProtectedRoute>
+                ) : (
+                  route.element
+                )
+              }
             />
           ))}
           <Route path="*" element={<Navigate to="/" replace />} />
