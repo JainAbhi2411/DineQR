@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Customer Side Enhancement)
 
 ## 1. Application Overview
 
@@ -77,7 +77,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Lottie animations of cooking elements (steam rising, sizzling pans, rotating dishes)
   - Welcome message with typewriter animation effect:'Welcome back, [Owner Name]!'
   - Current date and time display with smooth fade-in transition
-\n- **Live Statistics Dashboard with Animated Counters**:
+
+- **Live Statistics Dashboard with Animated Counters**:
   - Real-time metrics cards with entrance animations (slide-up with stagger effect)
   - Animated number counters for key statistics:\n    - Total Orders Today (counting animation from 0 to current value)
     - Active Orders (pulsing badge with live count)
@@ -221,7 +222,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Languages spoken by staff
   - Special dietary accommodations (gluten-free, vegan options, etc.)
 
-#### 3.1.2 Advanced Menu Management System\n
+#### 3.1.2 Advanced Menu Management System
+
 **Enhanced Schema Structure**:
 \n- **Category Schema** (Updated with Additional Fields):
   - Category ID (auto-generated UUID)
@@ -233,8 +235,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Vegan (contains only vegan items)
     - Mixed (contains both vegetarian and non-vegetarian items)
   - Category Image/Icon (upload or select from library)
-  - Display Order (integer for sorting, drag-and-drop reordering)
-  - Availability Status (active/inactive toggle)
+  - Display Order (integer for sorting, drag-and-drop reordering)\n  - Availability Status (active/inactive toggle)
   - Time-based Availability (multi-select):
     - Breakfast (with time range, e.g., 7:00 AM - 11:00 AM)
     - Lunch (with time range, e.g., 12:00 PM - 3:00 PM)
@@ -867,396 +868,1093 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Progress bar showing profile completion percentage
   - Suggestions to complete missing sections
   - Rewards for100% profile completion (bonus loyalty points)
-\n#### 3.2.2 Enhanced QR Scanning & Restaurant Access
-- **Smart QR Scanner**:
+\n#### 3.2.2 Enhanced QR Scanning & Restaurant Access with Comprehensive Restaurant Profile Display
+
+**Smart QR Scanner**:
+- **QR Scanning Process**:
   - In-app camera with auto-focus and QR detection
   - **Automatic restaurant ID capture** from QR code to link order to correct restaurant
   - Scan history with quick access to recently visited restaurants
   - Manual table number entry option if QR scan fails
   - Offline QR code caching for previously visited restaurants
   - **Error handling**: Display clear error message if restaurant ID is missing or invalid
-- **Restaurant Landing Experience**:
-  - Full-screen restaurant banner with image carousel
-  - Restaurant name, logo, and verified badge
-  - **Restaurant type indicator** (Vegetarian/Non-Vegetarian/Vegan/Mixed) with color-coded icon
-  - Overall rating with total review count
-  - Cuisine type and price range indicators
-  - Operating hours with current status (Open/Closed)
-  - Table number confirmation display
-  - Quick access buttons: Menu, Reviews, Info, Chat\n\n#### 3.2.3 Advanced Menu Browsing (Zomato-Inspired UI)
-- **Category Navigation**:
-  - Sticky horizontal scrollable category tabs at top
-  - Category icons with names\n  - **Category type indicator** (Veg/Non-Veg/Vegan/Mixed) with color-coded badge
-  - Active category highlighted with underline animation
-  - 'All Items' option to view complete menu
-  - Search bar with auto-suggestions
-- **Menu Display**:
-  - Vertical infinite scroll with category sections
-  - Large high-quality food images (16:9 ratio)
-  - Card-based layout with subtle shadows
-  - Item name in bold, description in regular text
-  - **Item type indicator** (Veg/Non-Veg/Vegan icon) prominently displayed
-  - **Price display** (base price or price range for quantity-based items)
-  - **Quantity options** (if applicable): Small/Regular/Large with prices
-  - **Customer rating** (star rating with count) displayed on card
-  - Dietary indicators with color-coded icons (green for veg, red for non-veg)\n  - Badges:'Popular', 'Chef's Special', 'New', 'Best Seller', 'Customer Favorite'
-  - Preparation time badge
-  - 'Out of Stock' overlay for unavailable items
-- **Advanced Filtering**:
-  - Filter by item type (Vegetarian/Non-Vegetarian/Vegan/Eggetarian)
-  - Filter by price range (slider)\n  - Filter by preparation time\n  - Filter by spice level
-  - Filter by allergens (exclude items with specific allergens)
-  - Filter by rating (4+ stars, 3+ stars, etc.)
-  - Sort by: Popularity, Price (low to high), Rating, Preparation Time, Newest
-- **Search Functionality**:
-  - Real-time search with instant results
-  - Search by item name, ingredients, or tags
-  - Search history and suggestions
-  - Voice search support
-\n#### 3.2.4 Item Detail View (Enhanced)
-- **Full-Screen Experience**:
-  - Image gallery with swipe navigation (up to 5 images)
-  - Zoom functionality for detailed view
-  - Item name and **item type indicator** (Veg/Non-Veg/Vegan icon) at top
-  - **Customer rating** (large star display with average rating and total count)
-  - **Price display**:\n    - Base price (if single price)
-    - Quantity-based pricing table (if multiple options):\n      - Small (250g) - $8\n      - Regular (400g) - $12
-      - Large (600g) - $16
-    - Discounted price with savings percentage (if applicable)
-  - Detailed description with rich text formatting
-  - Complete ingredients list\n  - Nutritional information expandable section
-  - Allergen warnings highlighted\n  - **Customer reviews and ratings section**:\n    - Rating breakdown (5-star: X%, 4-star: Y%, etc.)
-    - Recent reviews with customer name, rating, comment, date
-    - Review photos uploaded by customers
-    - Helpful/Not Helpful voting\n    - Filter and sort reviews\n  - 'Frequently Ordered With' suggestions
-- **Customization Panel**:
-  - **Quantity/Portion Size Selection**:
-    - Radio buttons or dropdown for size options
-    - Price updates dynamically based on selection
-  - Spice level slider
-  - Add-ons checklist with individual prices
-  - Removal options (e.g., no onions)\n  - Special instructions text box
-  - Quantity selector with +/- buttons
-- **Social Proof**:
-  - Customer photos of the dish
-  - Recent reviews with ratings
-  - 'X people ordered this today' indicator
-\n#### 3.2.5 Advanced Cart & Checkout
-- **Smart Cart**:
-  - Floating cart button with item count badge
-  - Bottom sheet cart view with itemized list
-  - Each item shows: name, **item type icon**, customizations, quantity, price
-  - Edit or remove items directly from cart
-  - Subtotal, taxes, and total amount breakdown
-  - Estimated preparation time for entire order
-  - **Restaurant ID validation** before proceeding to payment
-- **Promo Codes & Discounts**:
-  - Apply promo code field with validation
-  - Available offers display
-  - Loyalty points redemption
-  - Automatic discount application for eligible items
-- **Special Instructions**:
-  - Order-level special instructions text box
-  - Pre-defined quick options (less oil, extra spicy, etc.)
-- **Order Confirmation**:
-  - Review complete order summary
-  - Confirm table number and restaurant details
-  - Estimated total time display
-  - 'Place Order' button with loading animation
-\n#### 3.2.6 Real-Time Order Tracking with Complete Timeline
-\n**Order Status Screen**:
-- **Visual Progress Tracker**:
-  - Horizontal or vertical timeline with stages:
-    - Order Placed → Acknowledged → Preparing → Ready → Served → Payment Collected → Completed
-  - Current status highlighted with animated indicator (pulsing dot or progress bar)
-  - Completed stages in green with checkmarks
-  - Pending stages in gray with clock icons
-  - Estimated time for each stage displayed
+
+**Enhanced Restaurant Landing Experience**:
+\n- **Hero Section with Image Gallery**:
+  - **Full-screen image carousel** displaying restaurant images:\n    - Primary banner image (full-width, 16:9 aspect ratio)
+    - Swipeable gallery with all uploaded restaurant images:\n      - Interior photos (dining area, ambiance shots)
+      - Exterior photos (building facade, entrance)
+      - Signature dish photos (high-quality food images)
+      - Staff photos (optional, for personal touch)
+    - Image counter indicator (e.g., '1/15') at bottom-right
+    - Smooth swipe transitions with fade effect
+    - Pinch-to-zoom functionality for detailed view
+    - Image captions displayed at bottom (if provided by restaurant)
+  - **Restaurant Logo Overlay**:
+    - Circular logo positioned at top-left corner of hero image
+    - White border with subtle shadow for visibility
+    - Verified badge (green checkmark) if restaurant is verified
+\n- **Restaurant Information Card** (Below Hero Section):
+  - **Restaurant Name & Type**:
+    - Restaurant name in large, bold typography (H1, Poppins Bold, 32px)
+    - Restaurant tagline/slogan below name (if provided, italic, 18px)
+    - **Restaurant Type Indicator** (prominent display):
+      - Large color-coded badge positioned next to restaurant name:\n        - **Pure Vegetarian**: Green badge with leaf icon and text'Pure Veg'
+        - **Non-Vegetarian**: Red badge with chicken leg icon and text 'Non-Veg'
+        - **Vegan**: Green badge with 'VG' icon and text 'Vegan'\n        - **Mixed**: Orange badge with dual icon (leaf + chicken leg) and text 'Veg & Non-Veg'
+      - Badge size: 120px x 40px with rounded corners (20px border radius)
+      - Icon size: 24px, positioned left of text
+      - Badge positioned prominently below restaurant name
+  - **Rating & Reviews**:
+    - Overall rating displayed with large star icons (5-star scale)
+    - Average rating number (e.g., 4.5) in bold,24px\n    - Total review count in parentheses (e.g., '(1,234 reviews)')
+    - Tap to view all reviews and ratings breakdown
+  - **Cuisine & Category**:
+    - Cuisine types displayed as chips/tags (e.g., 'Italian', 'Chinese', 'Indian')
+    - Restaurant category (e.g., 'Fine Dining', 'Casual Dining') with icon
+    - Price range indicator (e.g., '$$' or '$$$') with dollar sign icons
+  - **Operating Hours**:
+    - Current status badge: 'Open Now' (green) or 'Closed' (red)\n    - Today's operating hours (e.g., '11:00 AM - 10:00 PM')
+    - Tap to view full week schedule
+  - **Table Confirmation**:
+    - Confirmed table number displayed prominently (e.g., 'Table 12')
+    - Floor/section information (if applicable, e.g., 'Ground Floor, Section A')
+\n- **Quick Action Buttons** (Sticky Bar Below Restaurant Info):
+  - Horizontal scrollable button bar with icons and labels:\n    - **Menu** (fork & knife icon): Navigate to menu section
+    - **Reviews** (star icon): View customer reviews and ratings
+    - **Info** (info icon): View complete restaurant details
+    - **Gallery** (image icon): View full restaurant image gallery
+    - **Chat** (message icon): Open chat with restaurant staff
+  - Buttons styled with rounded corners, icon + text layout
+  - Active button highlighted with primary color (orange)
+\n- **Restaurant Description Section**:
+  - Expandable section with 'Read More' / 'Read Less' toggle
+  - Restaurant description displayed with rich text formatting
+  - Chef's story or restaurant history (if provided)
+  - Special features or unique selling points highlighted
+\n- **Amenities & Features Section**:
+  - Grid layout displaying restaurant amenities with icons:\n    - Free WiFi, Parking, Wheelchair Accessible, Outdoor Seating, etc.
+  - Each amenity shown as icon + label in compact card\n  - Color-coded icons (green for available, gray for not available)
+\n- **Location & Contact Section**:
+  - Embedded Google Maps with restaurant location pin
+  - Complete address displayed below map
+  - 'Get Directions' button to open in maps app
+  - Contact phone number with'Call' button
+  - Email address with 'Email' button\n  - Social media links (Facebook, Instagram, Twitter) with icons
+
+- **Certifications & Awards Section** (if applicable):
+  - Display food safety certifications with badge icons
+  - Health department ratings\n  - Awards and recognitions with year\n  - Michelin stars or other ratings (if applicable)
+
+- **Additional Information Section**:
+  - Expandable accordion with details:
+    - Dress code\n    - Reservation policy
+    - Cancellation policy
+    - Payment methods accepted (icons for cash, cards, wallets)
+    - Languages spoken by staff
+    - Special dietary accommodations
+\n#### 3.2.3 Advanced Menu Browsing with Restaurant Type Filtering (Zomato-Inspired UI)
+
+**Enhanced Category Navigation**:
+- **Sticky Header with Restaurant Type Filter**:
+  - **Restaurant Type Toggle** (if restaurant type is 'Mixed'):
+    - Positioned at top of menu section, above category tabs
+    - Horizontal segmented control with two options:
+      - **Vegetarian** (left segment): Green background with leaf icon
+      - **Non-Vegetarian** (right segment): Red background with chicken leg icon
+    - Smooth slide animation when switching between segments
+    - Selected segment highlighted with solid color, unselected with outline
+    - **Filter Logic**:
+      - When 'Vegetarian' selected: Show only vegetarian and vegan items/categories
+      - When 'Non-Vegetarian' selected: Show only non-vegetarian items/categories
+      - Categories with no items matching filter are hidden
+    - Toggle persists during browsing session
+  - **Note**: If restaurant type is 'Pure Vegetarian', 'Non-Vegetarian', or 'Vegan', no toggle is shown (all items match restaurant type)
+
+- **Category Tabs** (Below Restaurant Type Toggle):
+  - Sticky horizontal scrollable category tabs\n  - Each category tab displays:
+    - Category icon (if provided)
+    - Category name
+    - **Category type indicator** (small badge):
+      - Green dot for Vegetarian categories
+      - Red dot for Non-Vegetarian categories
+      - Green'VG' for Vegan categories
+      - Orange dual-color dot for Mixed categories
+  - Active category highlighted with orange underline animation
+  - 'All Items' option to view complete menu (respects restaurant type filter)
+  - Smooth scroll to category section when tab tapped
+
+- **Search Bar**:
+  - Positioned below category tabs or in header
+  - Search icon with placeholder text: 'Search menu items...'
+  - Auto-suggestions dropdown as user types
+  - Search results respect restaurant type filter (if active)
+  - Voice search icon for voice input
+
+**Enhanced Menu Display**:
+\n- **Food Item Cards** (Vertical Scroll with Category Sections):
+  - **Card Layout**:
+    - Large high-quality food image (16:9 aspect ratio, rounded top corners)
+    - **Item type indicator** positioned top-left on image:\n      - Circular badge (32px diameter) with colored background:\n        - **Vegetarian**: Green circle with white leaf or'V' symbol
+        - **Non-Vegetarian**: Red circle with white chicken leg or 'N' symbol
+        - **Vegan**: Green circle with white 'VG' symbol
+        - **Eggetarian**: Yellow circle with white egg symbol
+      - Badge has subtle shadow for visibility on light images
+    - **Badges** positioned top-right on image:
+      - 'Popular', 'Chef's Special', 'New', 'Best Seller', 'Customer Favorite' badges
+      - Badges styled with colored background and white text
+      - Multiple badges stacked vertically if applicable
+    - **Out of Stock Overlay**:
+      - Semi-transparent gray overlay on image if item unavailable
+      - 'Out of Stock' text in bold, centered on image
+  - **Card Content** (Below Image):
+    - **Item Name**: Bold, 18px, Poppins SemiBold, truncated to 2 lines
+    - **Item Description**: Regular, 14px, Inter, light gray color, truncated to 2 lines with'Read More' link
+    - **Customer Rating**:
+      - Star icon (yellow) with average rating number (e.g., '4.5')
+      - Total rating count in parentheses (e.g., '(234)')
+      - Positioned below item name, left-aligned
+    - **Dietary Indicators**:
+      - Small icon badges for dietary attributes (Gluten-Free, Dairy-Free, Halal, etc.)
+      - Displayed as horizontal row of icons below description
+    - **Spice Level Indicator**:
+      - Chili pepper icons (1-4chilies) for spice level
+      - Positioned next to dietary indicators
+    - **Preparation Time Badge**:
+      - Clock icon with time (e.g., '15-20 mins')
+      - Small badge, positioned below dietary indicators
+  - **Pricing & Add Button** (Bottom of Card):
+    - **Price Display**:
+      - **Single Price**: Bold, 20px, Poppins SemiBold, primary color (orange)
+      - **Quantity-Based Pricing**: Price range displayed (e.g., '$8- $16')
+      - **Discounted Price**: Original price struck through, discounted price in bold with savings percentage (e.g., 'Save 20%')
+      - Positioned bottom-left of card
+    - **Add Button**:
+      - Floating button positioned bottom-right of card
+      - Circular button (48px diameter) with '+' icon
+      - Orange background with white icon
+      - Tap to open item detail view or quick-add to cart
+      - If item already in cart, button shows quantity with '+' and '-' controls
+\n**Advanced Filtering & Sorting**:
+
+- **Filter Panel** (Accessible via'Filter' button in header):\n  - Slide-out panel or modal with filter options:
+    - **Item Type** (multi-select with checkboxes):
+      - Vegetarian, Non-Vegetarian, Vegan, Eggetarian
+      - Checkboxes with color-coded icons
+    - **Price Range** (slider):
+      - Min and max price sliders
+      - Current range displayed above slider
+    - **Preparation Time** (slider):
+      - Filter by max preparation time (e.g., 'Under 20 mins')
+    - **Spice Level** (multi-select):
+      - None, Mild, Medium, Hot, Extra Hot
+    - **Dietary Attributes** (multi-select):
+      - Gluten-Free, Dairy-Free, Nut-Free, Halal, Kosher, etc.
+    - **Allergen Exclusion** (multi-select):
+      - Exclude items containing specific allergens (Nuts, Dairy, Eggs, etc.)
+    - **Rating** (single select):
+      - 4+ stars, 3+ stars, 2+ stars, All ratings
+    - **Availability** (toggle):
+      - Show only available items (hide out of stock)
+  - 'Apply Filters' button at bottom of panel
+  - 'Clear All' button to reset filters
+  - Active filter count badge displayed on'Filter' button in header
+
+- **Sort Options** (Dropdown in header):
+  - Sort by:
+    - Popularity (most ordered items first)
+    - Price: Low to High
+    - Price: High to Low
+    - Rating: High to Low
+    - Preparation Time: Shortest First
+    - Newest Items First
+  - Selected sort option displayed in header
+\n**Search Functionality**:
+- **Real-Time Search**:
+  - Instant results as user types
+  - Search by item name, ingredients, tags, or description
+  - Search results displayed in same card layout\n  - Highlight matching keywords in results
+- **Search History**:
+  - Recent searches displayed below search bar
+  - Tap to re-search\n  - Clear history option
+- **Voice Search**:
+  - Tap microphone icon to activate voice input
+  - Speech-to-text conversion\n  - Display recognized text in search bar
+\n**Category Sections**:
+- **Section Headers**:
+  - Category name in bold, 24px, Poppins SemiBold
+  - **Category type indicator** (badge) next to name:\n    - Green badge for Vegetarian categories
+    - Red badge for Non-Vegetarian categories
+    - Green 'VG' badge for Vegan categories
+    - Orange badge for Mixed categories
+  - Category description (if provided) below name
+  - Item count in category (e.g., '12 items')
+- **Infinite Scroll**:
+  - Load more items as user scrolls down\n  - Smooth loading animation with skeleton screens
+  - 'Back to Top' floating button appears after scrolling
+\n#### 3.2.4 Enhanced Item Detail View with Complete Information Display
+
+**Full-Screen Item Detail Experience**:
+\n- **Image Gallery Section**:
+  - **Full-width image carousel** at top:\n    - Swipeable gallery with all item images (up to 5 images)
+    - Image counter indicator (e.g., '1/5') at bottom-right
+    - Pinch-to-zoom functionality for detailed view
+    - Smooth swipe transitions with fade effect
+  - **Item Type Indicator Overlay**:
+    - Large circular badge (48px diameter) positioned top-left on image:\n      - **Vegetarian**: Green circle with white leaf or 'V' symbol
+      - **Non-Vegetarian**: Red circle with white chicken leg or 'N' symbol
+      - **Vegan**: Green circle with white 'VG' symbol
+      - **Eggetarian**: Yellow circle with white egg symbol
+    - Badge has prominent shadow for visibility\n  - **Badges Overlay**:
+    - 'Popular', 'Chef's Special', 'New', 'Best Seller', 'Customer Favorite' badges
+    - Positioned top-right on image
+    - Stacked vertically if multiple badges
+\n- **Item Information Section** (Below Image Gallery):
+  - **Item Name & Rating**:
+    - Item name in large, bold typography (H2, Poppins SemiBold, 28px)
+    - **Customer Rating** displayed prominently:\n      - Large star icons (5-star scale, 32px size)
+      - Average rating number (e.g., '4.5') in bold, 28px, next to stars
+      - Total rating count below (e.g., '(1,234 ratings)')
+      - Tap to scroll to reviews section
+  - **Item Description**:
+    - Detailed description with rich text formatting
+    - Full description displayed (no truncation)
+    - Paragraph spacing for readability
+\n- **Pricing Section**:
+  - **Price Display** (prominent, large text):
+    - **Single Price**:
+      - Base price in bold, 32px, Poppins SemiBold, primary color (orange)
+    - **Quantity-Based Pricing**:
+      - Pricing table displayed as cards:\n        - Each size option (Small, Regular, Large) as separate card
+        - Card shows: Size name, quantity/weight, price\n        - Example:\n          - **Small** (250g) - $8
+          - **Regular** (400g) - $12 (marked as 'Default')
+          - **Large** (600g) - $16\n        - Cards styled with border, rounded corners\n        - Selected size highlighted with orange border
+        - Tap to select size
+    - **Discounted Price**:
+      - Original price struck through in gray\n      - Discounted price in bold, large text, primary color\n      - Savings percentage badge (e.g., 'Save 20%') in green
+      - Discount validity period displayed (e.g., 'Valid until Dec 31')
+  - **Combo Pricing** (if applicable):
+    - Combo meal details displayed in expandable card:\n      - Combo name and description
+      - Bundled items list with images
+      - Combo price with savings amount
+      - 'Add Combo' button\n\n- **Preparation Time**:
+  - Clock icon with estimated time (e.g., '15-20 mins')
+  - Displayed as badge below pricing
+\n- **Dietary Indicators & Allergen Information**:
+  - **Dietary Attributes**:
+    - Horizontal row of icon badges:\n      - Vegetarian, Vegan, Gluten-Free, Dairy-Free, Halal, Kosher, etc.
+    - Each badge with icon and label
+    - Color-coded for quick recognition
+  - **Spice Level**:
+    - Chili pepper icons (1-4 chilies) with label (e.g., 'Medium Spice')
+    - Visual indicator with color gradient (green to red)
+  - **Allergen Warnings**:
+    - Prominent warning section with red border if allergens present
+    - List of allergens with warning icons:\n      - Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, etc.
+    - Severity indicator (mild, moderate, severe) with color coding
+    - Bold text:'Contains: Nuts, Dairy' for severe allergens
+
+- **Ingredients List**:
+  - Expandable section with 'View Ingredients' button
+  - Complete list of ingredients displayed as bullet points or comma-separated
+  - Allergens highlighted in bold or colored text
+\n- **Nutritional Information**:
+  - Expandable section with 'View Nutrition Facts' button
+  - Table layout displaying:
+    - Calories (kcal)
+    - Protein, Carbohydrates, Fat (grams)
+    - Saturated Fat, Trans Fat, Fiber, Sugar (grams)
+    - Sodium, Cholesterol (mg)
+    - Vitamins and minerals (if provided)
+  - Styled as nutrition label format
+
+- **Customer Reviews & Ratings Section**:
+  - **Rating Breakdown**:
+    - Horizontal bar chart showing distribution:\n      - 5-star: X% (with bar)\n      - 4-star: Y% (with bar)
+      - 3-star: Z% (with bar)
+      - 2-star: A% (with bar)
+      - 1-star: B% (with bar)
+    - Bars color-coded (green for high ratings, red for low)\n  - **Recent Reviews**:
+    - List of recent reviews (last 5-10 reviews)\n    - Each review card displays:
+      - Customer name and profile photo
+      - Star rating (1-5 stars)\n      - Review date (e.g., '2 days ago')
+      - Review text (full or truncated with'Read More')
+      - Review photos uploaded by customer (if any)
+      - Helpful/Not Helpful voting buttons with count
+      - Restaurant owner response (if provided)
+    - 'View All Reviews' button to see complete review list
+  - **Filter & Sort Reviews**:
+    - Filter by rating (5-star, 4-star, etc.)
+    - Sort by: Most Recent, Highest Rating, Lowest Rating, Most Helpful
+\n- **Pairing Suggestions**:
+  - Section titled 'Pairs Well With' or 'Recommended Combos'
+  - Horizontal scrollable list of suggested items:\n    - Drinks, sides, desserts\n    - Each suggestion shown as small card with image, name, price
+    - Tap to view item details or add to cart
+\n- **Frequently Ordered With**:
+  - Section titled 'Customers Also Ordered'\n  - Horizontal scrollable list of items frequently ordered together
+  - Same card layout as pairing suggestions
+
+**Customization Panel** (Sticky Bottom Section):
+
+- **Quantity/Portion Size Selection**:
+  - **If Quantity-Based Pricing**:
+    - Radio buttons or segmented control for size options:\n      - Small, Regular, Large (or custom names)
+    - Selected size highlighted\n    - Price updates dynamically based on selection
+  - **If Single Price**:
+    - Quantity selector with '+' and '-' buttons
+    - Current quantity displayed in center
+\n- **Spice Level Adjustment**:
+  - Slider or segmented control:\n    - No Spice, Mild, Medium, Hot, Extra Hot
+  - Visual indicator with chili pepper icons
+  - Price adjustment displayed if applicable (e.g., '+$1for Extra Hot')
+
+- **Add-ons Selection**:
+  - Expandable section with 'Add Extras' button
+  - Checklist of add-ons with individual prices:\n    - Extra cheese (+$2), Extra sauce (+$1), Extra toppings (+$3)
+    - Side items (fries, salad, bread)\n    - Beverages (soft drinks, juices)
+    - Desserts\n  - Each add-on with checkbox and price
+  - Selected add-ons highlighted
+  - Total add-on cost displayed
+
+- **Removal Options**:
+  - Expandable section with 'Customize' button
+  - Checklist of ingredients to remove:\n    - No onions, No garlic, No cilantro, No mayo, etc.
+  - Each option with checkbox\n  - No additional charge for removals
+
+- **Cooking Preferences** (if applicable):
+  - Dropdown or radio buttons:\n    - For meats: Rare, Medium Rare, Medium, Medium Well, Well Done
+    - For fried items: Crispy, Soft, Extra crispy
+  - Selected preference highlighted
+\n- **Special Instructions**:
+  - Text box for custom requests
+  - Placeholder text: 'Any special requests? (e.g., less oil, extra spicy)'
+  - Character limit indicator (e.g., '0/200')
+
+- **Total Price Display**:
+  - Large, bold text showing total price including customizations
+  - Breakdown: Base price + Add-ons + Adjustments = Total
+  - Updates dynamically as customizations change
+
+- **Add to Cart Button**:
+  - Large, prominent button at bottom\n  - Orange background with white text
+  - Text: 'Add to Cart - $XX.XX'
+  - Tap to add item to cart with all customizations
+  - Loading animation on tap
+  - Success feedback (checkmark animation or toast notification)
+
+**Social Proof Section**:
+- **Customer Photos**:
+  - Grid of photos uploaded by customers
+  - Tap to view full-size image
+  - 'View All Photos' button if more than 6 photos
+- **Order Statistics**:
+  - Badge showing 'X people ordered this today'
+  - Badge showing 'Ordered Y times this week'
+  - Positioned near reviews section
+
+**Back Button & Share Button**:
+- **Back Button**:
+  - Positioned top-left corner (floating over image)
+  - Circular button with back arrow icon
+  - White background with shadow
+- **Share Button**:
+  - Positioned top-right corner (floating over image)
+  - Circular button with share icon
+  - Tap to open share sheet (share item via social media, messaging, etc.)
+
+#### 3.2.5 Advanced Cart & Checkout\n
+**Smart Cart**:
+- **Floating Cart Button**:
+  - Positioned bottom-right corner (fixed)\n  - Circular button with cart icon
+  - Item count badge (red circle with number)
+  - Pulsing animation when items added
+  - Tap to open cart view
+- **Cart View** (Bottom Sheet or Full Screen):
+  - **Cart Header**:
+    - Title: 'Your Cart'
+    - Restaurant name and logo
+    - Table number confirmation
+  - **Itemized List**:
+    - Each item card displays:
+      - Item image thumbnail
+      - Item name
+      - **Item type indicator** (Veg/Non-Veg icon)
+      - Portion size selected (if applicable)
+      - Customizations summary (spice level, add-ons, removals)
+      - Special instructions (if provided)
+      - Quantity selector with '+' and '-' buttons\n      - Individual item price
+      - Subtotal per item (quantity × price)
+    - Swipe left to remove item (with confirmation)
+    - Tap item to edit customizations
+  - **Pricing Breakdown**:
+    - Subtotal (sum of all items)
+    - Taxes (itemized: GST, service charge, etc.)
+    - Discounts (promo codes, loyalty points)
+    - Delivery fee (if applicable)\n    - Total amount (large, bold text)
+  - **Estimated Preparation Time**:
+    - Total estimated time for entire order
+    - Clock icon with time (e.g., '30-40 mins')
+  - **Restaurant ID Validation**:
+    - System validates restaurant ID before proceeding
+    - Error message if mismatch detected
+
+**Promo Codes & Discounts**:
+- **Apply Promo Code**:
+  - Text input field with 'Apply' button
+  - Placeholder: 'Enter promo code'
+  - Validation on apply\n  - Success message with discount amount
+  - Error message if invalid code
+- **Available Offers**:
+  - Expandable section showing available offers
+  - Each offer card displays:
+    - Offer title and description
+    - Discount amount or percentage
+    - Validity period
+    - 'Apply' button\n  - Auto-apply best offer option
+- **Loyalty Points Redemption**:
+  - Display available loyalty points
+  - Slider or input to select points to redeem
+  - Conversion rate displayed (e.g., '100 points = $1')
+  - 'Redeem' button\n\n**Special Instructions**:
+- **Order-Level Instructions**:
+  - Text box for overall order notes
+  - Placeholder: 'Any special instructions for your order?'
+  - Character limit indicator\n- **Quick Options**:
+  - Pre-defined buttons for common requests:\n    - 'Less Oil', 'Extra Spicy', 'No MSG', 'Mild Salt', etc.
+  - Tap to add to instructions
+\n**Order Confirmation**:
+- **Review Order Summary**:
+  - Complete itemized list with all details
+  - Pricing breakdown
+  - Special instructions summary
+- **Confirm Details**:
+  - Restaurant name and logo
+  - Table number
+  - Estimated total time
+- **Place Order Button**:
+  - Large, prominent button at bottom
+  - Orange background with white text
+  - Text: 'Place Order - $XX.XX'
+  - Loading animation on tap
+  - Success feedback (checkmark animation)
+  - Redirect to order tracking screen
+
+#### 3.2.6 Real-Time Order Tracking with Complete Timeline
+
+**Order Status Screen**:
+\n- **Visual Progress Tracker**:
+  - **Horizontal Timeline** (Mobile):
+    - Stages displayed left to right:
+      - Order Placed → Acknowledged → Preparing → Ready → Served → Payment Collected → Completed
+    - Current stage highlighted with animated pulsing dot
+    - Completed stages in green with checkmarks
+    - Pending stages in gray with clock icons
+    - Connecting line between stages (solid for completed, dashed for pending)
+  - **Vertical Timeline** (Tablet/Desktop):
+    - Stages displayed top to bottom\n    - Same visual indicators as horizontal\n  - **Estimated Time**:
+    - Estimated time for each stage displayed below stage label
+    - Countdown timer for current stage
 \n**Detailed Order Timeline**:
-- **Timeline View**:
-  - Expandable timeline section showing complete order journey
+\n- **Expandable Timeline Section**:
+  - Tap'View Timeline' to expand full details
   - Each checkpoint displays:
-    - **Order Received**:\n      - Icon: Receipt icon
+    - **Order Received**:\n      - Icon: Receipt icon (orange)
       - Label: 'Order Placed'
-      - Timestamp: Date and time when order was placed
+      - Timestamp: Date and time (e.g., 'Nov 30, 2025, 7:30 PM')
       - Description: 'Your order has been received by the restaurant'
     - **Acknowledged**:
-      - Icon: Checkmark icon
+      - Icon: Checkmark icon (blue)
       - Label: 'Order Acknowledged'
-      - Timestamp: Date and time when restaurant acknowledged
+      - Timestamp: Date and time
       - Description: 'Restaurant has confirmed your order'
     - **Waiter Assigned**:
-      - Icon: Person icon
+      - Icon: Person icon (blue)
       - Label: 'Waiter Assigned'
-      - Timestamp: Date and time of assignment
-      - Description: 'Your waiter is [Waiter Name]' with waiter photo
+      - Timestamp: Date and time
+      - Description: 'Your waiter is [Waiter Name]'
+      - Waiter photo displayed (circular,48px)
     - **Preparing**:
-      - Icon: Chef hat icon
+      - Icon: Chef hat icon (yellow)
       - Label: 'Preparing in Kitchen'
-      - Timestamp: Date and time when preparation started
+      - Timestamp: Date and time
       - Description: 'Your food is being prepared'
       - Duration: 'Preparation time: X minutes' (countdown or elapsed time)
-    - **Ready**:
-      - Icon: Bell icon
+      - Progress bar showing preparation progress (if available)
+    - **Ready**:\n      - Icon: Bell icon (green)
       - Label: 'Food Ready'
-      - Timestamp: Date and time when food ready
-      - Description: 'Your order is ready to be served'\n    - **Served**:
-      - Icon: Plate icon
+      - Timestamp: Date and time
+      - Description: 'Your order is ready to be served'
+    - **Served**:
+      - Icon: Plate icon (green)
       - Label: 'Food Served'
-      - Timestamp: Date and time when food delivered to table
+      - Timestamp: Date and time
       - Description: 'Enjoy your meal!'
     - **Payment Collected**:
-      - Icon: Payment icon (card/cash based on method)
+      - Icon: Payment icon (teal, card/cash based on method)
       - Label: 'Payment Completed'
-      - Timestamp: Date and time when payment confirmed
+      - Timestamp: Date and time
       - Description: 'Payment received successfully'
-      - Payment method displayed (COC, Card, Wallet, UPI,BNPL)
-    - **Order Completed**:
-      - Icon: Star icon
+      - Payment method displayed (COC, Card, Wallet, UPI,BNPL)\n    - **Order Completed**:
+      - Icon: Star icon (gray)
       - Label: 'Order Completed'
       - Timestamp: Final completion time
       - Description: 'Thank you for dining with us!'
-  - Duration between stages calculated and displayed (e.g., 'Prepared in 15 mins', 'Served in 3 mins')
-  - Total order duration displayed at bottom (e.g., 'Total time: 45 minutes')
+  - **Duration Between Stages**:
+    - Calculated and displayed (e.g., 'Prepared in 15 mins', 'Served in 3 mins')
+    - Color-coded: Green for fast, yellow for average, red for slow
+  - **Total Order Duration**:
+    - Displayed at bottom (e.g., 'Total time: 45 minutes')
+    - Comparison with estimated time (e.g., 'Faster than expected by 5 mins')
+\n**Order Details Display**:
 
-**Order Details Display**:
 - **Order Information Card**:
-  - Order ID (large, bold at top)
-  - Restaurant name and logo
-  - Table number
-  - Order date and time
-  - Current order status badge (color-coded)
-  - Assigned waiter name and photo
-- **Itemized Order List**:
-  - Each item shows:
-    - Item name and thumbnail image
-    - **Item type indicator** (Veg/Non-Veg icon)
-    - Quantity and portion size
-    - Customizations (spice level, add-ons, removals)
-    - Special instructions per item
-    - Individual item price
-  - Order-level special instructions highlighted
-- **Pricing Breakdown**:
-  - Subtotal
-  - Taxes (itemized)
-  - Discounts and promo codes applied
-  - Tip amount (if applicable)
-  - Total amount (large, bold)
-- **Payment Information**:
-  - Payment method selected (with icon)
-  - Payment status (Pending/Completed/Failed)
-  - Transaction ID (for online payments)
-  - Payment timestamp (when completed)
+  - **Order Header**:
+    - Order ID (large, bold at top)
+    - Restaurant name and logo
+    - Table number\n    - Order date and time
+    - Current order status badge (color-coded)
+    - Assigned waiter name and photo
+  - **Itemized Order List**:
+    - Each item shows:
+      - Item name and thumbnail image
+      - **Item type indicator** (Veg/Non-Veg icon)
+      - Quantity and portion size
+      - Customizations (spice level, add-ons, removals)
+      - Special instructions per item
+      - Individual item price
+    - Order-level special instructions highlighted in separate card
+  - **Pricing Breakdown**:
+    - Subtotal\n    - Taxes (itemized)\n    - Discounts and promo codes applied
+    - Tip amount (if applicable)
+    - Total amount (large, bold)
+  - **Payment Information**:
+    - Payment method selected (with icon)
+    - Payment status (Pending/Completed/Failed)
+    - Transaction ID (for online payments)
+    - Payment timestamp (when completed)
 \n**Real-Time Updates**:
-- Push notifications for each status change
-- In-app toast notifications with sound/vibration
-- Live status updates without page refresh
-- Estimated time updates based on kitchen progress
-\n**Modify Order**:
-- Request to add more items (if order not yet preparing)
-- Cancel order option (with confirmation)
-- Contact waiter button for modifications
-\n**Expandable Order Card**:
-- Tap on order card to expand full details
-- Slide-out panel or full-screen modal
-- All order information, timeline, and actions accessible
-- Swipe down or back button to collapse
+- **Push Notifications**:
+  - Notification for each status change
+  - Sound and vibration alert\n  - Notification content: Status update with timestamp
+- **In-App Toast Notifications**:
+  - Toast message slides down from top
+  - Auto-dismiss after 3 seconds
+  - Tap to view order details
+- **Live Status Updates**:
+  - Order status updates without page refresh
+  - WebSocket or polling for real-time sync
+  - Animated transitions between stages
+- **Estimated Time Updates**:
+  - Dynamic updates based on kitchen progress
+  - Notification if estimated time changes significantly
 
-#### 3.2.7 Real-Time Chat with Restaurant\n- **Chat Interface**:
-  - Floating chat bubble icon (bottom-right corner)
-  - Slide-up chat window with message history
-  - Direct connection to assigned waiter for table-specific queries
-  - Escalation to manager for complex issues
-- **Chat Features**:
-  - Text messaging with real-time delivery\n  - Image sharing (e.g., send photo of issue with food)
-  - Voice messages for convenience
-  - Quick reply suggestions:\n    - 'Where is my order?'
+**Modify Order**:
+- **Add More Items**:
+  - 'Add More Items' button (visible if order not yet preparing)
+  - Opens menu to add items to current order
+  - New items added to existing order
+- **Cancel Order**:
+  - 'Cancel Order' button (visible if order not yet preparing)
+  - Confirmation dialog with reason selection
+  - Cancellation notification sent to restaurant
+- **Contact Waiter**:
+  - 'Contact Waiter' button opens chat\n  - Direct message to assigned waiter
+  - Request modifications or assistance
+
+**Expandable Order Card**:
+- **Tap to Expand**:
+  - Tap on order card to expand full details
+  - Slide-out panel from bottom or full-screen modal
+  - All order information, timeline, and actions accessible
+- **Collapse**:\n  - Swipe down or tap back button to collapse
+  - Returns to order status screen
+\n#### 3.2.7 Real-Time Chat with Restaurant\n
+**Chat Interface**:\n- **Floating Chat Bubble**:
+  - Positioned bottom-right corner (fixed)
+  - Circular button with message icon
+  - Unread message count badge (red circle with number)
+  - Pulsing animation for new messages
+  - Tap to open chat window
+- **Chat Window** (Slide-Up Panel or Full Screen):
+  - **Chat Header**:
+    - Title: 'Chat with [Restaurant Name]'
+    - Assigned waiter name and photo (if available)
+    - Online status indicator (green dot if online)\n    - Close button (X icon)
+  - **Message History**:
+    - Scrollable message list
+    - Messages grouped by date
+    - Each message displays:
+      - Sender name and photo (customer or waiter)
+      - Message text
+      - Timestamp (e.g., '7:45 PM')
+      - Read receipts (double checkmark if read)
+    - Customer messages aligned right (blue background)
+    - Waiter messages aligned left (gray background)
+    - System messages centered (e.g., 'Waiter assigned')
+  - **Message Input**:
+    - Text input field at bottom
+    - Placeholder: 'Type your message...'
+    - Send button (paper plane icon)
+    - Attachment button (paperclip icon) for image sharing
+    - Voice message button (microphone icon)
+\n**Chat Features**:
+- **Text Messaging**:
+  - Real-time message delivery
+  - Typing indicators when waiter is responding (e.g., '[Waiter Name] is typing...')
+  - Read receipts (checkmarks)\n  - Message timestamps
+- **Image Sharing**:
+  - Tap attachment button to select image from gallery or take photo
+  - Image preview before sending
+  - Sent images displayed in chat with thumbnail
+  - Tap to view full-size image
+- **Voice Messages**:
+  - Tap and hold microphone button to record
+  - Release to send, swipe left to cancel
+  - Voice message displayed as audio player in chat
+  - Playback controls (play/pause, progress bar)
+- **Quick Reply Suggestions**:
+  - Pre-defined quick replies displayed above input field:\n    - 'Where is my order?'
     - 'Can I modify my order?'
     - 'I need extra napkins'
-    - 'Request for bill'\n  - Typing indicators when waiter is responding
-  - Read receipts\n  - Chat history saved for reference
-- **AI Chatbot Integration**:
-  - Instant responses for common queries (menu info, ingredients, restaurant details)
-  - Seamless handoff to human waiter when needed
-  - 24/7 availability for basic questions
-  - Multilingual support\n\n#### 3.2.8 Enhanced Payment & Billing with Dining Completion Flow
+    - 'Request for bill'
+  - Tap to send quick reply
+- **Chat History**:
+  - All messages saved for reference
+  - Search chat history
+  - Scroll to load older messages
+\n**AI Chatbot Integration**:
+- **Instant Responses**:
+  - AI chatbot handles common queries:\n    - Menu information (ingredients, allergens, pricing)
+    - Restaurant details (hours, location, amenities)
+    - Order status updates
+  - Instant response with no wait time
+- **Seamless Handoff**:
+  - If query requires human assistance, chatbot hands off to waiter
+  - Message: 'Connecting you to [Waiter Name]...'
+  - Waiter receives notification and takes over chat
+- **24/7 Availability**:
+  - Chatbot available even when restaurant closed
+  - Provides basic information and takes reservations
+- **Multilingual Support**:
+  - Chatbot supports multiple languages
+  - Auto-detect user language or manual selection
+\n#### 3.2.8 Enhanced Payment & Billing with Dining Completion Flow
 
 **Post-Dining Completion Notification**:
-- **Dining Status Check**:
+\n- **Dining Status Check**:
   - After order status changes to 'Served', app monitors dining duration
-  - After reasonable dining time (e.g., 30-45 minutes), app sends gentle notification: 'Hope you enjoyed your meal!'
+  - After reasonable dining time (e.g., 30-45 minutes), app sends gentle notification:\n    - Notification title: 'Hope you enjoyed your meal!'
+    - Notification body: 'Tap to complete dining and proceed with payment'
   - Notification includes quick action button: 'Complete Dining'\n\n- **Dining Completion Confirmation Dialog**:
-  - When customer taps 'Complete Dining' or payment notification:\n  - Full-screen dialog appears with friendly message:\n    - Heading: 'Have you finished your meal?'
-    - Subtext: 'Let us know if you are ready to proceed with payment'
-    - Two prominent buttons:\n      - 'Yes, I am Done' (primary button in green)
-      - 'Not Yet' (secondary button)\n  - If customer selects 'Not Yet':
-    - Dialog closes with message: 'Take your time! Tap the bell icon when ready.'
-    - Bell icon remains accessible in app for later\n  - If customer selects 'Yes, I am Done':
-    - Proceed to bill summary and payment flow
+  - When customer taps 'Complete Dining' or payment notification:\n  - Full-screen dialog appears with friendly message:\n    - **Heading**: 'Have you finished your meal?' (large, bold text)
+    - **Subtext**: 'Let us know if you are ready to proceed with payment' (regular text)
+    - **Illustration**: Happy dining icon or animation
+    - **Two prominent buttons**:
+      - **'Yes, I am Done'** (primary button, green background, white text)
+      - **'Not Yet'** (secondary button, white background, gray border, gray text)
+  - **If customer selects 'Not Yet'**:\n    - Dialog closes with toast message: 'Take your time! Tap the bell icon when ready.'
+    - Bell icon remains accessible in app header or floating button
+    - Customer can tap bell icon later to reopen dialog
+  - **If customer selects 'Yes, I am Done'**:
+    - Dialog closes with smooth transition\n    - Proceed to bill summary and payment flow
 \n**Bill Generation & Summary**:
-- **Bill Summary Screen**:
-  - Clean, receipt-style layout with restaurant logo at top
-  - Heading: 'Your Bill Summary'
-  - Itemized list with quantities, portion sizes, and individual prices
-  - Subtotal calculation
-  - Taxes breakdown (GST, service charge, etc.)
-  - Discounts and promo codes applied (if any)
-  - **Total Amount Payable** (large, bold text in primary color)
-  - Tip suggestion section (10%, 15%, 20%, custom, or no tip)
-  - Selected payment method displayed prominently
+\n- **Bill Summary Screen**:
+  - **Header**:
+    - Restaurant logo at top center
+    - Heading: 'Your Bill Summary' (large, bold text)
+  - **Itemized List**:
+    - Clean, receipt-style layout
+    - Each item displays:
+      - Item name
+      - Quantity and portion size
+      - Individual item price
+      - Subtotal per item
+    - Customizations and add-ons listed below each item
+  - **Pricing Breakdown**:
+    - Subtotal (sum of all items)
+    - Taxes breakdown:\n      - GST (X%): $Y
+      - Service charge (Z%): $A
+    - Discounts and promo codes applied (if any):
+      - Promo code: [Code Name] - $B
+      - Loyalty points redeemed: $C
+    - **Total Amount Payable** (large, bold text, primary color, highlighted)
+  - **Tip Suggestion Section**:
+    - Heading: 'Add a tip for great service?' (optional)
+    - Tip percentage buttons:\n      - 10% ($X), 15% ($Y), 20% ($Z), Custom, No Tip
+    - Selected tip highlighted\n    - Tip amount added to total
+  - **Payment Method Display**:
+    - Selected payment method displayed prominently with icon
+    - Payment method name (e.g., 'Cash on Counter', 'Credit Card', 'Google Pay')
 \n**Payment Flow Based on Method**:
-\n- **For COC (Cash on Counter) Payment**:
-  - **Step 1**: Bill summary displays with prominent banner:\n    - Orange banner with cash icon
-    - Text: 'Payment Method: Cash on Counter (COC)'
-  - **Step 2**: Clear instruction card below bill:\n    - Icon: Counter/cashier illustration
-    - Heading: 'Please Pay at the Counter'
-    - Instructions:\n      - 'Kindly proceed to the restaurant counter to complete your payment'
+
+**For COC (Cash on Counter) Payment**:
+\n- **Step 1: Bill Summary with COC Banner**:
+  - Bill summary displays with prominent banner at top:\n    - **Orange banner** with cash/counter icon
+    - **Text**: 'Payment Method: Cash on Counter (COC)'
+    - Banner styled with rounded corners and shadow
+\n- **Step 2: Instruction Card**:
+  - Clear instruction card below bill summary:\n    - **Icon**: Counter/cashier illustration (large, centered)
+    - **Heading**: 'Please Pay at the Counter' (bold, 24px)
+    - **Instructions** (bullet points or numbered list):
+      - 'Kindly proceed to the restaurant counter to complete your payment'
       - 'Show this bill summary to the staff'
       - 'Your e-bill will be generated after payment confirmation'
-    - Table number and order ID displayed for reference
-  - **Step 3**: Action button: 'I Have Paid at Counter'
-  - **Step 4**: When customer taps 'I Have Paid at Counter':
-    - Confirmation dialog: 'Have you completed the payment at the counter?'
-    - Two options: 'Yes, Payment Done' and 'Not Yet'
-  - **Step 5**: If 'Yes, Payment Done' selected:
-    - App sends payment confirmation request to restaurant dashboard
-    - Loading screen with message: 'Waiting for payment confirmation from restaurant...'
-    - Restaurant staff confirms payment in their dashboard
-  - **Step 6**: Upon restaurant confirmation:
-    - Success animation with checkmark
-    - Message: 'Payment Confirmed! Thank you for dining with us.'
-    - **Order timeline automatically updated** with 'Payment Collected' timestamp
-    - **E-Bill Generation**:
-      - System automatically generates digital bill/receipt
-      - E-bill includes:
-        - Restaurant details and logo
-        - Order ID and timestamp
-        - Table number
-        - Customer name\n        - Itemized list with prices
-        - Subtotal, taxes, discounts, total
-        - Payment method: COC\n        - Payment timestamp
-        - Thank you message
-      - E-bill sent via:\n        - Email (if email provided)
-        - SMS with download link (if phone provided)
-        - In-app download button (PDF format)
-    - **'Print E-Bill' button becomes visible** in order details
-    - Redirect to post-payment screen (rating and review)
+    - **Table Number & Order ID**:
+      - Displayed prominently for reference
+      - Example: 'Table 12 | Order #12345'
+\n- **Step 3: Action Button**:
+  - Large button at bottom: 'I Have Paid at Counter'
+  - Orange background with white text
+  - Tap to proceed\n
+- **Step 4: Payment Confirmation Dialog**:
+  - When customer taps 'I Have Paid at Counter':
+  - Confirmation dialog appears:
+    - **Heading**: 'Have you completed the payment at the counter?'
+    - **Two options**:
+      - **'Yes, Payment Done'** (primary button, green)\n      - **'Not Yet'** (secondary button, gray)
+\n- **Step 5: Waiting for Confirmation**:
+  - If'Yes, Payment Done' selected:
+  - App sends payment confirmation request to restaurant dashboard
+  - Loading screen with message:\n    - **Heading**: 'Waiting for payment confirmation from restaurant...'
+    - **Subtext**: 'Please wait while we verify your payment'
+    - **Loading animation**: Spinner or progress indicator
+\n- **Step 6: Payment Confirmed**:
+  - Upon restaurant confirmation:
+  - Success animation with checkmark (scale and fade-in)
+  - Success message:\n    - **Heading**: 'Payment Confirmed!'
+    - **Subtext**: 'Thank you for dining with us.'
+  - **Order Timeline Automatically Updated**:
+    - 'Payment Collected' checkpoint added with timestamp
+  - **E-Bill Generation**:
+    - System automatically generates digital bill/receipt
+    - E-bill includes:
+      - Restaurant details and logo
+      - Order ID and timestamp
+      - Table number\n      - Customer name
+      - Itemized list with prices
+      - Subtotal, taxes, discounts, total
+      - Payment method: COC
+      - Payment timestamp
+      - Thank you message
+    - E-bill sent via:\n      - **Email** (if email provided): Sent to registered email
+      - **SMS** with download link (if phone provided): Sent to registered phone
+      - **In-app download button**: 'Download E-Bill' button (PDF format)
+  - **'Print E-Bill' Button Becomes Visible**:
+    - Button displayed in order details screen
+    - Tap to open print dialog or share to printer app
+  - **Redirect to Post-Payment Screen**:
+    - Automatic redirect to rating and review screen after3 seconds
+    - Skip button to go directly to home\n
+**For Online Payments (Cards, Wallets, UPI, BNPL)**:
+\n- **Step 1: Bill Summary with Payment Method**:
+  - Bill summary displays with selected payment method
+  - Payment method icon and name displayed prominently
+\n- **Step 2: Tip Selection**:
+  - Tip suggestion section (optional)
+  - Select tip percentage or custom amount
+\n- **Step 3: Proceed to Payment Button**:
+  - Large button at bottom: 'Proceed to Payment - $XX.XX'
+  - Orange background with white text
+  - Tap to open payment gateway
 
-- **For Online Payments** (Cards, Wallets, UPI, BNPL):
-  - **Step 1**: Bill summary displays with selected payment method
-  - **Step 2**: Tip selection (optional)
-  - **Step 3**: 'Proceed to Payment' button
-  - **Step 4**: Secure payment gateway opens
-  - **Step 5**: Complete payment with authentication (3D Secure, OTP, biometric)
-  - **Step 6**: Payment success confirmation
-  - **Step 7**: **Order timeline automatically updated** with 'Payment Collected' timestamp
-  - **Step 8**: **E-Bill Auto-Generation**:
+- **Step 4: Secure Payment Gateway**:
+  - Payment gateway opens (Stripe, PayPal, Razorpay, etc.)\n  - Enter payment details:\n    - Card number, expiry date, CVV (for cards)
+    - Login credentials (for wallets)
+    - UPI ID (for UPI)\n    - BNPL account details (for BNPL)
+  - Authentication:\n    - 3D Secure (for cards)\n    - OTP verification (for wallets/UPI)
+    - Biometric authentication (if supported)
+\n- **Step 5: Payment Processing**:
+  - Loading screen with message: 'Processing payment...'
+  - Progress indicator
+\n- **Step 6: Payment Success**:
+  - Success animation with checkmark\n  - Success message: 'Payment Successful!'
+  - **Order Timeline Automatically Updated**:
+    - 'Payment Collected' checkpoint added with timestamp
+  - **E-Bill Auto-Generation**:
     - System instantly generates e-bill upon successful payment
-    - E-bill sent immediately via email and SMS
-    - In-app download option available\n    - Payment status:'Paid Online'\n  - **Step 9**: **'Print E-Bill' button becomes visible** in order details
-  - **Step 10**: Redirect to post-payment screen (rating and review)
+    - E-bill sent immediately via:
+      - **Email**: Sent to registered email
+      - **SMS**: Sent to registered phone with download link
+      - **In-app download option**: 'Download E-Bill' button available
+    - Payment status:'Paid Online'\n    - Transaction ID included in e-bill
+  - **'Print E-Bill' Button Becomes Visible**:
+    - Button displayed in order details screen\n  - **Redirect to Post-Payment Screen**:
+    - Automatic redirect to rating and review screen\n\n**Split Bill Feature**:
+\n- **Equal Split**:
+  - 'Split Bill' button in bill summary
+  - Enter number of people to split among
+  - Each person's share calculated and displayed
+  - Each person selects their payment method independently
+  - For COC split payments:\n    - Each person pays their share at counter
+    - Individual e-bills generated for each person after confirmation
+  - Coordinator receives confirmation when all payments complete
 
-**Split Bill Feature**:
-- Equal split among multiple customers
-- Custom split with individual item assignment
-- Each person selects their payment method independently
-- For COC split payments:\n  - Each person pays their share at counter
-  - Individual e-bills generated for each person after confirmation
-- Coordinator receives confirmation when all payments complete
+- **Custom Split**:
+  - Assign individual items to each person
+  - Each person's total calculated based on assigned items
+  - Each person proceeds with their own payment\n\n**Post-Payment Experience**:
 
-**Post-Payment Experience**:
 - **Rating & Review Screen**:
-  - Rate overall experience (1-5 stars)\n  - Rate individual aspects: food quality, service, ambiance, value for money
-  - Rate individual dishes ordered
-  - Write review with photo upload
-  - Tag review (e.g., 'Great for families', 'Romantic')
-- **Loyalty Points Display**:
+  - **Overall Experience Rating**:
+    - Large star icons (1-5 stars)
+    - Tap to rate\n    - Animated star fill effect
+  - **Individual Aspect Ratings**:
+    - Food Quality (1-5 stars)
+    - Service (1-5 stars)
+    - Ambiance (1-5 stars)
+    - Value for Money (1-5 stars)
+  - **Rate Individual Dishes**:
+    - List of ordered items\n    - Each item with star rating (1-5 stars)
+    - Tap to rate\n  - **Write Review**:
+    - Text box for review
+    - Placeholder: 'Share your experience...'
+    - Character limit indicator
+  - **Upload Photos**:
+    - 'Add Photos' button
+    - Select photos from gallery or take photo
+    - Photo thumbnails displayed
+  - **Tag Review**:
+    - Pre-defined tags (multi-select):
+      - 'Great for families', 'Romantic', 'Quick service', 'Value for money', etc.
+    - Tap to select tags
+  - **Submit Review Button**:
+    - Large button at bottom: 'Submit Review'
+    - Success message after submission
+\n- **Loyalty Points Display**:
   - Animated counter showing points earned
-  - Progress towards next reward\n- **Thank You Message**:
+  - Confetti animation for milestone achievements
+  - Progress bar towards next reward
+  - Message: 'You earned X points!'
+
+- **Thank You Message**:
   - Personalized thank you with restaurant branding
-  - Invitation to visit again with special offer (optional)
+  - Restaurant logo and name
+  - Message: 'Thank you for dining with us, [Customer Name]!'
+  - Invitation to visit again with special offer (optional):\n    - Example: 'Get 10% off on your next visit!'
+
 - **E-Bill Access**:
   - Prominent 'Download E-Bill' button\n  - 'Print E-Bill' button (opens print dialog or shares to printer app)
-  - 'Email E-Bill' option\n  - E-bill saved in Order History for future reference
+  - 'Email E-Bill' option (send to different email)
+  - E-bill saved in Order History for future reference
 
 **Payment Failure Handling**:
-- For online payment failures:
-  - Clear error message with reason
-  - 'Retry Payment' button
-  - Option to change payment method
-  - Contact support link
-- For COC payment issues:
-  - If restaurant does not confirm payment after reasonable time:
-    - Reminder notification to customer
-    - Option to contact restaurant via chat
-    - Manual resolution with support team
+
+- **For Online Payment Failures**:
+  - Error screen with clear error message
+  - Reason for failure displayed (e.g., 'Insufficient funds', 'Card declined', 'Network error')
+  - 'Retry Payment' button\n  - Option to change payment method
+  - 'Contact Support' link for assistance
+
+- **For COC Payment Issues**:
+  - If restaurant does not confirm payment after reasonable time (e.g., 10 minutes):
+    - Reminder notification to customer: 'Payment confirmation pending. Please check with restaurant staff.'
+    - Option to contact restaurant via chat\n    - Manual resolution with support team if issue persists
 \n#### 3.2.9 Order History & Reordering with Enhanced Order Details
 
 **Order History**:
+
 - **Order List View**:
   - Chronological list of all past orders
-  - Each order card shows:
-    - Restaurant name and logo
-    - Order date and time
-    - Order items summary (first 2 items + 'X more')
-    - Total amount
-    - Order status badge (Completed/Cancelled)
-    - Payment method used
+  - Most recent orders at top
+  - Each order card displays:
+    - **Restaurant name and logo**
+    - **Order date and time** (e.g., 'Nov 30, 2025, 7:30 PM')
+    - **Order items summary**: First2 items + 'X more items'
+    - **Total amount** (bold, large text)
+    - **Order status badge** (color-coded):
+      - Completed (green)
+      - Cancelled (red)
+    - **Payment method used** (icon + label)
   - Tap to expand full order details
 \n**Expandable Order Details in History**:
-- **Full Order Information**:
-  - Order ID and timestamp
-  - Restaurant name and location
-  - Table number
-  - Itemized list with quantities, portion sizes, customizations, and prices
-  - Pricing breakdown (subtotal, taxes, discounts, total)
-  - Payment method and transaction ID
-  - Payment timestamp
-- **Complete Order Timeline**:
-  - Visual timeline showing all stages with timestamps:\n    - Order Received\n    - Acknowledged
-    - Waiter Assigned
-    - Preparing
-    - Ready
-    - Served
-    - Payment Collected
-    - Order Completed
-  - Duration between stages displayed
-  - Total order duration shown
-- **E-Bill Access**:
-  - 'Download E-Bill' button
-  - 'Print E-Bill' button (for completed orders)
-  - 'Email E-Bill' option
-  - View e-bill preview in app
-- **Action Buttons**:
-  - 'Reorder' button (one-tap reorder with saved customizations)
-  - 'Rate & Review' button (if not already reviewed)
-  - 'Contact Support' (for issues with past orders)
-\n**Filters & Search**:
-- Filter by restaurant\n- Filter by date range (date picker)
-- Filter by order status (Completed, Cancelled)\n- Search by item name or order ID
-- Sort by: Recent, Oldest, Highest Amount
-\n**Quick Reorder**:
-- 'Reorder' button for favorite orders
-- One-tap reorder with saved customizations
-- Modify reorder before placing
-\n**Favorites**:
-- Save favorite restaurants
-- Save favorite dishes for quick access
-- Create custom food collections
 
-#### 3.2.10 Reviews & Ratings\n- **Rate Restaurant**:
-  - Overall rating (1-5 stars)\n  - Individual ratings for food quality, service, ambiance, value for money
-  - Written review with photo upload
-  - Tag review (e.g., 'Great for families', 'Romantic', 'Quick service')
-- **Rate Individual Dishes**:
-  - Rate each ordered item separately
-  - Upload photos of dishes
-  - Helpful/Not Helpful voting on reviews
-- **Review Management**:
-  - Edit or delete your reviews
-  - View your review history
-  - Receive responses from restaurant owners
-\n## 4. Complete User Flows
+- **Full Order Information**:
+  - **Order Header**:
+    - Order ID (large, bold)
+    - Order date and timestamp
+    - Restaurant name and logo
+    - Restaurant location
+    - Table number
+  - **Itemized List**:
+    - Each item displays:
+      - Item name and thumbnail image
+      - **Item type indicator** (Veg/Non-Veg icon)
+      - Quantity and portion size
+      - Customizations (spice level, add-ons, removals)
+      - Special instructions per item
+      - Individual item price
+      - Subtotal per item
+- **Pricing Breakdown**:\n    - Subtotal\n    - Taxes (itemized)
+    - Discounts and promo codes applied
+    - Tip amount (if applicable)
+    - Total amount (large, bold)\n  - **Payment Information**:
+    - Payment method used (with icon)
+    - Payment status (Completed/Failed)
+    - Transaction ID (for online payments)
+    - Payment timestamp
+\n- **Complete Order Timeline**:
+  - Visual timeline showing all stages with timestamps:\n    - Order Received (timestamp)
+    - Acknowledged (timestamp)
+    - Waiter Assigned (waiter name, timestamp)
+    - Preparing (timestamp, duration)
+    - Ready (timestamp)\n    - Served (timestamp)\n    - Payment Collected (timestamp, payment method)
+    - Order Completed (timestamp, total duration)
+  - Each checkpoint shows:
+    - Status icon (checkmark for completed)\n    - Status label\n    - Timestamp (date and time)
+  - Duration between stages displayed (e.g., 'Prepared in 15 mins')
+  - Total order duration shown at bottom (e.g., 'Total time: 45 minutes')
+
+- **E-Bill Access**:
+  - **'Download E-Bill' Button**:\n    - Tap to download e-bill as PDF
+    - Save to device or open in PDF viewer
+  - **'Print E-Bill' Button** (for completed orders):
+    - Tap to open print dialog
+    - Print directly to connected printer or share to printer app
+  - **'Email E-Bill' Option**:
+    - Tap to send e-bill to email address
+    - Enter email or use registered email
+  - **View E-Bill Preview**:
+    - Tap to view e-bill in app
+    - Formatted as professional receipt
+
+- **Action Buttons**:
+  - **'Reorder' Button**:
+    - One-tap reorder with saved customizations
+    - All items added to cart with same customizations
+    - Option to modify before placing order
+  - **'Rate & Review' Button** (if not already reviewed):
+    - Opens rating and review screen
+    - Pre-filled with order details
+  - **'Contact Support' Button** (for issues with past orders):
+    - Opens support chat or contact form
+    - Order details auto-attached for reference
+
+**Filters & Search**:
+
+- **Filter Options**:
+  - **Filter by Restaurant**:
+    - Dropdown or search to select restaurant
+    - Show orders from selected restaurant only
+  - **Filter by Date Range**:
+    - Date picker to select start and end date
+    - Pre-defined ranges: Last 7 days, Last 30 days, Last 3 months, All time
+  - **Filter by Order Status**:
+    - Completed, Cancelled\n  - 'Apply Filters' button
+  - 'Clear Filters' button to reset
+
+- **Search Functionality**:
+  - Search bar at top
+  - Search by:\n    - Item name (e.g., 'Margherita Pizza')
+    - Order ID (e.g., '#12345')
+    - Restaurant name\n  - Real-time search results as user types
+  - Highlight matching keywords in results
+
+- **Sort Options**:
+  - Sort by:
+    - Recent (most recent first)
+    - Oldest (oldest first)
+    - Highest Amount (highest total first)
+    - Lowest Amount (lowest total first)
+  - Selected sort option displayed in header
+
+**Quick Reorder**:
+
+- **'Reorder' Button on Order Card**:
+  - Positioned on each order card in list view
+  - Tap to reorder entire order
+  - All items added to cart with saved customizations
+  - Confirmation toast: 'Items added to cart'\n
+- **Modify Reorder Before Placing**:
+  - After reorder, cart opens automatically
+  - Customer can edit items, quantities, customizations
+  - Remove items if needed
+  - Add new items from menu
+  - Proceed to checkout when ready
+
+**Favorites**:
+
+- **Save Favorite Restaurants**:
+  - Heart icon on restaurant profile
+  - Tap to add to favorites
+  - Access favorites from profile or home screen
+\n- **Save Favorite Dishes**:
+  - Heart icon on item detail view
+  - Tap to add to favorites
+  - Quick access to favorite dishes from profile
+  - 'Add to Cart' button on favorite dishes for quick ordering
+
+- **Create Custom Food Collections**:
+  - Create collections (e.g., 'Comfort Food', 'Healthy Meals', 'Desserts')
+  - Add items to collections
+  - Share collections with friends
+\n#### 3.2.10 Reviews & Ratings\n
+**Rate Restaurant**:
+
+- **Overall Rating**:
+  - Large star icons (1-5 stars)
+  - Tap to rate
+  - Animated star fill effect
+
+- **Individual Aspect Ratings**:
+  - Food Quality (1-5 stars)
+  - Service (1-5 stars)
+  - Ambiance (1-5 stars)
+  - Value for Money (1-5 stars)
+- Each aspect with star icons and label
+
+- **Written Review**:
+  - Text box for review
+  - Placeholder: 'Share your experience...'
+  - Character limit indicator (e.g., '0/500')
+  - Rich text formatting (optional): bold, italic, bullet points\n
+- **Upload Photos**:
+  - 'Add Photos' button
+  - Select photos from gallery or take photo
+  - Photo thumbnails displayed
+  - Remove photo option
+
+- **Tag Review**:
+  - Pre-defined tags (multi-select):
+    - 'Great for families', 'Romantic', 'Quick service', 'Value for money','Cozy ambiance', 'Friendly staff', etc.
+  - Tap to select tags
+  - Selected tags highlighted\n
+**Rate Individual Dishes**:
+
+- **Dish Rating**:
+  - List of ordered items
+  - Each item with star rating (1-5 stars)\n  - Tap to rate\n  - Animated star fill effect
+
+- **Upload Photos of Dishes**:
+  - 'Add Photo' button for each dish
+  - Select photo from gallery or take photo
+  - Photo thumbnail displayed
+\n- **Helpful/Not Helpful Voting**:
+  - View other customers' reviews
+  - 'Helpful' and 'Not Helpful' buttons\n  - Vote count displayed
+  - Helps surface most useful reviews
+
+**Review Management**:
+
+- **Edit Review**:
+  - Access your reviews from profile
+  - 'Edit' button on each review
+  - Modify rating, text, photos, tags
+  - Save changes
+
+- **Delete Review**:\n  - 'Delete' button on each review\n  - Confirmation dialog before deletion
+  - Review removed from restaurant profile
+
+- **View Your Review History**:
+  - List of all reviews you've written
+  - Organized by date
+  - Filter by restaurant
+\n- **Receive Responses from Restaurant Owners**:
+  - Restaurant owners can respond to reviews
+  - Response displayed below your review
+  - Notification when owner responds
+  - Option to reply to owner's response
+
+## 4. Complete User Flows
 
 ### 4.1 Restaurant Owner Complete Flow
 
@@ -1285,8 +1983,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Enter seating capacity and table count
    - Upload floor plan (optional)
    - Add amenities and certifications
-   - Write restaurant description
-3. Preview restaurant profile
+   - Write restaurant description\n3. Preview restaurant profile
 4. Publish restaurant\n
 **Phase 3: Menu Creation**
 1. Navigate to 'Menu Management'\n2. Create food categories:
@@ -1300,7 +1997,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - **Set pricing**:
      - Base price (required)
      - Quantity-based pricing (optional): Small/Regular/Large with individual prices
-     - Combo pricing (optional)\n     - Discounted price (optional)
+     - Combo pricing (optional)
+     - Discounted price (optional)
    - Assign to categories
    - Set preparation time
    - Select dietary indicators and allergen information
@@ -1355,8 +2053,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Open order and review bill summary
      - Collect cash payment from customer
      - Click 'Collect Payment from Customer'\n     - Confirm payment received
-     - System updates order timeline with 'Payment Collected' timestamp\n     - System generates and sends e-bill to customer
-     - Order status changes to 'Completed'
+     - System updates order timeline with'Payment Collected' timestamp
+     - System generates and sends e-bill to customer
+- Order status changes to 'Completed'
      - 'Print E-Bill' button becomes visible in order details
 6. **Print E-Bills**:
    - For completed orders, click 'Print E-Bill' button
@@ -1383,7 +2082,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Phone number + OTP
    - Google/Facebook/Apple Sign-In
 4. Verify email or phone with OTP
-5. Complete profile setup:\n   - Upload profile photo
+5. Complete profile setup:
+   - Upload profile photo
    - Enter full name (will be displayed to restaurant for orders)
    - Set dietary preferences and allergies
    - Select favorite cuisines
@@ -1395,37 +2095,77 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 2. Open DineQR app\n3. Login with saved credentials or biometric (or continue as guest)
 4. Tap 'Scan QR Code'\n5. Scan QR code on table (system captures restaurant ID and table number)
 6. App loads restaurant profile and menu
-7. View restaurant type indicator (Vegetarian/Non-Vegetarian/Vegan/Mixed)
-8. Confirm table number and restaurant name displayed
-\n**Phase 3: Menu Browsing**
-1. View restaurant landing page with banner, ratings, and info
-2. Tap 'View Menu'\n3. Browse menu with category tabs (see category type indicators)
-4. Use search or filters to find specific items:\n   - Filter by item type (Vegetarian/Non-Vegetarian/Vegan)\n   - Filter by price range\n   - Filter by rating\n   - Exclude allergens
-5. Tap on item card to view details
-6. View full item information:\n   - Images, item type indicator, description, ingredients
-   - Quantity-based pricing options (if applicable)
-   - Customer ratings and reviews
-   - Nutritional info and allergens
+7. **View enhanced restaurant landing page**:
+   - Swipe through restaurant image gallery (interior, exterior, signature dishes)
+   - View restaurant type indicator (Vegetarian/Non-Vegetarian/Vegan/Mixed)
+   - View overall rating and reviews
+   - Confirm table number and restaurant name displayed
+8. Explore restaurant details:
+   - Read restaurant description
+   - View amenities and features
+   - Check operating hours
+   - View location on map
+\n**Phase 3: Menu Browsing with Enhanced Filtering**
+1. Tap 'View Menu' from restaurant landing page
+2. **If restaurant type is 'Mixed', use restaurant type toggle**:\n   - Toggle between 'Vegetarian' and 'Non-Vegetarian' views
+   - Menu filters automatically to show only matching items/categories
+3. Browse menu with category tabs:
+   - View category type indicators (Veg/Non-Veg/Vegan badges)
+   - Tap category tab to scroll to section
+4. View food item cards:
+   - See large food images with item type indicators (Veg/Non-Veg icons)
+   - View customer ratings and review counts
+   - See price display (single price or price range for quantity-based items)
+   - View badges ('Popular', 'Chef's Special', 'Best Seller', etc.)
+   - View dietary indicators and spice level
+5. Use advanced filters:
+   - Filter by item type (Vegetarian/Non-Vegetarian/Vegan)\n   - Filter by price range\n   - Filter by rating\n   - Exclude allergens
+   - Filter by preparation time
+6. Use search functionality:
+   - Search by item name, ingredients, or tags
+   - View real-time search results
 7. Use AI chatbot to ask questions:\n   - 'Does this dish contain nuts?'
    - 'How spicy is this item?'
    - 'Whatdo you recommend for vegetarians?'
-\n**Phase 4: Ordering**
-1. Select item customizations:
-   - Choose portion size/quantity (Small/Regular/Large)
-   - Adjust spice level\n   - Add extras (cheese, sauce, etc.)
+\n**Phase 4: Item Detail View & Ordering**
+1. Tap on item card to view full details
+2. **View comprehensive item information**:
+   - Swipe through item image gallery
+   - View item type indicator (Veg/Non-Veg icon)
+   - View customer rating (large star display with average and count)
+   - Read detailed description
+   - **View pricing**:
+     - If single price: See base price\n     - If quantity-based pricing: View pricing table with size options (Small/Regular/Large)
+     - If discounted: See original price struck through with savings percentage
+   - View preparation time
+   - View dietary indicators and spice level
+   - View allergen warnings (highlighted if present)
+   - Expand to view ingredients list
+   - Expand to view nutritional information
+   - **View customer reviews and ratings**:\n     - See rating breakdown (5-star: X%, 4-star: Y%, etc.)
+     - Read recent reviews with customer photos
+     - Vote helpful/not helpful on reviews
+   - View pairing suggestions and frequently ordered with items
+3. **Customize order**:
+   - Select quantity/portion size (if quantity-based pricing)
+   - Adjust spice level\n   - Add extras (cheese, sauce, toppings)
    - Remove ingredients (no onions, etc.)
-2. Add special instructions\n3. Select quantity\n4. Tap 'Add to Cart'
-5. Continue browsing and adding items
-6. Tap floating cart button to review\n7. Edit items or quantities in cart
-8. Apply promo code if available
-9. Add order-level special instructions
-10. Review total amount and estimated time
-11. Tap 'Place Order' (system validates restaurant ID before proceeding)
-12. Receive order confirmation notification
-
-**Phase 5: Order Tracking with Complete Timeline**
+   - Select cooking preferences (if applicable)
+   - Add special instructions\n   - Select quantity\n4. View total price (updates dynamically with customizations)
+5. Tap 'Add to Cart'\n6. Continue browsing and adding items\n
+**Phase 5: Cart & Checkout**
+1. Tap floating cart button to review\n2. View itemized cart:\n   - See item names, images, item type indicators
+   - View quantities, portion sizes, customizations
+   - Edit items or quantities
+   - Remove items
+3. Apply promo code if available
+4. Add order-level special instructions
+5. Review total amount and estimated time
+6. Tap 'Place Order' (system validates restaurant ID)\n7. Receive order confirmation notification
+\n**Phase 6: Order Tracking with Complete Timeline**
 1. View order status screen with visual progress tracker
-2. See complete order timeline with all stages:\n   - Order Received (timestamp)
+2. **See complete order timeline with all stages**:
+   - Order Received (timestamp)
    - Acknowledged (timestamp)
    - Waiter Assigned (waiter name and photo, timestamp)
    - Preparing (timestamp, preparation duration)
@@ -1435,7 +2175,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Completed stages shown in green with checkmarks
 5. Pending stages shown in gray with clock icons
 6. Duration between stages displayed (e.g., 'Prepared in 15 mins')
-7. Tap on order card to expand full details:\n   - View complete order information\n   - View itemized list with item types, portion sizes, and customizations
+7. **Tap on order card to expand full details**:\n   - View complete order information
+   - View itemized list with item types, portion sizes, and customizations
    - View pricing breakdown
    - View payment information
    - View complete timeline with all timestamps
@@ -1447,12 +2188,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 11. Waiter responds in real-time
 12. Receive notification when food is served
 
-**Phase 6: Dining Experience**
+**Phase 7: Dining Experience**
 1. Enjoy meal\n2. Use chat for any requests:\n   - Request condiments
    - Report issues with food
    - Ask for recommendations for dessert
 3. Order additional items if needed
-\n**Phase 7: Dining Completion & Payment**
+\n**Phase 8: Dining Completion & Payment**
 1. **Dining Completion Check**:
    - Receive notification: 'Hope you enjoyed your meal!'
    - Tap 'Complete Dining' button
@@ -1465,12 +2206,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - **If COC Selected**:
      - See instruction: 'Please Pay at the Counter'
      - Proceed to restaurant counter with phone\n     - Show bill summary to staff
-     - Pay with cash\n     - Tap 'I Have Paid at Counter' in app
+     - Pay with cash
+     - Tap 'I Have Paid at Counter' in app
      - Confirm payment completion
      - Wait for restaurant confirmation
      - Receive payment success notification
      - **Order timeline automatically updated** with 'Payment Collected' timestamp
-     - **E-bill automatically generated and sent via email/SMS**
+- **E-bill automatically generated and sent via email/SMS**
      - Download e-bill from app
      - **'Print E-Bill' button becomes visible** in order details
    - **If Online Payment Selected**:
@@ -1483,11 +2225,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - **'Print E-Bill' button becomes visible** in order details
 4. **Split Bill** (if applicable):
    - Each person pays their share
-   - Individual e-bills generated for each\n\n**Phase 8: Post-Dining**
+   - Individual e-bills generated for each\n\n**Phase 9: Post-Dining**
 1. Rate overall experience (1-5 stars)
 2. Rate individual aspects:
-   - Food quality\n   - Service
-   - Ambiance
+   - Food quality\n   - Service\n   - Ambiance
    - Value for money
 3. Rate individual dishes ordered
 4. Write review and upload photos
@@ -1495,12 +2236,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 6. Download, print, or email e-bill if needed
 7. Save restaurant to favorites
 8. Share experience on social media
-9. View complete order details in Order History:\n   - Tap on order to expand full details
+9. **View complete order details in Order History**:
+   - Tap on order to expand full details
    - View complete timeline with all timestamps
    - View itemized list with item types, portion sizes, and pricing
    - Access e-bill (download, print, email)
-
-### 4.3 Waiter/Agent Complete Flow
+\n### 4.3 Waiter/Agent Complete Flow
 
 **Phase 1: Account Setup**
 1. Receive invitation email from restaurant owner
@@ -1528,8 +2269,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 5. Monitor order status in kitchen
 6. Receive notification when order is ready
 7. Serve food to customer
-8. Update order status to 'Served'
-9. Order timeline automatically updated with timestamp
+8. Update order status to 'Served'\n9. Order timeline automatically updated with timestamp
 
 **Phase 4: Customer Communication**
 1. Receive chat messages from assigned tables
@@ -1564,8 +2304,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Accent Colors**:
   - Green (#28A745): Vegetarian indicators, positive actions,'Ready' status, completed timeline stages
   - Red (#DC3545): Non-vegetarian indicators, alerts, 'Out of Stock'\n  - Yellow (#FFC107): Ratings, 'Preparing' status, warnings, Eggetarian indicators
-  - Blue (#007BFF): Information, links, 'Acknowledged' status\n  - Purple (#6F42C1): Premium features, loyalty badges, 'Served' status
-  - Teal (#00A896): 'Payment Pending' status\n  - Gray (#6C757D): 'Completed' status, pending timeline stages
+  - Blue (#007BFF): Information, links, 'Acknowledged' status\n  - Purple (#6F42C1): Premium features, loyalty badges, 'Served' status\n  - Teal (#00A896): 'Payment Pending' status\n  - Gray (#6C757D): 'Completed' status, pending timeline stages
 - **Neutral Colors**:
   - White (#FFFFFF): Main background, cards\n  - Light Gray (#F8F9FA): Section separators, disabled states
   - Medium Gray (#6C757D): Secondary text, placeholders
@@ -1579,8 +2318,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - H1: Poppins Bold,32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
-  - H4: Poppins Medium, 18px (sub-headings)
-  - Body Large: Inter Regular, 16px (descriptions, content)
+  - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
   - Body: Inter Regular, 14px (standard text)
   - Small: Inter Regular, 12px (metadata, captions, timestamps)
   - Button: Poppins SemiBold, 16px (CTAs)\n  - Price: Poppins SemiBold, 20px (pricing emphasis)
@@ -1630,10 +2368,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Food Item Cards**:
 - Image: 16:9 aspect ratio, rounded top corners
-- **Item type indicator**: Positioned top-left on image (Veg/Non-Veg/Vegan icon with colored background)
+- **Item type indicator**: Positioned top-left on image (Veg/Non-Veg/Vegan icon with colored background,32px diameter)
 - Content padding: 12px
-- Badges: Positioned top-right on image
-- **Rating display**: Star icon with rating number below item name
+- Badges: Positioned top-right on image\n- **Rating display**: Star icon with rating number below item name
 - **Price display**: Bottom-right, bold and prominent (base price or price range)
 - Add button: Floating bottom-right corner\n
 **Order Status Cards**:
@@ -1644,7 +2381,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Timeline Component**:
 - Vertical layout for mobile, horizontal for desktop
 - Checkpoints connected by line (solid for completed, dashed for pending)
-- Icons for each stage (checkmark for completed, clock for pending)\n- Timestamps displayed below each checkpoint
+- Icons for each stage (checkmark for completed, clock for pending)
+- Timestamps displayed below each checkpoint
 - Duration labels between stages
 - Animated indicator for current stage (pulsing dot or progress bar)
 
@@ -1654,18 +2392,26 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Review count in parentheses
 - Color: Yellow (#FFC107) for stars\n- Size: 16px for small, 24px for large
 \n**Item Type Indicator**:
-- Icon size: 20px (small), 32px (large)
-- Vegetarian: Green circle with leaf or'V' symbol
+- Icon size: 20px (small), 32px (large)\n- Vegetarian: Green circle with leaf or'V' symbol
 - Non-Vegetarian: Red circle with chicken leg or 'N' symbol
 - Vegan: Green circle with 'VG' symbol
 - Eggetarian: Yellow circle with egg symbol
 - Positioned prominently on item cards and detail views
 
+**Restaurant Type Indicator**:
+- Badge size: 120px x 40px (large), 80px x 30px (small)
+- Border radius: 20px (large), 15px (small)
+- Icon size: 24px (large), 18px (small)
+- Pure Vegetarian: Green badge with leaf icon
+- Non-Vegetarian: Red badge with chicken leg icon
+- Vegan: Green badge with 'VG' icon
+- Mixed: Orange badge with dual icon (leaf + chicken leg)
+
 ### 5.5 Iconography
 - **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars\n- **Color**: Inherit from parent or theme color
+- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), restaurant type indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars\n- **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
 - **Food Photos**:
@@ -1683,7 +2429,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Responsive images with srcset
 
 ### 5.7 Animation & Transitions
-- **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms\n- **Button Press**: Scale(0.98) with 100ms
+- **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms
+- **Button Press**: Scale(0.98) with 100ms
 - **Loading States**: Skeleton screens with shimmer effect
 - **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up\n- **Status Updates**: Progress bar fill animation
 - **Timeline Updates**: Checkmark animation with scale and color change
@@ -1691,11 +2438,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Dining Completion Dialog**: Fade-in with scale animation
 - **E-Bill Generation**: Document animation with success checkmark
 - **Print Dialog**: Fade-in with slide-up\n- **Rating Stars**: Fill animation on tap/click
+- **Image Gallery Swipe**: Smooth swipe transitions with fade effect
+- **Restaurant Type Toggle**: Slide animation when switching segments
 - **Dashboard Home Page Animations**:
   - Hero section gradient transitions: 3s infinite alternate
   - Floating food icons: 4s ease-in-out infinite (up and down motion)
   - Lottie cooking animations: Loop continuously
-  - Counter animations: 2s ease-out from0to target value
+  - Counter animations: 2s ease-out from0 to target value
   - Progress ring animations: 1.5s ease-in-out fill
   - Quick action cards: Stagger entrance with 100ms delay between cards
   - Live order feed: Slide-in from right with 300ms\n  - Notification bell shake: 500ms on new alert
@@ -1794,7 +2543,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 ### 8.2 Visual Elements
 - **Color Scheme**: Vibrant orange as primary color for energy and appetite stimulation, complemented by teal for professionalism and trust
 - **Typography**: Poppins for bold, modern headings; Inter for clean, readable body text
-- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan)\n- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context
+- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan), restaurant type indicators\n- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context, comprehensive restaurant image galleries
 - **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page
 
 ### 8.3 User Experience Principles

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, menuCategoryApi, menuItemApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem } from '@/types/types';
+import { Restaurant, MenuCategory, MenuItem, ItemType } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { 
   ShoppingCart, 
@@ -27,7 +28,10 @@ import {
   Info,
   ChevronRight,
   X,
-  Check
+  Check,
+  Egg,
+  Award,
+  ChefHat
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -55,14 +59,33 @@ export default function MenuBrowsing() {
   const [showCart, setShowCart] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   // Filters
+  const [itemTypeFilter, setItemTypeFilter] = useState<ItemType | 'all'>('all');
   const [vegOnly, setVegOnly] = useState(false);
   const [veganOnly, setVeganOnly] = useState(false);
   const [glutenFreeOnly, setGlutenFreeOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<'default' | 'price-low' | 'price-high' | 'name'>('default');
+  const [bestsellerOnly, setBestsellerOnly] = useState(false);
+  const [sortBy, setSortBy] = useState<'default' | 'price-low' | 'price-high' | 'name' | 'rating'>('default');
 
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  // Helper function to get item type icon and color
+  const getItemTypeInfo = (itemType: ItemType) => {
+    switch (itemType) {
+      case 'veg':
+        return { icon: Leaf, color: 'text-green-600', bgColor: 'bg-green-100', label: 'Veg' };
+      case 'non_veg':
+        return { icon: ChefHat, color: 'text-red-600', bgColor: 'bg-red-100', label: 'Non-Veg' };
+      case 'vegan':
+        return { icon: Leaf, color: 'text-emerald-600', bgColor: 'bg-emerald-100', label: 'Vegan' };
+      case 'egg':
+        return { icon: Egg, color: 'text-amber-600', bgColor: 'bg-amber-100', label: 'Egg' };
+      default:
+        return { icon: ChefHat, color: 'text-gray-600', bgColor: 'bg-gray-100', label: 'Other' };
+    }
+  };
 
   useEffect(() => {
     loadData();
@@ -179,11 +202,13 @@ export default function MenuBrowsing() {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          item.description?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || item.category_id === selectedCategory;
+    const matchesItemType = itemTypeFilter === 'all' || item.item_type === itemTypeFilter;
     const matchesVeg = !vegOnly || item.is_vegetarian;
     const matchesVegan = !veganOnly || item.is_vegan;
     const matchesGlutenFree = !glutenFreeOnly || item.is_gluten_free;
+    const matchesBestseller = !bestsellerOnly || item.is_bestseller;
     
-    return matchesSearch && matchesCategory && matchesVeg && matchesVegan && matchesGlutenFree;
+    return matchesSearch && matchesCategory && matchesItemType && matchesVeg && matchesVegan && matchesGlutenFree && matchesBestseller;
   });
 
   const sortedItems = [...filteredItems].sort((a, b) => {
@@ -194,6 +219,8 @@ export default function MenuBrowsing() {
         return b.price - a.price;
       case 'name':
         return a.name.localeCompare(b.name);
+      case 'rating':
+        return (b.rating || 0) - (a.rating || 0);
       default:
         return 0;
     }
@@ -219,42 +246,99 @@ export default function MenuBrowsing() {
     );
   }
 
-  const activeFiltersCount = [vegOnly, veganOnly, glutenFreeOnly].filter(Boolean).length;
+  const activeFiltersCount = [vegOnly, veganOnly, glutenFreeOnly, bestsellerOnly, itemTypeFilter !== 'all'].filter(Boolean).length;
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Restaurant Header with Gradient */}
+      {/* Restaurant Header with Images and Enhanced Info */}
       <div className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground overflow-hidden">
+        {/* Restaurant Images Carousel */}
+        {restaurant?.images && restaurant.images.length > 0 && (
+          <div className="relative h-48 xl:h-80 overflow-hidden">
+            <img
+              src={restaurant.images[currentImageIndex]}
+              alt={restaurant.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            
+            {/* Image Navigation Dots */}
+            {restaurant.images.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+                {restaurant.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all",
+                      index === currentImageIndex ? "bg-white w-6" : "bg-white/50"
+                    )}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMS4xLjktMiAyLTJzMiAuOSAyIDItLjkgMi0yIDItMi0uOS0yLTJ6bS04IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnptLTE2IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
         
         <div className="relative max-w-7xl mx-auto px-4 py-6 xl:px-8 xl:py-8">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold mb-2 xl:text-4xl xl:mb-3 animate-fade-in">{restaurant?.name}</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-2xl font-bold xl:text-4xl animate-fade-in">{restaurant?.name}</h1>
+                {restaurant?.restaurant_type && (
+                  <Badge className={cn(
+                    "text-xs xl:text-sm",
+                    restaurant.restaurant_type === 'veg' ? 'bg-green-600' :
+                    restaurant.restaurant_type === 'non_veg' ? 'bg-red-600' :
+                    'bg-amber-600'
+                  )}>
+                    {restaurant.restaurant_type === 'veg' ? '🌿 Pure Veg' :
+                     restaurant.restaurant_type === 'non_veg' ? '🍖 Non-Veg' :
+                     '🌿🍖 Veg & Non-Veg'}
+                  </Badge>
+                )}
+              </div>
+              
+              {restaurant?.cuisine_types && restaurant.cuisine_types.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {restaurant.cuisine_types.map((cuisine, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border-0">
+                      {cuisine}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              
               <div className="flex flex-wrap gap-2 text-xs xl:gap-4 xl:text-sm opacity-90">
-                {restaurant?.location && (
+                {restaurant?.address && (
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
-                    <span>{restaurant.location}</span>
+                    <span>{restaurant.address}</span>
                   </div>
                 )}
-                {restaurant?.contact_details && (
+                {restaurant?.phone && (
                   <div className="flex items-center gap-2">
                     <Phone className="w-4 h-4" />
-                    <span>{restaurant.contact_details}</span>
+                    <span>{restaurant.phone}</span>
                   </div>
                 )}
-                <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 fill-current" />
-                  <span>4.5 (200+ ratings)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>30-40 mins</span>
-                </div>
+                {restaurant?.average_rating !== undefined && restaurant.average_rating > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span>{restaurant.average_rating.toFixed(1)} Rating</span>
+                  </div>
+                )}
+                {restaurant?.opening_hours && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>Open Now</span>
+                  </div>
+                )}
               </div>
-              {restaurant?.business_info && (
-                <p className="mt-2 text-xs xl:mt-3 xl:text-sm opacity-90 max-w-2xl line-clamp-2 xl:line-clamp-none">{restaurant.business_info}</p>
+              {restaurant?.description && (
+                <p className="mt-2 text-xs xl:mt-3 xl:text-sm opacity-90 max-w-2xl line-clamp-2 xl:line-clamp-none">{restaurant.description}</p>
               )}
             </div>
           </div>
@@ -264,6 +348,29 @@ export default function MenuBrowsing() {
       {/* Sticky Search and Filters Bar */}
       <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-lg border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 xl:px-8">
+          {/* Veg/Non-Veg Toggle for restaurants with "both" type */}
+          {restaurant?.restaurant_type === 'both' && (
+            <div className="mb-3">
+              <Tabs value={itemTypeFilter} onValueChange={(value) => setItemTypeFilter(value as ItemType | 'all')} className="w-full">
+                <TabsList className="grid w-full grid-cols-4 h-10">
+                  <TabsTrigger value="all" className="text-xs xl:text-sm">All</TabsTrigger>
+                  <TabsTrigger value="veg" className="text-xs xl:text-sm">
+                    <Leaf className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
+                    Veg
+                  </TabsTrigger>
+                  <TabsTrigger value="non_veg" className="text-xs xl:text-sm">
+                    <ChefHat className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
+                    Non-Veg
+                  </TabsTrigger>
+                  <TabsTrigger value="vegan" className="text-xs xl:text-sm">
+                    <Leaf className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
+                    Vegan
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+          )}
+          
           <div className="flex gap-2 items-center xl:gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 xl:w-5 xl:h-5 text-muted-foreground" />
@@ -347,6 +454,8 @@ export default function MenuBrowsing() {
                   {items.map((item) => {
                     const quantity = getCartItemQuantity(item.id);
                     const isFavorite = favorites.has(item.id);
+                    const itemTypeInfo = getItemTypeInfo(item.item_type);
+                    const ItemTypeIcon = itemTypeInfo.icon;
                     
                     return (
                       <Card 
@@ -378,14 +487,21 @@ export default function MenuBrowsing() {
                                 />
                               </button>
                               
-                              {/* Dietary Badges on Image */}
+                              {/* Item Type Badge on Image */}
+                              <div className="absolute top-1 left-1 xl:top-2 xl:left-2">
+                                <Badge className={cn("border-0 h-6 px-2 xl:h-7 xl:px-2.5", itemTypeInfo.bgColor, itemTypeInfo.color)}>
+                                  <ItemTypeIcon className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
+                                </Badge>
+                              </div>
+                              
+                              {/* Bestseller & Spice Level Badges */}
                               <div className="absolute bottom-1 left-1 flex gap-1 xl:bottom-2 xl:left-2">
-                                {item.is_vegetarian && (
-                                  <Badge className="bg-green-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
-                                    <Leaf className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
+                                {item.is_bestseller && (
+                                  <Badge className="bg-amber-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
+                                    <Award className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
                                   </Badge>
                                 )}
-                                {item.spice_level && Number(item.spice_level) > 0 && (
+                                {item.spice_level && item.spice_level !== 'none' && (
                                   <Badge className="bg-red-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
                                     <Flame className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
                                   </Badge>
@@ -402,15 +518,30 @@ export default function MenuBrowsing() {
                             <div className="flex-1">
                               <div className="flex items-start justify-between gap-2 mb-1 xl:mb-2">
                                 <div className="flex-1">
-                                  <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors xl:text-xl">
-                                    {item.name}
-                                  </h3>
-                                  {item.preparation_time && (
-                                    <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5 xl:mt-1">
-                                      <Clock className="w-3 h-3" />
-                                      <span>{item.preparation_time} mins</span>
-                                    </div>
-                                  )}
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors xl:text-xl">
+                                      {item.name}
+                                    </h3>
+                                    {item.is_bestseller && (
+                                      <Badge variant="secondary" className="text-xs h-5 bg-amber-100 text-amber-700">
+                                        Bestseller
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                    {item.rating > 0 && (
+                                      <div className="flex items-center gap-1">
+                                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                                        <span className="font-medium">{item.rating.toFixed(1)}</span>
+                                      </div>
+                                    )}
+                                    {item.preparation_time && (
+                                      <div className="flex items-center gap-1">
+                                        <Clock className="w-3 h-3" />
+                                        <span>{item.preparation_time} mins</span>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                                 <button
                                   onClick={(e) => {
@@ -427,6 +558,17 @@ export default function MenuBrowsing() {
                                 <p className="text-xs text-muted-foreground line-clamp-2 mb-2 xl:text-sm xl:mb-3">
                                   {item.description}
                                 </p>
+                              )}
+                              
+                              {/* Tags */}
+                              {item.tags && item.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mb-2">
+                                  {item.tags.slice(0, 3).map((tag, index) => (
+                                    <Badge key={index} variant="outline" className="text-xs h-5 xl:h-6">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                </div>
                               )}
                               
                               {/* Dietary Info Badges */}
@@ -534,7 +676,7 @@ export default function MenuBrowsing() {
             </SheetDescription>
           </SheetHeader>
           
-          <div className="mt-6 space-y-6">
+          <div className="mt-6 space-y-6 overflow-y-auto max-h-[calc(80vh-8rem)]">
             {/* Dietary Filters */}
             <div>
               <h3 className="font-semibold mb-3 text-lg">Dietary Preferences</h3>
@@ -595,6 +737,25 @@ export default function MenuBrowsing() {
                   </div>
                   {glutenFreeOnly && <Check className="w-5 h-5 text-primary" />}
                 </button>
+                
+                <button
+                  onClick={() => setBestsellerOnly(!bestsellerOnly)}
+                  className={cn(
+                    "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all",
+                    bestsellerOnly ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "w-10 h-10 rounded-lg flex items-center justify-center",
+                      bestsellerOnly ? "bg-primary text-primary-foreground" : "bg-muted"
+                    )}>
+                      <Award className="w-5 h-5" />
+                    </div>
+                    <span className="font-medium">Bestsellers Only</span>
+                  </div>
+                  {bestsellerOnly && <Check className="w-5 h-5 text-primary" />}
+                </button>
               </div>
             </div>
 
@@ -606,6 +767,7 @@ export default function MenuBrowsing() {
               <div className="space-y-2">
                 {[
                   { value: 'default', label: 'Default' },
+                  { value: 'rating', label: 'Rating: High to Low' },
                   { value: 'price-low', label: 'Price: Low to High' },
                   { value: 'price-high', label: 'Price: High to Low' },
                   { value: 'name', label: 'Name: A to Z' },
@@ -635,6 +797,8 @@ export default function MenuBrowsing() {
                   setVegOnly(false);
                   setVeganOnly(false);
                   setGlutenFreeOnly(false);
+                  setBestsellerOnly(false);
+                  setItemTypeFilter('all');
                   setSortBy('default');
                 }}
               >
@@ -740,9 +904,28 @@ export default function MenuBrowsing() {
           {selectedItem && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-2xl">{selectedItem.name}</DialogTitle>
-                <DialogDescription>
-                  Detailed information about this dish
+                <div className="flex items-center gap-2">
+                  <DialogTitle className="text-2xl">{selectedItem.name}</DialogTitle>
+                  {selectedItem.is_bestseller && (
+                    <Badge className="bg-amber-500">
+                      <Award className="w-3 h-3 mr-1" />
+                      Bestseller
+                    </Badge>
+                  )}
+                </div>
+                <DialogDescription className="flex items-center gap-3 mt-2">
+                  {selectedItem.rating > 0 && (
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <span className="font-medium">{selectedItem.rating.toFixed(1)} Rating</span>
+                    </div>
+                  )}
+                  {selectedItem.preparation_time && (
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      <span>{selectedItem.preparation_time} mins</span>
+                    </div>
+                  )}
                 </DialogDescription>
               </DialogHeader>
               
@@ -756,25 +939,42 @@ export default function MenuBrowsing() {
                 )}
                 
                 <div className="flex flex-wrap gap-2">
-                  {selectedItem.is_vegetarian && (
-                    <Badge className="bg-green-500">
-                      <Leaf className="w-3 h-3 mr-1" />
-                      Vegetarian
-                    </Badge>
-                  )}
+                  {(() => {
+                    const itemTypeInfo = getItemTypeInfo(selectedItem.item_type);
+                    const ItemTypeIcon = itemTypeInfo.icon;
+                    return (
+                      <Badge className={cn(itemTypeInfo.bgColor, itemTypeInfo.color)}>
+                        <ItemTypeIcon className="w-3 h-3 mr-1" />
+                        {itemTypeInfo.label}
+                      </Badge>
+                    );
+                  })()}
                   {selectedItem.is_vegan && (
                     <Badge className="bg-green-600">Vegan</Badge>
                   )}
                   {selectedItem.is_gluten_free && (
                     <Badge variant="secondary">Gluten-Free</Badge>
                   )}
-                  {selectedItem.spice_level && Number(selectedItem.spice_level) > 0 && (
+                  {selectedItem.spice_level && selectedItem.spice_level !== 'none' && (
                     <Badge className="bg-red-500">
                       <Flame className="w-3 h-3 mr-1" />
-                      Spicy Level {selectedItem.spice_level}
+                      Spicy ({selectedItem.spice_level})
                     </Badge>
                   )}
                 </div>
+
+                {selectedItem.tags && selectedItem.tags.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Tags</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedItem.tags.map((tag, index) => (
+                        <Badge key={index} variant="outline">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {selectedItem.description && (
                   <div>
@@ -811,6 +1011,25 @@ export default function MenuBrowsing() {
                     </div>
                   )}
                 </div>
+
+                {selectedItem.variants && selectedItem.variants.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Available Variants</h4>
+                    <div className="space-y-2">
+                      {selectedItem.variants.map((variant, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <p className="font-medium">{variant.name}</p>
+                            {variant.description && (
+                              <p className="text-sm text-muted-foreground">{variant.description}</p>
+                            )}
+                          </div>
+                          <p className="font-bold text-primary">${variant.price.toFixed(2)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <Separator />
 
