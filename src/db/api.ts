@@ -292,7 +292,8 @@ export const orderApi = {
         *,
         order_items(*),
         table:tables(*),
-        staff(*)
+        staff(*),
+        customer:profiles!customer_id(*)
       `)
       .eq('restaurant_id', restaurantId)
       .order('created_at', { ascending: false });
@@ -320,6 +321,14 @@ export const orderApi = {
       order_id: orderId,
       new_status: status,
     });
+    if (error) throw error;
+  },
+
+  async updatePaymentStatus(orderId: string, paymentStatus: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded'): Promise<void> {
+    const { error } = await supabase
+      .from('orders')
+      .update({ payment_status: paymentStatus })
+      .eq('id', orderId);
     if (error) throw error;
   },
 

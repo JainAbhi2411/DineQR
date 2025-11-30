@@ -79,6 +79,7 @@ export interface Order {
   assigned_to: string | null;
   status: OrderStatus;
   payment_status: PaymentStatus;
+  payment_method: 'online' | 'coc';
   total_amount: number;
   currency: string;
   stripe_session_id: string | null;

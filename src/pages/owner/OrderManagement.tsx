@@ -5,7 +5,7 @@ import { Restaurant, OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, CreditCard, Banknote } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/db/supabase';
@@ -83,6 +83,23 @@ export default function OrderManagement() {
     }
   };
 
+  const collectPayment = async (orderId: string) => {
+    try {
+      await orderApi.updatePaymentStatus(orderId, 'completed');
+      toast({
+        title: 'Payment Collected',
+        description: 'Payment has been marked as received',
+      });
+      loadData();
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to update payment status',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
@@ -150,10 +167,49 @@ export default function OrderManagement() {
             <p className="font-semibold text-primary">${order.total_amount.toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">Payment</p>
-            <p className="font-semibold">{order.payment_status}</p>
+            <p className="text-muted-foreground">Payment Method</p>
+            <p className="font-semibold flex items-center gap-1">
+              {order.payment_method === 'online' ? (
+                <>
+                  <CreditCard className="w-4 h-4" />
+                  Online
+                </>
+              ) : (
+                <>
+                  <Banknote className="w-4 h-4" />
+                  COC
+                </>
+              )}
+            </p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Payment Status</p>
+            <Badge variant={order.payment_status === 'completed' ? 'default' : 'secondary'}>
+              {order.payment_status}
+            </Badge>
           </div>
         </div>
+
+        {/* Payment Collection for COC */}
+        {order.payment_method === 'coc' && order.payment_status === 'pending' && order.status === 'served' && (
+          <div className="border border-primary/20 bg-primary/5 rounded-lg p-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <p className="font-semibold text-sm mb-1">💰 Collect Payment</p>
+                <p className="text-sm text-muted-foreground">
+                  Customer will pay ${order.total_amount.toFixed(2)} at the counter
+                </p>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => collectPayment(order.id)}
+                className="shrink-0"
+              >
+                Payment Received
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="border-t pt-4">
           <p className="text-sm font-semibold mb-2">Order Items:</p>

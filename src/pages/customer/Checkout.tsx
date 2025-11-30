@@ -87,6 +87,7 @@ export default function Checkout() {
         total_amount: getTotalAmount(),
         status: 'pending' as const,
         payment_status: paymentMethod === 'coc' ? 'pending' : 'pending' as const,
+        payment_method: paymentMethod,
         special_instructions: specialInstructions || null,
         assigned_to: null,
       };
