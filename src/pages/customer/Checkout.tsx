@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, CreditCard, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, CreditCard, ShoppingBag, Wallet, Banknote } from 'lucide-react';
 import { supabase } from '@/db/supabase';
 
 export default function Checkout() {
@@ -22,6 +23,7 @@ export default function Checkout() {
   const { cart, restaurant } = location.state || {};
   
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'coc'>('online');
   const [loading, setLoading] = useState(false);
 
   if (!cart || cart.length === 0) {
@@ -48,10 +50,29 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = async () => {
-    if (!profile || !restaurantId || !tableId) {
+    // Validate required fields
+    if (!profile) {
       toast({
         title: 'Error',
-        description: 'Missing required information',
+        description: 'Please login to place an order',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!restaurantId) {
+      toast({
+        title: 'Error',
+        description: 'Restaurant ID is required. Please go back and select a restaurant.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!tableId) {
+      toast({
+        title: 'Error',
+        description: 'Table ID is required. Please scan a QR code first.',
         variant: 'destructive',
       });
       return;
@@ -65,7 +86,7 @@ export default function Checkout() {
         table_id: tableId,
         total_amount: getTotalAmount(),
         status: 'pending' as const,
-        payment_status: 'pending' as const,
+        payment_status: paymentMethod === 'coc' ? 'pending' : 'pending' as const,
         special_instructions: specialInstructions || null,
         assigned_to: null,
       };
@@ -81,23 +102,34 @@ export default function Checkout() {
 
       await orderApi.createOrderItems(orderItems);
 
-      const { data, error } = await supabase.functions.invoke('create_stripe_checkout', {
-        body: {
-          orderId: order.id,
-          amount: getTotalAmount(),
-          restaurantName: restaurant?.name || 'Restaurant',
-        },
-      });
-
-      if (error) {
-        const errorMsg = await error?.context?.text();
-        throw new Error(errorMsg || 'Failed to create payment session');
-      }
-
-      if (data?.data?.url) {
-        window.location.href = data.data.url;
+      // Handle payment based on selected method
+      if (paymentMethod === 'coc') {
+        // Cash on Counter - no online payment needed
+        toast({
+          title: 'Order Placed Successfully!',
+          description: 'Please pay at the counter when you receive your order.',
+        });
+        navigate('/customer/orders');
       } else {
-        throw new Error('No payment URL received');
+        // Online payment via Stripe
+        const { data, error } = await supabase.functions.invoke('create_stripe_checkout', {
+          body: {
+            orderId: order.id,
+            amount: getTotalAmount(),
+            restaurantName: restaurant?.name || 'Restaurant',
+          },
+        });
+
+        if (error) {
+          const errorMsg = await error?.context?.text();
+          throw new Error(errorMsg || 'Failed to create payment session');
+        }
+
+        if (data?.data?.url) {
+          window.location.href = data.data.url;
+        } else {
+          throw new Error('No payment URL received');
+        }
       }
     } catch (error: any) {
       toast({
@@ -156,6 +188,37 @@ export default function Checkout() {
 
             <Card>
               <CardHeader>
+                <CardTitle>Payment Method</CardTitle>
+                <CardDescription>Choose how you want to pay</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'coc')}>
+                  <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors">
+                    <RadioGroupItem value="online" id="online" />
+                    <Label htmlFor="online" className="flex items-center gap-3 cursor-pointer flex-1">
+                      <CreditCard className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="font-medium">Online Payment</p>
+                        <p className="text-sm text-muted-foreground">Pay securely with credit/debit card</p>
+                      </div>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors mt-3">
+                    <RadioGroupItem value="coc" id="coc" />
+                    <Label htmlFor="coc" className="flex items-center gap-3 cursor-pointer flex-1">
+                      <Banknote className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="font-medium">Cash on Counter (COC)</p>
+                        <p className="text-sm text-muted-foreground">Pay at the counter when you collect your order</p>
+                      </div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Special Instructions</CardTitle>
                 <CardDescription>Any special requests for your order?</CardDescription>
               </CardHeader>
@@ -206,12 +269,24 @@ export default function Checkout() {
                   onClick={handlePlaceOrder}
                   disabled={loading}
                 >
-                  <CreditCard className="w-5 h-5 mr-2" />
-                  {loading ? 'Processing...' : 'Proceed to Payment'}
+                  {paymentMethod === 'coc' ? (
+                    <>
+                      <Wallet className="w-5 h-5 mr-2" />
+                      {loading ? 'Processing...' : 'Place Order (Pay at Counter)'}
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-5 h-5 mr-2" />
+                      {loading ? 'Processing...' : 'Proceed to Payment'}
+                    </>
+                  )}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  You will be redirected to a secure payment page
+                  {paymentMethod === 'coc' 
+                    ? 'You will pay at the counter when collecting your order'
+                    : 'You will be redirected to a secure payment page'
+                  }
                 </p>
               </CardContent>
             </Card>

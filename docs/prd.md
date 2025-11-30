@@ -64,8 +64,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Update order status within assigned tables
   - Access customer chat for assigned orders
   - View menu and inventory information
-
-## 3. Enhanced Core Features
+\n## 3. Enhanced Core Features
 
 ### 3.1 Advanced Restaurant Owner Features
 \n#### 3.1.1 Restaurant Management Dashboard
@@ -199,14 +198,14 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Special instructions highlighted
     - Estimated preparation time
     - Order total amount
+    - **Restaurant ID validation** (automatically captured from QR scan to ensure order is linked to correct restaurant)
 - **Order Workflow**:
-  - Step1: New order arrives → Owner/Manager acknowledges
+  - Step1: New order arrives → System validates restaurant ID → Owner/Manager acknowledges
   - Step 2: System auto-assigns waiter based on table location and availability
   - Step 3: Waiter receives notification and confirms assignment
   - Step 4: Kitchen receives order details and updates status to 'Preparing'
   - Step 5: Kitchen marks order as 'Ready'\n  - Step 6: Waiter serves food and updates status to 'Served'
-  - Step 7: Customer completes payment\n  - Step 8: Order marked as 'Completed'
-- **Order Management Actions**:
+  - Step 7: Customer completes payment\n  - Step 8: Order marked as 'Completed'\n- **Order Management Actions**:
   - Manual waiter reassignment if needed
   - Order modification requests from customers
   - Order cancellation with reason tracking
@@ -255,8 +254,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Push notifications for new orders\n  - SMS alerts for critical issues
   - Email summaries for daily operations
 \n#### 3.1.8 Advanced Analytics & Reports
-- **Sales Analytics**:
-  - Real-time revenue dashboard
+- **Sales Analytics**:\n  - Real-time revenue dashboard
   - Daily/weekly/monthly/yearly sales trends
   - Peak hours and days analysis
   - Average order value and table turnover rate
@@ -401,8 +399,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Rate & Review button (if not already reviewed)
   - **Filters & Search**:
     - Filter by restaurant\n    - Filter by date range (date picker)
-    - Search by item name
-    - Sort by: Recent, Oldest, Highest Amount\n\n- **Saved Restaurants Section**:
+    - Search by item name\n    - Sort by: Recent, Oldest, Highest Amount\n\n- **Saved Restaurants Section**:
   - **Favorites List**:
     - Grid or list view toggle
     - Each restaurant card shows:
@@ -460,8 +457,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Download my data (GDPR compliance)
     - Delete account (with confirmation and warning)
     - Logout button
-
-- **Profile Edit Mode**:
+\n- **Profile Edit Mode**:
   - Inline editing with save/cancel buttons
   - Real-time validation with error messages
   - Unsaved changes warning when navigating away
@@ -475,9 +471,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n#### 3.2.2 Enhanced QR Scanning & Restaurant Access
 - **Smart QR Scanner**:
   - In-app camera with auto-focus and QR detection
+  - **Automatic restaurant ID capture** from QR code to link order to correct restaurant
   - Scan history with quick access to recently visited restaurants
   - Manual table number entry option if QR scan fails
   - Offline QR code caching for previously visited restaurants
+  - **Error handling**: Display clear error message if restaurant ID is missing or invalid
 - **Restaurant Landing Experience**:
   - Full-screen restaurant banner with image carousel
   - Restaurant name, logo, and verified badge
@@ -540,6 +538,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Edit or remove items directly from cart
   - Subtotal, taxes, and total amount breakdown
   - Estimated preparation time for entire order
+  - **Restaurant ID validation** before proceeding to payment
 - **Promo Codes & Discounts**:
   - Apply promo code field with validation
   - Available offers display
@@ -550,7 +549,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Pre-defined quick options (less oil, extra spicy, etc.)
 - **Order Confirmation**:
   - Review complete order summary
-  - Confirm table number
+  - Confirm table number and restaurant details
   - Estimated total time display
   - 'Place Order' button with loading animation
 
@@ -563,14 +562,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Live updates with push notifications
 - **Order Details**:
   - Order ID and timestamp
+  - Restaurant name and ID confirmation
   - Itemized list with quantities
   - Total amount\n  - Special instructions confirmation
 - **Modify Order**:
   - Request to add more items (if order not yet preparing)
   - Cancel order option (with confirmation)
   - Contact waiter button for modifications
-
-#### 3.2.7 Real-Time Chat with Restaurant\n- **Chat Interface**:
+\n#### 3.2.7 Real-Time Chat with Restaurant
+- **Chat Interface**:
   - Floating chat bubble icon (bottom-right corner)
   - Slide-up chat window with message history
   - Direct connection to assigned waiter for table-specific queries
@@ -595,35 +595,61 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Automatic bill generation when order is served
   - Itemized bill with taxes and charges breakdown
   - Discount and promo code deductions shown
-  - Tip suggestion (10%, 15%, 20%, custom)\n- **Payment Options**:
-  - Credit/Debit cards (Visa, Mastercard, Amex)
-  - Digital wallets (Google Pay, Apple Pay, PayPal, Venmo)
-  - UPI payments (India-specific)
-  - Buy Now Pay Later (Klarna, Afterpay)
-  - Pay at counter option
-  - Split bill among multiple customers (equal or custom split)
+  - Tip suggestion (10%, 15%, 20%, custom)\n- **Payment Options Selection**:
+  - **Payment Method Selector Screen**:
+    - Clear heading: 'Choose Payment Method'
+    - Radio button or card-based selection interface
+    - Available payment options:\n      - **Credit/Debit Cards** (Visa, Mastercard, Amex)
+        - Icon: Card symbol
+        - Description: 'Pay securely with your card'
+      - **Digital Wallets** (Google Pay, Apple Pay, PayPal, Venmo)
+        - Icon: Wallet symbol
+        - Description: 'Quick payment with digital wallet'
+      - **UPI Payments** (India-specific)
+        - Icon: UPI logo
+        - Description: 'Instant payment via UPI'
+      - **Buy Now Pay Later** (Klarna, Afterpay)\n        - Icon: BNPL logo
+        - Description: 'Split your payment into installments'
+      - **COC (Cash on Counter)**
+        - Icon: Cash/Counter symbol
+        - Description: 'Pay with cash at the restaurant counter'
+        - Note: 'Please proceed to the counter after your meal'
+    - Selected payment method highlighted with checkmark
+    - 'Proceed to Payment' button (disabled until method selected)
+    - Split bill option: 'Split Bill with Friends' button
 - **Payment Processing**:
-  - Secure PCI-DSS compliant payment gateway
-  - 3D Secure authentication for cards
-  - Payment confirmation with success animation
-  - Digital receipt sent via email and SMS
-  - Receipt download in PDF format
+  - **For Online Payments** (Cards, Wallets, UPI, BNPL):
+    - Secure PCI-DSS compliant payment gateway
+    - 3D Secure authentication for cards
+    - Payment confirmation with success animation
+    - Digital receipt sent via email and SMS
+    - Receipt download in PDF format
+  - **For COC (Cash on Counter)**:
+    - Order marked as 'Payment Pending - COC'
+    - Notification sent to restaurant staff
+    - Customer receives confirmation: 'Please pay at the counter'
+    - Staff updates payment status after receiving cash
+    - Digital receipt generated after payment confirmation
+- **Split Bill Feature**:
+  - Equal split among multiple customers
+  - Custom split with individual item assignment
+  - Each person selects their payment method independently
+  - Coordinator receives confirmation when all payments complete
 - **Post-Payment**:
   - Rate your experience (food, service, ambiance)
   - Leave review and upload photos
-  - Tip waiter directly through app
+  - Tip waiter directly through app (for online payments)
   - Loyalty points earned display
 
 #### 3.2.9 Order History & Reordering
 - **Order History**:
   - Chronological list of all past orders
   - Filter by restaurant or date range
-  - Search orders by item name\n  - View complete order details including bill
+  - Search orders by item name\n  - View complete order details including bill and payment method used
 - **Quick Reorder**:
   -'Reorder' button for favorite orders
   - One-tap reorder with saved customizations
-  - Modify reorder before placing
-- **Favorites**:
+  - Modify reorder before placing\n- **Favorites**:
   - Save favorite restaurants\n  - Save favorite dishes for quick access
   - Create custom food collections
 \n#### 3.2.10 Reviews & Ratings
@@ -696,7 +722,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 1. Navigate to 'QR Code Management'
 2. Enter number of tables
 3. Customize QR code design with logo and colors
-4. Generate QR codes for all tables
+4. Generate QR codes for all tables (each QR code embeds unique table number and restaurant ID)
 5. Download QR codes in print-ready PDF format
 6. Print and place QR codes on tables with table numbers
 
@@ -711,6 +737,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 1. Login to dashboard
 2. Monitor real-time order board
 3. When new order arrives:
+   - System validates restaurant ID from QR scan
    - Acknowledge order
    - System auto-assigns waiter based on table location
    - Waiter receives notification and confirms
@@ -721,7 +748,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 5. Manage inventory:
    - Update stock levels
    - Mark items as out of stock when ingredients run low
-6. Generate bills and process payments
+6. Generate bills and process payments (including COC payments at counter)
 7. Review daily analytics and reports
 
 **Phase 8: Ongoing Management**
@@ -732,7 +759,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 6. Export financial reports for accounting
 
 ### 4.2 Customer Complete Flow
-\n**Phase 1: Registration & Onboarding**
+
+**Phase 1: Registration & Onboarding**
 1. Download DineQR app or visit website
 2. Click 'Sign Up'\n3. Choose registration method:
    - Email + password
@@ -748,9 +776,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Phase 2: Arrival at Restaurant**
 1. Arrive at restaurant and sit at table
 2. Open DineQR app\n3. Login with saved credentials or biometric
-4. Tap 'Scan QR Code'\n5. Scan QR code on table
+4. Tap 'Scan QR Code'\n5. Scan QR code on table (system captures restaurant ID and table number)
 6. App loads restaurant profile and menu
-7. Confirm table number displayed
+7. Confirm table number and restaurant name displayed
 \n**Phase 3: Menu Browsing**
 1. View restaurant landing page with banner, ratings, and info
 2. Tap 'View Menu'\n3. Browse menu with category tabs
@@ -779,7 +807,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 8. Apply promo code if available
 9. Add order-level special instructions
 10. Review total amount and estimated time
-11. Tap 'Place Order'\n12. Receive order confirmation notification
+11. Tap 'Place Order' (system validates restaurant ID before proceeding)
+12. Receive order confirmation notification
 
 **Phase 5: Order Tracking**
 1. View order status screen with progress bar
@@ -807,16 +836,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 1. Receive bill notification
 2. Review itemized bill with taxes
 3. Add tip (select percentage or custom amount)
-4. Choose payment method:
-   - Saved card
-   - Digital wallet\n   - UPI
-   - Split bill with friends
-5. Complete payment with secure authentication
-6. Receive payment confirmation
+4. Tap 'Proceed to Payment'
+5. **Select Payment Method**:
+   - Choose from: Cards, Digital Wallets, UPI, BNPL, or COC (Cash on Counter)
+   - If COC selected:\n     - Receive confirmation: 'Please pay at the counter'\n     - Order marked as 'Payment Pending - COC'
+     - Proceed to restaurant counter to pay with cash
+     - Staff confirms payment and updates status
+   - If online payment selected:
+     - Complete payment with secure authentication
+     - Receive instant payment confirmation
+6. Split bill with friends (optional)
 7. Download digital receipt
 
-**Phase 8: Post-Dining**
-1. Rate overall experience (1-5 stars)
+**Phase 8: Post-Dining**\n1. Rate overall experience (1-5 stars)
 2. Rate individual aspects:
    - Food quality
    - Service
@@ -824,7 +856,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Value for money
 3. Rate individual dishes ordered
 4. Write review and upload photos
-5. Tip waiter directly through app (optional)
+5. Tip waiter directly through app (optional, for online payments)
 6. View loyalty points earned
 7. Save restaurant to favorites
 8. Share experience on social media
@@ -847,8 +879,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 5. Review shift schedule and breaks
 \n**Phase 3: Order Management**
 1. Receive notification for new order assignment
-2. View order details:\n   - Table number
-   - Customer name
+2. View order details:\n   - Table number\n   - Customer name
    - Ordered items with customizations
    - Special instructions
    - Estimated preparation time
@@ -856,7 +887,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Monitor order status in kitchen
 5. Receive notification when order is ready
 6. Serve food to customer
-7. Update order status to 'Served'\n
+7. Update order status to 'Served'
+
 **Phase 4: Customer Communication**
 1. Receive chat messages from assigned tables
 2. Respond to customer requests:
@@ -869,11 +901,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Phase 5: Table Management**
 1. Monitor all assigned tables
-2. Check table status:\n   - Ordering
-   - Eating
+2. Check table status:\n   - Ordering\n   - Eating
    - Payment pending
 3. Assist with bill generation
-4. Process payment requests
+4. Process payment requests:\n   - For online payments: Guide customer through app payment
+   - For COC payments: Direct customer to counter and confirm payment after receiving cash
 5. Clear table after customer leaves
 6. Update table status to available
 
@@ -907,8 +939,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - H1: Poppins Bold,32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
-  - H4: Poppins Medium, 18px (sub-headings)
-  - Body Large: Inter Regular, 16px (descriptions, content)
+  - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
   - Body: Inter Regular, 14px (standard text)
   - Small: Inter Regular, 12px (metadata, captions)
   - Button: Poppins SemiBold, 16px (CTAs)\n  - Price: Poppins SemiBold, 20px (pricing emphasis)
@@ -950,7 +981,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Placeholder: Medium gray text
 - Error state: Red border with error message below
 
-**Navigation**:\n- Sticky top navigation bar (60px height)
+**Navigation**:
+- Sticky top navigation bar (60px height)
 - Bottom tab bar for mobile (56px height)
 - Sidebar navigation for desktop (240px width)\n- Active state: Orange underline or background
 
@@ -969,7 +1001,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators
+- **Custom Icons**: Food categories, dietary indicators, payment methods (including COC icon)
 - **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
@@ -993,6 +1025,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Loading States**: Skeleton screens with shimmer effect
 - **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up\n- **Status Updates**: Progress bar fill animation
 - **Success Actions**: Checkmark animation with scale
+- **Payment Method Selection**: Smooth highlight transition when selected
 
 ### 5.8 Accessibility
 - **Color Contrast**: WCAG AA compliant (4.5:1 for text)\n- **Touch Targets**: Minimum 44x44px for mobile
@@ -1019,6 +1052,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Regular security audits and penetration testing
 - Data encryption at rest and in transit
 - GDPR and data privacy compliance
+- **Restaurant ID validation** at multiple checkpoints to prevent order misrouting
 
 ### 6.2 Performance
 - Progressive Web App (PWA) for offline support
@@ -1027,8 +1061,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - CDN for static assets
 - Database indexing for quick queries
 - Caching strategies for frequently accessed data
-
-### 6.3 Scalability\n- Microservices architecture for independent scaling
+\n### 6.3 Scalability
+- Microservices architecture for independent scaling
 - Load balancing for high traffic
 - Database sharding for large datasets
 - Message queue for order processing
@@ -1057,3 +1091,5 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Integration with food delivery platforms (Uber Eats, DoorDash)
 - Kitchen automation with IoT devices
 - Predictive analytics for inventory management
+- Cryptocurrency payment support
+- QR code-based loyalty card scanning
