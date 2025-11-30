@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType } from 'react';
 import type { UserRole } from './types/types';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -20,7 +20,7 @@ import OrderHistory from './pages/customer/OrderHistory';
 interface RouteConfig {
   name: string;
   path: string;
-  element: ReactNode;
+  component: ComponentType;
   visible?: boolean;
   protected?: boolean;
   allowedRoles?: UserRole[];
@@ -30,32 +30,32 @@ const routes: RouteConfig[] = [
   {
     name: 'Home',
     path: '/',
-    element: <Home />,
+    component: Home,
     visible: false,
   },
   {
     name: 'Login',
     path: '/login',
-    element: <Login />,
+    component: Login,
     visible: false,
   },
   {
     name: 'Register',
     path: '/register',
-    element: <Register />,
+    component: Register,
     visible: false,
   },
   {
     name: 'Payment Success',
     path: '/payment-success',
-    element: <PaymentSuccess />,
+    component: PaymentSuccess,
     visible: false,
     protected: true,
   },
   {
     name: 'Owner Dashboard',
     path: '/owner/dashboard',
-    element: <OwnerDashboard />,
+    component: OwnerDashboard,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -63,7 +63,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Restaurants',
     path: '/owner/restaurants',
-    element: <RestaurantList />,
+    component: RestaurantList,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -71,7 +71,7 @@ const routes: RouteConfig[] = [
   {
     name: 'New Restaurant',
     path: '/owner/restaurants/new',
-    element: <RestaurantForm />,
+    component: RestaurantForm,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -79,7 +79,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Edit Restaurant',
     path: '/owner/restaurants/:id',
-    element: <RestaurantForm />,
+    component: RestaurantForm,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -87,7 +87,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Menu Management',
     path: '/owner/menu/:restaurantId',
-    element: <MenuManagement />,
+    component: MenuManagement,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -95,7 +95,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Table Management',
     path: '/owner/tables/:restaurantId',
-    element: <TableManagement />,
+    component: TableManagement,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -103,7 +103,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Order Management',
     path: '/owner/orders/:restaurantId',
-    element: <OrderManagement />,
+    component: OrderManagement,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],
@@ -111,7 +111,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Customer Dashboard',
     path: '/customer/dashboard',
-    element: <CustomerDashboard />,
+    component: CustomerDashboard,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
@@ -119,7 +119,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Scan QR',
     path: '/customer/scan',
-    element: <ScanQR />,
+    component: ScanQR,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
@@ -127,7 +127,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Menu Browsing',
     path: '/customer/menu/:restaurantId',
-    element: <MenuBrowsing />,
+    component: MenuBrowsing,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
@@ -135,7 +135,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Checkout',
     path: '/customer/checkout/:restaurantId',
-    element: <Checkout />,
+    component: Checkout,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
@@ -143,7 +143,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Order History',
     path: '/customer/orders',
-    element: <OrderHistory />,
+    component: OrderHistory,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
@@ -151,7 +151,7 @@ const routes: RouteConfig[] = [
   {
     name: 'Customer Profile',
     path: '/customer/profile',
-    element: <CustomerProfile />,
+    component: CustomerProfile,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
