@@ -226,7 +226,7 @@ export default function TableManagement() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 xl:grid-cols-4 gap-4">
             {tables.map((table) => (
               <Card key={table.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>

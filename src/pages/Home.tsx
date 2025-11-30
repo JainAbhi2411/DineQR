@@ -40,7 +40,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 xl:gap-8 mb-16">
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-8">
               <div className="flex items-center gap-4 mb-4">
@@ -100,7 +100,7 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4 xl:gap-6">
           <Card className="text-center p-6">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <QrCode className="w-8 h-8 text-primary" />

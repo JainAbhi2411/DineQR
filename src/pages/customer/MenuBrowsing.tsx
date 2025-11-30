@@ -227,11 +227,11 @@ export default function MenuBrowsing() {
       <div className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMS4xLjktMiAyLTJzMiAuOSAyIDItLjkgMi0yIDItMi0uOS0yLTJ6bS04IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnptLTE2IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="relative max-w-7xl mx-auto px-4 py-6 xl:px-8 xl:py-8">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h1 className="text-3xl xl:text-4xl font-bold mb-3 animate-fade-in">{restaurant?.name}</h1>
-              <div className="flex flex-wrap gap-4 text-sm opacity-90">
+              <h1 className="text-2xl font-bold mb-2 xl:text-4xl xl:mb-3 animate-fade-in">{restaurant?.name}</h1>
+              <div className="flex flex-wrap gap-2 text-xs xl:gap-4 xl:text-sm opacity-90">
                 {restaurant?.location && (
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
@@ -254,7 +254,7 @@ export default function MenuBrowsing() {
                 </div>
               </div>
               {restaurant?.business_info && (
-                <p className="mt-3 text-sm opacity-90 max-w-2xl">{restaurant.business_info}</p>
+                <p className="mt-2 text-xs xl:mt-3 xl:text-sm opacity-90 max-w-2xl line-clamp-2 xl:line-clamp-none">{restaurant.business_info}</p>
               )}
             </div>
           </div>
@@ -263,27 +263,27 @@ export default function MenuBrowsing() {
 
       {/* Sticky Search and Filters Bar */}
       <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-lg border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex gap-3 items-center">
+        <div className="max-w-7xl mx-auto px-4 py-3 xl:px-8">
+          <div className="flex gap-2 items-center xl:gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 xl:w-5 xl:h-5 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search for dishes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-11 text-base border-2 focus:border-primary"
+                className="pl-9 h-10 text-sm xl:pl-10 xl:h-11 xl:text-base border-2 focus:border-primary"
               />
             </div>
             <Button
               variant="outline"
-              size="lg"
+              size="default"
               onClick={() => setShowFilters(true)}
-              className="relative"
+              className="relative h-10 w-10 p-0 xl:h-11 xl:w-auto xl:px-4"
             >
-              <SlidersHorizontal className="w-5 h-5" />
+              <SlidersHorizontal className="w-4 h-4 xl:w-5 xl:h-5" />
               {activeFiltersCount > 0 && (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 xl:-top-2 xl:-right-2 xl:h-5 xl:w-5 p-0 flex items-center justify-center text-xs">
                   {activeFiltersCount}
                 </Badge>
               )}
@@ -296,7 +296,7 @@ export default function MenuBrowsing() {
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => scrollToCategory('all')}
-              className="whitespace-nowrap"
+              className="whitespace-nowrap text-xs h-8 xl:text-sm xl:h-9"
             >
               All Items
             </Button>
@@ -306,7 +306,7 @@ export default function MenuBrowsing() {
                 variant={selectedCategory === category.id ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => scrollToCategory(category.id)}
-                className="whitespace-nowrap"
+                className="whitespace-nowrap text-xs h-8 xl:text-sm xl:h-9"
               >
                 {category.name}
               </Button>
@@ -316,7 +316,7 @@ export default function MenuBrowsing() {
       </div>
 
       {/* Menu Items Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 py-4 xl:px-8 xl:py-6">
         {Object.keys(groupedItems).length === 0 ? (
           <Card className="border-2 border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-16">
@@ -335,15 +335,15 @@ export default function MenuBrowsing() {
                 ref={(el) => { if (el) categoryRefs.current[category.id] = el; }}
                 className="scroll-mt-32"
               >
-                <div className="mb-6">
-                  <h2 className="text-2xl xl:text-3xl font-bold mb-2">{category.name}</h2>
+                <div className="mb-4 xl:mb-6">
+                  <h2 className="text-xl font-bold mb-1 xl:text-3xl xl:mb-2">{category.name}</h2>
                   {category.description && (
-                    <p className="text-muted-foreground">{category.description}</p>
+                    <p className="text-sm text-muted-foreground xl:text-base">{category.description}</p>
                   )}
-                  <Separator className="mt-3" />
+                  <Separator className="mt-2 xl:mt-3" />
                 </div>
                 
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4">
                   {items.map((item) => {
                     const quantity = getCartItemQuantity(item.id);
                     const isFavorite = favorites.has(item.id);
@@ -356,7 +356,7 @@ export default function MenuBrowsing() {
                         <div className="flex h-full">
                           {/* Item Image */}
                           {item.image_url && (
-                            <div className="relative w-32 xl:w-40 flex-shrink-0 overflow-hidden">
+                            <div className="relative w-24 flex-shrink-0 overflow-hidden xl:w-40">
                               <img
                                 src={item.image_url}
                                 alt={item.name}
@@ -368,26 +368,26 @@ export default function MenuBrowsing() {
                                   e.stopPropagation();
                                   toggleFavorite(item.id);
                                 }}
-                                className="absolute top-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg"
+                                className="absolute top-1 right-1 w-7 h-7 xl:top-2 xl:right-2 xl:w-8 xl:h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg"
                               >
                                 <Heart 
                                   className={cn(
-                                    "w-4 h-4 transition-colors",
+                                    "w-3 h-3 xl:w-4 xl:h-4 transition-colors",
                                     isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"
                                   )} 
                                 />
                               </button>
                               
                               {/* Dietary Badges on Image */}
-                              <div className="absolute bottom-2 left-2 flex gap-1">
+                              <div className="absolute bottom-1 left-1 flex gap-1 xl:bottom-2 xl:left-2">
                                 {item.is_vegetarian && (
-                                  <Badge className="bg-green-500 text-white border-0 h-6 px-2">
-                                    <Leaf className="w-3 h-3" />
+                                  <Badge className="bg-green-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
+                                    <Leaf className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
                                   </Badge>
                                 )}
                                 {item.spice_level && Number(item.spice_level) > 0 && (
-                                  <Badge className="bg-red-500 text-white border-0 h-6 px-2">
-                                    <Flame className="w-3 h-3" />
+                                  <Badge className="bg-red-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
+                                    <Flame className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
                                   </Badge>
                                 )}
                               </div>
@@ -396,17 +396,17 @@ export default function MenuBrowsing() {
                           
                           {/* Item Details */}
                           <div 
-                            className="flex-1 p-4 flex flex-col"
+                            className="flex-1 p-3 flex flex-col xl:p-4"
                             onClick={() => setSelectedItem(item)}
                           >
                             <div className="flex-1">
-                              <div className="flex items-start justify-between gap-2 mb-2">
+                              <div className="flex items-start justify-between gap-2 mb-1 xl:mb-2">
                                 <div className="flex-1">
-                                  <h3 className="font-bold text-lg xl:text-xl leading-tight group-hover:text-primary transition-colors">
+                                  <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors xl:text-xl">
                                     {item.name}
                                   </h3>
                                   {item.preparation_time && (
-                                    <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                                    <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5 xl:mt-1">
                                       <Clock className="w-3 h-3" />
                                       <span>{item.preparation_time} mins</span>
                                     </div>
@@ -424,25 +424,25 @@ export default function MenuBrowsing() {
                               </div>
                               
                               {item.description && (
-                                <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                                <p className="text-xs text-muted-foreground line-clamp-2 mb-2 xl:text-sm xl:mb-3">
                                   {item.description}
                                 </p>
                               )}
                               
                               {/* Dietary Info Badges */}
-                              <div className="flex flex-wrap gap-1 mb-3">
+                              <div className="flex flex-wrap gap-1 mb-2 xl:mb-3">
                                 {item.is_vegan && (
-                                  <Badge variant="secondary" className="text-xs">
+                                  <Badge variant="secondary" className="text-xs h-5 xl:h-6">
                                     Vegan
                                   </Badge>
                                 )}
                                 {item.is_gluten_free && (
-                                  <Badge variant="secondary" className="text-xs">
+                                  <Badge variant="secondary" className="text-xs h-5 xl:h-6">
                                     Gluten-Free
                                   </Badge>
                                 )}
                                 {item.calories && (
-                                  <Badge variant="outline" className="text-xs">
+                                  <Badge variant="outline" className="text-xs h-5 xl:h-6">
                                     {item.calories} cal
                                   </Badge>
                                 )}
@@ -450,8 +450,8 @@ export default function MenuBrowsing() {
                             </div>
                             
                             {/* Price and Add Button */}
-                            <div className="flex items-center justify-between gap-3 mt-auto">
-                              <div className="text-2xl font-bold text-primary">
+                            <div className="flex items-center justify-between gap-2 mt-auto xl:gap-3">
+                              <div className="text-lg font-bold text-primary xl:text-2xl">
                                 ${item.price.toFixed(2)}
                               </div>
                               
@@ -462,13 +462,13 @@ export default function MenuBrowsing() {
                                     addToCart(item);
                                   }}
                                   size="sm"
-                                  className="font-semibold"
+                                  className="font-semibold h-8 text-xs xl:h-9 xl:text-sm"
                                 >
-                                  <Plus className="w-4 h-4 mr-1" />
+                                  <Plus className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
                                   Add
                                 </Button>
                               ) : (
-                                <div className="flex items-center gap-2 bg-primary text-primary-foreground rounded-lg p-1">
+                                <div className="flex items-center gap-1.5 bg-primary text-primary-foreground rounded-lg p-0.5 xl:gap-2 xl:p-1">
                                   <Button
                                     onClick={(e) => {
                                       e.stopPropagation();
@@ -476,11 +476,11 @@ export default function MenuBrowsing() {
                                     }}
                                     size="icon"
                                     variant="ghost"
-                                    className="h-8 w-8 hover:bg-primary-foreground/20"
+                                    className="h-7 w-7 hover:bg-primary-foreground/20 xl:h-8 xl:w-8"
                                   >
-                                    <Minus className="w-4 h-4" />
+                                    <Minus className="w-3 h-3 xl:w-4 xl:h-4" />
                                   </Button>
-                                  <span className="font-bold min-w-[2rem] text-center">{quantity}</span>
+                                  <span className="font-bold min-w-[1.5rem] text-center text-sm xl:text-base">{quantity}</span>
                                   <Button
                                     onClick={(e) => {
                                       e.stopPropagation();
@@ -488,9 +488,9 @@ export default function MenuBrowsing() {
                                     }}
                                     size="icon"
                                     variant="ghost"
-                                    className="h-8 w-8 hover:bg-primary-foreground/20"
+                                    className="h-7 w-7 hover:bg-primary-foreground/20 xl:h-8 xl:w-8"
                                   >
-                                    <Plus className="w-4 h-4" />
+                                    <Plus className="w-3 h-3 xl:w-4 xl:h-4" />
                                   </Button>
                                 </div>
                               )}
@@ -509,17 +509,17 @@ export default function MenuBrowsing() {
 
       {/* Floating Cart Button */}
       {cart.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 animate-bounce-subtle">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 animate-bounce-subtle xl:bottom-6">
           <Button
             onClick={() => setShowCart(true)}
             size="lg"
-            className="h-14 px-8 rounded-full shadow-2xl text-lg font-bold hover:scale-105 transition-transform"
+            className="h-12 px-6 rounded-full shadow-2xl text-sm font-bold hover:scale-105 transition-transform xl:h-14 xl:px-8 xl:text-lg"
           >
-            <ShoppingCart className="w-6 h-6 mr-3" />
+            <ShoppingCart className="w-5 h-5 mr-2 xl:w-6 xl:h-6 xl:mr-3" />
             <span>{getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'}</span>
-            <Separator orientation="vertical" className="mx-4 h-8 bg-primary-foreground/30" />
+            <Separator orientation="vertical" className="mx-2 h-6 bg-primary-foreground/30 xl:mx-4 xl:h-8" />
             <span>${getTotalAmount().toFixed(2)}</span>
-            <ChevronRight className="w-5 h-5 ml-2" />
+            <ChevronRight className="w-4 h-4 ml-1 xl:w-5 xl:h-5 xl:ml-2" />
           </Button>
         </div>
       )}

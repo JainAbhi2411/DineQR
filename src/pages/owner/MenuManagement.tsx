@@ -318,7 +318,7 @@ export default function MenuManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
                 {categories.map((category) => (
                   <Card key={category.id}>
                     <CardHeader>
@@ -483,7 +483,7 @@ export default function MenuManagement() {
                   return (
                     <div key={category.id}>
                       <h3 className="text-xl font-semibold mb-4">{category.name}</h3>
-                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
                         {categoryItems.map((item) => (
                           <Card key={item.id} className="overflow-hidden">
                             {item.image_url && (

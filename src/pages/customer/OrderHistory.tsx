@@ -112,7 +112,7 @@ export default function OrderHistory() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-3 text-xs xl:grid-cols-4 xl:gap-4 xl:text-sm">
                     <div>
                       <p className="text-muted-foreground">Order ID</p>
                       <p className="font-semibold">#{order.id.slice(0, 8)}</p>

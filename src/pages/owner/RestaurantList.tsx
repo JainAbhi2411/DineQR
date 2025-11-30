@@ -105,7 +105,7 @@ export default function RestaurantList() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
             {restaurants.map((restaurant) => (
               <Card key={restaurant.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>

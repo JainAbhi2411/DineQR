@@ -110,7 +110,7 @@ export default function OwnerDashboard() {
               </Card>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6 mb-8">
               <Card>
                 <CardHeader>
                   <CardTitle>Quick Actions</CardTitle>

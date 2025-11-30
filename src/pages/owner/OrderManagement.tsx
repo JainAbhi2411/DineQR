@@ -232,7 +232,7 @@ export default function OrderManagement() {
           <p className="text-muted-foreground">Manage and track customer orders in real-time</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-3 xl:grid-cols-4 xl:gap-4 mb-8">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
@@ -284,7 +284,7 @@ export default function OrderManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {filterOrders('pending').map(renderOrderCard)}
               </div>
             )}
@@ -299,7 +299,7 @@ export default function OrderManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {filterOrders('preparing').map(renderOrderCard)}
               </div>
             )}
@@ -314,7 +314,7 @@ export default function OrderManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {filterOrders('served').map(renderOrderCard)}
               </div>
             )}
@@ -329,7 +329,7 @@ export default function OrderManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {filterOrders('completed').map(renderOrderCard)}
               </div>
             )}
