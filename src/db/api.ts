@@ -275,9 +275,10 @@ export const orderApi = {
       .from('orders')
       .select(`
         *,
-        order_items(*),
+        order_items(*, menu_item:menu_items(*)),
         table:tables(*),
-        restaurant:restaurants(*)
+        restaurant:restaurants(*),
+        status_history:order_status_history(*)
       `)
       .eq('customer_id', customerId)
       .order('created_at', { ascending: false });
@@ -290,10 +291,11 @@ export const orderApi = {
       .from('orders')
       .select(`
         *,
-        order_items(*),
+        order_items(*, menu_item:menu_items(*)),
         table:tables(*),
         staff(*),
-        customer:profiles!customer_id(*)
+        customer:profiles!customer_id(*),
+        status_history:order_status_history(*)
       `)
       .eq('restaurant_id', restaurantId)
       .order('created_at', { ascending: false });
@@ -306,9 +308,12 @@ export const orderApi = {
       .from('orders')
       .select(`
         *,
-        order_items(*),
+        order_items(*, menu_item:menu_items(*)),
         table:tables(*),
-        restaurant:restaurants(*)
+        restaurant:restaurants(*),
+        customer:profiles!customer_id(*),
+        staff(*),
+        status_history:order_status_history(*)
       `)
       .eq('id', id)
       .maybeSingle();

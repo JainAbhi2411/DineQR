@@ -128,12 +128,23 @@ export interface OrderItem {
   created_at: string;
 }
 
+export interface OrderStatusHistory {
+  id: string;
+  order_id: string;
+  status: OrderStatus;
+  payment_status: PaymentStatus | null;
+  notes: string | null;
+  created_at: string;
+  created_by: string | null;
+}
+
 export interface OrderWithItems extends Order {
   order_items?: OrderItem[];
   table?: Table;
   restaurant?: Restaurant;
   customer?: Profile;
   staff?: Staff;
+  status_history?: OrderStatusHistory[];
 }
 
 export interface MenuItemWithCategory extends MenuItem {

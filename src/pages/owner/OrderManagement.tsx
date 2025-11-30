@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, orderApi } from '@/db/api';
-import { Restaurant, OrderWithItems } from '@/types/types';
+import { Restaurant, OrderWithItems, OrderStatus } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, CreditCard, Banknote } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, Banknote } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/db/supabase';
+import OrderCard from '@/components/order/OrderCard';
+import PrintBill from '@/components/order/PrintBill';
 
 export default function OrderManagement() {
   const { restaurantId } = useParams();
@@ -18,6 +20,7 @@ export default function OrderManagement() {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
+  const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
 
   useEffect(() => {
     loadData();
@@ -66,7 +69,7 @@ export default function OrderManagement() {
     }
   };
 
-  const updateOrderStatus = async (orderId: string, status: 'pending' | 'preparing' | 'served' | 'completed') => {
+  const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       await orderApi.updateOrderStatus(orderId, status);
       toast({
@@ -86,9 +89,10 @@ export default function OrderManagement() {
   const collectPayment = async (orderId: string) => {
     try {
       await orderApi.updatePaymentStatus(orderId, 'completed');
+      await orderApi.updateOrderStatus(orderId, 'completed');
       toast({
         title: 'Payment Collected',
-        description: 'Payment has been marked as received',
+        description: 'Payment has been marked as received and order completed',
       });
       loadData();
     } catch (error: any) {
@@ -100,298 +104,261 @@ export default function OrderManagement() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'preparing':
-        return 'bg-blue-100 text-blue-800';
-      case 'served':
-        return 'bg-green-100 text-green-800';
-      case 'completed':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Clock className="w-4 h-4" />;
-      case 'preparing':
-        return <ChefHat className="w-4 h-4" />;
-      case 'served':
-        return <UtensilsCrossed className="w-4 h-4" />;
-      case 'completed':
-        return <CheckCircle className="w-4 h-4" />;
-      default:
-        return <Clock className="w-4 h-4" />;
-    }
-  };
-
   const filterOrders = (status: string) => {
-    return orders.filter((order) => order.status === status);
+    if (status === 'all') return orders;
+    return orders.filter(order => order.status === status);
   };
 
-  const renderOrderCard = (order: OrderWithItems) => (
-    <Card key={order.id} className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-lg">Order #{order.id.slice(0, 8)}</CardTitle>
-            <CardDescription>
-              {new Date(order.created_at).toLocaleString()}
-            </CardDescription>
-          </div>
-          <Badge className={getStatusColor(order.status)}>
-            <span className="flex items-center gap-1">
-              {getStatusIcon(order.status)}
-              {order.status}
-            </span>
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-muted-foreground">Table</p>
-            <p className="font-semibold">{order.table?.table_number || 'N/A'}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Customer</p>
-            <p className="font-semibold">{order.customer?.full_name || 'Guest'}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Total Amount</p>
-            <p className="font-semibold text-primary">${order.total_amount.toFixed(2)}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Payment Method</p>
-            <p className="font-semibold flex items-center gap-1">
-              {order.payment_method === 'online' ? (
-                <>
-                  <CreditCard className="w-4 h-4" />
-                  Online
-                </>
-              ) : (
-                <>
-                  <Banknote className="w-4 h-4" />
-                  COC
-                </>
-              )}
-            </p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Payment Status</p>
-            <Badge variant={order.payment_status === 'completed' ? 'default' : 'secondary'}>
-              {order.payment_status}
-            </Badge>
-          </div>
-        </div>
+  const getOrderActions = (order: OrderWithItems) => {
+    const actions = [];
 
-        {/* Payment Collection for COC */}
-        {order.payment_method === 'coc' && order.payment_status === 'pending' && order.status === 'served' && (
-          <div className="border border-primary/20 bg-primary/5 rounded-lg p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <p className="font-semibold text-sm mb-1">💰 Collect Payment</p>
-                <p className="text-sm text-muted-foreground">
-                  Customer will pay ${order.total_amount.toFixed(2)} at the counter
-                </p>
-              </div>
-              <Button
-                size="sm"
-                onClick={() => collectPayment(order.id)}
-                className="shrink-0"
-              >
-                Payment Received
-              </Button>
-            </div>
-          </div>
-        )}
+    if (order.status === 'pending') {
+      actions.push(
+        <Button
+          key="preparing"
+          size="sm"
+          onClick={() => updateOrderStatus(order.id, 'preparing')}
+          className="flex items-center gap-2"
+        >
+          <ChefHat className="w-4 h-4" />
+          Start Preparing
+        </Button>
+      );
+    }
 
-        <div className="border-t pt-4">
-          <p className="text-sm font-semibold mb-2">Order Items:</p>
-          <div className="space-y-2">
-            {order.order_items?.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm">
-                <span>
-                  {item.quantity}x {item.menu_item?.name || 'Item'}
-                </span>
-                <span className="text-muted-foreground">
-                  ${(item.price * item.quantity).toFixed(2)}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+    if (order.status === 'preparing') {
+      actions.push(
+        <Button
+          key="served"
+          size="sm"
+          onClick={() => updateOrderStatus(order.id, 'served')}
+          className="flex items-center gap-2"
+        >
+          <UtensilsCrossed className="w-4 h-4" />
+          Mark as Served
+        </Button>
+      );
+    }
 
-        {order.special_instructions && (
-          <div className="border-t pt-4">
-            <p className="text-sm font-semibold mb-1">Special Instructions:</p>
-            <p className="text-sm text-muted-foreground">{order.special_instructions}</p>
-          </div>
-        )}
+    if (order.status === 'served' && order.payment_method === 'coc' && order.payment_status === 'pending') {
+      actions.push(
+        <Button
+          key="collect"
+          size="sm"
+          onClick={() => collectPayment(order.id)}
+          className="flex items-center gap-2"
+        >
+          <Banknote className="w-4 h-4" />
+          Payment Received
+        </Button>
+      );
+    }
 
-        <div className="flex gap-2 pt-4">
-          {order.status === 'pending' && (
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => updateOrderStatus(order.id, 'preparing')}
-            >
-              Start Preparing
-            </Button>
-          )}
-          {order.status === 'preparing' && (
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => updateOrderStatus(order.id, 'served')}
-            >
-              Mark as Served
-            </Button>
-          )}
-          {order.status === 'served' && (
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => updateOrderStatus(order.id, 'completed')}
-            >
-              Complete Order
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+    if (order.status === 'served' && order.payment_status === 'completed') {
+      actions.push(
+        <Button
+          key="complete"
+          size="sm"
+          variant="outline"
+          onClick={() => updateOrderStatus(order.id, 'completed')}
+          className="flex items-center gap-2"
+        >
+          <CheckCircle className="w-4 h-4" />
+          Complete Order
+        </Button>
+      );
+    }
+
+    return <div className="flex gap-2 flex-wrap">{actions}</div>;
+  };
+
+  const pendingOrders = filterOrders('pending');
+  const preparingOrders = filterOrders('preparing');
+  const servedOrders = filterOrders('served');
+  const completedOrders = filterOrders('completed');
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center h-64">
+          <Clock className="w-8 h-8 animate-spin text-primary" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button variant="ghost" onClick={() => navigate('/owner/dashboard')} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
-        </Button>
-
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{restaurant?.name} - Order Management</h1>
-          <p className="text-muted-foreground">Manage and track customer orders in real-time</p>
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/owner/restaurants')}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold">Order Management</h1>
+            <p className="text-muted-foreground">{restaurant?.name}</p>
+          </div>
         </div>
-
-        <div className="grid grid-cols-2 gap-3 xl:grid-cols-4 xl:gap-4 mb-8">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{filterOrders('pending').length}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Preparing</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{filterOrders('preparing').length}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Served</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{filterOrders('served').length}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Completed</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{filterOrders('completed').length}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="pending">Pending ({filterOrders('pending').length})</TabsTrigger>
-            <TabsTrigger value="preparing">Preparing ({filterOrders('preparing').length})</TabsTrigger>
-            <TabsTrigger value="served">Served ({filterOrders('served').length})</TabsTrigger>
-            <TabsTrigger value="completed">Completed ({filterOrders('completed').length})</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="pending" className="mt-6">
-            {filterOrders('pending').length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <Clock className="w-16 h-16 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No pending orders</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {filterOrders('pending').map(renderOrderCard)}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="preparing" className="mt-6">
-            {filterOrders('preparing').length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <ChefHat className="w-16 h-16 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No orders being prepared</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {filterOrders('preparing').map(renderOrderCard)}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="served" className="mt-6">
-            {filterOrders('served').length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <UtensilsCrossed className="w-16 h-16 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No served orders</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {filterOrders('served').map(renderOrderCard)}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="completed" className="mt-6">
-            {filterOrders('completed').length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <CheckCircle className="w-16 h-16 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No completed orders</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {filterOrders('completed').map(renderOrderCard)}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
       </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardDescription>Pending</CardDescription>
+            <CardTitle className="text-3xl">{pendingOrders.length}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardDescription>Preparing</CardDescription>
+            <CardTitle className="text-3xl">{preparingOrders.length}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardDescription>Served</CardDescription>
+            <CardTitle className="text-3xl">{servedOrders.length}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardDescription>Completed</CardDescription>
+            <CardTitle className="text-3xl">{completedOrders.length}</CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
+
+      {/* Orders Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="all">All ({orders.length})</TabsTrigger>
+          <TabsTrigger value="pending">Pending ({pendingOrders.length})</TabsTrigger>
+          <TabsTrigger value="preparing">Preparing ({preparingOrders.length})</TabsTrigger>
+          <TabsTrigger value="served">Served ({servedOrders.length})</TabsTrigger>
+          <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all" className="space-y-4 mt-6">
+          {orders.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <Clock className="w-12 h-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">No orders yet</p>
+              </CardContent>
+            </Card>
+          ) : (
+            orders.map(order => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="pending" className="space-y-4 mt-6">
+          {pendingOrders.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <Clock className="w-12 h-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">No pending orders</p>
+              </CardContent>
+            </Card>
+          ) : (
+            pendingOrders.map(order => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="preparing" className="space-y-4 mt-6">
+          {preparingOrders.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <ChefHat className="w-12 h-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">No orders being prepared</p>
+              </CardContent>
+            </Card>
+          ) : (
+            preparingOrders.map(order => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="served" className="space-y-4 mt-6">
+          {servedOrders.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <UtensilsCrossed className="w-12 h-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">No served orders</p>
+              </CardContent>
+            </Card>
+          ) : (
+            servedOrders.map(order => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="completed" className="space-y-4 mt-6">
+          {completedOrders.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <CheckCircle className="w-12 h-12 text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">No completed orders</p>
+              </CardContent>
+            </Card>
+          ) : (
+            completedOrders.map(order => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            ))
+          )}
+        </TabsContent>
+      </Tabs>
+
+      {/* Print Dialog */}
+      <Dialog open={!!printOrder} onOpenChange={() => setPrintOrder(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Print E-Bill</DialogTitle>
+          </DialogHeader>
+          {printOrder && <PrintBill order={printOrder} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
