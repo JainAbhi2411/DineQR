@@ -1,5 +1,6 @@
 export type UserRole = 'owner' | 'customer';
 export type OrderStatus = 'pending' | 'preparing' | 'served' | 'completed' | 'cancelled';
+export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
 
 export interface Profile {
   id: string;
@@ -77,7 +78,7 @@ export interface Order {
   table_id: string | null;
   assigned_to: string | null;
   status: OrderStatus;
-  payment_status: string;
+  payment_status: PaymentStatus;
   total_amount: number;
   currency: string;
   stripe_session_id: string | null;

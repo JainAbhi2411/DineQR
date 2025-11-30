@@ -65,7 +65,7 @@ export default function Checkout() {
         table_id: tableId,
         total_amount: getTotalAmount(),
         status: 'pending' as const,
-        payment_status: 'pending',
+        payment_status: 'pending' as const,
         special_instructions: specialInstructions || null,
         assigned_to: null,
       };
