@@ -9,9 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Edit, Trash2, ArrowLeft, Save } from 'lucide-react';
+import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import EnhancedMenuItemForm from '@/components/owner/EnhancedMenuItemForm';
 
 export default function MenuManagement() {
@@ -128,6 +129,27 @@ export default function MenuManagement() {
   const openEditItem = (item: MenuItem) => {
     setEditingItem(item);
     setItemDialogOpen(true);
+  };
+
+  const getFoodTypeIcon = (itemType: string) => {
+    switch (itemType) {
+      case 'veg': return '🥗';
+      case 'non_veg': return '🍖';
+      case 'vegan': return '🌱';
+      case 'egg': return '🥚';
+      default: return '🍽️';
+    }
+  };
+
+  const getSpiceLevelDisplay = (spiceLevel: string | null) => {
+    if (!spiceLevel || spiceLevel === 'none') return null;
+    const levels = {
+      mild: '🌶️',
+      medium: '🌶️🌶️',
+      hot: '🌶️🌶️🌶️',
+      extra_hot: '🌶️🌶️🌶️🌶️',
+    };
+    return levels[spiceLevel as keyof typeof levels] || null;
   };
 
   if (loading) {
@@ -298,18 +320,72 @@ export default function MenuManagement() {
                         {categoryItems.map((item) => (
                           <Card key={item.id} className="overflow-hidden">
                             {item.image_url && (
-                              <div className="h-48 overflow-hidden">
+                              <div className="h-48 overflow-hidden relative">
                                 <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                                {item.is_bestseller && (
+                                  <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-full flex items-center gap-1 text-xs font-semibold">
+                                    <Star className="w-3 h-3 fill-current" />
+                                    Bestseller
+                                  </div>
+                                )}
                               </div>
                             )}
                             <CardHeader>
-                              <div className="flex justify-between items-start">
-                                <CardTitle className="text-lg">{item.name}</CardTitle>
-                                <span className="text-lg font-bold text-primary">${item.price.toFixed(2)}</span>
+                              <div className="flex justify-between items-start gap-2">
+                                <div className="flex items-start gap-2 flex-1">
+                                  <span className="text-lg">{getFoodTypeIcon(item.item_type)}</span>
+                                  <CardTitle className="text-lg">{item.name}</CardTitle>
+                                </div>
+                                <span className="text-lg font-bold text-primary whitespace-nowrap">
+                                  ${item.price.toFixed(2)}
+                                </span>
                               </div>
-                              <CardDescription className="line-clamp-2">
-                                {item.description || 'No description'}
-                              </CardDescription>
+                              
+                              {item.description && (
+                                <CardDescription className="line-clamp-2">
+                                  {item.description}
+                                </CardDescription>
+                              )}
+
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {item.preparation_time && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {item.preparation_time} min
+                                  </Badge>
+                                )}
+                                {getSpiceLevelDisplay(item.spice_level) && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    {getSpiceLevelDisplay(item.spice_level)}
+                                  </Badge>
+                                )}
+                                {item.calories && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    <Flame className="w-3 h-3 mr-1" />
+                                    {item.calories} cal
+                                  </Badge>
+                                )}
+                                {item.variants && item.variants.length > 0 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {item.variants.length} sizes
+                                  </Badge>
+                                )}
+                              </div>
+
+                              {item.tags && item.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {item.tags.slice(0, 3).map((tag) => (
+                                    <Badge key={tag} variant="outline" className="text-xs">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                  {item.tags.length > 3 && (
+                                    <Badge variant="outline" className="text-xs">
+                                      +{item.tags.length - 3}
+                                    </Badge>
+                                  )}
+                                </div>
+                              )}
                             </CardHeader>
                             <CardContent className="flex gap-2">
                               <Button variant="outline" size="sm" onClick={() => openEditItem(item)}>
@@ -319,7 +395,7 @@ export default function MenuManagement() {
                                 <Trash2 className="w-4 h-4 text-destructive" />
                               </Button>
                               <div className="ml-auto flex items-center gap-2">
-                                <span className={`text-xs px-2 py-1 rounded-full ${item.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                <span className={`text-xs px-2 py-1 rounded-full ${item.is_available ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'}`}>
                                   {item.is_available ? 'Available' : 'Unavailable'}
                                 </span>
                               </div>
