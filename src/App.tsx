@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/common/Header';
+import Chatbot from './components/common/Chatbot';
 import routes from './routes';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             </Routes>
           </main>
           <Toaster />
+          <Chatbot />
         </div>
       </AuthProvider>
     </Router>

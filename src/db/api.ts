@@ -96,10 +96,24 @@ export const menuCategoryApi = {
     return Array.isArray(data) ? data : [];
   },
 
-  async createCategory(category: Omit<MenuCategory, 'id' | 'created_at'>): Promise<MenuCategory | null> {
+  async createCategory(category: Omit<MenuCategory, 'id' | 'created_at' | 'display_order'>): Promise<MenuCategory | null> {
+    const { data: existingCategories } = await supabase
+      .from('menu_categories')
+      .select('display_order')
+      .eq('restaurant_id', category.restaurant_id)
+      .order('display_order', { ascending: false })
+      .limit(1);
+    
+    const nextOrder = existingCategories && existingCategories.length > 0 
+      ? existingCategories[0].display_order + 1 
+      : 0;
+
     const { data, error } = await supabase
       .from('menu_categories')
-      .insert(category)
+      .insert({
+        ...category,
+        display_order: nextOrder,
+      })
       .select()
       .maybeSingle();
     if (error) throw error;
@@ -218,10 +232,26 @@ export const tableApi = {
     return data;
   },
 
-  async createTable(table: Omit<Table, 'id' | 'created_at'>): Promise<Table | null> {
+  async createTable(table: Omit<Table, 'id' | 'created_at' | 'qr_code' | 'qr_code_data'>): Promise<Table | null> {
+    const qrCode = `${table.restaurant_id}-${table.table_number}-${Date.now()}`;
     const { data, error } = await supabase
       .from('tables')
-      .insert(table)
+      .insert({
+        ...table,
+        qr_code: qrCode,
+        qr_code_data: qrCode,
+      })
+      .select()
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateTable(id: string, updates: Partial<Omit<Table, 'id' | 'created_at' | 'qr_code' | 'qr_code_data'>>): Promise<Table | null> {
+    const { data, error } = await supabase
+      .from('tables')
+      .update(updates)
+      .eq('id', id)
       .select()
       .maybeSingle();
     if (error) throw error;
@@ -288,6 +318,32 @@ export const orderApi = {
       new_status: status,
     });
     if (error) throw error;
+  },
+
+  async createOrder(order: Omit<Order, 'id' | 'created_at' | 'updated_at' | 'currency' | 'stripe_session_id' | 'stripe_payment_intent_id' | 'customer_email' | 'customer_name' | 'completed_at'>): Promise<Order> {
+    const { data, error } = await supabase
+      .from('orders')
+      .insert({
+        ...order,
+        currency: 'USD',
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async createOrderItems(items: Omit<OrderItem, 'id' | 'created_at' | 'menu_item_name' | 'notes'>[]): Promise<OrderItem[]> {
+    const { data, error } = await supabase
+      .from('order_items')
+      .insert(items.map(item => ({
+        ...item,
+        menu_item_name: '',
+        notes: null,
+      })))
+      .select();
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
   },
 };
 

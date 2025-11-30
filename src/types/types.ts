@@ -25,6 +25,7 @@ export interface MenuCategory {
   id: string;
   restaurant_id: string;
   name: string;
+  description?: string | null;
   display_order: number;
   created_at: string;
 }
@@ -46,6 +47,8 @@ export interface Table {
   id: string;
   restaurant_id: string;
   table_number: string;
+  capacity: number;
+  qr_code: string;
   qr_code_data: string;
   created_at: string;
 }
@@ -56,12 +59,14 @@ export interface Order {
   restaurant_id: string;
   table_id: string | null;
   status: OrderStatus;
+  payment_status: string;
   total_amount: number;
   currency: string;
   stripe_session_id: string | null;
   stripe_payment_intent_id: string | null;
   customer_email: string | null;
   customer_name: string | null;
+  special_instructions: string | null;
   completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -72,6 +77,7 @@ export interface OrderItem {
   order_id: string;
   menu_item_id: string | null;
   menu_item_name: string;
+  menu_item?: MenuItem;
   quantity: number;
   price: number;
   notes: string | null;
@@ -82,6 +88,7 @@ export interface OrderWithItems extends Order {
   order_items?: OrderItem[];
   table?: Table;
   restaurant?: Restaurant;
+  customer?: Profile;
 }
 
 export interface MenuItemWithCategory extends MenuItem {

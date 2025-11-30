@@ -123,24 +123,28 @@ export default function OwnerDashboard() {
                       Manage Restaurants
                     </Link>
                   </Button>
-                  <Button className="w-full justify-start" variant="outline" asChild>
-                    <Link to="/owner/menu">
-                      <UtensilsCrossed className="w-4 h-4 mr-2" />
-                      Manage Menu
-                    </Link>
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline" asChild>
-                    <Link to="/owner/tables">
-                      <QrCode className="w-4 h-4 mr-2" />
-                      Manage Tables & QR Codes
-                    </Link>
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline" asChild>
-                    <Link to="/owner/orders">
-                      <ShoppingBag className="w-4 h-4 mr-2" />
-                      View All Orders
-                    </Link>
-                  </Button>
+                  {restaurants.length > 0 && (
+                    <>
+                      <Button className="w-full justify-start" variant="outline" asChild>
+                        <Link to={`/owner/menu/${restaurants[0].id}`}>
+                          <UtensilsCrossed className="w-4 h-4 mr-2" />
+                          Manage Menu
+                        </Link>
+                      </Button>
+                      <Button className="w-full justify-start" variant="outline" asChild>
+                        <Link to={`/owner/tables/${restaurants[0].id}`}>
+                          <QrCode className="w-4 h-4 mr-2" />
+                          Manage Tables & QR Codes
+                        </Link>
+                      </Button>
+                      <Button className="w-full justify-start" variant="outline" asChild>
+                        <Link to={`/owner/orders/${restaurants[0].id}`}>
+                          <ShoppingBag className="w-4 h-4 mr-2" />
+                          View All Orders
+                        </Link>
+                      </Button>
+                    </>
+                  )}
                 </CardContent>
               </Card>
 
