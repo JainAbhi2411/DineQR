@@ -1,0 +1,95 @@
+export type UserRole = 'owner' | 'customer';
+export type OrderStatus = 'pending' | 'preparing' | 'served' | 'completed' | 'cancelled';
+
+export interface Profile {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  phone: string | null;
+  role: UserRole;
+  created_at: string;
+}
+
+export interface Restaurant {
+  id: string;
+  owner_id: string;
+  name: string;
+  location: string | null;
+  contact_details: string | null;
+  business_info: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MenuCategory {
+  id: string;
+  restaurant_id: string;
+  name: string;
+  display_order: number;
+  created_at: string;
+}
+
+export interface MenuItem {
+  id: string;
+  restaurant_id: string;
+  category_id: string | null;
+  name: string;
+  description: string | null;
+  price: number;
+  image_url: string | null;
+  is_available: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Table {
+  id: string;
+  restaurant_id: string;
+  table_number: string;
+  qr_code_data: string;
+  created_at: string;
+}
+
+export interface Order {
+  id: string;
+  customer_id: string | null;
+  restaurant_id: string;
+  table_id: string | null;
+  status: OrderStatus;
+  total_amount: number;
+  currency: string;
+  stripe_session_id: string | null;
+  stripe_payment_intent_id: string | null;
+  customer_email: string | null;
+  customer_name: string | null;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  menu_item_id: string | null;
+  menu_item_name: string;
+  quantity: number;
+  price: number;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface OrderWithItems extends Order {
+  order_items?: OrderItem[];
+  table?: Table;
+  restaurant?: Restaurant;
+}
+
+export interface MenuItemWithCategory extends MenuItem {
+  category?: MenuCategory;
+}
+
+export interface CartItem {
+  menu_item: MenuItem;
+  quantity: number;
+  notes?: string;
+}
