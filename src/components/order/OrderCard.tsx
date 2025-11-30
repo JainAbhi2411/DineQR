@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -50,11 +50,19 @@ const getPaymentStatusColor = (status: string) => {
 
 export default function OrderCard({ order, onPrint, showCustomerInfo = false, actions }: OrderCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  // Detect when order status or payment status changes
+  useEffect(() => {
+    setIsUpdated(true);
+    const timer = setTimeout(() => setIsUpdated(false), 2000);
+    return () => clearTimeout(timer);
+  }, [order.status, order.payment_status, order.status_history?.length]);
 
   const canPrint = order.status === 'completed' && order.payment_status === 'completed';
 
   return (
-    <Card className="overflow-hidden">
+    <Card className={`overflow-hidden transition-all duration-500 ${isUpdated ? 'ring-2 ring-primary shadow-lg' : ''}`}>
       <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="flex items-start justify-between">
           <div className="space-y-2 flex-1">

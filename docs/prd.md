@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Restaurant Dashboard Feature Added)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Real-Time Order Timeline Auto-Refresh Feature Added)
 
 ## 1. Application Overview
 
@@ -6,7 +6,7 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, detailed order tracking with complete timelines, e-bill generation, and personalized restaurant dashboard for quick reordering - creating a unified platform that manages every aspect from customer arrival to post-dining feedback.
+A comprehensive, enterprise-level digital restaurant ecosystem that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, **automatic real-time order timeline updates**, detailed order tracking with complete timelines, e-bill generation, and personalized restaurant dashboard for quick reordering - creating a unified platform that manages every aspect from customer arrival to post-dining feedback.
 
 ## 2. Advanced Authentication System
 
@@ -18,8 +18,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Security questions setup for account recovery
 - **Login System**:
   - Email/phone + password authentication
-  - Biometric login support (fingerprint/face recognition) for mobile
-  - Session management with auto-logout after inactivity
+  - Biometric login support (fingerprint/face recognition) for mobile\n  - Session management with auto-logout after inactivity
   - Device tracking and suspicious login alerts
   - Single Sign-On (SSO) support for enterprise accounts
 - **Password Management**:
@@ -68,7 +67,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 ### 3.1 Advanced Restaurant Owner Features
 \n#### 3.1.1 Restaurant Management Dashboard with Animated Home Page
-\n**Enhanced Home Page with Restaurant Ambiance Animations**:\n\n- **Hero Section with Dynamic Visuals**:
+\n**Enhanced Home Page with Restaurant Ambiance Animations**:
+\n- **Hero Section with Dynamic Visuals**:
   - Full-width hero banner with animated gradient background (smooth color transitions between warm orange and teal)
   - Floating food illustrations with parallax scrolling effect (subtle movement on scroll)
   - Animated restaurant icons (plates, utensils, chef hats) with gentle floating motion
@@ -133,7 +133,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Performance Optimizations**:
   - CSS animations for smooth 60fps performance
   - Lottie animations loaded asynchronously
-  - Reduced motion mode for accessibility (respects prefers-reduced-motion)\n  - Lazy loading for non-critical animations
+  - Reduced motion mode for accessibility (respects prefers-reduced-motion)
+  - Lazy loading for non-critical animations
   - GPU-accelerated transforms for smooth transitions
 
 - **Responsive Animations**:
@@ -521,8 +522,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n**Payment Status Tracking**:
 - **Payment Pending Orders**:
   - Dedicated section for orders with pending payments
-  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)
-  - Visual indicator for payment timeout (e.g., pending for >15 mins)
+  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)\n  - Visual indicator for payment timeout (e.g., pending for >15 mins)
   - Quick action:'Collect Payment' button for COC orders
 - **Payment Completed Orders**:
   - Automatic move to 'Completed Orders' section upon payment confirmation
@@ -832,8 +832,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Large display of current points with animated counter
     - Points expiry date (if applicable)
     - Points history (earned and redeemed)
-  - **Rewards Catalog**:
-    - Available rewards with points required
+  - **Rewards Catalog**:\n    - Available rewards with points required
     - Redeem button for eligible rewards
     - Locked rewards with progress indicator
   - **Membership Tier**:
@@ -897,7 +896,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Enhanced Restaurant Landing Experience**:
 \n- **Hero Section with Image Gallery**:
-  - **Full-screen image carousel** displaying restaurant images:\n    - Primary banner image (full-width, 16:9 aspect ratio)
+  - **Full-screen image carousel** displaying restaurant images:\n    - Primary banner image (full-width,16:9 aspect ratio)
     - Swipeable gallery with all uploaded restaurant images:\n      - Interior photos (dining area, ambiance shots)
       - Exterior photos (building facade, entrance)
       - Signature dish photos (high-quality food images)
@@ -1209,7 +1208,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Price Display**:
       - **Single Price**: Bold, 20px, Poppins SemiBold, primary color (orange)
       - **Quantity-Based Pricing**: Price range displayed (e.g., '$8- $16')
-      - **Half/Full Plate Pricing**: Price range displayed (e.g., 'Half $10 | Full $18')
+      - **Half/Full Plate Pricing**: Price range displayed (e.g., 'Half $10| Full $18')
       - **Discounted Price**: Original price struck through, discounted price in bold with savings percentage (e.g., 'Save 20%')
       - Positioned bottom-left of card
     - **Add Button**:
@@ -1540,7 +1539,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Loading animation on tap
   - Success feedback (checkmark animation)\n  - Redirect to order tracking screen
 
-#### 3.2.7 Real-Time Order Tracking with Complete Timeline
+#### 3.2.7 Real-Time Order Tracking with Complete Timeline and Automatic Real-Time Updates
 
 **Order Status Screen**:
 \n- **Visual Progress Tracker**:
@@ -1632,21 +1631,74 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Payment status (Pending/Completed/Failed)
     - Transaction ID (for online payments)
     - Payment timestamp (when completed)
-\n**Real-Time Updates**:
-- **Push Notifications**:
-  - Notification for each status change
-  - Sound and vibration alert\n  - Notification content: Status update with timestamp
+\n**Real-Time Automatic Updates (NEW FEATURE)**:
+
+- **WebSocket Connection for Live Updates**:
+  - Establish persistent WebSocket connection between customer app and server upon order placement
+  - Connection remains active throughout order lifecycle
+  - Server pushes real-time updates to customer app whenever restaurant updates order status
+  - No manual refresh or page reload required
+\n- **Automatic Timeline Refresh Mechanism**:
+  - **Server-Side Event Broadcasting**:
+    - When restaurant owner/manager updates order status in dashboard (e.g., changes status from 'Acknowledged' to 'Preparing'), server immediately broadcasts update event to all connected clients associated with that order
+    - Event payload includes:
+      - Order ID\n      - New status\n      - Timestamp of status change
+      - Updated timeline data (all checkpoints with timestamps)
+      - Duration between stages
+  - **Client-Side Real-Time Rendering**:
+    - Customer app listens for incoming WebSocket events
+    - Upon receiving status update event:\n      - **Timeline automatically updates** without user interaction
+      - New checkpoint appears with timestamp and status icon
+      - Progress tracker advances to new stage with smooth animation
+      - Completed stages update with green checkmarks
+      - Current stage indicator moves to new position with pulsing animation
+      - Duration labels update between stages (e.g., 'Prepared in 15 mins')
+- Total order duration recalculates and displays
+    - **Visual Feedback for Updates**:
+      - Subtle animation when timeline updates (e.g., new checkpoint slides in from right with fade-in effect)
+      - Brief highlight or glow effect on newly updated checkpoint (2-second duration)
+      - Sound notification (optional, user-configurable) for major status changes
+      - Haptic feedback (vibration) on mobile devices for status updates
+
+- **Push Notifications for Status Changes**:
+  - In addition to real-time timeline updates, push notifications sent for each status change
+  - Notification content: Status update with timestamp (e.g., 'Your order is now being prepared!')
+  - Tap notification to open order tracking screen with updated timeline
+  - Notification badge on app icon updates with order status
+
 - **In-App Toast Notifications**:
-  - Toast message slides down from top
-  - Auto-dismiss after 3 seconds
-  - Tap to view order details
-- **Live Status Updates**:
-  - Order status updates without page refresh
-  - WebSocket or polling for real-time sync
-  - Animated transitions between stages
+  - Toast message slides down from top when status changes
+  - Message content: Brief status update (e.g., 'Order Ready for Service')
+  - Auto-dismiss after 3 seconds\n  - Tap to view full order details
+
+- **Live Status Updates Without Page Refresh**:
+  - Order status updates seamlessly without requiring page refresh or pull-to-refresh
+  - Timeline, progress tracker, and order details all update in real-time
+  - Animated transitions between stages for smooth user experience
+  - No loading spinners or delays - updates appear instantly
+
 - **Estimated Time Updates**:
   - Dynamic updates based on kitchen progress
-  - Notification if estimated time changes significantly
+  - If estimated time changes significantly (e.g., delay in preparation), customer receives notification
+  - Updated estimated time displayed in timeline with explanation (e.g., 'Estimated time updated due to high order volume')
+
+- **Connection Status Indicator**:
+  - Small indicator in order tracking screen showing WebSocket connection status:\n    - Green dot: Connected (real-time updates active)
+    - Yellow dot: Reconnecting (temporary connection loss)
+    - Red dot: Disconnected (real-time updates unavailable, manual refresh required)
+  - If connection lost, app automatically attempts to reconnect
+  - Upon reconnection, app fetches latest order status and updates timeline
+
+- **Fallback Mechanism**:
+  - If WebSocket connection fails or is unavailable, app falls back to polling mechanism
+  - Polling interval: Every 10 seconds to check for order status updates
+  - Polling continues until order is completed\n  - User can manually pull-to-refresh to force immediate update
+
+- **Battery and Data Optimization**:
+  - WebSocket connection optimized for low battery and data usage
+  - Connection automatically pauses when app is in background (iOS/Android background restrictions)
+  - Resumes when app returns to foreground
+  - Push notifications ensure user is informed even when app is closed
 
 **Modify Order**:
 - **Add More Items**:
@@ -1669,8 +1721,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Collapse**:
   - Swipe down or tap back button to collapse
   - Returns to order status screen
-
-#### 3.2.8 Real-Time Chat with Restaurant\n
+\n#### 3.2.8 Real-Time Chat with Restaurant\n
 **Chat Interface**:\n- **Floating Chat Bubble**:
   - Positioned bottom-right corner (fixed)
   - Circular button with message icon
@@ -1698,8 +1749,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Placeholder: 'Type your message...'
     - Send button (paper plane icon)
     - Attachment button (paperclip icon) for image sharing
-    - Voice message button (microphone icon)
-\n**Chat Features**:
+    - Voice message button (microphone icon)\n\n**Chat Features**:
 - **Text Messaging**:
   - Real-time message delivery
   - Typing indicators when waiter is responding (e.g., '[Waiter Name] is typing...')
@@ -1722,8 +1772,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Tap to send quick reply
 - **Chat History**:
   - All messages saved for reference
-  - Search chat history
-  - Scroll to load older messages
+  - Search chat history\n  - Scroll to load older messages
 \n**AI Chatbot Integration**:
 - **Instant Responses**:
   - AI chatbot handles common queries:\n    - Menu information (ingredients, allergens, pricing, half/full options)
@@ -1740,8 +1789,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Multilingual Support**:
   - Chatbot supports multiple languages
   - Auto-detect user language or manual selection
-
-#### 3.2.9 Enhanced Payment & Billing with Dining Completion Flow
+\n#### 3.2.9 Enhanced Payment & Billing with Dining Completion Flow
 
 **Post-Dining Completion Notification**:
 \n- **Dining Status Check**:
@@ -1755,12 +1803,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Two prominent buttons**:
       - **'Yes, I am Done'** (primary button, green background, white text)
       - **'Not Yet'** (secondary button, white background, gray border, gray text)
-  - **If customer selects 'Not Yet'**:\n    - Dialog closes with toast message: 'Take your time! Tap the bell icon when ready.'
+  - **If customer selects 'Not Yet'**:
+    - Dialog closes with toast message: 'Take your time! Tap the bell icon when ready.'
     - Bell icon remains accessible in app header or floating button
     - Customer can tap bell icon later to reopen dialog
   - **If customer selects 'Yes, I am Done'**:
-    - Dialog closes with smooth transition
-    - Proceed to bill summary and payment flow
+    - Dialog closes with smooth transition\n    - Proceed to bill summary and payment flow
 \n**Bill Generation & Summary**:
 \n- **Bill Summary Screen**:
   - **Header**:
@@ -1777,8 +1825,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - **Pricing Breakdown**:
     - Subtotal (sum of all items)
     - Taxes breakdown:\n      - GST (X%): $Y\n      - Service charge (Z%): $A
-    - Discounts and promo codes applied (if any):
-      - Promo code: [Code Name] - $B
+    - Discounts and promo codes applied (if any):\n      - Promo code: [Code Name] - $B
       - Loyalty points redeemed: $C
     - **Total Amount Payable** (large, bold text, primary color, highlighted)
   - **Tip Suggestion Section**:
@@ -1835,7 +1882,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Order ID and timestamp
       - Table number\n      - Customer name
       - Itemized list with prices (including half/full plate selections)
-      - Subtotal, taxes, discounts, total\n      - Payment method: COC\n      - Payment timestamp
+      - Subtotal, taxes, discounts, total
+      - Payment method: COC\n      - Payment timestamp
       - Thank you message
     - E-bill sent via:\n      - **Email** (if email provided): Sent to registered email
       - **SMS** with download link (if phone provided): Sent to registered phone
@@ -1846,8 +1894,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - **Redirect to Post-Payment Screen**:
     - Automatic redirect to rating and review screen after3 seconds
     - Skip button to go directly to home\n
-**For Online Payments (Cards, Wallets, UPI, BNPL)**:
-\n- **Step 1: Bill Summary with Payment Method**:
+**For Online Payments (Cards, Wallets, UPI,BNPL)**:
+
+- **Step 1: Bill Summary with Payment Method**:
   - Bill summary displays with selected payment method
   - Payment method icon and name displayed prominently
 \n- **Step 2: Tip Selection**:
@@ -1862,7 +1911,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Payment gateway opens (Stripe, PayPal, Razorpay, etc.)\n  - Enter payment details:\n    - Card number, expiry date, CVV (for cards)
     - Login credentials (for wallets)
     - UPI ID (for UPI)\n    - BNPL account details (for BNPL)
-  - Authentication:\n    - 3D Secure (for cards)\n    - OTP verification (for wallets/UPI)
+  - Authentication:\n    - 3D Secure (for cards)
+    - OTP verification (for wallets/UPI)
     - Biometric authentication (if supported)
 \n- **Step 5: Payment Processing**:
   - Loading screen with message: 'Processing payment...'
@@ -1877,7 +1927,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - **Email**: Sent to registered email
       - **SMS**: Sent to registered phone with download link
       - **In-app download option**: 'Download E-Bill' button available
-    - Payment status: 'Paid Online'\n    - Transaction ID included in e-bill
+    - Payment status:'Paid Online'\n    - Transaction ID included in e-bill
   - **'Print E-Bill' Button Becomes Visible**:
     - Button displayed in order details screen\n  - **Redirect to Post-Payment Screen**:
     - Automatic redirect to rating and review screen\n\n**Split Bill Feature**:
@@ -1982,11 +2032,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Each item displays:
       - Item name and thumbnail image
       - **Item type indicator** (Veg/Non-Veg icon)
-      - Quantity and **portion size** (Half Plate or Full Plate, if applicable)\n      - Customizations (spice level, add-ons, removals)
+      - Quantity and **portion size** (Half Plate or Full Plate, if applicable)
+      - Customizations (spice level, add-ons, removals)
       - Special instructions per item
       - Individual item price
       - Subtotal per item
-  - **Pricing Breakdown**:\n    - Subtotal\n    - Taxes (itemized)
+- **Pricing Breakdown**:\n    - Subtotal\n    - Taxes (itemized)
     - Discounts and promo codes applied
     - Tip amount (if applicable)
     - Total amount (large, bold)
@@ -2249,6 +2300,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Waiter receives notification and confirms\n   - Kitchen receives order and starts preparation
    - Update order status: Preparing → Ready → Served
    - Timeline automatically updates with timestamps for each stage
+   - **Customer app automatically receives real-time timeline updates without manual refresh**
 4. Monitor customer chats:\n   - Assigned waiters handle table-specific queries
    - Manager intervenes for complex issues
 5. **Handle COC Payments**:
@@ -2258,8 +2310,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Collect cash payment from customer
      - Click 'Collect Payment from Customer'\n     - Confirm payment received
      - System updates order timeline with'Payment Collected' timestamp
+     - **Customer app automatically receives real-time timeline update showing payment collected**
      - System generates and sends e-bill to customer
-- Order status changes to 'Completed'
+     - Order status changes to 'Completed'
      - 'Print E-Bill' button becomes visible in order details
 6. **Print E-Bills**:
    - For completed orders, click 'Print E-Bill' button
@@ -2300,8 +2353,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Tap 'Scan QR Code'\n5. Scan QR code on table (system captures restaurant ID and table number)
 6. **Restaurant automatically added to 'My Restaurants' dashboard** as a restaurant card for future quick access
 7. App loads restaurant profile and menu
-8. **View enhanced restaurant landing page**:
-   - Swipe through restaurant image gallery (interior, exterior, signature dishes)
+8. **View enhanced restaurant landing page**:\n   - Swipe through restaurant image gallery (interior, exterior, signature dishes)
    - View restaurant type indicator (Vegetarian/Non-Vegetarian/Vegan/Mixed)
    - View overall rating and reviews
    - Confirm table number and restaurant name displayed
@@ -2354,14 +2406,14 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Vote helpful/not helpful on reviews
    - View pairing suggestions and frequently ordered with items
 3. **Customize order**:
-   - **Select portion size**:
-     - If quantity-based pricing: Select Small/Regular/Large
+   - **Select portion size**:\n     - If quantity-based pricing: Select Small/Regular/Large
      - **If half/full plate option available**: Select Half Plate or Full Plate (tap on card to select, selected option highlighted with orange border)
    - Adjust spice level
    - Add extras (cheese, sauce, toppings)
    - Remove ingredients (no onions, etc.)
    - Select cooking preferences (if applicable)
-   - Add special instructions\n   - Select quantity\n4. View total price (updates dynamically with customizations including half/full selection)
+   - Add special instructions\n   - Select quantity
+4. View total price (updates dynamically with customizations including half/full selection)
 5. Tap 'Add to Cart'\n6. Continue browsing and adding items\n
 **Phase 5: Cart & Checkout**
 1. Tap floating cart button to review\n2. View itemized cart:\n   - See item names, images, item type indicators
@@ -2371,7 +2423,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 3. Apply promo code if available
 4. Add order-level special instructions
 5. Review total amount and estimated time\n6. Tap 'Place Order' (system validates restaurant ID)\n7. Receive order confirmation notification
-\n**Phase 6: Order Tracking with Complete Timeline**
+\n**Phase 6: Order Tracking with Complete Timeline and Real-Time Auto-Updates**
 1. View order status screen with visual progress tracker
 2. **See complete order timeline with all stages**:
    - Order Received (timestamp)
@@ -2384,20 +2436,24 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Completed stages shown in green with checkmarks
 5. Pending stages shown in gray with clock icons
 6. Duration between stages displayed (e.g., 'Prepared in 15 mins')
-7. **Tap on order card to expand full details**:\n   - View complete order information
+7. **Timeline automatically updates in real-time without manual refresh**:\n   - When restaurant updates order status, timeline instantly refreshes
+   - New checkpoint appears with smooth animation
+   - Progress tracker advances to new stage automatically
+   - Push notification received for each status change
+   - Toast notification slides down with status update
+   - No need to pull-to-refresh or reload page
+8. **Tap on order card to expand full details**:\n   - View complete order information
    - View itemized list with item types, portion sizes (half/full), and customizations
-   - View pricing breakdown
-   - View payment information
+   - View pricing breakdown\n   - View payment information
    - View complete timeline with all timestamps
-8. Receive real-time push notifications for each status change
-9. Track estimated time for each stage
-10. Use chat to communicate with waiter:\n   - 'Can I add one more item?'
+9. Receive real-time push notifications for each status change
+10. Track estimated time for each stage
+11. Use chat to communicate with waiter:\n   - 'Can I add one more item?'
    - 'Please bring extra napkins'
    - 'Where is my order?'
-11. Waiter responds in real-time
-12. Receive notification when food is served
-
-**Phase 7: Dining Experience**
+12. Waiter responds in real-time
+13. Receive notification when food is served
+\n**Phase 7: Dining Experience**
 1. Enjoy meal\n2. Use chat for any requests:\n   - Request condiments
    - Report issues with food
    - Ask for recommendations for dessert
@@ -2419,7 +2475,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Confirm payment completion
      - Wait for restaurant confirmation
      - Receive payment success notification
-     - **Order timeline automatically updated** with 'Payment Collected' timestamp
+     - **Order timeline automatically updated in real-time** with'Payment Collected' timestamp (no manual refresh needed)
      - **E-bill automatically generated and sent via email/SMS**
      - Download e-bill from app
      - **'Print E-Bill' button becomes visible** in order details
@@ -2427,7 +2483,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Tap 'Proceed to Payment'
      - Complete payment with authentication
      - Receive instant confirmation
-     - **Order timeline automatically updated** with 'Payment Collected' timestamp
+     - **Order timeline automatically updated in real-time** with 'Payment Collected' timestamp (no manual refresh needed)
      - **E-bill automatically generated and sent immediately**
      - Download e-bill from app
      - **'Print E-Bill' button becomes visible** in order details
@@ -2481,14 +2537,14 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 6. Receive notification when order is ready
 7. Serve food to customer
 8. Update order status to 'Served'\n9. Order timeline automatically updated with timestamp
+10. **Customer app automatically receives real-time timeline update showing food served**
 
 **Phase 4: Customer Communication**
 1. Receive chat messages from assigned tables
 2. Respond to customer requests:
    - Answer menu questions (including half/full plate availability)
    - Bring additional items (napkins, water, condiments)
-   - Handle order modifications
-   - Address complaints or issues
+   - Handle order modifications\n   - Address complaints or issues
 3. Escalate complex issues to manager if needed
 4. Provide personalized recommendations
 \n**Phase 5: Table Management**
@@ -2520,7 +2576,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Neutral Colors**:
   - White (#FFFFFF): Main background, cards\n  - Light Gray (#F8F9FA): Section separators, disabled states
   - Medium Gray (#6C757D): Secondary text, placeholders
-  - Charcoal (#2C3E50): Primary text, headings\n  - Dark Gray (#343A40): Navigation bars, footers
+  - Charcoal (#2C3E50): Primary text, headings
+  - Dark Gray (#343A40): Navigation bars, footers
 
 ### 5.2 Typography System
 - **Font Families**:
@@ -2561,13 +2618,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Expandable cards: Smooth expand animation with slide-down effect
 
 **Buttons**:
-- Primary: Orange background, white text,24px border radius
+- Primary: Orange background, white text, 24px border radius
 - Secondary: White background, orange border, orange text
-- Tertiary: Transparent background, orange text\n- Height: 48px (mobile), 44px (desktop)
+- Tertiary: Transparent background, orange text
+- Height: 48px (mobile), 44px (desktop)
 - Hover: Darken by 10%, smooth200ms transition
 - Active: Scale(0.98) for tactile feedback
-
-**Input Fields**:
+\n**Input Fields**:
 - Border: 1px solid light gray, 8px border radius
 - Focus: Orange border, subtle shadow
 - Height: 48px for easy touch targets
@@ -2598,14 +2655,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Timestamps displayed below each checkpoint
 - Duration labels between stages
 - Animated indicator for current stage (pulsing dot or progress bar)
-
+- **Real-time update animations**:
+  - New checkpoint slides in from right with fade-in effect (300ms)
+  - Brief highlight or glow effect on newly updated checkpoint (2-second duration, orange glow)
+  - Smooth transition when progress tracker advances to new stage (400ms ease-in-out)
+  - Checkmark animation with scale effect when stage completes (scale from 0.8 to 1.0, 300ms)\n
 **Rating Component**:
 - Star icons (filled for rating, outlined for remaining)
 - Rating number displayed next to stars
 - Review count in parentheses
 - Color: Yellow (#FFC107) for stars\n- Size: 16px for small, 24px for large
 \n**Item Type Indicator**:
-- Icon size: 20px (small), 32px (large)\n- Vegetarian: Green circle with leaf or'V' symbol
+- Icon size: 20px (small), 32px (large)
+- Vegetarian: Green circle with leaf or'V' symbol
 - Non-Vegetarian: Red circle with chicken leg or 'N' symbol
 - Vegan: Green circle with 'VG' symbol
 - Eggetarian: Yellow circle with egg symbol
@@ -2619,11 +2681,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Non-Vegetarian: Red badge with chicken leg icon
 - Vegan: Green badge with 'VG' icon
 - Mixed: Orange badge with dual icon (leaf + chicken leg)
-
-**Half/Full Plate Selection Component**:
+\n**Half/Full Plate Selection Component**:
 - **Segmented Control Style**:
-  - Two segments: Half Plate (left) and Full Plate (right)
-  - Width: 100% of container, height: 56px
+  - Two segments: Half Plate (left) and Full Plate (right)\n  - Width: 100% of container, height: 56px
   - Border radius: 12px for outer container
   - Selected segment: Orange background (#FF6B35), white text, bold
   - Unselected segment: White background, orange border, orange text
@@ -2633,8 +2693,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Card height: 120px\n  - Border: 2px solid light gray
   - Border radius: 12px
   - Selected card: Orange border, checkmark icon top-right
-  - Unselected card: Light gray border\n  - Each card displays: Label (Half Plate/Full Plate), description, price
-  - Tap to select with scale animation (scale0.98 on tap)
+  - Unselected card: Light gray border\n  - Each card displays: Label (Half Plate/Full Plate), description, price\n  - Tap to select with scale animation (scale0.98 on tap)
 \n**Restaurant Card Component** (for My Restaurants Dashboard):
 - **Grid View Card**:
   - Vertical card with rounded corners (12px border radius)
@@ -2651,11 +2710,23 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Hover effect: scale(1.02) with 300ms transition
   - Left section: Square banner image (120px x 120px) with logo overlay (48px diameter)
   - Middle section: Restaurant name (20px, bold), cuisine tags, rating, address, last visited & total visits\n  - Right section: Action buttons ('View Menu', 'Reorder', Heart icon)
-\n### 5.5 Iconography
-- **Style**: Outlined icons for consistency
+\n**Real-Time Update Indicators**:
+- **Connection Status Indicator**:
+  - Small circular dot (8px diameter) in order tracking screen header
+  - Green: Connected (real-time updates active)
+  - Yellow: Reconnecting (temporary connection loss)
+  - Red: Disconnected (real-time updates unavailable)
+  - Positioned next to order ID or in top-right corner
+- **Update Notification Toast**:
+  - Slide-down animation from top (300ms ease-out)
+  - Orange background with white text
+  - Icon + message (e.g., 'Order status updated: Preparing')
+  - Auto-dismiss after 3 seconds with fade-out\n  - Tap to dismiss immediately
+
+### 5.5 Iconography\n- **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), restaurant type indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars, half/full plate icons, restaurant card icons (menu, reorder, favorite)
+- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), restaurant type indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars, half/full plate icons, restaurant card icons (menu, reorder, favorite), connection status indicators (green/yellow/red dots), WebSocket connection icon
 - **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
@@ -2677,7 +2748,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms
 - **Button Press**: Scale(0.98) with 100ms
 - **Loading States**: Skeleton screens with shimmer effect
-- **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up\n- **Status Updates**: Progress bar fill animation
+- **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up
+- **Status Updates**: Progress bar fill animation
 - **Timeline Updates**: Checkmark animation with scale and color change
 - **Success Actions**: Checkmark animation with scale\n- **Payment Method Selection**: Smooth highlight transition when selected
 - **Dining Completion Dialog**: Fade-in with scale animation
@@ -2687,7 +2759,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Restaurant Type Toggle**: Slide animation when switching segments
 - **Half/Full Plate Selection**: Smooth transition animation when switching options (300ms ease-in-out)
 - **Dashboard Home Page Animations**:
-  - Hero section gradient transitions:3s infinite alternate
+  - Hero section gradient transitions: 3s infinite alternate
   - Floating food icons: 4s ease-in-out infinite (up and down motion)
   - Lottie cooking animations: Loop continuously
   - Counter animations: 2s ease-out from0 to target value
@@ -2701,12 +2773,21 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Card tap: Scale(0.98) with 100ms for tactile feedback
   - Favorite toggle: Heart icon scale and color change animation (300ms)
   - Remove swipe: Smooth swipe-left animation with fade-out (400ms)
-\n### 5.8 Accessibility
+- **Real-Time Timeline Update Animations** (NEW):
+  - New checkpoint appearance: Slide-in from right with fade-in effect (300ms ease-out)
+  - Checkpoint highlight: Orange glow effect for2 seconds on newly updated checkpoint
+  - Progress tracker advancement: Smooth transition to new stage with pulsing animation (400ms ease-in-out)\n  - Checkmark completion: Scale animation from 0.8 to 1.0 with bounce effect (300ms)
+  - Connection status change: Color transition animation (green↔ yellow ↔ red, 200ms)
+  - Toast notification: Slide-down from top with bounce (300ms), auto-dismiss with fade-out (200ms)
+  - Haptic feedback: Brief vibration on mobile devices for status updates (50ms)
+
+### 5.8 Accessibility
 - **Color Contrast**: WCAG AA compliant (4.5:1 for text)\n- **Touch Targets**: Minimum 44x44px for mobile\n- **Keyboard Navigation**: Full support with visible focus states
 - **Screen Reader**: Semantic HTML with ARIA labels
 - **Alt Text**: Descriptive text for all images
 - **Font Scaling**: Support for user font size preferences
-- **Motion**: Respect prefers-reduced-motion setting
+- **Motion**: Respect prefers-reduced-motion setting (disable animations for users with motion sensitivity)
+- **Real-Time Updates**: Screen reader announcements for timeline updates (e.g., 'Order status updated to Preparing')
 
 ### 5.9 Dark Mode Support
 - **Background**: Dark gray (#1A1A1A) instead of white
@@ -2720,11 +2801,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - End-to-end encryption for chat messages
 - PCI-DSS compliance for payment processing
 - HTTPS for all communications
-- Regular security audits and penetration testing
-- Data encryption at rest and in transit
+- Regular security audits and penetration testing\n- Data encryption at rest and in transit
 - GDPR and data privacy compliance
 - **Restaurant ID validation** at multiple checkpoints to prevent order misrouting
 - Secure customer name storage and display with privacy controls
+- **WebSocket security**: Secure WebSocket (WSS) protocol with authentication tokens
 
 ### 6.2 Performance
 - Progressive Web App (PWA) for offline support
@@ -2743,13 +2824,22 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Restaurant Card Rendering**:
   - Virtualized scrolling for large restaurant lists
   - Image lazy loading with placeholder\n  - Efficient card re-rendering on filter/sort changes
-\n### 6.3 Scalability
+- **WebSocket Performance**:
+  - Connection pooling for efficient resource usage
+  - Message batching to reduce network overhead
+  - Automatic reconnection with exponential backoff
+  - Heartbeat mechanism to detect connection issues
+  - Optimized payload size for real-time updates
+
+### 6.3 Scalability
 - Microservices architecture for independent scaling
 - Load balancing for high traffic
 - Database sharding for large datasets
 - Message queue for order processing and timeline updates
 - Horizontal scaling for peak hours
-\n### 6.4 Integrations
+- **WebSocket scaling**: Distributed WebSocket server architecture with Redis pub/sub for multi-server synchronization
+
+### 6.4 Integrations
 - Payment gateways: Stripe, PayPal, Razorpay
 - SMS gateway for OTP and notifications
 - Email service for receipts and marketing
@@ -2758,12 +2848,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - E-bill generation library for PDF creation
 - Print service integration for e-bill printing
 - Lottie animation library for complex animations
+- **WebSocket library**: Socket.IO or native WebSocket API for real-time communication
+- **Push notification services**: Firebase Cloud Messaging (FCM) for Android, Apple Push Notification Service (APNS) for iOS
 
 ### 6.5 Platform Support
 - Web: Responsive design for all browsers
 - iOS: Native app or PWA\n- Android: Native app or PWA
 - Tablet: Optimized layout for larger screens
 - Desktop: Full-featured dashboard for restaurant owners
+- **WebSocket support**: All modern browsers and mobile platforms
 
 ## 7. Future Enhancements
 - AI-powered menu recommendations based on customer preferences and dietary restrictions
@@ -2772,8 +2865,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Delivery and takeout integration
 - Table reservation system
 - Loyalty program with gamification\n- Multi-language support for international customers
-- Integration with food delivery platforms (Uber Eats, DoorDash)
-- Kitchen automation with IoT devices
+- Integration with food delivery platforms (Uber Eats, DoorDash)\n- Kitchen automation with IoT devices
 - Predictive analytics for inventory management (including half/full portion demand forecasting)
 - Cryptocurrency payment support
 - QR code-based loyalty card scanning
@@ -2793,6 +2885,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Restaurant comparison feature (compare menus, prices, ratings)
   - Dining streak tracking (consecutive visits to same restaurant)
   - Restaurant loyalty program integration
+- **Real-Time Features Enhancements**:
+  - Video call support for customer-waiter communication
+  - Live kitchen camera feed for transparency
+  - Real-time table availability updates
+  - Collaborative ordering (multiple customers ordering together in real-time)
+  - Live order modification with instant restaurant notification
 \n## 8. Design Style\n
 ### 8.1 Overall Aesthetic
 - Modern and clean interface with focus on usability and visual appeal
@@ -2801,13 +2899,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Friendly and engaging experience for customers
 - Consistent branding across all platforms and touchpoints
 - **Restaurant ambiance feel** with animated elements that evoke dining atmosphere
+- **Real-time responsiveness** with instant visual feedback for all updates
 
 ### 8.2 Visual Elements
 - **Color Scheme**: Vibrant orange as primary color for energy and appetite stimulation, complemented by teal for professionalism and trust
 - **Typography**: Poppins for bold, modern headings; Inter for clean, readable body text
-- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan), restaurant type indicators, half/full plate icons, restaurant card icons
-- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context, comprehensive restaurant image galleries
-- **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page and engaging card interactions on customer dashboard
+- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan), restaurant type indicators, half/full plate icons, restaurant card icons, connection status indicators\n- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context, comprehensive restaurant image galleries
+- **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page and engaging card interactions on customer dashboard, **real-time update animations for instant visual feedback**
 
 ### 8.3 User Experience Principles
 - **Simplicity**: Intuitive navigation with minimal learning curve
@@ -2819,9 +2917,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Engagement**: Animated elements that create emotional connection and enhance brand identity
 - **Flexibility**: Support for diverse dining preferences including half/full portion options
 - **Convenience**: Quick reordering from saved restaurants for returning customers
+- **Real-Time Responsiveness**: Instant updates without manual refresh for seamless experience
 
 ### 8.4 Brand Identity
 - **Logo**: Modern, food-related icon with'DineQR' wordmark
 - **Tagline**: 'Your Culinary Journey Starts Here' or 'Smart Dining, Simplified'
 - **Voice**: Professional yet friendly, informative yet conversational
-- **Values**: Innovation, quality, customer satisfaction, transparency, flexibility, convenience
+- **Values**: Innovation, quality, customer satisfaction, transparency, flexibility, convenience, real-time connectivity

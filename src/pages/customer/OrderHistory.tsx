@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { orderApi } from '@/db/api';
 import { OrderWithItems } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,9 +16,55 @@ export default function OrderHistory() {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const ordersRef = useRef<OrderWithItems[]>([]);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    ordersRef.current = orders;
+  }, [orders]);
+
+  const loadOrders = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      const previousOrders = ordersRef.current;
+      const data = await orderApi.getOrdersByCustomer(user.id);
+      setOrders(data);
+
+      // Check if any order status changed and show notification
+      if (previousOrders.length > 0) {
+        data.forEach(newOrder => {
+          const oldOrder = previousOrders.find(o => o.id === newOrder.id);
+          if (oldOrder) {
+            if (oldOrder.status !== newOrder.status) {
+              toast({
+                title: 'Order Status Updated',
+                description: `Order #${newOrder.id.slice(0, 8).toUpperCase()} is now ${newOrder.status}`,
+              });
+            }
+            if (oldOrder.payment_status !== newOrder.payment_status) {
+              toast({
+                title: 'Payment Status Updated',
+                description: `Payment for order #${newOrder.id.slice(0, 8).toUpperCase()} is now ${newOrder.payment_status}`,
+              });
+            }
+          }
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to load orders',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [user, toast]);
 
   useEffect(() => {
     if (user) {
+      setLoading(true);
       loadOrders();
 
       const channel = supabase
@@ -32,7 +78,23 @@ export default function OrderHistory() {
             filter: `customer_id=eq.${user.id}`,
           },
           () => {
-            loadOrders();
+            // Small delay to ensure status_history trigger completes
+            setTimeout(() => loadOrders(), 300);
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'order_status_history',
+          },
+          (payload) => {
+            // Check if this status history belongs to one of the customer's orders
+            const orderId = payload.new.order_id;
+            if (ordersRef.current.some(order => order.id === orderId)) {
+              setTimeout(() => loadOrders(), 300);
+            }
           }
         )
         .subscribe();
@@ -41,25 +103,7 @@ export default function OrderHistory() {
         supabase.removeChannel(channel);
       };
     }
-  }, [user]);
-
-  const loadOrders = async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      const data = await orderApi.getOrdersByCustomer(user.id);
-      setOrders(data);
-    } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to load orders',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user, loadOrders]);
 
   if (loading) {
     return (
