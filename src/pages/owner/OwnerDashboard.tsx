@@ -204,7 +204,7 @@ export default function OwnerDashboard() {
                     ))}
                   </div>
                   <Button className="w-full mt-4" variant="outline" asChild>
-                    <Link to="/owner/orders">View All Orders</Link>
+                    <Link to={`/owner/orders/${restaurants[0].id}`}>View All Orders</Link>
                   </Button>
                 </CardContent>
               </Card>
