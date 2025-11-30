@@ -3,10 +3,19 @@ export type OrderStatus = 'pending' | 'preparing' | 'served' | 'completed' | 'ca
 
 export interface Profile {
   id: string;
+  username: string;
   email: string | null;
   full_name: string | null;
   phone: string | null;
   role: UserRole;
+  avatar_url: string | null;
+  bio: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  zip_code: string | null;
+  country: string;
+  preferences: Record<string, any>;
   created_at: string;
 }
 

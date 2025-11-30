@@ -10,6 +10,7 @@ import MenuManagement from './pages/owner/MenuManagement';
 import TableManagement from './pages/owner/TableManagement';
 import OrderManagement from './pages/owner/OrderManagement';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
+import CustomerProfile from './pages/customer/CustomerProfile';
 import ScanQR from './pages/customer/ScanQR';
 import MenuBrowsing from './pages/customer/MenuBrowsing';
 import Checkout from './pages/customer/Checkout';
@@ -168,6 +169,16 @@ const routes: RouteConfig[] = [
     element: (
       <ProtectedRoute allowedRoles={['customer']}>
         <OrderHistory />
+      </ProtectedRoute>
+    ),
+    visible: false,
+  },
+  {
+    name: 'Customer Profile',
+    path: '/customer/profile',
+    element: (
+      <ProtectedRoute allowedRoles={['customer']}>
+        <CustomerProfile />
       </ProtectedRoute>
     ),
     visible: false,

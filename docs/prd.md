@@ -1,5 +1,8 @@
 # DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document
-\n## 1. Application Overview\n\n### 1.1 Application Name
+
+## 1. Application Overview
+
+### 1.1 Application Name
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
@@ -32,7 +35,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Email registration with verification link
   - Phone number registration with OTP verification
   - Social media integration (Google, Facebook, Apple Sign-In)
-  - Guest mode with limited features (no order history, no saved preferences)\n- **Login System**:
+  - Guest mode with limited features (no order history, no saved preferences)
+- **Login System**:
   - Email/phone + password\n  - Social media quick login
   - Biometric authentication for returning users
   - Remember device option for faster access
@@ -100,7 +104,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Price (required, decimal with currency)
   - Discounted Price (optional)\n  - Multiple Images (minimum 1, maximum 5 high-resolution images)
   - Preparation Time (required, in minutes)
-  - Dietary Indicators (multi-select): Vegetarian, Vegan, Non-Vegetarian, Gluten-Free, Dairy-Free, Nut-Free, Halal, Kosher\n  - Spice Level (None, Mild, Medium, Hot, Extra Hot)
+  - Dietary Indicators (multi-select): Vegetarian, Vegan, Non-Vegetarian, Gluten-Free, Dairy-Free,Nut-Free, Halal, Kosher\n  - Spice Level (None, Mild, Medium, Hot, Extra Hot)
   - Allergen Information (multi-select): Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, etc.
   - Nutritional Information (optional):\n    - Calories
     - Protein (grams)
@@ -275,19 +279,199 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 ### 3.2 Enhanced Customer Features
 
-#### 3.2.1 Onboarding & Profile Setup
-- **First-Time User Experience**:
-  - Welcome tutorial with app features
-  - Dietary preference setup (vegetarian, vegan, allergies)
-  - Favorite cuisine selection for personalized recommendations
-  - Location permission for nearby restaurant discovery
-- **Profile Management**:
-  - Profile photo upload\n  - Name, email, phone number
-  - Saved addresses for delivery (future feature)
-  - Payment methods management
-  - Dietary restrictions and allergies
-  - Preferred language selection
-  - Notification preferences
+#### 3.2.1 Impressive Login UI & Profile Management
+\n**Enhanced Login Interface Design**:
+- **Visual Design**:
+  - Full-screen gradient background with animated food imagery (subtle parallax effect)
+  - Glassmorphism card design with frosted glass effect and soft shadows
+  - Smooth micro-interactions and transitions (fade-in, slide-up animations)
+  - Lottie animations for loading states and success confirmations
+  - Dynamic color scheme that adapts to time of day (warm tones for evening, fresh tones for morning)
+  - Floating food particles animation in background for visual appeal
+\n- **Login Screen Layout**:
+  - Centered login card with rounded corners (24px border radius)
+  - DineQR logo with animated entrance (scale + fade effect)
+  - Welcoming tagline:'Your Culinary Journey Starts Here' with elegant typography
+  - Input fields with floating labels and smooth focus animations
+  - Password field with show/hide toggle icon
+  - Biometric login button with fingerprint/face icon and pulse animation
+  - Social login buttons with brand colors and hover effects:\n    - Google (white background, colorful logo)
+    - Facebook (blue background, white logo)
+    - Apple (black background, white logo)
+  - 'Remember Me' checkbox with custom styling
+  - 'Forgot Password?' link with subtle underline animation on hover
+  - Primary'Login' button with gradient background and loading spinner
+  - 'Don't have an account? Sign Up' link with smooth color transition
+
+- **Registration Screen Enhancements**:
+  - Multi-step registration with progress indicator (step 1/3,2/3, 3/3)
+  - Step1: Basic Info (name, email, phone with country code selector)
+  - Step 2: Password Setup (strength meter with color indicators, confirmation field)
+  - Step 3: Preferences (dietary restrictions with icon selection, favorite cuisines with image cards)
+  - Profile photo upload with drag-and-drop or camera capture
+  - Real-time validation with inline error messages and success checkmarks
+  - Smooth transitions between steps with slide animations
+  - Skip option for optional steps with clear indication
+
+- **Social Login Flow**:
+  - One-tap social authentication with OAuth 2.0\n  - Automatic profile data import (name, email, profile photo)
+  - Permission request screen with clear explanations
+  - Seamless account linking for existing users
+\n**Comprehensive Profile Management System**:
+\n- **Profile Dashboard**:
+  - Accessible via user avatar icon in top-right corner or bottom navigation
+  - Clean, card-based layout with sections:\n    - Personal Information
+    - Dining Preferences
+    - Payment Methods
+    - Order History
+    - Saved Restaurants
+    - Loyalty & Rewards
+    - Settings & Privacy
+\n- **Personal Information Section**:
+  - **Profile Photo**:
+    - Large circular avatar with edit icon overlay
+    - Upload from gallery, take photo, or choose avatar
+    - Crop and zoom functionality
+    - Remove photo option
+  - **Basic Details** (editable):
+    - Full Name (with character limit indicator)
+    - Email Address (with verification status badge)
+    - Phone Number (with country code, verification status)
+    - Date of Birth (date picker with age calculation)
+    - Gender (dropdown: Male, Female, Other, Prefer not to say)
+  - **Contact Preferences**:
+    - Preferred contact method (email, SMS, push notifications)
+    - Language preference (multi-language support)
+  - **Verification Status**:
+    - Email verified badge (green checkmark)
+    - Phone verified badge (green checkmark)
+    - Re-send verification link/OTP option
+\n- **Dining Preferences Section**:
+  - **Dietary Restrictions** (multi-select with icons):
+    - Vegetarian, Vegan, Non-Vegetarian\n    - Gluten-Free, Dairy-Free, Nut-Free\n    - Halal, Kosher, Pescatarian
+    - Custom restrictions (text input)\n  - **Allergies** (multi-select with warning icons):
+    - Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, Fish
+    - Severity indicator (mild, moderate, severe)
+    - Custom allergies (text input)
+  - **Spice Preference**:
+    - Slider: No Spice → Mild → Medium → Hot → Extra Hot
+    - Visual indicator with chili pepper icons
+  - **Favorite Cuisines** (multi-select with image cards):
+    - Italian, Chinese, Indian, Mexican, Japanese, Thai, Mediterranean, etc.
+    - Drag to reorder by preference
+  - **Meal Preferences**:
+    - Preferred meal times (breakfast, lunch, dinner, late-night)
+    - Portion size preference (small, regular, large)
+  - **Special Requests**:
+    - Default special instructions (e.g., 'less oil', 'no MSG')
+    - Saved for all future orders
+\n- **Payment Methods Section**:\n  - **Saved Cards**:
+    - Card list with masked numbers (•••• •••• •••• 1234)
+    - Card brand logo (Visa, Mastercard, Amex)\n    - Expiry date display\n    - Set default card option
+    - Edit or remove card with confirmation
+  - **Digital Wallets**:
+    - Linked wallets: Google Pay, Apple Pay, PayPal
+    - Add new wallet option
+    - Default wallet selection
+  - **Add New Payment Method**:
+    - Secure card input form with validation
+    - CVV field with security explanation
+    - Billing address (optional)
+    - Save for future use checkbox
+  - **Payment Security**:
+    - PCI-DSS compliance badge
+    - Encryption information
+    - Transaction history link
+
+- **Order History Section**:
+  - **Order List**:
+    - Chronological list with most recent first
+    - Each order card shows:
+      - Restaurant name and logo
+      - Order date and time
+      - Order items summary (first2 items + 'X more')
+      - Total amount\n      - Order status badge
+    - Tap to expand full order details
+  - **Order Details View**:
+    - Complete itemized list with quantities and customizations
+    - Subtotal, taxes, discounts, total breakdown
+    - Payment method used
+    - Digital receipt download button
+    - Reorder button (one-tap reorder)
+    - Rate & Review button (if not already reviewed)
+  - **Filters & Search**:
+    - Filter by restaurant\n    - Filter by date range (date picker)
+    - Search by item name
+    - Sort by: Recent, Oldest, Highest Amount\n\n- **Saved Restaurants Section**:
+  - **Favorites List**:
+    - Grid or list view toggle
+    - Each restaurant card shows:
+      - Restaurant banner image
+      - Name, cuisine type, rating
+      - Distance from current location
+      - Last visited date
+    - Remove from favorites option
+    - Tap to view restaurant profile
+  - **Collections** (optional):
+    - Create custom collections (e.g., 'Date Night', 'Quick Lunch')
+    - Add restaurants to collections
+    - Share collections with friends
+\n- **Loyalty & Rewards Section**:
+  - **Points Balance**:
+    - Large display of current points with animated counter
+    - Points expiry date (if applicable)
+    - Points history (earned and redeemed)
+  - **Rewards Catalog**:
+    - Available rewards with points required
+    - Redeem button for eligible rewards
+    - Locked rewards with progress indicator
+  - **Membership Tier**:
+    - Current tier badge (Bronze, Silver, Gold, Platinum)\n    - Progress bar to next tier
+    - Tier benefits list
+  - **Referral Program**:\n    - Unique referral code with copy button
+    - Share referral link via social media or messaging
+    - Referral rewards earned display
+
+- **Settings & Privacy Section**:
+  - **Account Settings**:
+    - Change password (current password + new password + confirm)
+    - Two-factor authentication toggle (enable/disable)
+    - Biometric login toggle (fingerprint/face recognition)
+    - Session management (view active devices, logout from all)
+  - **Notification Preferences**:
+    - Push notifications toggle (order updates, promotions, reminders)
+    - Email notifications toggle (receipts, newsletters, offers)
+    - SMS notifications toggle (OTP, order alerts)\n    - Notification sound and vibration settings
+  - **Privacy Settings**:
+    - Profile visibility (public, friends only, private)
+    - Share dining activity toggle
+    - Location services toggle
+    - Data sharing preferences (analytics, personalization)
+  - **App Preferences**:
+    - Theme selection (light mode, dark mode, auto)\n    - Language selection (multi-language support)
+    - Currency preference\n    - Default tip percentage
+  - **Legal & Support**:
+    - Terms of Service link
+    - Privacy Policy link
+    - Help & FAQ link
+    - Contact Support button
+    - App version display
+  - **Account Management**:
+    - Download my data (GDPR compliance)
+    - Delete account (with confirmation and warning)
+    - Logout button
+
+- **Profile Edit Mode**:
+  - Inline editing with save/cancel buttons
+  - Real-time validation with error messages
+  - Unsaved changes warning when navigating away
+  - Success toast notification after saving
+  - Undo option for recent changes
+
+- **Profile Completion Indicator**:
+  - Progress bar showing profile completion percentage
+  - Suggestions to complete missing sections
+  - Rewards for100% profile completion (bonus loyalty points)
 \n#### 3.2.2 Enhanced QR Scanning & Restaurant Access
 - **Smart QR Scanner**:
   - In-app camera with auto-focus and QR detection
@@ -302,8 +486,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Operating hours with current status (Open/Closed)
   - Table number confirmation display
   - Quick access buttons: Menu, Reviews, Info, Chat
-
-#### 3.2.3 Advanced Menu Browsing (Zomato-Inspired UI)
+\n#### 3.2.3 Advanced Menu Browsing (Zomato-Inspired UI)
 - **Category Navigation**:
   - Sticky horizontal scrollable category tabs at top
   - Category icons with names\n  - Active category highlighted with underline animation
@@ -367,7 +550,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Pre-defined quick options (less oil, extra spicy, etc.)
 - **Order Confirmation**:
   - Review complete order summary
-  - Confirm table number\n  - Estimated total time display
+  - Confirm table number
+  - Estimated total time display
   - 'Place Order' button with loading animation
 
 #### 3.2.6 Real-Time Order Tracking
@@ -385,8 +569,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Request to add more items (if order not yet preparing)
   - Cancel order option (with confirmation)
   - Contact waiter button for modifications
-\n#### 3.2.7 Real-Time Chat with Restaurant
-- **Chat Interface**:
+
+#### 3.2.7 Real-Time Chat with Restaurant\n- **Chat Interface**:
   - Floating chat bubble icon (bottom-right corner)
   - Slide-up chat window with message history
   - Direct connection to assigned waiter for table-specific queries
@@ -404,7 +588,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Instant responses for common queries (menu info, ingredients, restaurant details)
   - Seamless handoff to human waiter when needed
   - 24/7 availability for basic questions
-  - Multilingual support\n
+  - Multilingual support
+
 #### 3.2.8 Payment & Billing
 - **Bill Generation**:
   - Automatic bill generation when order is served
@@ -435,7 +620,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Filter by restaurant or date range
   - Search orders by item name\n  - View complete order details including bill
 - **Quick Reorder**:
-  - 'Reorder' button for favorite orders
+  -'Reorder' button for favorite orders
   - One-tap reorder with saved customizations
   - Modify reorder before placing
 - **Favorites**:
@@ -466,8 +651,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Create strong password (12+ characters with complexity requirements)
 5. Set up two-factor authentication (2FA) with authenticator app
 6. Upload business license and tax ID for verification
-7. Complete profile setup: name, role, profile photo
-8. Account approved after verification (24-48 hours)
+7. Complete profile setup: name, role, profile photo\n8. Account approved after verification (24-48 hours)
 
 **Phase 2: Restaurant Profile Creation**
 1. Click 'Add New Restaurant'
@@ -672,8 +856,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Monitor order status in kitchen
 5. Receive notification when order is ready
 6. Serve food to customer
-7. Update order status to 'Served'
-
+7. Update order status to 'Served'\n
 **Phase 4: Customer Communication**
 1. Receive chat messages from assigned tables
 2. Respond to customer requests:
@@ -724,7 +907,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - H1: Poppins Bold,32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
-  - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
+  - H4: Poppins Medium, 18px (sub-headings)
+  - Body Large: Inter Regular, 16px (descriptions, content)
   - Body: Inter Regular, 14px (standard text)
   - Small: Inter Regular, 12px (metadata, captions)
   - Button: Poppins SemiBold, 16px (CTAs)\n  - Price: Poppins SemiBold, 20px (pricing emphasis)
@@ -754,7 +938,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n**Buttons**:
 - Primary: Orange background, white text, 24px border radius
 - Secondary: White background, orange border, orange text
-- Tertiary: Transparent background, orange text\n- Height: 48px (mobile), 44px (desktop)
+- Tertiary: Transparent background, orange text
+- Height: 48px (mobile), 44px (desktop)
 - Hover: Darken by 10%, smooth200ms transition
 - Active: Scale(0.98) for tactile feedback
 
@@ -780,12 +965,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Color-coded left border (4px width)
 - Status badge: Top-right corner
 - Expandable details: Accordion style
-- Action buttons: Bottom-right\n
-### 5.5 Iconography
+- Action buttons: Bottom-right\n\n### 5.5 Iconography
 - **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators\n- **Color**: Inherit from parent or theme color
+- **Custom Icons**: Food categories, dietary indicators
+- **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
 - **Food Photos**:
@@ -843,8 +1028,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Database indexing for quick queries
 - Caching strategies for frequently accessed data
 
-### 6.3 Scalability
-- Microservices architecture for independent scaling
+### 6.3 Scalability\n- Microservices architecture for independent scaling
 - Load balancing for high traffic
 - Database sharding for large datasets
 - Message queue for order processing

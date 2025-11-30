@@ -1,7 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { UtensilsCrossed, LogOut, User, Store, ShoppingCart } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UtensilsCrossed, LogOut, User, Store, ShoppingCart, Settings, History } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Header() {
@@ -26,6 +35,18 @@ export default function Header() {
     }
   };
 
+  const getInitials = () => {
+    if (profile?.full_name) {
+      return profile.full_name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    return profile?.username?.slice(0, 2).toUpperCase() || 'U';
+  };
+
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,28 +61,101 @@ export default function Header() {
           <div className="flex items-center gap-4">
             {user && profile ? (
               <>
-                <span className="text-sm text-muted-foreground hidden sm:inline">
-                  {profile.full_name || 'User'}
-                </span>
                 {profile.role === 'owner' ? (
-                  <Button variant="outline" size="sm" asChild>
-                    <Link to="/owner/dashboard">
-                      <Store className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Link>
-                  </Button>
+                  <>
+                    <Button variant="outline" size="sm" asChild className="hidden sm:flex">
+                      <Link to="/owner/dashboard">
+                        <Store className="w-4 h-4 mr-2" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src={profile.avatar_url || undefined} />
+                            <AvatarFallback className="bg-primary text-primary-foreground">
+                              {getInitials()}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuLabel>
+                          <div className="flex flex-col space-y-1">
+                            <p className="text-sm font-medium">{profile.full_name || profile.username}</p>
+                            <p className="text-xs text-muted-foreground">Restaurant Owner</p>
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link to="/owner/dashboard" className="cursor-pointer">
+                            <Store className="w-4 h-4 mr-2" />
+                            Dashboard
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
                 ) : (
-                  <Button variant="outline" size="sm" asChild>
-                    <Link to="/customer/dashboard">
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Link>
-                  </Button>
+                  <>
+                    <Button variant="outline" size="sm" asChild className="hidden sm:flex">
+                      <Link to="/customer/dashboard">
+                        <User className="w-4 h-4 mr-2" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src={profile.avatar_url || undefined} />
+                            <AvatarFallback className="bg-primary text-primary-foreground">
+                              {getInitials()}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuLabel>
+                          <div className="flex flex-col space-y-1">
+                            <p className="text-sm font-medium">{profile.full_name || profile.username}</p>
+                            <p className="text-xs text-muted-foreground">@{profile.username}</p>
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link to="/customer/dashboard" className="cursor-pointer">
+                            <User className="w-4 h-4 mr-2" />
+                            Dashboard
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/customer/profile" className="cursor-pointer">
+                            <Settings className="w-4 h-4 mr-2" />
+                            My Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/customer/orders" className="cursor-pointer">
+                            <History className="w-4 h-4 mr-2" />
+                            Order History
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
                 )}
-                <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Sign Out</span>
-                </Button>
               </>
             ) : (
               <>
