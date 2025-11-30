@@ -67,6 +67,7 @@ export default function Checkout() {
         status: 'pending' as const,
         payment_status: 'pending',
         special_instructions: specialInstructions || null,
+        assigned_to: null,
       };
 
       const order = await orderApi.createOrder(orderData);

@@ -150,6 +150,14 @@ export default function MenuManagement() {
         price: parseFloat(itemForm.price),
         image_url: imageUrl,
         restaurant_id: restaurantId,
+        ingredients: null,
+        allergens: null,
+        preparation_time: 15,
+        calories: null,
+        is_vegetarian: false,
+        is_vegan: false,
+        is_gluten_free: false,
+        spice_level: null,
       };
 
       if (editingItem) {

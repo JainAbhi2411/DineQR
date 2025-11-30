@@ -9,6 +9,8 @@ import type {
   OrderItem,
   OrderWithItems,
   OrderStatus,
+  Staff,
+  Message,
 } from '@/types/types';
 
 export const profileApi = {
@@ -289,7 +291,8 @@ export const orderApi = {
       .select(`
         *,
         order_items(*),
-        table:tables(*)
+        table:tables(*),
+        staff(*)
       `)
       .eq('restaurant_id', restaurantId)
       .order('created_at', { ascending: false });
@@ -368,6 +371,99 @@ export const imageApi = {
     const { error } = await supabase.storage
       .from('app-7x1ojvae4075_food_images')
       .remove([path]);
+    if (error) throw error;
+  },
+};
+
+export const staffApi = {
+  async getStaffByRestaurant(restaurantId: string): Promise<Staff[]> {
+    const { data, error } = await supabase
+      .from('staff')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .eq('is_active', true)
+      .order('name', { ascending: true });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async createStaff(staff: Omit<Staff, 'id' | 'created_at' | 'updated_at'>): Promise<Staff> {
+    const { data, error } = await supabase
+      .from('staff')
+      .insert(staff)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateStaff(id: string, updates: Partial<Staff>): Promise<Staff> {
+    const { data, error } = await supabase
+      .from('staff')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteStaff(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('staff')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  },
+
+  async assignWaiterToOrder(orderId: string, staffId: string): Promise<void> {
+    const { error } = await supabase.rpc('assign_waiter_to_order', {
+      order_id: orderId,
+      staff_id: staffId,
+    });
+    if (error) throw error;
+  },
+};
+
+export const messageApi = {
+  async getMessagesByOrder(orderId: string): Promise<Message[]> {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('order_id', orderId)
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async getMessagesByRestaurant(restaurantId: string): Promise<Message[]> {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async sendMessage(message: Omit<Message, 'id' | 'created_at' | 'is_read'>): Promise<Message> {
+    const { data, error } = await supabase
+      .from('messages')
+      .insert({
+        ...message,
+        is_read: false,
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async markMessagesAsRead(orderId: string, userId: string): Promise<void> {
+    const { error } = await supabase.rpc('mark_messages_as_read', {
+      p_order_id: orderId,
+      p_user_id: userId,
+    });
     if (error) throw error;
   },
 };
