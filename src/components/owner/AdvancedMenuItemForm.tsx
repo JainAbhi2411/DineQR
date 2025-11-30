@@ -147,6 +147,7 @@ export default function AdvancedMenuItemForm({
         rating: 0,
         is_bestseller: false,
         tags: null,
+        has_portions: false,
       };
 
       if (editingItem) {

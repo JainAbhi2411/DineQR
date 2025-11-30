@@ -350,14 +350,10 @@ export const orderApi = {
     return data;
   },
 
-  async createOrderItems(items: Omit<OrderItem, 'id' | 'created_at' | 'menu_item_name' | 'notes'>[]): Promise<OrderItem[]> {
+  async createOrderItems(items: Omit<OrderItem, 'id' | 'created_at'>[]): Promise<OrderItem[]> {
     const { data, error } = await supabase
       .from('order_items')
-      .insert(items.map(item => ({
-        ...item,
-        menu_item_name: '',
-        notes: null,
-      })))
+      .insert(items)
       .select();
     if (error) throw error;
     return Array.isArray(data) ? data : [];

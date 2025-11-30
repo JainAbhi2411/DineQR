@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Customer Side Enhancement)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Half/Full Portion Option Added)
 
 ## 1. Application Overview
 
@@ -6,7 +6,7 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication, dynamic menu management with enhanced schema support, AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, detailed order tracking with complete timelines, and e-bill generation - creating a unified platform that manages every aspect from customer arrival to post-dining feedback.
+A comprehensive, enterprise-level digital restaurant ecosystem that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, detailed order tracking with complete timelines, and e-bill generation - creating a unified platform that manages every aspect from customer arrival to post-dining feedback.
 
 ## 2. Advanced Authentication System
 
@@ -77,8 +77,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Lottie animations of cooking elements (steam rising, sizzling pans, rotating dishes)
   - Welcome message with typewriter animation effect:'Welcome back, [Owner Name]!'
   - Current date and time display with smooth fade-in transition
-
-- **Live Statistics Dashboard with Animated Counters**:
+\n- **Live Statistics Dashboard with Animated Counters**:
   - Real-time metrics cards with entrance animations (slide-up with stagger effect)
   - Animated number counters for key statistics:\n    - Total Orders Today (counting animation from 0 to current value)
     - Active Orders (pulsing badge with live count)
@@ -221,9 +220,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Payment methods accepted (cash, cards, digital wallets, etc.)
   - Languages spoken by staff
   - Special dietary accommodations (gluten-free, vegan options, etc.)
-
-#### 3.1.2 Advanced Menu Management System
-
+\n#### 3.1.2 Advanced Menu Management System\n
 **Enhanced Schema Structure**:
 \n- **Category Schema** (Updated with Additional Fields):
   - Category ID (auto-generated UUID)
@@ -247,22 +244,26 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Total number of ratings
     - Display on category card
   - Popular Category Badge (auto-assigned based on order volume)
-\n- **Food Item Schema** (Complete with Additional Fields):
+\n- **Food Item Schema** (Complete with Additional Fields Including Half/Full Portion Option):
   - Item ID (auto-generated UUID)
   - Item Name (required, max 100 characters)
   - Item Description (required, rich text editor with formatting, max 1000 characters)
   - **Item Type** (required, single select with color-coded icon):
-    - Vegetarian (green icon: leaf or'V' symbol)
-    - Non-Vegetarian (red icon: chicken leg or 'N' symbol)
-    - Vegan (green icon: 'VG' symbol)
+    - Vegetarian (green icon: leaf or 'V' symbol)
+    - Non-Vegetarian (red icon: chicken leg or 'N' symbol)\n    - Vegan (green icon: 'VG' symbol)
     - Eggetarian (yellow icon: egg symbol)
   - Category Assignment (required, multi-category support with primary category selection)
-  - **Pricing Structure** (enhanced for quantity-based pricing):
+  - **Pricing Structure** (enhanced for quantity-based pricing and half/full portions):
     - **Base Price** (required, decimal with currency symbol)
     - **Quantity-Based Pricing** (optional, for items with multiple serving sizes):
       - Small/Regular/Large portions with individual prices
       - Example: Small (250g) - $8, Regular (400g) - $12, Large (600g) - $16
-      - Half/Full plate options with prices
+      - **Half/Full Plate Options** (optional, for applicable items):
+        - **Half Plate**: Price for half portion (e.g., Half Plate - $10)
+        - **Full Plate**: Price for full portion (e.g., Full Plate - $18)
+        - Toggle to enable/disable half/full option for specific items
+        - Set default selection (Half or Full)
+        - Display both options prominently in menu and item detail view
       - Single/Double/Family pack options
       - Custom quantity units (grams, pieces, servings, etc.)
       - Set default quantity selection\n    - **Combo Pricing** (optional):
@@ -319,9 +320,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Portion Size** (if not using quantity-based pricing):
       - Small, Medium, Large with price variations
       - Custom portion names (e.g., Solo, Duo, Family)
+    - **Half/Full Plate Selection** (for applicable items):
+      - Radio buttons or segmented control for Half Plate or Full Plate
+      - Price displayed for each option
+      - Selected option highlighted
+      - Default selection based on restaurant settings
     - **Spice Level Adjustment**:
       - No Spice, Mild, Medium, Hot, Extra Hot
-      - Price adjustment if applicable (e.g., extra spicy sauce +$1)\n    - **Add-ons** (multi-select with individual prices):
+      - Price adjustment if applicable (e.g., extra spicy sauce +$1)
+    - **Add-ons** (multi-select with individual prices):
       - Extra cheese (+$2), Extra sauce (+$1), Extra toppings (+$3)
       - Side items (fries, salad, bread)\n      - Beverages (soft drinks, juices)\n      - Desserts\n    - **Removal Options** (multi-select, no charge):
       - No onions, No garlic, No cilantro, No mayo, etc.
@@ -362,7 +369,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Created Date and Last Modified Date (auto-tracked)
 \n**Advanced Menu Operations**:
 - **Bulk Management**:
-  - Import menu via CSV/Excel with template download (includes all new fields)
+  - Import menu via CSV/Excel with template download (includes all new fields including half/full portion options)
   - Export complete menu with all fields to CSV/Excel
   - Duplicate items for quick variations (e.g., create 'Veg Burger' from 'Chicken Burger')
   - Bulk price updates with percentage increase/decrease or fixed amount
@@ -383,6 +390,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Underperforming items (low views, low orders, low ratings)
   - Revenue contribution per item (percentage of total revenue)
   - Profit margin analysis per item
+  - **Half vs Full Plate Analytics** (for items with half/full option):
+    - Percentage of orders choosing half plate vs full plate
+    - Revenue comparison between half and full portions
+    - Customer preference trends over time
 - **Smart Recommendations**:
   - AI-suggested item pairings based on order history
   - Automatic'Frequently Bought Together' generation
@@ -391,7 +402,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Menu gap analysis (missing popular items in market)
 \n#### 3.1.3 Advanced Inventory Management
 - **Ingredient Database**:
-  - Create ingredient master list with units (kg, liters, pieces)\n  - Link ingredients to menu items with quantity requirements
+  - Create ingredient master list with units (kg, liters, pieces)\n  - Link ingredients to menu items with quantity requirements (including separate quantities for half and full portions)
   - Set minimum stock levels with auto-alerts
   - Track ingredient costs for profit margin calculation
 - **Stock Management**:
@@ -407,7 +418,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Compare supplier pricing for cost optimization
 - **Inventory Reports**:
   - Daily/weekly/monthly consumption reports
-  - Cost analysis and profit margin per item
+  - Cost analysis and profit margin per item (including half/full portion profitability)
   - Wastage reports with cost impact\n  - Reorder suggestions based on consumption patterns
 \n#### 3.1.4 Enhanced QR Code Management
 - **QR Code Generation**:
@@ -440,8 +451,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Table number with floor/section
     - Customer name (real name from profile or'Guest')
     - Order status badge (current stage)
-    - Payment method indicator (Card, Wallet, UPI,BNPL, COC)
-    - Payment status badge (Pending/Completed/Failed)
+    - Payment method indicator (Card, Wallet, UPI,BNPL, COC)\n    - Payment status badge (Pending/Completed/Failed)
     - Total amount\n    - Quick action buttons (View Details, Update Status)\n\n**Expandable Order Details**:
 - **Click/Tap to Expand**:
   - Order card expands to full-screen modal or slide-out panel
@@ -455,7 +465,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Itemized list with:\n        - Item name and image thumbnail
         - Item type indicator (veg/non-veg icon)
         - Quantity
-        - Portion size selected (if applicable)
+        - **Portion size selected** (Half Plate or Full Plate, if applicable)
         - Customizations (spice level, add-ons, removals)
         - Special instructions per item
         - Individual item price
@@ -510,8 +520,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n**Payment Status Tracking**:
 - **Payment Pending Orders**:
   - Dedicated section for orders with pending payments
-  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)
-  - Visual indicator for payment timeout (e.g., pending for >15 mins)
+  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)\n  - Visual indicator for payment timeout (e.g., pending for >15 mins)
   - Quick action:'Collect Payment' button for COC orders
 - **Payment Completed Orders**:
   - Automatic move to 'Completed Orders' section upon payment confirmation
@@ -530,7 +539,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Restaurant details and logo
     - Order ID and timestamp
     - Table number\n    - Customer name
-    - Itemized list with prices
+    - Itemized list with prices (including half/full plate selections)
     - Subtotal, taxes, discounts, total
     - Payment method and transaction ID
     - Payment timestamp
@@ -557,8 +566,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - By payment status (Pending, Completed, Failed)
   - By table number
   - By waiter assigned
-  - By date range (today, yesterday, last 7 days, custom)
-- **Search Functionality**:
+  - By date range (today, yesterday, last 7 days, custom)\n- **Search Functionality**:
   - Search by order ID\n  - Search by customer name\n  - Search by item name
   - Real-time search results
 \n**Order Analytics Dashboard**:
@@ -580,12 +588,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Order card displays prominent'Payment Pending - COC' status
   - Owner/Manager dashboard shows dedicated 'Pending COC Payments' section
 \n- **Bill Summary View for COC Orders**:
-  - Click on COC order to view detailed bill summary:\n    - Itemized list with quantities and prices
+  - Click on COC order to view detailed bill summary:\n    - Itemized list with quantities, portion sizes (half/full), and prices
     - Subtotal, taxes, service charges breakdown
     - Discounts and promo codes applied
     - Total amount payable (highlighted in large, bold text)
     - Customer name and table number
-    - Order timestamp\n  - Prominent action button: 'Collect Payment from Customer'
+    - Order timestamp
+  - Prominent action button: 'Collect Payment from Customer'
 \n- **Payment Collection Process**:
   - Step1: Customer approaches counter for payment
   - Step 2: Staff opens order in dashboard and reviews bill summary
@@ -654,8 +663,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Push notifications for new orders\n  - SMS alerts for critical issues
   - Email summaries for daily operations
 \n#### 3.1.9 Advanced Analytics & Reports
-- **Sales Analytics**:
-  - Real-time revenue dashboard
+- **Sales Analytics**:\n  - Real-time revenue dashboard
   - Daily/weekly/monthly/yearly sales trends
   - Peak hours and days analysis
   - Average order value and table turnover rate
@@ -663,8 +671,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Best-selling items with revenue contribution
   - Slow-moving items analysis
   - Category-wise sales distribution
-  - Profit margin per item
+  - Profit margin per item (including half/full portion analysis)
   - Item rating trends over time
+  - **Half vs Full Plate Performance**:
+    - Sales volume comparison between half and full portions
+    - Revenue contribution by portion size
+    - Customer preference trends
 - **Customer Insights**:
   - New vs. returning customer ratio
   - Customer lifetime value\n  - Average spending per customer
@@ -759,14 +771,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Drag to reorder by preference
   - **Meal Preferences**:
     - Preferred meal times (breakfast, lunch, dinner, late-night)
-    - Portion size preference (small, regular, large)
+    - Portion size preference (small, regular, large, half plate, full plate)
   - **Special Requests**:
     - Default special instructions (e.g., 'less oil', 'no MSG')
     - Saved for all future orders
 \n- **Payment Methods Section**:\n  - **Saved Cards**:
     - Card list with masked numbers (•••• •••• •••• 1234)
     - Card brand logo (Visa, Mastercard, Amex)\n    - Expiry date display\n    - Set default card option
-    - Edit or remove card with confirmation\n  - **Digital Wallets**:
+    - Edit or remove card with confirmation
+  - **Digital Wallets**:
     - Linked wallets: Google Pay, Apple Pay, PayPal\n    - Add new wallet option
     - Default wallet selection
   - **Add New Payment Method**:
@@ -789,7 +802,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Order status badge
     - Tap to expand full order details
   - **Order Details View**:
-    - Complete itemized list with quantities and customizations
+    - Complete itemized list with quantities, portion sizes (half/full), and customizations
     - Subtotal, taxes, discounts, total breakdown
     - Payment method used
     - Digital receipt download button
@@ -881,7 +894,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Enhanced Restaurant Landing Experience**:
 \n- **Hero Section with Image Gallery**:
-  - **Full-screen image carousel** displaying restaurant images:\n    - Primary banner image (full-width, 16:9 aspect ratio)
+  - **Full-screen image carousel** displaying restaurant images:\n    - Primary banner image (full-width,16:9 aspect ratio)
     - Swipeable gallery with all uploaded restaurant images:\n      - Interior photos (dining area, ambiance shots)
       - Exterior photos (building facade, entrance)
       - Signature dish photos (high-quality food images)
@@ -896,7 +909,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Verified badge (green checkmark) if restaurant is verified
 \n- **Restaurant Information Card** (Below Hero Section):
   - **Restaurant Name & Type**:
-    - Restaurant name in large, bold typography (H1, Poppins Bold, 32px)
+    - Restaurant name in large, bold typography (H1, Poppins Bold,32px)
     - Restaurant tagline/slogan below name (if provided, italic, 18px)
     - **Restaurant Type Indicator** (prominent display):
       - Large color-coded badge positioned next to restaurant name:\n        - **Pure Vegetarian**: Green badge with leaf icon and text'Pure Veg'
@@ -1027,6 +1040,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Price Display**:
       - **Single Price**: Bold, 20px, Poppins SemiBold, primary color (orange)
       - **Quantity-Based Pricing**: Price range displayed (e.g., '$8- $16')
+      - **Half/Full Plate Pricing**: Price range displayed (e.g., 'Half $10 | Full $18')
       - **Discounted Price**: Original price struck through, discounted price in bold with savings percentage (e.g., 'Save 20%')
       - Positioned bottom-left of card
     - **Add Button**:
@@ -1130,11 +1144,24 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
           - **Regular** (400g) - $12 (marked as 'Default')
           - **Large** (600g) - $16\n        - Cards styled with border, rounded corners\n        - Selected size highlighted with orange border
         - Tap to select size
+    - **Half/Full Plate Pricing** (for applicable items):
+      - Pricing table displayed as two prominent cards:
+        - **Half Plate Card**:
+          - Label: 'Half Plate'
+          - Portion description (e.g., 'Perfect for one person')
+          - Price in bold (e.g., '$10')
+          - Card styled with border, rounded corners
+        - **Full Plate Card**:\n          - Label: 'Full Plate'
+          - Portion description (e.g., 'Ideal for sharing or hearty appetite')
+          - Price in bold (e.g., '$18')
+          - Card styled with border, rounded corners
+      - Selected option highlighted with orange border and checkmark icon
+      - Tap to select Half or Full\n      - Default selection based on restaurant settings
     - **Discounted Price**:
-      - Original price struck through in gray\n      - Discounted price in bold, large text, primary color\n      - Savings percentage badge (e.g., 'Save 20%') in green
+      - Original price struck through in gray
+      - Discounted price in bold, large text, primary color\n      - Savings percentage badge (e.g., 'Save 20%') in green
       - Discount validity period displayed (e.g., 'Valid until Dec 31')
-  - **Combo Pricing** (if applicable):
-    - Combo meal details displayed in expandable card:\n      - Combo name and description
+  - **Combo Pricing** (if applicable):\n    - Combo meal details displayed in expandable card:\n      - Combo name and description
       - Bundled items list with images
       - Combo price with savings amount
       - 'Add Combo' button\n\n- **Preparation Time**:
@@ -1142,8 +1169,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Displayed as badge below pricing
 \n- **Dietary Indicators & Allergen Information**:
   - **Dietary Attributes**:
-    - Horizontal row of icon badges:\n      - Vegetarian, Vegan, Gluten-Free, Dairy-Free, Halal, Kosher, etc.
-    - Each badge with icon and label
+    - Horizontal row of icon badges:\n      - Vegetarian, Vegan, Gluten-Free, Dairy-Free, Halal, Kosher, etc.\n    - Each badge with icon and label
     - Color-coded for quick recognition
   - **Spice Level**:
     - Chili pepper icons (1-4 chilies) with label (e.g., 'Medium Spice')
@@ -1152,7 +1178,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Prominent warning section with red border if allergens present
     - List of allergens with warning icons:\n      - Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, etc.
     - Severity indicator (mild, moderate, severe) with color coding
-    - Bold text:'Contains: Nuts, Dairy' for severe allergens
+    - Bold text: 'Contains: Nuts, Dairy' for severe allergens
 
 - **Ingredients List**:
   - Expandable section with 'View Ingredients' button
@@ -1177,7 +1203,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Bars color-coded (green for high ratings, red for low)\n  - **Recent Reviews**:
     - List of recent reviews (last 5-10 reviews)\n    - Each review card displays:
       - Customer name and profile photo
-      - Star rating (1-5 stars)\n      - Review date (e.g., '2 days ago')
+      - Star rating (1-5 stars)
+      - Review date (e.g., '2 days ago')
       - Review text (full or truncated with'Read More')
       - Review photos uploaded by customer (if any)
       - Helpful/Not Helpful voting buttons with count
@@ -1200,6 +1227,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - **If Quantity-Based Pricing**:
     - Radio buttons or segmented control for size options:\n      - Small, Regular, Large (or custom names)
     - Selected size highlighted\n    - Price updates dynamically based on selection
+  - **If Half/Full Plate Option Available**:
+    - **Prominent segmented control or radio buttons**:
+      - **Half Plate** (left option): Label with price (e.g., 'Half Plate - $10')
+      - **Full Plate** (right option): Label with price (e.g., 'Full Plate - $18')
+    - Selected option highlighted with orange background and white text
+    - Unselected option with white background and orange border
+    - Smooth transition animation when switching between options
+    - Price updates dynamically based on selection
+- Default selection based on restaurant settings or customer preference
   - **If Single Price**:
     - Quantity selector with '+' and '-' buttons
     - Current quantity displayed in center
@@ -1213,15 +1249,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Checklist of add-ons with individual prices:\n    - Extra cheese (+$2), Extra sauce (+$1), Extra toppings (+$3)
     - Side items (fries, salad, bread)\n    - Beverages (soft drinks, juices)
     - Desserts\n  - Each add-on with checkbox and price
-  - Selected add-ons highlighted
-  - Total add-on cost displayed
+  - Selected add-ons highlighted\n  - Total add-on cost displayed
 
 - **Removal Options**:
   - Expandable section with 'Customize' button
   - Checklist of ingredients to remove:\n    - No onions, No garlic, No cilantro, No mayo, etc.
   - Each option with checkbox\n  - No additional charge for removals
-
-- **Cooking Preferences** (if applicable):
+\n- **Cooking Preferences** (if applicable):
   - Dropdown or radio buttons:\n    - For meats: Rare, Medium Rare, Medium, Medium Well, Well Done
     - For fried items: Crispy, Soft, Extra crispy
   - Selected preference highlighted
@@ -1232,13 +1266,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 - **Total Price Display**:
   - Large, bold text showing total price including customizations
-  - Breakdown: Base price + Add-ons + Adjustments = Total
+  - Breakdown: Base price (Half/Full) + Add-ons + Adjustments = Total
   - Updates dynamically as customizations change
 
 - **Add to Cart Button**:
   - Large, prominent button at bottom\n  - Orange background with white text
   - Text: 'Add to Cart - $XX.XX'
-  - Tap to add item to cart with all customizations
+  - Tap to add item to cart with all customizations (including half/full selection)
   - Loading animation on tap
   - Success feedback (checkmark animation or toast notification)
 
@@ -1261,8 +1295,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Positioned top-right corner (floating over image)
   - Circular button with share icon
   - Tap to open share sheet (share item via social media, messaging, etc.)
-
-#### 3.2.5 Advanced Cart & Checkout\n
+\n#### 3.2.5 Advanced Cart & Checkout\n
 **Smart Cart**:
 - **Floating Cart Button**:
   - Positioned bottom-right corner (fixed)\n  - Circular button with cart icon
@@ -1279,13 +1312,14 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Item image thumbnail
       - Item name
       - **Item type indicator** (Veg/Non-Veg icon)
-      - Portion size selected (if applicable)
+      - **Portion size selected** (Half Plate or Full Plate, if applicable)
       - Customizations summary (spice level, add-ons, removals)
       - Special instructions (if provided)
-      - Quantity selector with '+' and '-' buttons\n      - Individual item price
+      - Quantity selector with '+' and '-' buttons
+      - Individual item price
       - Subtotal per item (quantity × price)
     - Swipe left to remove item (with confirmation)
-    - Tap item to edit customizations
+    - Tap item to edit customizations (including changing half/full selection)
   - **Pricing Breakdown**:
     - Subtotal (sum of all items)
     - Taxes (itemized: GST, service charge, etc.)
@@ -1309,8 +1343,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Each offer card displays:
     - Offer title and description
     - Discount amount or percentage
-    - Validity period
-    - 'Apply' button\n  - Auto-apply best offer option
+    - Validity period\n    - 'Apply' button\n  - Auto-apply best offer option
 - **Loyalty Points Redemption**:
   - Display available loyalty points
   - Slider or input to select points to redeem
@@ -1320,11 +1353,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Text box for overall order notes
   - Placeholder: 'Any special instructions for your order?'
   - Character limit indicator\n- **Quick Options**:
-  - Pre-defined buttons for common requests:\n    - 'Less Oil', 'Extra Spicy', 'No MSG', 'Mild Salt', etc.
+  - Pre-defined buttons for common requests:
+    - 'Less Oil', 'Extra Spicy', 'No MSG', 'Mild Salt', etc.
   - Tap to add to instructions
 \n**Order Confirmation**:
 - **Review Order Summary**:
-  - Complete itemized list with all details
+  - Complete itemized list with all details (including half/full selections)
   - Pricing breakdown
   - Special instructions summary
 - **Confirm Details**:
@@ -1336,8 +1370,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Orange background with white text
   - Text: 'Place Order - $XX.XX'
   - Loading animation on tap
-  - Success feedback (checkmark animation)
-  - Redirect to order tracking screen
+  - Success feedback (checkmark animation)\n  - Redirect to order tracking screen
 
 #### 3.2.6 Real-Time Order Tracking with Complete Timeline
 
@@ -1365,8 +1398,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Acknowledged**:
       - Icon: Checkmark icon (blue)
       - Label: 'Order Acknowledged'
-      - Timestamp: Date and time
-      - Description: 'Restaurant has confirmed your order'
+      - Timestamp: Date and time\n      - Description: 'Restaurant has confirmed your order'
     - **Waiter Assigned**:
       - Icon: Person icon (blue)
       - Label: 'Waiter Assigned'
@@ -1418,7 +1450,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Each item shows:
       - Item name and thumbnail image
       - **Item type indicator** (Veg/Non-Veg icon)
-      - Quantity and portion size
+      - Quantity and **portion size** (Half Plate or Full Plate, if applicable)
       - Customizations (spice level, add-ons, removals)
       - Special instructions per item
       - Individual item price
@@ -1496,8 +1528,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Placeholder: 'Type your message...'
     - Send button (paper plane icon)
     - Attachment button (paperclip icon) for image sharing
-    - Voice message button (microphone icon)
-\n**Chat Features**:
+    - Voice message button (microphone icon)\n\n**Chat Features**:
 - **Text Messaging**:
   - Real-time message delivery
   - Typing indicators when waiter is responding (e.g., '[Waiter Name] is typing...')
@@ -1524,7 +1555,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Scroll to load older messages
 \n**AI Chatbot Integration**:
 - **Instant Responses**:
-  - AI chatbot handles common queries:\n    - Menu information (ingredients, allergens, pricing)
+  - AI chatbot handles common queries:\n    - Menu information (ingredients, allergens, pricing, half/full options)
     - Restaurant details (hours, location, amenities)
     - Order status updates
   - Instant response with no wait time
@@ -1556,7 +1587,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Bell icon remains accessible in app header or floating button
     - Customer can tap bell icon later to reopen dialog
   - **If customer selects 'Yes, I am Done'**:
-    - Dialog closes with smooth transition\n    - Proceed to bill summary and payment flow
+    - Dialog closes with smooth transition
+    - Proceed to bill summary and payment flow
 \n**Bill Generation & Summary**:
 \n- **Bill Summary Screen**:
   - **Header**:
@@ -1566,7 +1598,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Clean, receipt-style layout
     - Each item displays:
       - Item name
-      - Quantity and portion size
+      - Quantity and **portion size** (Half Plate or Full Plate, if applicable)
       - Individual item price
       - Subtotal per item
     - Customizations and add-ons listed below each item
@@ -1586,9 +1618,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Selected payment method displayed prominently with icon
     - Payment method name (e.g., 'Cash on Counter', 'Credit Card', 'Google Pay')
 \n**Payment Flow Based on Method**:
-
-**For COC (Cash on Counter) Payment**:
-\n- **Step 1: Bill Summary with COC Banner**:
+\n**For COC (Cash on Counter) Payment**:\n\n- **Step 1: Bill Summary with COC Banner**:
   - Bill summary displays with prominent banner at top:\n    - **Orange banner** with cash/counter icon
     - **Text**: 'Payment Method: Cash on Counter (COC)'
     - Banner styled with rounded corners and shadow
@@ -1631,10 +1661,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Restaurant details and logo
       - Order ID and timestamp
       - Table number\n      - Customer name
-      - Itemized list with prices
+      - Itemized list with prices (including half/full plate selections)
       - Subtotal, taxes, discounts, total
-      - Payment method: COC
-      - Payment timestamp
+      - Payment method: COC\n      - Payment timestamp
       - Thank you message
     - E-bill sent via:\n      - **Email** (if email provided): Sent to registered email
       - **SMS** with download link (if phone provided): Sent to registered phone
@@ -1661,7 +1690,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Payment gateway opens (Stripe, PayPal, Razorpay, etc.)\n  - Enter payment details:\n    - Card number, expiry date, CVV (for cards)
     - Login credentials (for wallets)
     - UPI ID (for UPI)\n    - BNPL account details (for BNPL)
-  - Authentication:\n    - 3D Secure (for cards)\n    - OTP verification (for wallets/UPI)
+  - Authentication:\n    - 3D Secure (for cards)
+    - OTP verification (for wallets/UPI)
     - Biometric authentication (if supported)
 \n- **Step 5: Payment Processing**:
   - Loading screen with message: 'Processing payment...'
@@ -1676,7 +1706,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - **Email**: Sent to registered email
       - **SMS**: Sent to registered phone with download link
       - **In-app download option**: 'Download E-Bill' button available
-    - Payment status:'Paid Online'\n    - Transaction ID included in e-bill
+    - Payment status: 'Paid Online'\n    - Transaction ID included in e-bill
   - **'Print E-Bill' Button Becomes Visible**:
     - Button displayed in order details screen\n  - **Redirect to Post-Payment Screen**:
     - Automatic redirect to rating and review screen\n\n**Split Bill Feature**:
@@ -1779,15 +1809,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Each item displays:
       - Item name and thumbnail image
       - **Item type indicator** (Veg/Non-Veg icon)
-      - Quantity and portion size
-      - Customizations (spice level, add-ons, removals)
+      - Quantity and **portion size** (Half Plate or Full Plate, if applicable)\n      - Customizations (spice level, add-ons, removals)
       - Special instructions per item
       - Individual item price
       - Subtotal per item
 - **Pricing Breakdown**:\n    - Subtotal\n    - Taxes (itemized)
     - Discounts and promo codes applied
     - Tip amount (if applicable)
-    - Total amount (large, bold)\n  - **Payment Information**:
+    - Total amount (large, bold)
+  - **Payment Information**:
     - Payment method used (with icon)
     - Payment status (Completed/Failed)
     - Transaction ID (for online payments)
@@ -1819,7 +1849,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 - **Action Buttons**:
   - **'Reorder' Button**:
-    - One-tap reorder with saved customizations
+    - One-tap reorder with saved customizations (including half/full selections)
     - All items added to cart with same customizations
     - Option to modify before placing order
   - **'Rate & Review' Button** (if not already reviewed):
@@ -1862,11 +1892,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **'Reorder' Button on Order Card**:
   - Positioned on each order card in list view
   - Tap to reorder entire order
-  - All items added to cart with saved customizations
+  - All items added to cart with saved customizations (including half/full selections)
   - Confirmation toast: 'Items added to cart'\n
 - **Modify Reorder Before Placing**:
   - After reorder, cart opens automatically
-  - Customer can edit items, quantities, customizations
+  - Customer can edit items, quantities, customizations (including changing half/full selection)
   - Remove items if needed
   - Add new items from menu
   - Proceed to checkout when ready
@@ -1880,8 +1910,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n- **Save Favorite Dishes**:
   - Heart icon on item detail view
   - Tap to add to favorites
-  - Quick access to favorite dishes from profile
-  - 'Add to Cart' button on favorite dishes for quick ordering
+  - Quick access to favorite dishes from profile\n  - 'Add to Cart' button on favorite dishes for quick ordering
 
 - **Create Custom Food Collections**:
   - Create collections (e.g., 'Comfort Food', 'Healthy Meals', 'Desserts')
@@ -1997,27 +2026,25 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - **Set pricing**:
      - Base price (required)
      - Quantity-based pricing (optional): Small/Regular/Large with individual prices
-     - Combo pricing (optional)
-     - Discounted price (optional)
+     - **Half/Full Plate Pricing** (optional): Enable toggle, set Half Plate price and Full Plate price, set default selection
+     - Combo pricing (optional)\n     - Discounted price (optional)
    - Assign to categories
-   - Set preparation time
-   - Select dietary indicators and allergen information
+   - Set preparation time\n   - Select dietary indicators and allergen information
    - Add nutritional information (optional)
-   - List ingredients\n   - Configure customization options (portion sizes, add-ons, spice levels)
+   - List ingredients\n   - Configure customization options (portion sizes, add-ons, spice levels, half/full plate selection)
    - Set availability status
    - Add tags and pairing suggestions
-4. Bulk import items via CSV (optional)
+4. Bulk import items via CSV (optional, template includes half/full plate fields)
 5. Preview menu in customer view
 6. Publish menu
 
 **Phase 4: Inventory Setup**
 1. Create ingredient master list
-2. Link ingredients to menu items with quantities
+2. Link ingredients to menu items with quantities (including separate quantities for half and full portions)
 3. Set minimum stock levels and alerts
 4. Add supplier information
 5. Log initial stock levels
-
-**Phase 5: QR Code Generation**
+\n**Phase 5: QR Code Generation**
 1. Navigate to 'QR Code Management'
 2. Enter number of tables
 3. Customize QR code design with logo and colors
@@ -2039,8 +2066,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - System validates restaurant ID from QR scan
    - View customer's real name (or'Guest' if not logged in)
    - Click on order card to expand full details
-   - View complete order information (including item types, portion sizes, ratings)
-   - View timeline and payment status
+   - View complete order information (including item types, portion sizes - half/full, ratings)\n   - View timeline and payment status
    - Acknowledge order\n   - System auto-assigns waiter based on table location
    - Waiter receives notification and confirms\n   - Kitchen receives order and starts preparation
    - Update order status: Preparing → Ready → Served
@@ -2050,7 +2076,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 5. **Handle COC Payments**:
    - Monitor'Pending COC Payments' section
    - When customer approaches counter:
-     - Open order and review bill summary
+     - Open order and review bill summary (including half/full plate selections)
      - Collect cash payment from customer
      - Click 'Collect Payment from Customer'\n     - Confirm payment received
      - System updates order timeline with'Payment Collected' timestamp
@@ -2063,11 +2089,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Print directly or download as PDF
 7. Manage inventory:
    - Update stock levels\n   - Mark items as out of stock when ingredients run low
-8. Review daily analytics and reports
+8. Review daily analytics and reports (including half/full plate performance)
 
 **Phase 8: Ongoing Management**
 1. Update menu based on inventory and customer feedback
-2. Analyze sales trends and adjust pricing
+2. Analyze sales trends and adjust pricing (including half/full plate pricing optimization)
 3. Monitor item ratings and reviews
 4. Respond to customer reviews
 5. Manage staff schedules and performance
@@ -2115,7 +2141,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. View food item cards:
    - See large food images with item type indicators (Veg/Non-Veg icons)
    - View customer ratings and review counts
-   - See price display (single price or price range for quantity-based items)
+   - See price display (single price, price range for quantity-based items, or half/full plate pricing)
    - View badges ('Popular', 'Chef's Special', 'Best Seller', etc.)
    - View dietary indicators and spice level
 5. Use advanced filters:
@@ -2127,6 +2153,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 7. Use AI chatbot to ask questions:\n   - 'Does this dish contain nuts?'
    - 'How spicy is this item?'
    - 'Whatdo you recommend for vegetarians?'
+   - 'Is this available in half plate?'
 \n**Phase 4: Item Detail View & Ordering**
 1. Tap on item card to view full details
 2. **View comprehensive item information**:
@@ -2136,6 +2163,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Read detailed description
    - **View pricing**:
      - If single price: See base price\n     - If quantity-based pricing: View pricing table with size options (Small/Regular/Large)
+     - **If half/full plate option available**: View pricing table with Half Plate and Full Plate cards showing prices and descriptions
      - If discounted: See original price struck through with savings percentage
    - View preparation time
    - View dietary indicators and spice level
@@ -2147,21 +2175,23 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Vote helpful/not helpful on reviews
    - View pairing suggestions and frequently ordered with items
 3. **Customize order**:
-   - Select quantity/portion size (if quantity-based pricing)
-   - Adjust spice level\n   - Add extras (cheese, sauce, toppings)
+   - **Select portion size**:
+     - If quantity-based pricing: Select Small/Regular/Large
+     - **If half/full plate option available**: Select Half Plate or Full Plate (tap on card to select, selected option highlighted with orange border)
+   - Adjust spice level
+   - Add extras (cheese, sauce, toppings)
    - Remove ingredients (no onions, etc.)
    - Select cooking preferences (if applicable)
-   - Add special instructions\n   - Select quantity\n4. View total price (updates dynamically with customizations)
+   - Add special instructions\n   - Select quantity\n4. View total price (updates dynamically with customizations including half/full selection)
 5. Tap 'Add to Cart'\n6. Continue browsing and adding items\n
 **Phase 5: Cart & Checkout**
 1. Tap floating cart button to review\n2. View itemized cart:\n   - See item names, images, item type indicators
-   - View quantities, portion sizes, customizations
-   - Edit items or quantities
+   - View quantities, **portion sizes** (Half Plate or Full Plate, if applicable)
+   - View customizations\n   - Edit items or quantities (including changing half/full selection)
    - Remove items
 3. Apply promo code if available
 4. Add order-level special instructions
-5. Review total amount and estimated time
-6. Tap 'Place Order' (system validates restaurant ID)\n7. Receive order confirmation notification
+5. Review total amount and estimated time\n6. Tap 'Place Order' (system validates restaurant ID)\n7. Receive order confirmation notification
 \n**Phase 6: Order Tracking with Complete Timeline**
 1. View order status screen with visual progress tracker
 2. **See complete order timeline with all stages**:
@@ -2176,7 +2206,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 5. Pending stages shown in gray with clock icons
 6. Duration between stages displayed (e.g., 'Prepared in 15 mins')
 7. **Tap on order card to expand full details**:\n   - View complete order information
-   - View itemized list with item types, portion sizes, and customizations
+   - View itemized list with item types, portion sizes (half/full), and customizations
    - View pricing breakdown
    - View payment information
    - View complete timeline with all timestamps
@@ -2199,20 +2229,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Tap 'Complete Dining' button
    - Confirmation dialog: 'Have you finished your meal?'
    - Select 'Yes, I am Done'\n2. **Bill Summary Display**:
-   - View itemized bill with all charges
+   - View itemized bill with all charges (including half/full plate selections)
    - Review total amount
    - Add tip (optional)
 3. **Payment Based on Method**:
    - **If COC Selected**:
      - See instruction: 'Please Pay at the Counter'
      - Proceed to restaurant counter with phone\n     - Show bill summary to staff
-     - Pay with cash
-     - Tap 'I Have Paid at Counter' in app
+     - Pay with cash\n     - Tap 'I Have Paid at Counter' in app
      - Confirm payment completion
      - Wait for restaurant confirmation
      - Receive payment success notification
      - **Order timeline automatically updated** with 'Payment Collected' timestamp
-- **E-bill automatically generated and sent via email/SMS**
+     - **E-bill automatically generated and sent via email/SMS**
      - Download e-bill from app
      - **'Print E-Bill' button becomes visible** in order details
    - **If Online Payment Selected**:
@@ -2228,18 +2257,17 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Individual e-bills generated for each\n\n**Phase 9: Post-Dining**
 1. Rate overall experience (1-5 stars)
 2. Rate individual aspects:
-   - Food quality\n   - Service\n   - Ambiance
-   - Value for money
+   - Food quality\n   - Service
+   - Ambiance\n   - Value for money
 3. Rate individual dishes ordered
 4. Write review and upload photos
 5. View loyalty points earned
 6. Download, print, or email e-bill if needed
 7. Save restaurant to favorites
 8. Share experience on social media
-9. **View complete order details in Order History**:
-   - Tap on order to expand full details
+9. **View complete order details in Order History**:\n   - Tap on order to expand full details
    - View complete timeline with all timestamps
-   - View itemized list with item types, portion sizes, and pricing
+   - View itemized list with item types, portion sizes (half/full), and pricing
    - Access e-bill (download, print, email)
 \n### 4.3 Waiter/Agent Complete Flow
 
@@ -2247,8 +2275,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 1. Receive invitation email from restaurant owner
 2. Click activation link
 3. Set up password and security questions
-4. Complete profile: name, photo, employee ID
-5. Download DineQR Staff app
+4. Complete profile: name, photo, employee ID\n5. Download DineQR Staff app
 6. Login with employee ID and password
 7. Enable biometric login\n\n**Phase 2: Shift Start**
 1. Login to staff app
@@ -2261,7 +2288,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 2. Tap on order card to expand full details
 3. View complete order information:\n   - Table number
    - Customer name (real name from profile)
-   - Ordered items with item types, portion sizes, and customizations
+   - Ordered items with item types, portion sizes (half/full), and customizations
    - Special instructions
    - Estimated preparation time
    - Order timeline with current status
@@ -2274,7 +2301,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Phase 4: Customer Communication**
 1. Receive chat messages from assigned tables
 2. Respond to customer requests:
-   - Answer menu questions
+   - Answer menu questions (including half/full plate availability)
    - Bring additional items (napkins, water, condiments)
    - Handle order modifications
    - Address complaints or issues
@@ -2315,15 +2342,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Primary: Poppins (headings, buttons, emphasis)
   - Secondary: Inter (body text, descriptions, UI elements)
 - **Type Scale**:
-  - H1: Poppins Bold,32px (restaurant names, page titles)
+  - H1: Poppins Bold, 32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
-  - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
+  - H4: Poppins Medium, 18px (sub-headings)
+  - Body Large: Inter Regular, 16px (descriptions, content)
   - Body: Inter Regular, 14px (standard text)
   - Small: Inter Regular, 12px (metadata, captions, timestamps)
   - Button: Poppins SemiBold, 16px (CTAs)\n  - Price: Poppins SemiBold, 20px (pricing emphasis)
-
-### 5.3 Layout & Grid System
+\n### 5.3 Layout & Grid System
 - **Responsive Breakpoints**:
   - Mobile: 320px - 767px (single column)
   - Tablet: 768px - 1023px (2-column grid)
@@ -2367,11 +2394,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Sidebar navigation for desktop (240px width)\n- Active state: Orange underline or background
 
 **Food Item Cards**:
-- Image: 16:9 aspect ratio, rounded top corners
+- Image:16:9 aspect ratio, rounded top corners
 - **Item type indicator**: Positioned top-left on image (Veg/Non-Veg/Vegan icon with colored background,32px diameter)
 - Content padding: 12px
 - Badges: Positioned top-right on image\n- **Rating display**: Star icon with rating number below item name
-- **Price display**: Bottom-right, bold and prominent (base price or price range)
+- **Price display**: Bottom-right, bold and prominent (base price, price range, or half/full plate pricing)
 - Add button: Floating bottom-right corner\n
 **Order Status Cards**:
 - Color-coded left border (4px width) based on status
@@ -2392,7 +2419,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Review count in parentheses
 - Color: Yellow (#FFC107) for stars\n- Size: 16px for small, 24px for large
 \n**Item Type Indicator**:
-- Icon size: 20px (small), 32px (large)\n- Vegetarian: Green circle with leaf or'V' symbol
+- Icon size: 20px (small), 32px (large)
+- Vegetarian: Green circle with leaf or'V' symbol
 - Non-Vegetarian: Red circle with chicken leg or 'N' symbol
 - Vegan: Green circle with 'VG' symbol
 - Eggetarian: Yellow circle with egg symbol
@@ -2407,17 +2435,31 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Vegan: Green badge with 'VG' icon
 - Mixed: Orange badge with dual icon (leaf + chicken leg)
 
-### 5.5 Iconography
-- **Style**: Outlined icons for consistency
+**Half/Full Plate Selection Component**:
+- **Segmented Control Style**:
+  - Two segments: Half Plate (left) and Full Plate (right)\n  - Width: 100% of container, height: 56px
+  - Border radius: 12px for outer container
+  - Selected segment: Orange background (#FF6B35), white text, bold
+  - Unselected segment: White background, orange border, orange text
+  - Smooth slide animation when switching (300ms ease-in-out)
+- **Card Style** (for item detail view):
+  - Two cards side by side with equal width
+  - Card height: 120px\n  - Border: 2px solid light gray
+  - Border radius: 12px
+  - Selected card: Orange border, checkmark icon top-right
+  - Unselected card: Light gray border\n  - Each card displays: Label (Half Plate/Full Plate), description, price
+  - Tap to select with scale animation (scale0.98 on tap)
+\n### 5.5 Iconography\n- **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), restaurant type indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars\n- **Color**: Inherit from parent or theme color
+- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), restaurant type indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars, half/full plate icons
+- **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
 - **Food Photos**:
   - High resolution: minimum 1200x675px
   - Professional photography with good lighting
-  - Consistent styling across menu\n  - Show portion size accurately
+  - Consistent styling across menu\n  - Show portion size accurately (including visual difference between half and full plates if applicable)
   - Include garnish and plating\n- **Restaurant Photos**:
   - Ambiance shots for landing page
   - Interior and exterior views
@@ -2432,7 +2474,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms
 - **Button Press**: Scale(0.98) with 100ms
 - **Loading States**: Skeleton screens with shimmer effect
-- **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up\n- **Status Updates**: Progress bar fill animation
+- **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up
+- **Status Updates**: Progress bar fill animation
 - **Timeline Updates**: Checkmark animation with scale and color change
 - **Success Actions**: Checkmark animation with scale\n- **Payment Method Selection**: Smooth highlight transition when selected
 - **Dining Completion Dialog**: Fade-in with scale animation
@@ -2440,6 +2483,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Print Dialog**: Fade-in with slide-up\n- **Rating Stars**: Fill animation on tap/click
 - **Image Gallery Swipe**: Smooth swipe transitions with fade effect
 - **Restaurant Type Toggle**: Slide animation when switching segments
+- **Half/Full Plate Selection**: Smooth transition animation when switching options (300ms ease-in-out)
 - **Dashboard Home Page Animations**:
   - Hero section gradient transitions: 3s infinite alternate
   - Floating food icons: 4s ease-in-out infinite (up and down motion)
@@ -2515,13 +2559,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n## 7. Future Enhancements
 - AI-powered menu recommendations based on customer preferences and dietary restrictions
 - Voice ordering with natural language processing
-- Augmented Reality (AR) menu visualization
+- Augmented Reality (AR) menu visualization (including visual comparison of half vs full portions)
 - Delivery and takeout integration
 - Table reservation system
 - Loyalty program with gamification\n- Multi-language support for international customers
 - Integration with food delivery platforms (Uber Eats, DoorDash)
 - Kitchen automation with IoT devices
-- Predictive analytics for inventory management
+- Predictive analytics for inventory management (including half/full portion demand forecasting)
 - Cryptocurrency payment support
 - QR code-based loyalty card scanning
 - Automated e-bill archiving and tax reporting
@@ -2531,6 +2575,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Customer timeline sharing (share order progress with friends/family)
 - Advanced rating analytics (sentiment analysis, trending feedback)
 - Item recommendation engine based on ratings and order history
+- Smart portion size recommendations based on customer history and preferences
 \n## 8. Design Style\n
 ### 8.1 Overall Aesthetic
 - Modern and clean interface with focus on usability and visual appeal
@@ -2543,7 +2588,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 ### 8.2 Visual Elements
 - **Color Scheme**: Vibrant orange as primary color for energy and appetite stimulation, complemented by teal for professionalism and trust
 - **Typography**: Poppins for bold, modern headings; Inter for clean, readable body text
-- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan), restaurant type indicators\n- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context, comprehensive restaurant image galleries
+- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan), restaurant type indicators, half/full plate icons
+- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context, comprehensive restaurant image galleries
 - **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page
 
 ### 8.3 User Experience Principles
@@ -2554,9 +2600,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Personalization**: Tailored experience based on user preferences and history
 - **Accessibility**: Inclusive design for users of all abilities
 - **Engagement**: Animated elements that create emotional connection and enhance brand identity
+- **Flexibility**: Support for diverse dining preferences including half/full portion options
 
 ### 8.4 Brand Identity
 - **Logo**: Modern, food-related icon with'DineQR' wordmark
 - **Tagline**: 'Your Culinary Journey Starts Here' or 'Smart Dining, Simplified'
 - **Voice**: Professional yet friendly, informative yet conversational
-- **Values**: Innovation, quality, customer satisfaction, transparency
+- **Values**: Innovation, quality, customer satisfaction, transparency, flexibility

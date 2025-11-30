@@ -97,6 +97,7 @@ export interface MenuItem {
   is_vegan: boolean;
   is_gluten_free: boolean;
   spice_level: SpiceLevel | null;
+  has_portions: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -165,6 +166,8 @@ export interface OrderItem {
   quantity: number;
   price: number;
   notes: string | null;
+  portion_size: string | null;
+  variant_name: string | null;
   created_at: string;
 }
 
@@ -195,4 +198,6 @@ export interface CartItem {
   menu_item: MenuItem;
   quantity: number;
   notes?: string;
+  selectedVariant?: MenuItemVariant;
+  portionSize?: string;
 }

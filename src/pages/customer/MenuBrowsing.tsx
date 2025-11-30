@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, menuCategoryApi, menuItemApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem, ItemType } from '@/types/types';
+import { Restaurant, MenuCategory, MenuItem, ItemType, MenuItemVariant, CartItem } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,8 @@ import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { 
   ShoppingCart, 
@@ -35,12 +37,6 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface CartItem {
-  menuItem: MenuItem;
-  quantity: number;
-  specialInstructions?: string;
-}
-
 export default function MenuBrowsing() {
   const { restaurantId } = useParams();
   const [searchParams] = useSearchParams();
@@ -60,6 +56,9 @@ export default function MenuBrowsing() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showPortionDialog, setShowPortionDialog] = useState(false);
+  const [itemForPortionSelection, setItemForPortionSelection] = useState<MenuItem | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
   
   // Filters
   const [itemTypeFilter, setItemTypeFilter] = useState<ItemType | 'all'>('all');
@@ -116,46 +115,84 @@ export default function MenuBrowsing() {
     }
   };
 
-  const addToCart = (item: MenuItem) => {
-    const existingItem = cart.find((cartItem) => cartItem.menuItem.id === item.id);
+  const addToCart = (item: MenuItem, variant?: MenuItemVariant) => {
+    // Check if item has portions and no variant is selected
+    if (item.has_portions && item.variants && item.variants.length > 0 && !variant) {
+      setItemForPortionSelection(item);
+      setSelectedVariant(item.variants[0]); // Default to first variant
+      setShowPortionDialog(true);
+      return;
+    }
+
+    const portionSize = variant?.name || null;
+    const price = variant?.price || item.price;
+    
+    // Create a unique key for cart items with different portions
+    const cartKey = `${item.id}-${portionSize || 'default'}`;
+    const existingItem = cart.find((cartItem) => 
+      cartItem.menu_item.id === item.id && cartItem.portionSize === portionSize
+    );
     
     if (existingItem) {
       setCart(cart.map((cartItem) =>
-        cartItem.menuItem.id === item.id
+        cartItem.menu_item.id === item.id && cartItem.portionSize === portionSize
           ? { ...cartItem, quantity: cartItem.quantity + 1 }
           : cartItem
       ));
     } else {
-      setCart([...cart, { menuItem: item, quantity: 1 }]);
+      setCart([...cart, { 
+        menu_item: item, 
+        quantity: 1,
+        selectedVariant: variant,
+        portionSize: portionSize,
+      }]);
     }
     
     toast({
       title: '✓ Added to cart',
-      description: `${item.name} added successfully`,
+      description: `${item.name}${portionSize ? ` (${portionSize})` : ''} added successfully`,
     });
   };
 
-  const removeFromCart = (itemId: string) => {
-    const existingItem = cart.find((cartItem) => cartItem.menuItem.id === itemId);
+  const confirmPortionSelection = () => {
+    if (itemForPortionSelection && selectedVariant) {
+      addToCart(itemForPortionSelection, selectedVariant);
+      setShowPortionDialog(false);
+      setItemForPortionSelection(null);
+      setSelectedVariant(null);
+    }
+  };
+
+  const removeFromCart = (itemId: string, portionSize?: string | null) => {
+    const existingItem = cart.find((cartItem) => 
+      cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
+    );
     
     if (existingItem && existingItem.quantity > 1) {
       setCart(cart.map((cartItem) =>
-        cartItem.menuItem.id === itemId
+        cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
           ? { ...cartItem, quantity: cartItem.quantity - 1 }
           : cartItem
       ));
     } else {
-      setCart(cart.filter((cartItem) => cartItem.menuItem.id !== itemId));
+      setCart(cart.filter((cartItem) => 
+        !(cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize)
+      ));
     }
   };
 
-  const getCartItemQuantity = (itemId: string) => {
-    const item = cart.find((cartItem) => cartItem.menuItem.id === itemId);
+  const getCartItemQuantity = (itemId: string, portionSize?: string | null) => {
+    const item = cart.find((cartItem) => 
+      cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
+    );
     return item ? item.quantity : 0;
   };
 
   const getTotalAmount = () => {
-    return cart.reduce((total, item) => total + item.menuItem.price * item.quantity, 0);
+    return cart.reduce((total, item) => {
+      const price = item.selectedVariant?.price || item.menu_item.price;
+      return total + price * item.quantity;
+    }, 0);
   };
 
   const getTotalItems = () => {
@@ -827,57 +864,73 @@ export default function MenuBrowsing() {
           
           <div className="mt-6 flex flex-col h-[calc(100%-8rem)]">
             <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-              {cart.map((cartItem) => (
-                <Card key={cartItem.menuItem.id} className="overflow-hidden">
-                  <div className="flex gap-4 p-4">
-                    {cartItem.menuItem.image_url && (
-                      <img
-                        src={cartItem.menuItem.image_url}
-                        alt={cartItem.menuItem.name}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                    )}
-                    <div className="flex-1">
-                      <h4 className="font-semibold mb-1">{cartItem.menuItem.name}</h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        ${cartItem.menuItem.price.toFixed(2)} each
-                      </p>
-                      <div className="flex items-center gap-2">
+              {cart.map((cartItem, index) => {
+                const itemPrice = cartItem.selectedVariant?.price || cartItem.menu_item.price;
+                const cartKey = `${cartItem.menu_item.id}-${cartItem.portionSize || 'default'}-${index}`;
+                
+                return (
+                  <Card key={cartKey} className="overflow-hidden">
+                    <div className="flex gap-4 p-4">
+                      {cartItem.menu_item.image_url && (
+                        <img
+                          src={cartItem.menu_item.image_url}
+                          alt={cartItem.menu_item.name}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-1">
+                          {cartItem.menu_item.name}
+                          {cartItem.portionSize && (
+                            <Badge variant="secondary" className="ml-2">
+                              {cartItem.portionSize}
+                            </Badge>
+                          )}
+                        </h4>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          ${itemPrice.toFixed(2)} each
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={() => removeFromCart(cartItem.menu_item.id, cartItem.portionSize)}
+                            size="icon"
+                            variant="outline"
+                            className="h-8 w-8"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </Button>
+                          <span className="font-bold min-w-[2rem] text-center">{cartItem.quantity}</span>
+                          <Button
+                            onClick={() => addToCart(cartItem.menu_item, cartItem.selectedVariant || undefined)}
+                            size="icon"
+                            variant="outline"
+                            className="h-8 w-8"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-lg">
+                          ${(itemPrice * cartItem.quantity).toFixed(2)}
+                        </p>
                         <Button
-                          onClick={() => removeFromCart(cartItem.menuItem.id)}
-                          size="icon"
-                          variant="outline"
-                          className="h-8 w-8"
+                          onClick={() => setCart(cart.filter((item, i) => 
+                            !(item.menu_item.id === cartItem.menu_item.id && 
+                              item.portionSize === cartItem.portionSize && 
+                              i === index)
+                          ))}
+                          size="sm"
+                          variant="ghost"
+                          className="mt-2 text-destructive hover:text-destructive"
                         >
-                          <Minus className="w-4 h-4" />
-                        </Button>
-                        <span className="font-bold min-w-[2rem] text-center">{cartItem.quantity}</span>
-                        <Button
-                          onClick={() => addToCart(cartItem.menuItem)}
-                          size="icon"
-                          variant="outline"
-                          className="h-8 w-8"
-                        >
-                          <Plus className="w-4 h-4" />
+                          <X className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-lg">
-                        ${(cartItem.menuItem.price * cartItem.quantity).toFixed(2)}
-                      </p>
-                      <Button
-                        onClick={() => setCart(cart.filter(item => item.menuItem.id !== cartItem.menuItem.id))}
-                        size="sm"
-                        variant="ghost"
-                        className="mt-2 text-destructive hover:text-destructive"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                );
+              })}
             </div>
 
             <div className="border-t pt-4 mt-4 space-y-4">
@@ -1051,6 +1104,70 @@ export default function MenuBrowsing() {
                 </div>
               </div>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Portion Selection Dialog */}
+      <Dialog open={showPortionDialog} onOpenChange={setShowPortionDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Choose Portion Size</DialogTitle>
+            <DialogDescription>
+              Select your preferred portion for {itemForPortionSelection?.name}
+            </DialogDescription>
+          </DialogHeader>
+          
+          {itemForPortionSelection && itemForPortionSelection.variants && (
+            <div className="space-y-4 py-4">
+              <RadioGroup
+                value={selectedVariant?.name}
+                onValueChange={(value) => {
+                  const variant = itemForPortionSelection.variants?.find(v => v.name === value);
+                  if (variant) setSelectedVariant(variant);
+                }}
+              >
+                {itemForPortionSelection.variants.map((variant) => (
+                  <div
+                    key={variant.name}
+                    className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
+                  >
+                    <RadioGroupItem value={variant.name} id={variant.name} />
+                    <Label
+                      htmlFor={variant.name}
+                      className="flex-1 cursor-pointer flex justify-between items-center"
+                    >
+                      <div>
+                        <div className="font-semibold">{variant.name}</div>
+                        {variant.description && (
+                          <div className="text-sm text-muted-foreground">{variant.description}</div>
+                        )}
+                      </div>
+                      <div className="text-lg font-bold text-primary">
+                        ${variant.price.toFixed(2)}
+                      </div>
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+
+              <div className="flex gap-2 pt-4">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowPortionDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={confirmPortionSelection}
+                  disabled={!selectedVariant}
+                >
+                  Add to Cart
+                </Button>
+              </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>

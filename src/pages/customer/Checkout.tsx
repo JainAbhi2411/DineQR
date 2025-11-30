@@ -46,7 +46,10 @@ export default function Checkout() {
   }
 
   const getTotalAmount = () => {
-    return cart.reduce((total: number, item: any) => total + item.menuItem.price * item.quantity, 0);
+    return cart.reduce((total: number, item: any) => {
+      const price = item.selectedVariant?.price || item.menuItem?.price || item.menu_item?.price || 0;
+      return total + price * item.quantity;
+    }, 0);
   };
 
   const handlePlaceOrder = async () => {
@@ -94,12 +97,21 @@ export default function Checkout() {
 
       const order = await orderApi.createOrder(orderData);
 
-      const orderItems = cart.map((item: any) => ({
-        order_id: order.id,
-        menu_item_id: item.menuItem.id,
-        quantity: item.quantity,
-        price: item.menuItem.price,
-      }));
+      const orderItems = cart.map((item: any) => {
+        const menuItem = item.menuItem || item.menu_item;
+        const price = item.selectedVariant?.price || menuItem.price;
+        
+        return {
+          order_id: order.id,
+          menu_item_id: menuItem.id,
+          menu_item_name: menuItem.name,
+          quantity: item.quantity,
+          price: price,
+          portion_size: item.portionSize || null,
+          variant_name: item.selectedVariant?.name || null,
+          notes: item.notes || null,
+        };
+      });
 
       await orderApi.createOrderItems(orderItems);
 
@@ -161,28 +173,38 @@ export default function Checkout() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {cart.map((item: any) => (
-                    <div key={item.menuItem.id} className="flex justify-between items-center pb-4 border-b last:border-0">
-                      <div className="flex gap-4">
-                        {item.menuItem.image_url && (
-                          <img
-                            src={item.menuItem.image_url}
-                            alt={item.menuItem.name}
-                            className="w-16 h-16 object-cover rounded"
-                          />
-                        )}
-                        <div>
-                          <h4 className="font-semibold">{item.menuItem.name}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            ${item.menuItem.price.toFixed(2)} × {item.quantity}
-                          </p>
+                  {cart.map((item: any, index: number) => {
+                    const menuItem = item.menuItem || item.menu_item;
+                    const itemPrice = item.selectedVariant?.price || menuItem.price;
+                    
+                    return (
+                      <div key={`${menuItem.id}-${item.portionSize || 'default'}-${index}`} className="flex justify-between items-center pb-4 border-b last:border-0">
+                        <div className="flex gap-4">
+                          {menuItem.image_url && (
+                            <img
+                              src={menuItem.image_url}
+                              alt={menuItem.name}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                          )}
+                          <div>
+                            <h4 className="font-semibold">
+                              {menuItem.name}
+                              {item.portionSize && (
+                                <span className="ml-2 text-sm text-muted-foreground">({item.portionSize})</span>
+                              )}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              ${itemPrice.toFixed(2)} × {item.quantity}
+                            </p>
+                          </div>
                         </div>
+                        <span className="font-semibold">
+                          ${(itemPrice * item.quantity).toFixed(2)}
+                        </span>
                       </div>
-                      <span className="font-semibold">
-                        ${(item.menuItem.price * item.quantity).toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

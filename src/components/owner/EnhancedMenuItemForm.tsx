@@ -49,6 +49,7 @@ export default function EnhancedMenuItemForm({
     is_vegetarian: true,
     is_vegan: false,
     is_gluten_free: false,
+    has_portions: false,
   });
   const [variants, setVariants] = useState<MenuItemVariant[]>([]);
   const [variantForm, setVariantForm] = useState({ name: '', price: '', description: '' });
@@ -74,6 +75,7 @@ export default function EnhancedMenuItemForm({
         is_vegetarian: editingItem.is_vegetarian,
         is_vegan: editingItem.is_vegan,
         is_gluten_free: editingItem.is_gluten_free,
+        has_portions: editingItem.has_portions || false,
       });
       setVariants(editingItem.variants || []);
       setTags(editingItem.tags || []);
@@ -100,6 +102,7 @@ export default function EnhancedMenuItemForm({
       is_vegetarian: true,
       is_vegan: false,
       is_gluten_free: false,
+      has_portions: false,
     });
     setVariants([]);
     setTags([]);
@@ -386,8 +389,34 @@ export default function EnhancedMenuItemForm({
 
             <TabsContent value="pricing" className="space-y-4 mt-4">
               <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 border rounded-lg bg-accent/50">
+                  <div className="space-y-1">
+                    <Label htmlFor="has_portions" className="font-semibold">Enable Half/Full Portions</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Allow customers to choose between half and full portions
+                    </p>
+                  </div>
+                  <Switch
+                    id="has_portions"
+                    checked={formData.has_portions}
+                    onCheckedChange={(checked) => setFormData({ ...formData, has_portions: checked })}
+                  />
+                </div>
+
+                {formData.has_portions && (
+                  <div className="p-4 border rounded-lg bg-primary/5">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      💡 Add "Half" and "Full" variants below with their respective prices
+                    </p>
+                  </div>
+                )}
+
                 <h4 className="font-semibold">Price Variants (Optional)</h4>
-                <p className="text-sm text-muted-foreground">Add different sizes or portions</p>
+                <p className="text-sm text-muted-foreground">
+                  {formData.has_portions 
+                    ? 'Add Half and Full portion prices, or other size options' 
+                    : 'Add different sizes or portions'}
+                </p>
                 
                 <div className="grid grid-cols-3 gap-2">
                   <Input
