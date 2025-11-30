@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { restaurantApi, menuCategoryApi, menuItemApi, imageApi } from '@/db/api';
+import { restaurantApi, menuCategoryApi, menuItemApi } from '@/db/api';
 import { Restaurant, MenuCategory, MenuItem } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,11 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Edit, Trash2, ArrowLeft, Upload, X, Save } from 'lucide-react';
+import { Plus, Edit, Trash2, ArrowLeft, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import EnhancedMenuItemForm from '@/components/owner/EnhancedMenuItemForm';
 
 export default function MenuManagement() {
   const { restaurantId } = useParams();
@@ -27,19 +26,8 @@ export default function MenuManagement() {
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<MenuCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
-  const [uploading, setUploading] = useState(false);
 
   const [categoryForm, setCategoryForm] = useState({ name: '', description: '' });
-  const [itemForm, setItemForm] = useState({
-    name: '',
-    description: '',
-    price: '',
-    category_id: '',
-    is_available: true,
-    image_url: '',
-  });
 
   useEffect(() => {
     loadData();
@@ -114,81 +102,6 @@ export default function MenuManagement() {
     }
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 1024 * 1024) {
-      toast({
-        title: 'Error',
-        description: 'Image size must be less than 1MB',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleItemSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!restaurantId) return;
-
-    try {
-      setUploading(true);
-      let imageUrl = itemForm.image_url;
-
-      if (imageFile) {
-        imageUrl = await imageApi.uploadImage(imageFile, restaurantId);
-      }
-
-      const itemData = {
-        ...itemForm,
-        price: parseFloat(itemForm.price),
-        image_url: imageUrl,
-        restaurant_id: restaurantId,
-        ingredients: null,
-        allergens: null,
-        preparation_time: 15,
-        calories: null,
-        is_vegetarian: false,
-        is_vegan: false,
-        is_gluten_free: false,
-        spice_level: null,
-        item_type: 'veg' as 'veg' | 'non_veg' | 'vegan' | 'egg',
-        variants: null,
-        rating: 0,
-        is_bestseller: false,
-        tags: null,
-      };
-
-      if (editingItem) {
-        await menuItemApi.updateItem(editingItem.id, itemData);
-        toast({ title: 'Success', description: 'Menu item updated successfully' });
-      } else {
-        await menuItemApi.createItem(itemData);
-        toast({ title: 'Success', description: 'Menu item created successfully' });
-      }
-
-      setItemDialogOpen(false);
-      resetItemForm();
-      loadData();
-    } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to save menu item',
-        variant: 'destructive',
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
-
   const handleDeleteItem = async (id: string) => {
     try {
       await menuItemApi.deleteItem(id);
@@ -203,20 +116,6 @@ export default function MenuManagement() {
     }
   };
 
-  const resetItemForm = () => {
-    setItemForm({
-      name: '',
-      description: '',
-      price: '',
-      category_id: '',
-      is_available: true,
-      image_url: '',
-    });
-    setImageFile(null);
-    setImagePreview('');
-    setEditingItem(null);
-  };
-
   const openEditCategory = (category: MenuCategory) => {
     setEditingCategory(category);
     setCategoryForm({
@@ -228,15 +127,6 @@ export default function MenuManagement() {
 
   const openEditItem = (item: MenuItem) => {
     setEditingItem(item);
-    setItemForm({
-      name: item.name,
-      description: item.description || '',
-      price: item.price.toString(),
-      category_id: item.category_id,
-      is_available: item.is_available,
-      image_url: item.image_url || '',
-    });
-    setImagePreview(item.image_url || '');
     setItemDialogOpen(true);
   };
 
@@ -349,117 +239,31 @@ export default function MenuManagement() {
           <TabsContent value="items" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-semibold">Menu Items</h2>
-              <Dialog open={itemDialogOpen} onOpenChange={(open) => { setItemDialogOpen(open); if (!open) resetItemForm(); }}>
-                <DialogTrigger asChild>
-                  <Button disabled={categories.length === 0}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Menu Item
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>{editingItem ? 'Edit Menu Item' : 'Add New Menu Item'}</DialogTitle>
-                    <DialogDescription>
-                      Add food items with images, prices, and descriptions
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handleItemSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="item-image">Food Image</Label>
-                      <div className="flex flex-col gap-4">
-                        {imagePreview && (
-                          <div className="relative w-full h-48 rounded-lg overflow-hidden border">
-                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="sm"
-                              className="absolute top-2 right-2"
-                              onClick={() => { setImageFile(null); setImagePreview(''); }}
-                            >
-                              <X className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        )}
-                        <Input
-                          id="item-image"
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
-                          onChange={handleImageSelect}
-                        />
-                        <p className="text-xs text-muted-foreground">Max size: 1MB. Formats: JPEG, PNG, WEBP, GIF, AVIF</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="item-name">Item Name *</Label>
-                      <Input
-                        id="item-name"
-                        value={itemForm.name}
-                        onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
-                        placeholder="e.g., Margherita Pizza"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="item-category">Category *</Label>
-                      <Select value={itemForm.category_id} onValueChange={(value) => setItemForm({ ...itemForm, category_id: value })} required>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>
-                              {cat.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="item-price">Price ($) *</Label>
-                      <Input
-                        id="item-price"
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={itemForm.price}
-                        onChange={(e) => setItemForm({ ...itemForm, price: e.target.value })}
-                        placeholder="0.00"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="item-desc">Description</Label>
-                      <Textarea
-                        id="item-desc"
-                        value={itemForm.description}
-                        onChange={(e) => setItemForm({ ...itemForm, description: e.target.value })}
-                        placeholder="Describe the dish, ingredients, etc."
-                        rows={3}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="item-available">Available</Label>
-                      <Switch
-                        id="item-available"
-                        checked={itemForm.is_available}
-                        onCheckedChange={(checked) => setItemForm({ ...itemForm, is_available: checked })}
-                      />
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={uploading}>
-                      <Save className="w-4 h-4 mr-2" />
-                      {uploading ? 'Uploading...' : editingItem ? 'Update Item' : 'Add Item'}
-                    </Button>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <Button 
+                disabled={categories.length === 0}
+                onClick={() => {
+                  setEditingItem(null);
+                  setItemDialogOpen(true);
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Menu Item
+              </Button>
             </div>
+
+            <EnhancedMenuItemForm
+              open={itemDialogOpen}
+              onOpenChange={(open) => {
+                setItemDialogOpen(open);
+                if (!open) {
+                  setEditingItem(null);
+                }
+              }}
+              restaurantId={restaurantId!}
+              categories={categories}
+              editingItem={editingItem}
+              onSuccess={loadData}
+            />
 
             {categories.length === 0 ? (
               <Card>
