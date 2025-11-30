@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated)
 
 ## 1. Application Overview
 
@@ -69,7 +69,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 ### 3.1 Advanced Restaurant Owner Features
 \n#### 3.1.1 Restaurant Management Dashboard with Animated Home Page
-\n**Enhanced Home Page with Restaurant Ambiance Animations**:\n\n- **Hero Section with Dynamic Visuals**:
+\n**Enhanced Home Page with Restaurant Ambiance Animations**:
+\n- **Hero Section with Dynamic Visuals**:
   - Full-width hero banner with animated gradient background (smooth color transitions between warm orange and teal)
   - Floating food illustrations with parallax scrolling effect (subtle movement on scroll)
   - Animated restaurant icons (plates, utensils, chef hats) with gentle floating motion
@@ -90,8 +91,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 - **Quick Action Cards with Hover Effects**:
   - Grid layout of action cards with 3D tilt effect on hover
-  - Each card features:
-    - Animated icon with bounce effect on page load
+  - Each card features:\n    - Animated icon with bounce effect on page load
     - Card title with gradient text effect
     - Hover state: scale(1.05) with shadow expansion and subtle rotation
     - Click animation: ripple effect from touch point
@@ -134,8 +134,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Performance Optimizations**:
   - CSS animations for smooth 60fps performance
   - Lottie animations loaded asynchronously
-  - Reduced motion mode for accessibility (respects prefers-reduced-motion)
-  - Lazy loading for non-critical animations
+  - Reduced motion mode for accessibility (respects prefers-reduced-motion)\n  - Lazy loading for non-critical animations
   - GPU-accelerated transforms for smooth transitions
 
 - **Responsive Animations**:
@@ -150,79 +149,245 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Consolidated analytics across all locations
   - Location-specific settings and customization
 
-**Restaurant Profile** (Enhanced):
-  - Restaurant name, logo, and banner images (multiple images support)
+**Restaurant Profile** (Enhanced with Additional Fields):
+- **Basic Information**:
+  - Restaurant name (required, max 100 characters)
+  - Restaurant tagline/slogan (optional, max 150 characters)
+  - Restaurant logo (upload, recommended size: 512x512px, formats: PNG, JPG, SVG)
+  - Banner images (upload multiple, minimum 1, maximum 5, recommended size: 1920x1080px)
+  - **Restaurant Type** (required, single select):
+    - Pure Vegetarian (serves only vegetarian food)
+    - Non-Vegetarian (serves both vegetarian and non-vegetarian food)
+    - Vegan (serves only plant-based food)
+    - Mixed (offers all types)\n  - **Restaurant Images Gallery** (enhanced):
+    - Interior photos (minimum 3, maximum 10)\n    - Exterior photos (minimum 2, maximum 5)
+    - Ambiance shots (dining area, bar, outdoor seating)
+    - Kitchen photos (optional, for transparency)
+    - Staff photos (optional, for personal touch)
+    - Signature dish photos (minimum 5, maximum 15)
+    - Image upload with drag-and-drop support
+- Image cropping and editing tools
+    - Set primary image for restaurant profile
+    - Reorder images with drag-and-drop
+    - Add captions to images (optional)
+- **Contact & Location**:
   - Complete address with Google Maps integration and geolocation
-  - Contact details: phone, email, website, social media links
-  - Business hours with holiday schedule management
-  - Cuisine types (multi-select): Italian, Chinese, Indian, Mexican, etc.
-  - Restaurant category: Fine Dining, Casual, Fast Food, Cafe, Bar
-  - Seating capacity, table count, and floor plan upload
-  - Amenities: WiFi, Parking, Outdoor Seating, Live Music, etc.
-  - Restaurant description (rich text editor with formatting)
-  - Photo gallery for ambiance and signature dishes
-  - Certifications and awards display
+  - Contact phone number (required, with country code)
+  - Email address (required)\n  - Website URL (optional)\n  - Social media links (Facebook, Instagram, Twitter, YouTube)
+- **Operating Details**:
+  - Business hours with day-wise timings
+  - Holiday schedule management
+  - Special hours for events or seasons
+  - Delivery hours (if applicable)
+  - Takeout hours (if applicable)
+- **Restaurant Classification**:
+  - Cuisine types (multi-select): Italian, Chinese, Indian, Mexican, Japanese, Thai, Mediterranean, American, French, Korean, Vietnamese, Middle Eastern, Fusion, etc.
+  - Restaurant category (single select): Fine Dining, Casual Dining, Fast Food, Cafe, Bar & Grill, Buffet, Food Truck, Cloud Kitchen, etc.
+  - Price range indicator (single select): Budget ($), Moderate ($$), Upscale ($$$), Fine Dining ($$$$)\n  - Dining style (multi-select): Dine-in, Takeout, Delivery, Catering, Drive-through\n- **Capacity & Layout**:
+  - Total seating capacity (number of guests)
+  - Number of tables\n  - Floor plan upload (optional, PDF or image)
+  - Private dining rooms (yes/no, if yes, specify count and capacity)
+  - Outdoor seating availability (yes/no, if yes, specify capacity)
+- **Amenities & Features** (multi-select):
+  - Free WiFi\n  - Parking (valet, self-parking, street parking)
+  - Wheelchair accessible
+  - Outdoor seating
+  - Live music/entertainment
+  - Bar/alcohol service
+  - Kids menu
+  - Pet-friendly
+  - Air conditioning
+  - Smoking area
+  - Private events hosting
+  - Catering services
+  - Delivery service
+  - Takeout service
+  - Reservations accepted
+  - Online ordering
+- **Description & Story**:
+  - Restaurant description (required, rich text editor with formatting, max 2000 characters)
+  - Chef's story or restaurant history (optional, rich text, max 1000 characters)
+  - Special features or unique selling points (optional, max 500 characters)
+- **Certifications & Awards** (optional):
+  - Food safety certifications (upload certificates)
+  - Health department ratings
+  - Awards and recognitions (text list with year)
+  - Michelin stars or other ratings
+  - Organic/sustainable certifications
+- **Additional Information**:
+  - Dress code (casual, smart casual, formal, etc.)
+  - Reservation policy\n  - Cancellation policy\n  - Group dining policy
+  - Payment methods accepted (cash, cards, digital wallets, etc.)
+  - Languages spoken by staff
+  - Special dietary accommodations (gluten-free, vegan options, etc.)
 
-#### 3.1.2 Advanced Menu Management System
-
+#### 3.1.2 Advanced Menu Management System\n
 **Enhanced Schema Structure**:
-- **Category Schema**:
+\n- **Category Schema** (Updated with Additional Fields):
   - Category ID (auto-generated UUID)
   - Category Name (required, max 50 characters)
   - Category Description (optional, rich text, max 500 characters)
-  - Display Order (integer for sorting)
-  - Category Icon (upload or select from library)
-  - Availability Status (active/inactive)
-  - Time-based Availability (breakfast, lunch, dinner, all-day)
-  - Parent Category (for sub-categories support)
-
-- **Food Item Schema** (Complete):
+  - **Category Type** (required, single select):
+    - Vegetarian (contains only vegetarian items)
+    - Non-Vegetarian (contains non-vegetarian items)
+    - Vegan (contains only vegan items)
+    - Mixed (contains both vegetarian and non-vegetarian items)
+  - Category Image/Icon (upload or select from library)
+  - Display Order (integer for sorting, drag-and-drop reordering)
+  - Availability Status (active/inactive toggle)
+  - Time-based Availability (multi-select):
+    - Breakfast (with time range, e.g., 7:00 AM - 11:00 AM)
+    - Lunch (with time range, e.g., 12:00 PM - 3:00 PM)
+    - Dinner (with time range, e.g., 6:00 PM - 10:00 PM)
+    - All-day\n    - Custom time slots (define start and end time)
+  - Parent Category (optional, for sub-categories support, dropdown selection)
+  - **Category Rating** (auto-calculated):
+    - Average rating of all items in category (1-5 stars)
+    - Total number of ratings
+    - Display on category card
+  - Popular Category Badge (auto-assigned based on order volume)
+\n- **Food Item Schema** (Complete with Additional Fields):
   - Item ID (auto-generated UUID)
   - Item Name (required, max 100 characters)
   - Item Description (required, rich text editor with formatting, max 1000 characters)
-  - Category Assignment (required, multi-category support)
-  - Price (required, decimal with currency)\n  - Discounted Price (optional)\n  - Multiple Images (minimum 1, maximum 5 high-resolution images)
-  - Preparation Time (required, in minutes)
-  - Dietary Indicators (multi-select): Vegetarian, Vegan, Non-Vegetarian, Gluten-Free, Dairy-Free,Nut-Free, Halal, Kosher\n  - Spice Level (None, Mild, Medium, Hot, Extra Hot)
-  - Allergen Information (multi-select): Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, etc.
-  - Nutritional Information (optional):
-    - Calories
+  - **Item Type** (required, single select with color-coded icon):
+    - Vegetarian (green icon: leaf or'V' symbol)
+    - Non-Vegetarian (red icon: chicken leg or 'N' symbol)
+    - Vegan (green icon: 'VG' symbol)
+    - Eggetarian (yellow icon: egg symbol)
+  - Category Assignment (required, multi-category support with primary category selection)
+  - **Pricing Structure** (enhanced for quantity-based pricing):
+    - **Base Price** (required, decimal with currency symbol)
+    - **Quantity-Based Pricing** (optional, for items with multiple serving sizes):
+      - Small/Regular/Large portions with individual prices
+      - Example: Small (250g) - $8, Regular (400g) - $12, Large (600g) - $16
+      - Half/Full plate options with prices
+      - Single/Double/Family pack options
+      - Custom quantity units (grams, pieces, servings, etc.)
+      - Set default quantity selection\n    - **Combo Pricing** (optional):
+      - Combo meal options with bundled items and discounted price
+      - Example: Burger + Fries + Drink = $15 (save $3)
+    - Discounted Price (optional, for promotions)
+    - Discount percentage display (auto-calculated)
+    - Discount validity period (start and end date)
+  - **Images** (enhanced):
+    - Upload multiple images (minimum 1, maximum 5)
+    - High-resolution images (minimum 1200x675px)
+    - Image cropping and editing tools
+    - Set primary image for display
+    - Reorder images with drag-and-drop
+    - Add captions to images (optional)
+  - Preparation Time (required, in minutes, with range: e.g., 15-20 mins)
+  - **Customer Ratings & Reviews** (enhanced):
+    - **Overall Item Rating** (1-5 stars, auto-calculated from customer reviews)
+    - Total number of ratings (display count)
+    - Rating breakdown (5-star: X%, 4-star: Y%, etc.)
+    - Recent reviews display (last 5 reviews with customer name, rating, comment, date)
+    - Review photos uploaded by customers
+    - Helpful/Not Helpful voting on reviews
+    - Restaurant owner response to reviews (optional)
+    - Filter reviews by rating (5-star, 4-star, etc.)\n    - Sort reviews by: Most Recent, Highest Rating, Lowest Rating, Most Helpful
+  - Dietary Indicators (multi-select with icons):
+    - Vegetarian, Vegan, Non-Vegetarian, Eggetarian
+    - Gluten-Free, Dairy-Free, Nut-Free, Soy-Free, Shellfish-Free
+    - Halal, Kosher, Jain, Organic
+    - Low-Carb, Keto-Friendly, Paleo, High-Protein
+  - Spice Level (single select with visual indicator):
+    - None (no chili icon)
+    - Mild (1chili icon)
+    - Medium (2 chili icons)
+    - Hot (3 chili icons)
+    - Extra Hot (4 chili icons)\n    - Customizable (customer can adjust)\n  - Allergen Information (multi-select with warning icons):
+    - Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, Fish, Sesame, Mustard, Celery, Lupin, Molluscs, Sulphites
+    - Severity indicator (mild, moderate, severe)
+    - Display prominent warning for severe allergens
+  - Nutritional Information (optional, expandable section):
+    - Calories (kcal)
     - Protein (grams)
     - Carbohydrates (grams)
     - Fat (grams)
+    - Saturated Fat (grams)
+    - Trans Fat (grams)
     - Fiber (grams)
+    - Sugar (grams)
     - Sodium (mg)
-  - Ingredients List (detailed, comma-separated)
-  - Customization Options:\n    - Portion Size (Small, Medium, Large with price variations)
-    - Spice Level Adjustment (with price if applicable)
-    - Add-ons (extra cheese, extra sauce, etc. with individual prices)
-    - Removal Options (no onions, no garlic, etc.)\n  - Availability Status (available, out of stock, seasonal)
-  - Popular Item Badge (yes/no)
-  - Chef's Special Badge (yes/no)
-  - New Item Badge (auto-expires after 30 days)
-  - Item Tags (searchable keywords)
-  - Pairing Suggestions (recommend drinks or sides)
-  - Customer Ratings (average rating, total reviews)
-  - Total Orders Count (for popularity tracking)
+    - Cholesterol (mg)
+    - Vitamins and minerals (optional)
+  - Ingredients List (required, detailed, comma-separated or bullet points)
+  - **Customization Options** (enhanced):
+    - **Portion Size** (if not using quantity-based pricing):
+      - Small, Medium, Large with price variations
+      - Custom portion names (e.g., Solo, Duo, Family)
+    - **Spice Level Adjustment**:
+      - No Spice, Mild, Medium, Hot, Extra Hot
+      - Price adjustment if applicable (e.g., extra spicy sauce +$1)\n    - **Add-ons** (multi-select with individual prices):
+      - Extra cheese (+$2), Extra sauce (+$1), Extra toppings (+$3)
+      - Side items (fries, salad, bread)\n      - Beverages (soft drinks, juices)\n      - Desserts\n    - **Removal Options** (multi-select, no charge):
+      - No onions, No garlic, No cilantro, No mayo, etc.
+    - **Cooking Preferences** (single select):
+      - Rare, Medium Rare, Medium, Medium Well, Well Done (for meats)
+      - Crispy, Soft, Extra crispy (for fried items)
+    - **Special Instructions** (text box for custom requests)
+  - Availability Status (required, single select):
+    - Available (in stock and ready to order)
+    - Out of Stock (temporarily unavailable)
+    - Seasonal (available only during specific seasons)
+    - Limited Time Offer (available for limited period)
+    - Coming Soon (not yet available)
+  - **Badges & Labels** (auto-assigned or manual):
+    - Popular Item (based on order volume, auto-assigned)
+    - Chef's Special (manually assigned by owner)
+    - New Item (auto-expires after 30 days from creation)
+    - Best Seller (top10% of items by sales)
+    - Customer Favorite (highest rated items,4.5+ stars)
+    - Healthy Choice (low-calorie or nutritious items)
+    - Spicy (for items with medium or higher spice level)
+  - Item Tags (searchable keywords, comma-separated):
+    - Examples: comfort food, street food, fusion, traditional, modern, grilled, baked, fried, steamed, etc.
+  - Pairing Suggestions (multi-select from menu items):
+    - Recommend drinks (e.g., 'Pairs well with Mango Lassi')
+    - Recommend sides (e.g., 'Goes great with Garlic Naan')
+    - Recommend desserts (e.g., 'Complete your meal with Gulab Jamun')
+  - **Popularity Metrics** (auto-tracked):
+    - Total Orders Count (lifetime orders for this item)
+    - Orders This Week/Month (for trending analysis)
+    - View Count (how many times item detail page was viewed)
+    - Add-to-Cart Count (how many times added to cart)
+    - Conversion Rate (orders / views)\n  - **Inventory Linking** (optional):
+    - Link to ingredient inventory for automatic stock updates
+    - Low stock alert when ingredients running low
+    - Auto-disable item when out of stock
+  - Item Status (active/inactive toggle for visibility)
+  - Created Date and Last Modified Date (auto-tracked)
 \n**Advanced Menu Operations**:
 - **Bulk Management**:
-  - Import menu via CSV/Excel with template download
-  - Export complete menu with all fields
-  - Duplicate items for quick variations
-  - Bulk price updates with percentage increase/decrease
-  - Bulk category reassignment
+  - Import menu via CSV/Excel with template download (includes all new fields)
+  - Export complete menu with all fields to CSV/Excel
+  - Duplicate items for quick variations (e.g., create 'Veg Burger' from 'Chicken Burger')
+  - Bulk price updates with percentage increase/decrease or fixed amount
+  - Bulk category reassignment (move multiple items to different category)
+  - Bulk availability status change (mark multiple items as out of stock)
+  - Bulk badge assignment (mark multiple items as 'Chef's Special')
 - **Menu Versioning**:
-  - Save menu versions for seasonal changes
-  - Schedule menu changes for specific dates
-  - Rollback to previous menu versions
-- **Menu Analytics**:
-  - Most viewed items\n  - Most ordered items
-  - Items with highest ratings
-  - Items with low orders (candidates for removal)
-  - Category-wise performance\n- **Smart Recommendations**:
-  - AI-suggested item pairings
+  - Save menu versions for seasonal changes (e.g., Summer Menu, Winter Menu)
+  - Schedule menu changes for specific dates and times
+  - Rollback to previous menu versions with one click
+  - Compare menu versions side-by-side\n- **Menu Analytics**:
+  - Most viewed items (top 20 by view count)
+  - Most ordered items (top 20 by order count)
+  - Items with highest ratings (4.5+ stars)
+  - Items with low orders (candidates for removal or promotion)
+  - Category-wise performance (sales, ratings, popularity)
+  - Trending items (items with increasing order volume)
+  - Underperforming items (low views, low orders, low ratings)
+  - Revenue contribution per item (percentage of total revenue)
+  - Profit margin analysis per item
+- **Smart Recommendations**:
+  - AI-suggested item pairings based on order history
   - Automatic'Frequently Bought Together' generation
-  - Seasonal item suggestions based on trends
+  - Seasonal item suggestions based on trends and weather
+  - Price optimization suggestions based on demand
+  - Menu gap analysis (missing popular items in market)
 \n#### 3.1.3 Advanced Inventory Management
 - **Ingredient Database**:
   - Create ingredient master list with units (kg, liters, pieces)\n  - Link ingredients to menu items with quantity requirements
@@ -243,8 +408,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Daily/weekly/monthly consumption reports
   - Cost analysis and profit margin per item
   - Wastage reports with cost impact\n  - Reorder suggestions based on consumption patterns
-
-#### 3.1.4 Enhanced QR Code Management
+\n#### 3.1.4 Enhanced QR Code Management
 - **QR Code Generation**:
   - Generate unique QR codes for each table with embedded table number and restaurant ID
   - Batch QR code generation for multiple tables
@@ -271,9 +435,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Purple: Served (food delivered to customer)
     - Teal: Payment Pending (awaiting payment completion)
     - Gray: Completed (payment received and order closed)
-  - Compact card view shows:
-    - Order ID and timestamp
-    - Table number with floor/section\n    - Customer name (real name from profile or'Guest')
+  - Compact card view shows:\n    - Order ID and timestamp
+    - Table number with floor/section
+    - Customer name (real name from profile or'Guest')
     - Order status badge (current stage)
     - Payment method indicator (Card, Wallet, UPI,BNPL, COC)
     - Payment status badge (Pending/Completed/Failed)
@@ -288,8 +452,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Assigned waiter name and photo
     - **Order Items Section**:
       - Itemized list with:\n        - Item name and image thumbnail
+        - Item type indicator (veg/non-veg icon)
         - Quantity
-        - Customizations (portion size, spice level, add-ons, removals)
+        - Portion size selected (if applicable)
+        - Customizations (spice level, add-ons, removals)
         - Special instructions per item
         - Individual item price
         - Subtotal per item
@@ -312,8 +478,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
         - **Waiter Assigned**: Timestamp and waiter name
         - **Preparing**: Timestamp when kitchen started preparation
         - **Ready**: Timestamp when food ready for service
-        - **Served**: Timestamp when food delivered to customer
-        - **Payment Collected**: Timestamp when payment completed
+        - **Served**: Timestamp when food delivered to customer\n        - **Payment Collected**: Timestamp when payment completed
         - **Order Completed**: Final timestamp\n      - Each checkpoint shows:
         - Status icon (checkmark for completed, clock for pending)
         - Status label\n        - Timestamp (date and time)
@@ -324,12 +489,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - **Action Buttons** (context-based):
       - Update Status (dropdown to change order stage)
       - Reassign Waiter (if needed)
-      - Contact Customer (open chat)
-      - Modify Order (if not yet preparing)
+      - Contact Customer (open chat)\n      - Modify Order (if not yet preparing)
       - Cancel Order (with reason)
       - Mark Payment as Collected (for COC orders)
       - Print E-Bill (visible only when order status is 'Completed')
-      - View E-Bill (preview generated bill)
+- View E-Bill (preview generated bill)
 
 **Order Status Management**:
 - **Status Update Workflow**:
@@ -342,11 +506,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Each status change automatically updates timeline with timestamp
   - Real-time synchronization with customer app and waiter app
   - Notification sent to relevant parties on status change
-
-**Payment Status Tracking**:
+\n**Payment Status Tracking**:
 - **Payment Pending Orders**:
   - Dedicated section for orders with pending payments
-  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)\n  - Visual indicator for payment timeout (e.g., pending for >15 mins)
+  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)
+  - Visual indicator for payment timeout (e.g., pending for >15 mins)
   - Quick action:'Collect Payment' button for COC orders
 - **Payment Completed Orders**:
   - Automatic move to 'Completed Orders' section upon payment confirmation
@@ -411,7 +575,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **COC (Cash on Counter) Payment Workflow**:
 - **Order with COC Payment Method**:
-  - When customer selects COC as payment method, order is marked with'COC Payment' badge in orange color
+  - When customer selects COC as payment method, order is marked with 'COC Payment' badge in orange color
   - Order card displays prominent'Payment Pending - COC' status
   - Owner/Manager dashboard shows dedicated 'Pending COC Payments' section
 \n- **Bill Summary View for COC Orders**:
@@ -420,8 +584,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Discounts and promo codes applied
     - Total amount payable (highlighted in large, bold text)
     - Customer name and table number
-    - Order timestamp
-  - Prominent action button: 'Collect Payment from Customer'
+    - Order timestamp\n  - Prominent action button: 'Collect Payment from Customer'
 \n- **Payment Collection Process**:
   - Step1: Customer approaches counter for payment
   - Step 2: Staff opens order in dashboard and reviews bill summary
@@ -500,6 +663,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Slow-moving items analysis
   - Category-wise sales distribution
   - Profit margin per item
+  - Item rating trends over time
 - **Customer Insights**:
   - New vs. returning customer ratio
   - Customer lifetime value\n  - Average spending per customer
@@ -620,7 +784,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Restaurant name and logo
       - Order date and time
       - Order items summary (first 2 items + 'X more')
-      - Total amount\n      - Order status badge
+      - Total amount
+      - Order status badge
     - Tap to expand full order details
   - **Order Details View**:
     - Complete itemized list with quantities and customizations
@@ -690,7 +855,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Download my data (GDPR compliance)
     - Delete account (with confirmation and warning)
     - Logout button
-\n- **Profile Edit Mode**:
+
+- **Profile Edit Mode**:
   - Inline editing with save/cancel buttons
   - Real-time validation with error messages
   - Unsaved changes warning when navigating away
@@ -712,6 +878,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Restaurant Landing Experience**:
   - Full-screen restaurant banner with image carousel
   - Restaurant name, logo, and verified badge
+  - **Restaurant type indicator** (Vegetarian/Non-Vegetarian/Vegan/Mixed) with color-coded icon
   - Overall rating with total review count
   - Cuisine type and price range indicators
   - Operating hours with current status (Open/Closed)
@@ -719,7 +886,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Quick access buttons: Menu, Reviews, Info, Chat\n\n#### 3.2.3 Advanced Menu Browsing (Zomato-Inspired UI)
 - **Category Navigation**:
   - Sticky horizontal scrollable category tabs at top
-  - Category icons with names\n  - Active category highlighted with underline animation
+  - Category icons with names\n  - **Category type indicator** (Veg/Non-Veg/Vegan/Mixed) with color-coded badge
+  - Active category highlighted with underline animation
   - 'All Items' option to view complete menu
   - Search bar with auto-suggestions
 - **Menu Display**:
@@ -727,15 +895,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Large high-quality food images (16:9 ratio)
   - Card-based layout with subtle shadows
   - Item name in bold, description in regular text
-  - Price prominently displayed
-  - Dietary indicators with color-coded icons (green for veg, red for non-veg)\n  - Badges:'Popular', 'Chef's Special', 'New'\n  - Star rating with review count
+  - **Item type indicator** (Veg/Non-Veg/Vegan icon) prominently displayed
+  - **Price display** (base price or price range for quantity-based items)
+  - **Quantity options** (if applicable): Small/Regular/Large with prices
+  - **Customer rating** (star rating with count) displayed on card
+  - Dietary indicators with color-coded icons (green for veg, red for non-veg)\n  - Badges:'Popular', 'Chef's Special', 'New', 'Best Seller', 'Customer Favorite'
   - Preparation time badge
   - 'Out of Stock' overlay for unavailable items
 - **Advanced Filtering**:
-  - Filter by dietary preference (veg/non-veg/vegan)
+  - Filter by item type (Vegetarian/Non-Vegetarian/Vegan/Eggetarian)
   - Filter by price range (slider)\n  - Filter by preparation time\n  - Filter by spice level
   - Filter by allergens (exclude items with specific allergens)
-  - Sort by: Popularity, Price (low to high), Rating, Preparation Time
+  - Filter by rating (4+ stars, 3+ stars, etc.)
+  - Sort by: Popularity, Price (low to high), Rating, Preparation Time, Newest
 - **Search Functionality**:
   - Real-time search with instant results
   - Search by item name, ingredients, or tags
@@ -745,15 +917,22 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Full-Screen Experience**:
   - Image gallery with swipe navigation (up to 5 images)
   - Zoom functionality for detailed view
-  - Item name and price at top
+  - Item name and **item type indicator** (Veg/Non-Veg/Vegan icon) at top
+  - **Customer rating** (large star display with average rating and total count)
+  - **Price display**:\n    - Base price (if single price)
+    - Quantity-based pricing table (if multiple options):\n      - Small (250g) - $8\n      - Regular (400g) - $12
+      - Large (600g) - $16
+    - Discounted price with savings percentage (if applicable)
   - Detailed description with rich text formatting
-  - Complete ingredients list
-  - Nutritional information expandable section
-  - Allergen warnings highlighted
-  - Customer reviews and ratings section
-  - 'Frequently Ordered With' suggestions
+  - Complete ingredients list\n  - Nutritional information expandable section
+  - Allergen warnings highlighted\n  - **Customer reviews and ratings section**:\n    - Rating breakdown (5-star: X%, 4-star: Y%, etc.)
+    - Recent reviews with customer name, rating, comment, date
+    - Review photos uploaded by customers
+    - Helpful/Not Helpful voting\n    - Filter and sort reviews\n  - 'Frequently Ordered With' suggestions
 - **Customization Panel**:
-  - Portion size selection with price adjustment
+  - **Quantity/Portion Size Selection**:
+    - Radio buttons or dropdown for size options
+    - Price updates dynamically based on selection
   - Spice level slider
   - Add-ons checklist with individual prices
   - Removal options (e.g., no onions)\n  - Special instructions text box
@@ -766,7 +945,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Smart Cart**:
   - Floating cart button with item count badge
   - Bottom sheet cart view with itemized list
-  - Each item shows: name, customizations, quantity, price
+  - Each item shows: name, **item type icon**, customizations, quantity, price
   - Edit or remove items directly from cart
   - Subtotal, taxes, and total amount breakdown
   - Estimated preparation time for entire order
@@ -784,11 +963,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Confirm table number and restaurant details
   - Estimated total time display
   - 'Place Order' button with loading animation
-
-#### 3.2.6 Real-Time Order Tracking with Complete Timeline
+\n#### 3.2.6 Real-Time Order Tracking with Complete Timeline
 \n**Order Status Screen**:
 - **Visual Progress Tracker**:
-  - Horizontal or vertical timeline with stages:\n    - Order Placed → Acknowledged → Preparing → Ready → Served → Payment Collected → Completed
+  - Horizontal or vertical timeline with stages:
+    - Order Placed → Acknowledged → Preparing → Ready → Served → Payment Collected → Completed
   - Current status highlighted with animated indicator (pulsing dot or progress bar)
   - Completed stages in green with checkmarks
   - Pending stages in gray with clock icons
@@ -821,8 +1000,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
       - Icon: Bell icon
       - Label: 'Food Ready'
       - Timestamp: Date and time when food ready
-      - Description: 'Your order is ready to be served'
-    - **Served**:
+      - Description: 'Your order is ready to be served'\n    - **Served**:
       - Icon: Plate icon
       - Label: 'Food Served'
       - Timestamp: Date and time when food delivered to table
@@ -852,8 +1030,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Itemized Order List**:
   - Each item shows:
     - Item name and thumbnail image
-    - Quantity
-    - Customizations (portion size, spice level, add-ons, removals)
+    - **Item type indicator** (Veg/Non-Veg icon)
+    - Quantity and portion size
+    - Customizations (spice level, add-ons, removals)
     - Special instructions per item
     - Individual item price
   - Order-level special instructions highlighted
@@ -900,8 +1079,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Instant responses for common queries (menu info, ingredients, restaurant details)
   - Seamless handoff to human waiter when needed
   - 24/7 availability for basic questions
-  - Multilingual support\n
-#### 3.2.8 Enhanced Payment & Billing with Dining Completion Flow
+  - Multilingual support\n\n#### 3.2.8 Enhanced Payment & Billing with Dining Completion Flow
 
 **Post-Dining Completion Notification**:
 - **Dining Status Check**:
@@ -919,7 +1097,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Bill Summary Screen**:
   - Clean, receipt-style layout with restaurant logo at top
   - Heading: 'Your Bill Summary'
-  - Itemized list with quantities and individual prices
+  - Itemized list with quantities, portion sizes, and individual prices
   - Subtotal calculation
   - Taxes breakdown (GST, service charge, etc.)
   - Discounts and promo codes applied (if any)
@@ -975,8 +1153,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - **Step 8**: **E-Bill Auto-Generation**:
     - System instantly generates e-bill upon successful payment
     - E-bill sent immediately via email and SMS
-    - In-app download option available\n    - Payment status:'Paid Online'
-  - **Step 9**: **'Print E-Bill' button becomes visible** in order details
+    - In-app download option available\n    - Payment status:'Paid Online'\n  - **Step 9**: **'Print E-Bill' button becomes visible** in order details
   - **Step 10**: Redirect to post-payment screen (rating and review)
 
 **Split Bill Feature**:
@@ -989,8 +1166,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Post-Payment Experience**:
 - **Rating & Review Screen**:
-  - Rate overall experience (1-5 stars)
-  - Rate individual aspects: food quality, service, ambiance, value for money
+  - Rate overall experience (1-5 stars)\n  - Rate individual aspects: food quality, service, ambiance, value for money
   - Rate individual dishes ordered
   - Write review with photo upload
   - Tag review (e.g., 'Great for families', 'Romantic')
@@ -1024,20 +1200,20 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Order date and time
     - Order items summary (first 2 items + 'X more')
     - Total amount
-    - Order status badge (Completed/Cancelled)\n    - Payment method used
+    - Order status badge (Completed/Cancelled)
+    - Payment method used
   - Tap to expand full order details
 \n**Expandable Order Details in History**:
 - **Full Order Information**:
   - Order ID and timestamp
   - Restaurant name and location
   - Table number
-  - Itemized list with quantities, customizations, and prices
+  - Itemized list with quantities, portion sizes, customizations, and prices
   - Pricing breakdown (subtotal, taxes, discounts, total)
   - Payment method and transaction ID
   - Payment timestamp
 - **Complete Order Timeline**:
-  - Visual timeline showing all stages with timestamps:\n    - Order Received
-    - Acknowledged
+  - Visual timeline showing all stages with timestamps:\n    - Order Received\n    - Acknowledged
     - Waiter Assigned
     - Preparing
     - Ready
@@ -1058,7 +1234,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n**Filters & Search**:
 - Filter by restaurant\n- Filter by date range (date picker)
 - Filter by order status (Completed, Cancelled)\n- Search by item name or order ID
-- Sort by: Recent, Oldest, Highest Amount\n\n**Quick Reorder**:
+- Sort by: Recent, Oldest, Highest Amount
+\n**Quick Reorder**:
 - 'Reorder' button for favorite orders
 - One-tap reorder with saved customizations
 - Modify reorder before placing
@@ -1090,31 +1267,40 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Create strong password (12+ characters with complexity requirements)
 5. Set up two-factor authentication (2FA) with authenticator app
 6. Upload business license and tax ID for verification
-7. Complete profile setup: name, role, profile photo
-8. Account approved after verification (24-48 hours)
+7. Complete profile setup: name, role, profile photo\n8. Account approved after verification (24-48 hours)
 
 **Phase 2: Restaurant Profile Creation**
 1. Click 'Add New Restaurant'
 2. Enter restaurant details:\n   - Restaurant name and tagline
    - Upload logo and banner images
+   - **Select restaurant type** (Pure Vegetarian/Non-Vegetarian/Vegan/Mixed)
+   - **Upload restaurant images gallery**:\n     - Interior photos (minimum 3)\n     - Exterior photos (minimum 2)
+     - Ambiance shots\n     - Signature dish photos (minimum 5)
    - Enter complete address with map pin
    - Add contact details (phone, email, website, social media)
    - Set business hours and holiday schedule
    - Select cuisine types and restaurant category
+   - Select price range indicator
+   - Select dining style options
    - Enter seating capacity and table count
    - Upload floor plan (optional)
    - Add amenities and certifications
-   - Write restaurant description\n3. Preview restaurant profile
+   - Write restaurant description
+3. Preview restaurant profile
 4. Publish restaurant\n
 **Phase 3: Menu Creation**
 1. Navigate to 'Menu Management'\n2. Create food categories:
    - Add category name and description
-   - Upload category icon
-   - Set display order\n   - Set time-based availability
+   - **Select category type** (Vegetarian/Non-Vegetarian/Vegan/Mixed)
+   - Upload category icon\n   - Set display order\n   - Set time-based availability
 3. Add food items:
    - Enter item name\n   - Write detailed description using rich text editor
+   - **Select item type** (Vegetarian/Non-Vegetarian/Vegan/Eggetarian)
    - Upload 1-5 high-quality images
-   - Set price and discounted price (if any)
+   - **Set pricing**:
+     - Base price (required)
+     - Quantity-based pricing (optional): Small/Regular/Large with individual prices
+     - Combo pricing (optional)\n     - Discounted price (optional)
    - Assign to categories
    - Set preparation time
    - Select dietary indicators and allergen information
@@ -1144,7 +1330,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Phase 6: Staff Management**
 1. Navigate to 'Staff Management'
 2. Add staff members:\n   - Enter name, email, phone, employee ID
-   - Assign role (waiter, chef, manager)\n   - Set shift schedule
+   - Assign role (waiter, chef, manager)
+   - Set shift schedule
    - Send invitation email for account setup
 3. Staff members complete registration and login
 \n**Phase 7: Daily Operations**
@@ -1154,7 +1341,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - System validates restaurant ID from QR scan
    - View customer's real name (or'Guest' if not logged in)
    - Click on order card to expand full details
-   - View complete order information, timeline, and payment status
+   - View complete order information (including item types, portion sizes, ratings)
+   - View timeline and payment status
    - Acknowledge order\n   - System auto-assigns waiter based on table location
    - Waiter receives notification and confirms\n   - Kitchen receives order and starts preparation
    - Update order status: Preparing → Ready → Served
@@ -1181,9 +1369,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Phase 8: Ongoing Management**
 1. Update menu based on inventory and customer feedback
 2. Analyze sales trends and adjust pricing
-3. Respond to customer reviews\n4. Manage staff schedules and performance
-5. Run promotional campaigns
-6. Export financial reports for accounting
+3. Monitor item ratings and reviews
+4. Respond to customer reviews
+5. Manage staff schedules and performance
+6. Run promotional campaigns
+7. Export financial reports for accounting
 
 ### 4.2 Customer Complete Flow
 \n**Phase 1: Registration & Onboarding**
@@ -1193,11 +1383,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Phone number + OTP
    - Google/Facebook/Apple Sign-In
 4. Verify email or phone with OTP
-5. Complete profile setup:
-   - Upload profile photo
+5. Complete profile setup:\n   - Upload profile photo
    - Enter full name (will be displayed to restaurant for orders)
    - Set dietary preferences and allergies
-   - Select favorite cuisines\n6. Enable biometric login for future access
+   - Select favorite cuisines
+6. Enable biometric login for future access
 7. Complete onboarding tutorial
 
 **Phase 2: Arrival at Restaurant**
@@ -1205,31 +1395,28 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 2. Open DineQR app\n3. Login with saved credentials or biometric (or continue as guest)
 4. Tap 'Scan QR Code'\n5. Scan QR code on table (system captures restaurant ID and table number)
 6. App loads restaurant profile and menu
-7. Confirm table number and restaurant name displayed
+7. View restaurant type indicator (Vegetarian/Non-Vegetarian/Vegan/Mixed)
+8. Confirm table number and restaurant name displayed
 \n**Phase 3: Menu Browsing**
 1. View restaurant landing page with banner, ratings, and info
-2. Tap 'View Menu'\n3. Browse menu with category tabs
-4. Use search or filters to find specific items:\n   - Filter by dietary preference
-   - Filter by price range
-   - Exclude allergens
+2. Tap 'View Menu'\n3. Browse menu with category tabs (see category type indicators)
+4. Use search or filters to find specific items:\n   - Filter by item type (Vegetarian/Non-Vegetarian/Vegan)\n   - Filter by price range\n   - Filter by rating\n   - Exclude allergens
 5. Tap on item card to view details
-6. View full item information:\n   - Images, description, ingredients
+6. View full item information:\n   - Images, item type indicator, description, ingredients
+   - Quantity-based pricing options (if applicable)
+   - Customer ratings and reviews
    - Nutritional info and allergens
-   - Customer reviews and ratings
 7. Use AI chatbot to ask questions:\n   - 'Does this dish contain nuts?'
    - 'How spicy is this item?'
    - 'Whatdo you recommend for vegetarians?'
-
-**Phase 4: Ordering**
+\n**Phase 4: Ordering**
 1. Select item customizations:
-   - Choose portion size\n   - Adjust spice level
-   - Add extras (cheese, sauce, etc.)
+   - Choose portion size/quantity (Small/Regular/Large)
+   - Adjust spice level\n   - Add extras (cheese, sauce, etc.)
    - Remove ingredients (no onions, etc.)
-2. Add special instructions\n3. Select quantity
-4. Tap 'Add to Cart'
+2. Add special instructions\n3. Select quantity\n4. Tap 'Add to Cart'
 5. Continue browsing and adding items
-6. Tap floating cart button to review
-7. Edit items or quantities in cart
+6. Tap floating cart button to review\n7. Edit items or quantities in cart
 8. Apply promo code if available
 9. Add order-level special instructions
 10. Review total amount and estimated time
@@ -1248,7 +1435,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 4. Completed stages shown in green with checkmarks
 5. Pending stages shown in gray with clock icons
 6. Duration between stages displayed (e.g., 'Prepared in 15 mins')
-7. Tap on order card to expand full details:\n   - View complete order information\n   - View itemized list with customizations
+7. Tap on order card to expand full details:\n   - View complete order information\n   - View itemized list with item types, portion sizes, and customizations
    - View pricing breakdown
    - View payment information
    - View complete timeline with all timestamps
@@ -1270,8 +1457,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Receive notification: 'Hope you enjoyed your meal!'
    - Tap 'Complete Dining' button
    - Confirmation dialog: 'Have you finished your meal?'
-   - Select 'Yes, I am Done'
-2. **Bill Summary Display**:
+   - Select 'Yes, I am Done'\n2. **Bill Summary Display**:
    - View itemized bill with all charges
    - Review total amount
    - Add tip (optional)
@@ -1296,12 +1482,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
      - Download e-bill from app
      - **'Print E-Bill' button becomes visible** in order details
 4. **Split Bill** (if applicable):
-   - Each person pays their share\n   - Individual e-bills generated for each\n\n**Phase 8: Post-Dining**
+   - Each person pays their share
+   - Individual e-bills generated for each\n\n**Phase 8: Post-Dining**
 1. Rate overall experience (1-5 stars)
 2. Rate individual aspects:
-   - Food quality
-   - Service
-   - Ambiance\n   - Value for money
+   - Food quality\n   - Service
+   - Ambiance
+   - Value for money
 3. Rate individual dishes ordered
 4. Write review and upload photos
 5. View loyalty points earned
@@ -1310,7 +1497,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 8. Share experience on social media
 9. View complete order details in Order History:\n   - Tap on order to expand full details
    - View complete timeline with all timestamps
-   - View itemized list and pricing
+   - View itemized list with item types, portion sizes, and pricing
    - Access e-bill (download, print, email)
 
 ### 4.3 Waiter/Agent Complete Flow
@@ -1333,7 +1520,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 2. Tap on order card to expand full details
 3. View complete order information:\n   - Table number
    - Customer name (real name from profile)
-   - Ordered items with customizations
+   - Ordered items with item types, portion sizes, and customizations
    - Special instructions
    - Estimated preparation time
    - Order timeline with current status
@@ -1353,14 +1540,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Address complaints or issues
 3. Escalate complex issues to manager if needed
 4. Provide personalized recommendations
-
-**Phase 5: Table Management**
+\n**Phase 5: Table Management**
 1. Monitor all assigned tables
 2. Check table status:\n   - Ordering\n   - Eating
    - Payment pending
 3. Assist with bill generation
-4. Process payment requests:\n   - For online payments: Guide customer through app payment
-   - For COC payments: Direct customer to counter
+4. Process payment requests:\n   - For online payments: Guide customer through app payment\n   - For COC payments: Direct customer to counter
 5. Clear table after customer leaves
 6. Update table status to available
 
@@ -1378,14 +1563,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Secondary Color**: Deep Teal (#00A896) for restaurant owner dashboard, professional sections, and success states
 - **Accent Colors**:
   - Green (#28A745): Vegetarian indicators, positive actions,'Ready' status, completed timeline stages
-  - Red (#DC3545): Non-vegetarian indicators, alerts, 'Out of Stock'\n  - Yellow (#FFC107): Ratings, 'Preparing' status, warnings\n  - Blue (#007BFF): Information, links, 'Acknowledged' status
-  - Purple (#6F42C1): Premium features, loyalty badges, 'Served' status
+  - Red (#DC3545): Non-vegetarian indicators, alerts, 'Out of Stock'\n  - Yellow (#FFC107): Ratings, 'Preparing' status, warnings, Eggetarian indicators
+  - Blue (#007BFF): Information, links, 'Acknowledged' status\n  - Purple (#6F42C1): Premium features, loyalty badges, 'Served' status
   - Teal (#00A896): 'Payment Pending' status\n  - Gray (#6C757D): 'Completed' status, pending timeline stages
 - **Neutral Colors**:
   - White (#FFFFFF): Main background, cards\n  - Light Gray (#F8F9FA): Section separators, disabled states
   - Medium Gray (#6C757D): Secondary text, placeholders
-  - Charcoal (#2C3E50): Primary text, headings
-  - Dark Gray (#343A40): Navigation bars, footers
+  - Charcoal (#2C3E50): Primary text, headings\n  - Dark Gray (#343A40): Navigation bars, footers
 
 ### 5.2 Typography System
 - **Font Families**:
@@ -1395,7 +1579,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - H1: Poppins Bold,32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
-  - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
+  - H4: Poppins Medium, 18px (sub-headings)
+  - Body Large: Inter Regular, 16px (descriptions, content)
   - Body: Inter Regular, 14px (standard text)
   - Small: Inter Regular, 12px (metadata, captions, timestamps)
   - Button: Poppins SemiBold, 16px (CTAs)\n  - Price: Poppins SemiBold, 20px (pricing emphasis)
@@ -1445,11 +1630,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **Food Item Cards**:
 - Image: 16:9 aspect ratio, rounded top corners
+- **Item type indicator**: Positioned top-left on image (Veg/Non-Veg/Vegan icon with colored background)
 - Content padding: 12px
 - Badges: Positioned top-right on image
-- Price: Bottom-right, bold and prominent
-- Add button: Floating bottom-right corner
-
+- **Rating display**: Star icon with rating number below item name
+- **Price display**: Bottom-right, bold and prominent (base price or price range)
+- Add button: Floating bottom-right corner\n
 **Order Status Cards**:
 - Color-coded left border (4px width) based on status
 - Status badge: Top-right corner\n- Expandable details: Accordion or modal style
@@ -1462,12 +1648,24 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Duration labels between stages
 - Animated indicator for current stage (pulsing dot or progress bar)
 
+**Rating Component**:
+- Star icons (filled for rating, outlined for remaining)
+- Rating number displayed next to stars
+- Review count in parentheses
+- Color: Yellow (#FFC107) for stars\n- Size: 16px for small, 24px for large
+\n**Item Type Indicator**:
+- Icon size: 20px (small), 32px (large)
+- Vegetarian: Green circle with leaf or'V' symbol
+- Non-Vegetarian: Red circle with chicken leg or 'N' symbol
+- Vegan: Green circle with 'VG' symbol
+- Eggetarian: Yellow circle with egg symbol
+- Positioned prominently on item cards and detail views
+
 ### 5.5 Iconography
 - **Style**: Outlined icons for consistency
 - **Size**: 24px standard, 20px small, 32px large
 - **Library**: Material Icons or Feather Icons
-- **Custom Icons**: Food categories, dietary indicators, payment methods (including COC icon with cash/counter symbol), timeline stage icons
-- **Color**: Inherit from parent or theme color
+- **Custom Icons**: Food categories, dietary indicators (Veg/Non-Veg/Vegan/Eggetarian), payment methods (including COC icon with cash/counter symbol), timeline stage icons, rating stars\n- **Color**: Inherit from parent or theme color
 
 ### 5.6 Imagery Guidelines
 - **Food Photos**:
@@ -1485,19 +1683,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Responsive images with srcset
 
 ### 5.7 Animation & Transitions
-- **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms
-- **Button Press**: Scale(0.98) with 100ms
+- **Page Transitions**:300ms ease-in-out\n- **Card Hover**: Scale(1.02) with 200ms\n- **Card Expand**: Slide-down animation with 400ms\n- **Button Press**: Scale(0.98) with 100ms
 - **Loading States**: Skeleton screens with shimmer effect
 - **Order Alerts**: Slide-in from top with bounce\n- **Chat Messages**: Fade-in with slide-up\n- **Status Updates**: Progress bar fill animation
 - **Timeline Updates**: Checkmark animation with scale and color change
 - **Success Actions**: Checkmark animation with scale\n- **Payment Method Selection**: Smooth highlight transition when selected
 - **Dining Completion Dialog**: Fade-in with scale animation
 - **E-Bill Generation**: Document animation with success checkmark
-- **Print Dialog**: Fade-in with slide-up\n- **Dashboard Home Page Animations**:
+- **Print Dialog**: Fade-in with slide-up\n- **Rating Stars**: Fill animation on tap/click
+- **Dashboard Home Page Animations**:
   - Hero section gradient transitions: 3s infinite alternate
   - Floating food icons: 4s ease-in-out infinite (up and down motion)
   - Lottie cooking animations: Loop continuously
-  - Counter animations: 2s ease-out from0 to target value
+  - Counter animations: 2s ease-out from0to target value
   - Progress ring animations: 1.5s ease-in-out fill
   - Quick action cards: Stagger entrance with 100ms delay between cards
   - Live order feed: Slide-in from right with 300ms\n  - Notification bell shake: 500ms on new alert
@@ -1562,12 +1760,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 ### 6.5 Platform Support
 - Web: Responsive design for all browsers
-- iOS: Native app or PWA
-- Android: Native app or PWA
+- iOS: Native app or PWA\n- Android: Native app or PWA
 - Tablet: Optimized layout for larger screens
 - Desktop: Full-featured dashboard for restaurant owners
 \n## 7. Future Enhancements
-- AI-powered menu recommendations based on customer preferences
+- AI-powered menu recommendations based on customer preferences and dietary restrictions
 - Voice ordering with natural language processing
 - Augmented Reality (AR) menu visualization
 - Delivery and takeout integration
@@ -1583,6 +1780,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Advanced timeline analytics (average time per stage, bottleneck identification)
 - Automated timeline-based alerts (e.g., order taking too long in preparation)
 - Customer timeline sharing (share order progress with friends/family)
+- Advanced rating analytics (sentiment analysis, trending feedback)
+- Item recommendation engine based on ratings and order history
 \n## 8. Design Style\n
 ### 8.1 Overall Aesthetic
 - Modern and clean interface with focus on usability and visual appeal
@@ -1595,8 +1794,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 ### 8.2 Visual Elements
 - **Color Scheme**: Vibrant orange as primary color for energy and appetite stimulation, complemented by teal for professionalism and trust
 - **Typography**: Poppins for bold, modern headings; Inter for clean, readable body text
-- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity
-- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context
+- **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity, color-coded dietary indicators (Veg/Non-Veg/Vegan)\n- **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context
 - **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page
 
 ### 8.3 User Experience Principles

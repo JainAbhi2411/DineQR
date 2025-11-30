@@ -77,6 +77,14 @@ export default function RestaurantForm() {
         await restaurantApi.createRestaurant({
           ...formData,
           owner_id: profile.id,
+          restaurant_type: 'both',
+          cuisine_types: null,
+          images: null,
+          description: null,
+          phone: null,
+          address: null,
+          average_rating: 0,
+          opening_hours: null,
         });
         toast({
           title: 'Success',

@@ -1,6 +1,9 @@
 export type UserRole = 'owner' | 'customer';
 export type OrderStatus = 'pending' | 'preparing' | 'served' | 'completed' | 'cancelled';
 export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+export type RestaurantType = 'veg' | 'non_veg' | 'both';
+export type ItemType = 'veg' | 'non_veg' | 'vegan' | 'egg';
+export type SpiceLevel = 'none' | 'mild' | 'medium' | 'hot' | 'extra_hot';
 
 export interface Profile {
   id: string;
@@ -20,6 +23,22 @@ export interface Profile {
   created_at: string;
 }
 
+export interface OpeningHours {
+  open: string;
+  close: string;
+  closed: boolean;
+}
+
+export interface WeeklyHours {
+  monday?: OpeningHours;
+  tuesday?: OpeningHours;
+  wednesday?: OpeningHours;
+  thursday?: OpeningHours;
+  friday?: OpeningHours;
+  saturday?: OpeningHours;
+  sunday?: OpeningHours;
+}
+
 export interface Restaurant {
   id: string;
   owner_id: string;
@@ -27,6 +46,14 @@ export interface Restaurant {
   location: string | null;
   contact_details: string | null;
   business_info: string | null;
+  restaurant_type: RestaurantType;
+  cuisine_types: string[] | null;
+  images: string[] | null;
+  description: string | null;
+  phone: string | null;
+  address: string | null;
+  average_rating: number;
+  opening_hours: WeeklyHours | null;
   created_at: string;
   updated_at: string;
 }
@@ -36,8 +63,16 @@ export interface MenuCategory {
   restaurant_id: string;
   name: string;
   description?: string | null;
+  image_url: string | null;
   display_order: number;
+  is_active: boolean;
   created_at: string;
+}
+
+export interface MenuItemVariant {
+  name: string;
+  price: number;
+  description?: string;
 }
 
 export interface MenuItem {
@@ -49,6 +84,11 @@ export interface MenuItem {
   price: number;
   image_url: string | null;
   is_available: boolean;
+  item_type: ItemType;
+  variants: MenuItemVariant[] | null;
+  rating: number;
+  is_bestseller: boolean;
+  tags: string[] | null;
   ingredients: string | null;
   allergens: string | null;
   preparation_time: number;
@@ -56,7 +96,7 @@ export interface MenuItem {
   is_vegetarian: boolean;
   is_vegan: boolean;
   is_gluten_free: boolean;
-  spice_level: 'none' | 'mild' | 'medium' | 'hot' | 'extra_hot' | null;
+  spice_level: SpiceLevel | null;
   created_at: string;
   updated_at: string;
 }

@@ -82,6 +82,8 @@ export default function MenuManagement() {
         await menuCategoryApi.createCategory({
           ...categoryForm,
           restaurant_id: restaurantId,
+          image_url: null,
+          is_active: true,
         });
         toast({ title: 'Success', description: 'Category created successfully' });
       }
@@ -158,6 +160,11 @@ export default function MenuManagement() {
         is_vegan: false,
         is_gluten_free: false,
         spice_level: null,
+        item_type: 'veg' as 'veg' | 'non_veg' | 'vegan' | 'egg',
+        variants: null,
+        rating: 0,
+        is_bestseller: false,
+        tags: null,
       };
 
       if (editingItem) {

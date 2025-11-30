@@ -142,6 +142,11 @@ export default function AdvancedMenuItemForm({
         is_vegan: formData.is_vegan,
         is_gluten_free: formData.is_gluten_free,
         is_available: formData.is_available,
+        item_type: (formData.is_vegan ? 'vegan' : formData.is_vegetarian ? 'veg' : 'non_veg') as 'veg' | 'non_veg' | 'vegan' | 'egg',
+        variants: null,
+        rating: 0,
+        is_bestseller: false,
+        tags: null,
       };
 
       if (editingItem) {
