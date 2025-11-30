@@ -6,13 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { QrCode, Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { tableApi } from '@/db/api';
+import { tableApi, visitedRestaurantApi } from '@/db/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ScanQR() {
   const [qrCode, setQrCode] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { profile } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +23,15 @@ export default function ScanQR() {
       toast({
         title: 'Error',
         description: 'Please enter a QR code',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!profile) {
+      toast({
+        title: 'Error',
+        description: 'Please log in to continue',
         variant: 'destructive',
       });
       return;
@@ -38,6 +49,8 @@ export default function ScanQR() {
         });
         return;
       }
+
+      await visitedRestaurantApi.upsertVisitedRestaurant(profile.id, table.restaurant_id);
 
       navigate(`/customer/menu/${table.restaurant_id}?table=${table.id}`);
     } catch (error: any) {

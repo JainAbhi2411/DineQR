@@ -1,27 +1,30 @@
-# Task: Add Half/Full Portion Option for Menu Items
+# Task: Add Visited Restaurants Feature to Customer Dashboard
 
 ## Plan
-- [x] Step 1: Create database migration to add portion_size field to order_items
-- [x] Step 2: Update TypeScript types to include portion information
-- [x] Step 3: Update database API functions to handle portion sizes
-- [x] Step 4: Update MenuManagement.tsx to allow configuring half/full portions
-- [x] Step 5: Update MenuBrowsing.tsx to show portion selection UI
-- [x] Step 6: Update cart context to handle portion sizes
-- [x] Step 7: Update checkout flow to include portion information
-- [x] Step 8: Test the implementation with lint check
+- [x] Step 1: Create database migration for visited_restaurants table
+- [x] Step 2: Update TypeScript types to include VisitedRestaurant interface
+- [x] Step 3: Create API functions to manage visited restaurants
+- [x] Step 4: Update ScanQR page to save visited restaurant when QR is scanned
+- [x] Step 5: Update CustomerDashboard to display visited restaurants as cards
+- [x] Step 6: Test the implementation with lint check
 
 ## Notes
-- Half/full portions should be optional per menu item
-- Variants JSONB field can store half/full pricing: [{"name": "Half", "price": 10}, {"name": "Full", "price": 18}]
-- Order items need to track which portion was selected
-- All tasks completed successfully!
+- When a user scans a QR code, save the restaurant to their visited list
+- Display visited restaurants as clickable cards on the dashboard
+- Allow quick reordering by clicking on restaurant cards
+- Track last visited timestamp and visit count for each restaurant
+- Users can remove restaurants from their list by hovering and clicking the X button
 
 ## Implementation Summary
-1. Added `portion_size`, `variant_name` fields to `order_items` table
-2. Added `has_portions` boolean flag to `menu_items` table
-3. Updated TypeScript interfaces for MenuItem, OrderItem, and CartItem
-4. Enhanced EnhancedMenuItemForm with portion toggle and helpful UI hints
-5. Updated MenuBrowsing with portion selection dialog using RadioGroup
-6. Modified cart system to handle different portions as separate cart items
-7. Updated checkout flow to display and submit portion information
-8. All lint checks passed successfully
+1. Created `visited_restaurants` table with customer_id, restaurant_id, visit counts, and timestamps
+2. Added unique constraint on (customer_id, restaurant_id) to prevent duplicates
+3. Created `upsert_visited_restaurant` RPC function to handle insert/update logic
+4. Added VisitedRestaurant and VisitedRestaurantWithDetails TypeScript interfaces
+5. Created visitedRestaurantApi with methods to upsert, get, and delete visited restaurants
+6. Updated ScanQR page to save restaurant when QR code is scanned
+7. Enhanced CustomerDashboard with "Your Restaurants" section showing visited restaurants as cards
+8. Added hover effects and remove functionality for restaurant cards
+9. All lint checks passed successfully
+
+## Previous Task Completed
+- Half/Full Portion Option for Menu Items - All tasks completed successfully!

@@ -11,6 +11,8 @@ import type {
   OrderStatus,
   Staff,
   Message,
+  VisitedRestaurant,
+  VisitedRestaurantWithDetails,
 } from '@/types/types';
 
 export const profileApi = {
@@ -474,6 +476,38 @@ export const messageApi = {
       p_order_id: orderId,
       p_user_id: userId,
     });
+    if (error) throw error;
+  },
+};
+
+export const visitedRestaurantApi = {
+  async upsertVisitedRestaurant(customerId: string, restaurantId: string): Promise<VisitedRestaurant | null> {
+    const { data, error } = await supabase.rpc('upsert_visited_restaurant', {
+      p_customer_id: customerId,
+      p_restaurant_id: restaurantId,
+    });
+    if (error) throw error;
+    return data;
+  },
+
+  async getVisitedRestaurants(customerId: string): Promise<VisitedRestaurantWithDetails[]> {
+    const { data, error } = await supabase
+      .from('visited_restaurants')
+      .select(`
+        *,
+        restaurant:restaurants(*)
+      `)
+      .eq('customer_id', customerId)
+      .order('last_visited_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async deleteVisitedRestaurant(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('visited_restaurants')
+      .delete()
+      .eq('id', id);
     if (error) throw error;
   },
 };

@@ -201,3 +201,17 @@ export interface CartItem {
   selectedVariant?: MenuItemVariant;
   portionSize?: string;
 }
+
+export interface VisitedRestaurant {
+  id: string;
+  customer_id: string;
+  restaurant_id: string;
+  first_visited_at: string;
+  last_visited_at: string;
+  visit_count: number;
+  created_at: string;
+}
+
+export interface VisitedRestaurantWithDetails extends VisitedRestaurant {
+  restaurant?: Restaurant;
+}

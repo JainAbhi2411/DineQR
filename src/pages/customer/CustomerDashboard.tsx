@@ -1,39 +1,67 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { orderApi } from '@/db/api';
-import { OrderWithItems } from '@/types/types';
+import { orderApi, visitedRestaurantApi } from '@/db/api';
+import { OrderWithItems, VisitedRestaurantWithDetails } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { QrCode, ShoppingBag, History, User } from 'lucide-react';
+import { QrCode, ShoppingBag, History, User, Store, Clock, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function CustomerDashboard() {
   const { profile } = useAuth();
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [visitedRestaurants, setVisitedRestaurants] = useState<VisitedRestaurantWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadOrders();
+    loadData();
   }, [profile]);
 
-  const loadOrders = async () => {
+  const loadData = async () => {
     if (!profile) return;
     
     try {
       setLoading(true);
-      const ordersData = await orderApi.getOrdersByCustomer(profile.id);
+      const [ordersData, visitedData] = await Promise.all([
+        orderApi.getOrdersByCustomer(profile.id),
+        visitedRestaurantApi.getVisitedRestaurants(profile.id),
+      ]);
       setOrders(ordersData.slice(0, 5));
+      setVisitedRestaurants(visitedData);
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message || 'Failed to load orders',
+        description: error.message || 'Failed to load data',
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRemoveRestaurant = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await visitedRestaurantApi.deleteVisitedRestaurant(id);
+      setVisitedRestaurants(prev => prev.filter(r => r.id !== id));
+      toast({
+        title: 'Success',
+        description: 'Restaurant removed from your list',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to remove restaurant',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleRestaurantClick = (restaurantId: string) => {
+    navigate(`/customer/menu/${restaurantId}`);
   };
 
   if (loading) {
@@ -152,6 +180,49 @@ export default function CustomerDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {visitedRestaurants.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Your Restaurants</CardTitle>
+              <CardDescription>Quick access to restaurants you've visited</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {visitedRestaurants.map((visited) => (
+                  <div
+                    key={visited.id}
+                    onClick={() => handleRestaurantClick(visited.restaurant_id)}
+                    className="relative group border rounded-lg p-4 hover:shadow-lg transition-all cursor-pointer hover:border-primary"
+                  >
+                    <button
+                      onClick={(e) => handleRemoveRestaurant(visited.id, e)}
+                      className="absolute top-2 right-2 p-1 rounded-full bg-background hover:bg-destructive hover:text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Remove restaurant"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    <div className="flex items-start gap-3">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Store className="w-6 h-6 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold truncate">{visited.restaurant?.name || 'Restaurant'}</h3>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {visited.restaurant?.location || 'Location not available'}
+                        </p>
+                        <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                          <Clock className="w-3 h-3" />
+                          <span>Visited {visited.visit_count} {visited.visit_count === 1 ? 'time' : 'times'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {orders.length > 0 ? (
           <Card>
