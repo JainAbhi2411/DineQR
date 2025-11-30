@@ -18,7 +18,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Security questions setup for account recovery
 - **Login System**:
   - Email/phone + password authentication
-  - Biometric login support (fingerprint/face recognition) for mobile\n  - Session management with auto-logout after inactivity
+  - Biometric login support (fingerprint/face recognition) for mobile
+  - Session management with auto-logout after inactivity
   - Device tracking and suspicious login alerts
   - Single Sign-On (SSO) support for enterprise accounts
 - **Password Management**:
@@ -58,34 +59,113 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Employee ID + password authentication
   - Quick PIN-based login for tablet devices
   - Biometric login for mobile staff apps
-  - Automatic clock-in/clock-out tracking
-- **Access Permissions**:
+  - Automatic clock-in/clock-out tracking\n- **Access Permissions**:
   - View assigned tables and orders only
   - Update order status within assigned tables
   - Access customer chat for assigned orders
   - View menu and inventory information
-\n## 3. Enhanced Core Features
+
+## 3. Enhanced Core Features
 
 ### 3.1 Advanced Restaurant Owner Features
-\n#### 3.1.1 Restaurant Management Dashboard
-- **Multi-Restaurant Support**:
+\n#### 3.1.1 Restaurant Management Dashboard with Animated Home Page
+\n**Enhanced Home Page with Restaurant Ambiance Animations**:\n\n- **Hero Section with Dynamic Visuals**:
+  - Full-width hero banner with animated gradient background (smooth color transitions between warm orange and teal)
+  - Floating food illustrations with parallax scrolling effect (subtle movement on scroll)
+  - Animated restaurant icons (plates, utensils, chef hats) with gentle floating motion
+  - Lottie animations of cooking elements (steam rising, sizzling pans, rotating dishes)
+  - Welcome message with typewriter animation effect:'Welcome back, [Owner Name]!'
+  - Current date and time display with smooth fade-in transition
+\n- **Live Statistics Dashboard with Animated Counters**:
+  - Real-time metrics cards with entrance animations (slide-up with stagger effect)
+  - Animated number counters for key statistics:\n    - Total Orders Today (counting animation from 0 to current value)
+    - Active Orders (pulsing badge with live count)
+    - Revenue Today (currency symbol with rolling number animation)
+    - Customer Satisfaction Rating (animated star fill effect)
+  - Circular progress indicators with smooth arc animations for:\n    - Table Occupancy Rate (animated donut chart)
+    - Kitchen Efficiency (progress ring with color gradient)
+    - Average Service Time (clock animation with moving hands)
+  - Sparkline charts with drawing animation for hourly trends
+  - Color-coded status indicators with glow effects
+
+- **Quick Action Cards with Hover Effects**:
+  - Grid layout of action cards with 3D tilt effect on hover
+  - Each card features:
+    - Animated icon with bounce effect on page load
+    - Card title with gradient text effect
+    - Hover state: scale(1.05) with shadow expansion and subtle rotation
+    - Click animation: ripple effect from touch point
+  - Quick actions include:
+    - 'View Orders' (with live order count badge pulsing)
+    - 'Manage Menu' (with rotating plate icon)
+    - 'Check Inventory' (with stock level indicator animation)
+    - 'View Analytics' (with animated chart icon)
+    - 'Staff Management' (with team icon animation)
+    - 'Generate Reports' (with document flip animation)
+
+- **Live Order Feed with Real-Time Animations**:
+  - Scrolling ticker showing recent orders with slide-in animation
+  - New order notifications with slide-down and bounce effect
+  - Order status updates with color transition animations
+  - Sound notification with visual ripple effect for new orders
+  - Auto-scrolling feed with pause on hover
+
+- **Restaurant Ambiance Elements**:
+  - Animated background patterns:\n    - Subtle food-related SVG patterns (forks, spoons, plates) with slow rotation
+    - Floating bubble animations with food icons inside
+    - Particle effects resembling steam or sparkles
+  - Ambient animations:
+    - Candle flame flicker effect in corner decorations
+    - Subtle shadow movements simulating restaurant lighting
+    - Animated table layout visualization showing occupied/available tables
+  - Seasonal themes:
+    - Falling leaves animation for autumn
+    - Snowflakes for winter
+    - Flower petals for spring
+    - Sun rays for summer
+
+- **Interactive Elements**:
+  - Animated navigation menu with smooth expand/collapse\n  - Sidebar with slide-in animation on page load
+  - Notification bell with shake animation for new alerts
+  - Profile avatar with hover zoom and border glow
+  - Search bar with expand animation on focus
+  - Dropdown menus with fade-in and slide-down effect
+
+- **Performance Optimizations**:
+  - CSS animations for smooth 60fps performance
+  - Lottie animations loaded asynchronously
+  - Reduced motion mode for accessibility (respects prefers-reduced-motion)
+  - Lazy loading for non-critical animations
+  - GPU-accelerated transforms for smooth transitions
+
+- **Responsive Animations**:
+  - Mobile: Simplified animations with reduced complexity
+  - Tablet: Moderate animation effects with optimized performance
+  - Desktop: Full animation suite with advanced effects
+  - Touch devices: Haptic feedback integration with animations
+
+**Multi-Restaurant Support**:
   - Manage unlimited restaurant locations from single account
-  - Switch between restaurants with dropdown selector
+  - Switch between restaurants with dropdown selector (animated transition)
   - Consolidated analytics across all locations
   - Location-specific settings and customization
-- **Restaurant Profile** (Enhanced):
+
+**Restaurant Profile** (Enhanced):
   - Restaurant name, logo, and banner images (multiple images support)
   - Complete address with Google Maps integration and geolocation
   - Contact details: phone, email, website, social media links
   - Business hours with holiday schedule management
   - Cuisine types (multi-select): Italian, Chinese, Indian, Mexican, etc.
-  - Restaurant category: Fine Dining, Casual, Fast Food, Cafe, Bar\n  - Seating capacity, table count, and floor plan upload
+  - Restaurant category: Fine Dining, Casual, Fast Food, Cafe, Bar
+  - Seating capacity, table count, and floor plan upload
   - Amenities: WiFi, Parking, Outdoor Seating, Live Music, etc.
   - Restaurant description (rich text editor with formatting)
   - Photo gallery for ambiance and signature dishes
   - Certifications and awards display
-\n#### 3.1.2 Advanced Menu Management System
-\n**Enhanced Schema Structure**:
+
+#### 3.1.2 Advanced Menu Management System
+
+**Enhanced Schema Structure**:
 - **Category Schema**:
   - Category ID (auto-generated UUID)
   - Category Name (required, max 50 characters)
@@ -95,18 +175,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Availability Status (active/inactive)
   - Time-based Availability (breakfast, lunch, dinner, all-day)
   - Parent Category (for sub-categories support)
-\n- **Food Item Schema** (Complete):
+
+- **Food Item Schema** (Complete):
   - Item ID (auto-generated UUID)
   - Item Name (required, max 100 characters)
   - Item Description (required, rich text editor with formatting, max 1000 characters)
   - Category Assignment (required, multi-category support)
-  - Price (required, decimal with currency)
-  - Discounted Price (optional)
-  - Multiple Images (minimum 1, maximum 5 high-resolution images)
+  - Price (required, decimal with currency)\n  - Discounted Price (optional)\n  - Multiple Images (minimum 1, maximum 5 high-resolution images)
   - Preparation Time (required, in minutes)
   - Dietary Indicators (multi-select): Vegetarian, Vegan, Non-Vegetarian, Gluten-Free, Dairy-Free,Nut-Free, Halal, Kosher\n  - Spice Level (None, Mild, Medium, Hot, Extra Hot)
   - Allergen Information (multi-select): Nuts, Dairy, Eggs, Soy, Shellfish, Wheat, etc.
-  - Nutritional Information (optional):\n    - Calories\n    - Protein (grams)
+  - Nutritional Information (optional):
+    - Calories
+    - Protein (grams)
     - Carbohydrates (grams)
     - Fat (grams)
     - Fiber (grams)
@@ -115,8 +196,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Customization Options:\n    - Portion Size (Small, Medium, Large with price variations)
     - Spice Level Adjustment (with price if applicable)
     - Add-ons (extra cheese, extra sauce, etc. with individual prices)
-    - Removal Options (no onions, no garlic, etc.)
-  - Availability Status (available, out of stock, seasonal)
+    - Removal Options (no onions, no garlic, etc.)\n  - Availability Status (available, out of stock, seasonal)
   - Popular Item Badge (yes/no)
   - Chef's Special Badge (yes/no)
   - New Item Badge (auto-expires after 30 days)
@@ -136,12 +216,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Schedule menu changes for specific dates
   - Rollback to previous menu versions
 - **Menu Analytics**:
-  - Most viewed items
-  - Most ordered items
+  - Most viewed items\n  - Most ordered items
   - Items with highest ratings
   - Items with low orders (candidates for removal)
-  - Category-wise performance
-- **Smart Recommendations**:
+  - Category-wise performance\n- **Smart Recommendations**:
   - AI-suggested item pairings
   - Automatic'Frequently Bought Together' generation
   - Seasonal item suggestions based on trends
@@ -193,9 +271,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
     - Purple: Served (food delivered to customer)
     - Teal: Payment Pending (awaiting payment completion)
     - Gray: Completed (payment received and order closed)
-  - Compact card view shows:\n    - Order ID and timestamp
-    - Table number with floor/section
-    - Customer name (real name from profile or'Guest')
+  - Compact card view shows:
+    - Order ID and timestamp
+    - Table number with floor/section\n    - Customer name (real name from profile or'Guest')
     - Order status badge (current stage)
     - Payment method indicator (Card, Wallet, UPI,BNPL, COC)
     - Payment status badge (Pending/Completed/Failed)
@@ -234,7 +312,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
         - **Waiter Assigned**: Timestamp and waiter name
         - **Preparing**: Timestamp when kitchen started preparation
         - **Ready**: Timestamp when food ready for service
-        - **Served**: Timestamp when food delivered to customer\n        - **Payment Collected**: Timestamp when payment completed
+        - **Served**: Timestamp when food delivered to customer
+        - **Payment Collected**: Timestamp when payment completed
         - **Order Completed**: Final timestamp\n      - Each checkpoint shows:
         - Status icon (checkmark for completed, clock for pending)
         - Status label\n        - Timestamp (date and time)
@@ -267,8 +346,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Payment Status Tracking**:
 - **Payment Pending Orders**:
   - Dedicated section for orders with pending payments
-  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)
-  - Visual indicator for payment timeout (e.g., pending for >15 mins)
+  - Filter by payment method (COC, Card, Wallet, UPI, BNPL)\n  - Visual indicator for payment timeout (e.g., pending for >15 mins)
   - Quick action:'Collect Payment' button for COC orders
 - **Payment Completed Orders**:
   - Automatic move to 'Completed Orders' section upon payment confirmation
@@ -333,7 +411,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 
 **COC (Cash on Counter) Payment Workflow**:
 - **Order with COC Payment Method**:
-  - When customer selects COC as payment method, order is marked with 'COC Payment' badge in orange color
+  - When customer selects COC as payment method, order is marked with'COC Payment' badge in orange color
   - Order card displays prominent'Payment Pending - COC' status
   - Owner/Manager dashboard shows dedicated 'Pending COC Payments' section
 \n- **Bill Summary View for COC Orders**:
@@ -448,7 +526,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 \n- **Login Screen Layout**:
   - Centered login card with rounded corners (24px border radius)
   - DineQR logo with animated entrance (scale + fade effect)
-  - Welcoming tagline:'Your Culinary Journey Starts Here' with elegant typography
+  - Welcoming tagline: 'Your Culinary Journey Starts Here' with elegant typography
   - Input fields with floating labels and smooth focus animations
   - Password field with show/hide toggle icon
   - Biometric login button with fingerprint/face icon and pulse animation
@@ -1066,8 +1144,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 **Phase 6: Staff Management**
 1. Navigate to 'Staff Management'
 2. Add staff members:\n   - Enter name, email, phone, employee ID
-   - Assign role (waiter, chef, manager)
-   - Set shift schedule
+   - Assign role (waiter, chef, manager)\n   - Set shift schedule
    - Send invitation email for account setup
 3. Staff members complete registration and login
 \n**Phase 7: Daily Operations**
@@ -1151,7 +1228,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 2. Add special instructions\n3. Select quantity
 4. Tap 'Add to Cart'
 5. Continue browsing and adding items
-6. Tap floating cart button to review\n7. Edit items or quantities in cart
+6. Tap floating cart button to review
+7. Edit items or quantities in cart
 8. Apply promo code if available
 9. Add order-level special instructions
 10. Review total amount and estimated time
@@ -1192,7 +1270,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
    - Receive notification: 'Hope you enjoyed your meal!'
    - Tap 'Complete Dining' button
    - Confirmation dialog: 'Have you finished your meal?'
-   - Select 'Yes, I am Done'\n2. **Bill Summary Display**:
+   - Select 'Yes, I am Done'
+2. **Bill Summary Display**:
    - View itemized bill with all charges
    - Review total amount
    - Add tip (optional)
@@ -1313,7 +1392,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
   - Primary: Poppins (headings, buttons, emphasis)
   - Secondary: Inter (body text, descriptions, UI elements)
 - **Type Scale**:
-  - H1: Poppins Bold, 32px (restaurant names, page titles)
+  - H1: Poppins Bold,32px (restaurant names, page titles)
   - H2: Poppins SemiBold, 24px (section headings)
   - H3: Poppins SemiBold, 20px (card titles, item names)
   - H4: Poppins Medium, 18px (sub-headings)\n  - Body Large: Inter Regular, 16px (descriptions, content)
@@ -1414,10 +1493,18 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Success Actions**: Checkmark animation with scale\n- **Payment Method Selection**: Smooth highlight transition when selected
 - **Dining Completion Dialog**: Fade-in with scale animation
 - **E-Bill Generation**: Document animation with success checkmark
-- **Print Dialog**: Fade-in with slide-up\n
+- **Print Dialog**: Fade-in with slide-up\n- **Dashboard Home Page Animations**:
+  - Hero section gradient transitions: 3s infinite alternate
+  - Floating food icons: 4s ease-in-out infinite (up and down motion)
+  - Lottie cooking animations: Loop continuously
+  - Counter animations: 2s ease-out from0 to target value
+  - Progress ring animations: 1.5s ease-in-out fill
+  - Quick action cards: Stagger entrance with 100ms delay between cards
+  - Live order feed: Slide-in from right with 300ms\n  - Notification bell shake: 500ms on new alert
+  - Particle effects: Continuous subtle movement
+
 ### 5.8 Accessibility
-- **Color Contrast**: WCAG AA compliant (4.5:1 for text)\n- **Touch Targets**: Minimum 44x44px for mobile
-- **Keyboard Navigation**: Full support with visible focus states
+- **Color Contrast**: WCAG AA compliant (4.5:1 for text)\n- **Touch Targets**: Minimum 44x44px for mobile\n- **Keyboard Navigation**: Full support with visible focus states
 - **Screen Reader**: Semantic HTML with ARIA labels
 - **Alt Text**: Descriptive text for all images
 - **Font Scaling**: Support for user font size preferences
@@ -1451,6 +1538,11 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Caching strategies for frequently accessed data
 - Real-time synchronization for order status, payment confirmations, and timeline updates
 - Efficient timeline rendering with virtualization for long order histories
+- **Animation Performance**:
+  - CSS animations with GPU acceleration (transform, opacity)\n  - RequestAnimationFrame for JavaScript animations
+  - Debouncing and throttling for scroll-triggered animations
+  - Lazy loading of Lottie animations
+  - Reduced animation complexity on low-end devices
 
 ### 6.3 Scalability
 - Microservices architecture for independent scaling
@@ -1466,6 +1558,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Analytics: Google Analytics, Mixpanel\n- Accounting software: QuickBooks, Xero
 - E-bill generation library for PDF creation
 - Print service integration for e-bill printing
+- Lottie animation library for complex animations
 
 ### 6.5 Platform Support
 - Web: Responsive design for all browsers
@@ -1497,12 +1590,14 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - Professional yet approachable tone for restaurant owners
 - Friendly and engaging experience for customers
 - Consistent branding across all platforms and touchpoints
-\n### 8.2 Visual Elements
+- **Restaurant ambiance feel** with animated elements that evoke dining atmosphere
+
+### 8.2 Visual Elements
 - **Color Scheme**: Vibrant orange as primary color for energy and appetite stimulation, complemented by teal for professionalism and trust
 - **Typography**: Poppins for bold, modern headings; Inter for clean, readable body text
 - **Iconography**: Outlined icons for consistency and clarity, custom food and payment icons for brand identity
 - **Imagery**: High-quality food photography with professional styling, restaurant ambiance photos for context
-- **Animations**: Smooth, purposeful animations that enhance user experience without distraction
+- **Animations**: Smooth, purposeful animations that enhance user experience without distraction, with special focus on creating an immersive restaurant atmosphere on the owner dashboard home page
 
 ### 8.3 User Experience Principles
 - **Simplicity**: Intuitive navigation with minimal learning curve
@@ -1511,6 +1606,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem that revolutioniz
 - **Feedback**: Immediate visual and haptic feedback for all user actions
 - **Personalization**: Tailored experience based on user preferences and history
 - **Accessibility**: Inclusive design for users of all abilities
+- **Engagement**: Animated elements that create emotional connection and enhance brand identity
 
 ### 8.4 Brand Identity
 - **Logo**: Modern, food-related icon with'DineQR' wordmark
