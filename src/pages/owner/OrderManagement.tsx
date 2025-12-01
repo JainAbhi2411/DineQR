@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, orderApi } from '@/db/api';
 import { Restaurant, OrderWithItems, OrderStatus } from '@/types/types';
@@ -21,36 +21,18 @@ export default function OrderManagement() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const ordersRef = useRef<OrderWithItems[]>([]);
 
+  // Keep ref in sync with state
   useEffect(() => {
-    loadData();
-    
-    const channel = supabase
-      .channel('orders-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'orders',
-          filter: `restaurant_id=eq.${restaurantId}`,
-        },
-        () => {
-          loadData();
-        }
-      )
-      .subscribe();
+    ordersRef.current = orders;
+  }, [orders]);
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [restaurantId]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!restaurantId) return;
     
     try {
-      setLoading(true);
+      const previousOrders = ordersRef.current;
       const [restaurantData, ordersData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         orderApi.getOrdersByRestaurant(restaurantId),
@@ -58,6 +40,20 @@ export default function OrderManagement() {
       
       setRestaurant(restaurantData);
       setOrders(ordersData);
+
+      // Check for new orders and show notification
+      if (previousOrders.length > 0 && ordersData.length > previousOrders.length) {
+        const newOrders = ordersData.filter(
+          newOrder => !previousOrders.some(oldOrder => oldOrder.id === newOrder.id)
+        );
+        
+        newOrders.forEach(order => {
+          toast({
+            title: '🔔 New Order Received!',
+            description: `Table ${order.table?.table_number || 'N/A'} - Order #${order.id.slice(0, 8).toUpperCase()}`,
+          });
+        });
+      }
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -67,7 +63,48 @@ export default function OrderManagement() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [restaurantId, toast]);
+
+  useEffect(() => {
+    setLoading(true);
+    loadData();
+    
+    const channel = supabase
+      .channel('restaurant-orders-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `restaurant_id=eq.${restaurantId}`,
+        },
+        () => {
+          // Small delay to ensure all related data is written
+          setTimeout(() => loadData(), 300);
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'order_status_history',
+        },
+        (payload) => {
+          // Check if this status history belongs to one of the restaurant's orders
+          const orderId = payload.new.order_id;
+          if (ordersRef.current.some(order => order.id === orderId)) {
+            setTimeout(() => loadData(), 300);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [restaurantId, loadData]);
 
   const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
