@@ -67,8 +67,10 @@ export default function OrderHistory() {
       setLoading(true);
       loadOrders();
 
+      console.log('[OrderHistory] Setting up real-time subscriptions for customer:', user.id);
+
       const channel = supabase
-        .channel('customer-orders-changes')
+        .channel(`customer-orders-history-${user.id}`)
         .on(
           'postgres_changes',
           {
@@ -77,7 +79,8 @@ export default function OrderHistory() {
             table: 'orders',
             filter: `customer_id=eq.${user.id}`,
           },
-          () => {
+          (payload) => {
+            console.log('[OrderHistory] Received order change:', payload);
             // Small delay to ensure status_history trigger completes
             setTimeout(() => loadOrders(), 300);
           }
@@ -90,16 +93,21 @@ export default function OrderHistory() {
             table: 'order_status_history',
           },
           (payload) => {
+            console.log('[OrderHistory] Received status history change:', payload);
             // Check if this status history belongs to one of the customer's orders
             const orderId = payload.new.order_id;
             if (ordersRef.current.some(order => order.id === orderId)) {
+              console.log('[OrderHistory] Status history belongs to customer order, reloading...');
               setTimeout(() => loadOrders(), 300);
             }
           }
         )
-        .subscribe();
+        .subscribe((status) => {
+          console.log('[OrderHistory] Subscription status:', status);
+        });
 
       return () => {
+        console.log('[OrderHistory] Cleaning up subscription');
         supabase.removeChannel(channel);
       };
     }

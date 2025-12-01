@@ -69,8 +69,10 @@ export default function OrderManagement() {
     setLoading(true);
     loadData();
     
+    console.log('[OrderManagement] Setting up real-time subscriptions for restaurant:', restaurantId);
+    
     const channel = supabase
-      .channel('restaurant-orders-changes')
+      .channel(`restaurant-orders-${restaurantId}`)
       .on(
         'postgres_changes',
         {
@@ -79,7 +81,8 @@ export default function OrderManagement() {
           table: 'orders',
           filter: `restaurant_id=eq.${restaurantId}`,
         },
-        () => {
+        (payload) => {
+          console.log('[OrderManagement] Received order change:', payload);
           // Small delay to ensure all related data is written
           setTimeout(() => loadData(), 300);
         }
@@ -92,16 +95,21 @@ export default function OrderManagement() {
           table: 'order_status_history',
         },
         (payload) => {
+          console.log('[OrderManagement] Received status history change:', payload);
           // Check if this status history belongs to one of the restaurant's orders
           const orderId = payload.new.order_id;
           if (ordersRef.current.some(order => order.id === orderId)) {
+            console.log('[OrderManagement] Status history belongs to restaurant order, reloading...');
             setTimeout(() => loadData(), 300);
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[OrderManagement] Subscription status:', status);
+      });
 
     return () => {
+      console.log('[OrderManagement] Cleaning up subscription');
       supabase.removeChannel(channel);
     };
   }, [restaurantId, loadData]);
