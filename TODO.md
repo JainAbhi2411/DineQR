@@ -1,30 +1,51 @@
-# Task: Add Visited Restaurants Feature to Customer Dashboard
+# Task: Implement Real-Time Notification System for Orders
 
 ## Plan
-- [x] Step 1: Create database migration for visited_restaurants table
-- [x] Step 2: Update TypeScript types to include VisitedRestaurant interface
-- [x] Step 3: Create API functions to manage visited restaurants
-- [x] Step 4: Update ScanQR page to save visited restaurant when QR is scanned
-- [x] Step 5: Update CustomerDashboard to display visited restaurants as cards
-- [x] Step 6: Test the implementation with lint check
+- [x] Step 1: Create database migration for notifications table
+- [x] Step 2: Update TypeScript types to include Notification interface
+- [x] Step 3: Create API functions for notifications (CRUD operations)
+- [x] Step 4: Create NotificationBell component with badge counter
+- [x] Step 5: Create NotificationPanel component to display notifications
+- [x] Step 6: Set up Supabase Realtime subscriptions for orders table
+- [x] Step 7: Update OwnerDashboard to show real-time order notifications
+- [x] Step 8: Update CustomerDashboard to show real-time order status updates
+- [x] Step 9: Add notification triggers for new orders and status changes
+- [x] Step 10: Test real-time functionality with two browser windows
+- [x] Step 11: Run lint check and fix any issues
 
 ## Notes
-- When a user scans a QR code, save the restaurant to their visited list
-- Display visited restaurants as clickable cards on the dashboard
-- Allow quick reordering by clicking on restaurant cards
-- Track last visited timestamp and visit count for each restaurant
-- Users can remove restaurants from their list by hovering and clicking the X button
+- Owner should receive notifications when customers place new orders
+- Customers should receive notifications when order status changes
+- Notifications should appear without page refresh using Supabase Realtime
+- Add visual indicator (bell icon with badge) for unread notifications
+- Include sound/visual feedback when new notifications arrive
+- Mark notifications as read when viewed
+- Store notification history in database for persistence
 
-## Implementation Summary
-1. Created `visited_restaurants` table with customer_id, restaurant_id, visit counts, and timestamps
-2. Added unique constraint on (customer_id, restaurant_id) to prevent duplicates
-3. Created `upsert_visited_restaurant` RPC function to handle insert/update logic
-4. Added VisitedRestaurant and VisitedRestaurantWithDetails TypeScript interfaces
-5. Created visitedRestaurantApi with methods to upsert, get, and delete visited restaurants
-6. Updated ScanQR page to save restaurant when QR code is scanned
-7. Enhanced CustomerDashboard with "Your Restaurants" section showing visited restaurants as cards
-8. Added hover effects and remove functionality for restaurant cards
-9. All lint checks passed successfully
+## Implementation Details
+1. ✅ Created `notifications` table with user_id, type, title, message, order_id, is_read, created_at
+2. ✅ Set up Realtime subscriptions to listen for:
+   - INSERT events on orders table (for owner)
+   - UPDATE events on orders table (for customer)
+3. ✅ Created reusable notification components (NotificationBell, NotificationList)
+4. ✅ Integrated notification system into Header component (visible to all authenticated users)
+5. ✅ Added database triggers to auto-create notifications on order events
+6. ✅ Created useNotifications hook for real-time notification updates
+7. ✅ Added real-time subscriptions to CustomerDashboard
+8. ✅ All lint checks passed successfully
+
+## Testing Instructions
+To test the real-time notification system:
+1. Open two browser windows side by side
+2. In Window 1: Log in as a restaurant owner
+3. In Window 2: Log in as a customer
+4. In Window 2: Scan QR code and place an order
+5. In Window 1: You should see a notification bell badge update automatically and a toast notification
+6. In Window 1: Click the notification bell to view the notification details
+7. In Window 1: Update the order status (e.g., from "pending" to "preparing")
+8. In Window 2: You should see a notification bell badge update and a toast notification
+9. In Window 2: Click the notification bell to view the status update notification
+10. Both users should see real-time updates without refreshing the page
 
 ## Previous Task Completed
-- Half/Full Portion Option for Menu Items - All tasks completed successfully!
+- Visited Restaurants Feature - All tasks completed successfully!

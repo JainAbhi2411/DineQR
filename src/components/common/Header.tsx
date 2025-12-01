@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UtensilsCrossed, LogOut, User, Store, ShoppingCart, Settings, History } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 export default function Header() {
   const { user, profile, signOut } = useAuth();
@@ -61,6 +62,7 @@ export default function Header() {
           <div className="flex items-center gap-4">
             {user && profile ? (
               <>
+                <NotificationBell userId={profile.id} />
                 {profile.role === 'owner' ? (
                   <>
                     <Button variant="outline" size="sm" asChild className="hidden sm:flex">

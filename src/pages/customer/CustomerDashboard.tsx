@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { QrCode, ShoppingBag, History, User, Store, Clock, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/db/supabase';
 
 export default function CustomerDashboard() {
   const { profile } = useAuth();
@@ -18,6 +19,28 @@ export default function CustomerDashboard() {
 
   useEffect(() => {
     loadData();
+
+    if (!profile) return;
+
+    const channel = supabase
+      .channel('customer-orders-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `customer_id=eq.${profile.id}`,
+        },
+        () => {
+          setTimeout(() => loadData(), 300);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [profile]);
 
   const loadData = async () => {
