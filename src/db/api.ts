@@ -285,7 +285,8 @@ export const orderApi = {
         status_history:order_status_history(*)
       `)
       .eq('customer_id', customerId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('created_at', { foreignTable: 'order_status_history', ascending: true });
     if (error) throw error;
     return Array.isArray(data) ? data : [];
   },
@@ -302,7 +303,8 @@ export const orderApi = {
         status_history:order_status_history(*)
       `)
       .eq('restaurant_id', restaurantId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('created_at', { foreignTable: 'order_status_history', ascending: true });
     if (error) throw error;
     return Array.isArray(data) ? data : [];
   },
@@ -320,6 +322,7 @@ export const orderApi = {
         status_history:order_status_history(*)
       `)
       .eq('id', id)
+      .order('created_at', { foreignTable: 'order_status_history', ascending: true })
       .maybeSingle();
     if (error) throw error;
     return data;
