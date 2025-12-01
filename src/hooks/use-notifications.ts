@@ -74,8 +74,10 @@ export function useNotifications(userId: string | null) {
   useEffect(() => {
     if (!userId) return;
 
+    console.log('[useNotifications] Setting up real-time subscription for user:', userId);
+
     const channel = supabase
-      .channel('notifications-changes')
+      .channel(`notifications-${userId}`)
       .on(
         'postgres_changes',
         {
@@ -85,6 +87,7 @@ export function useNotifications(userId: string | null) {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
+          console.log('[useNotifications] Received INSERT event:', payload);
           const newNotification = payload.new as Notification;
           setNotifications((prev) => [newNotification, ...prev]);
           setUnreadCount((prev) => prev + 1);
@@ -99,6 +102,8 @@ export function useNotifications(userId: string | null) {
               body: newNotification.message,
               icon: '/favicon.png',
             });
+          } else if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
           }
         }
       )
@@ -111,6 +116,7 @@ export function useNotifications(userId: string | null) {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
+          console.log('[useNotifications] Received UPDATE event:', payload);
           const updatedNotification = payload.new as Notification;
           setNotifications((prev) =>
             prev.map((n) => (n.id === updatedNotification.id ? updatedNotification : n))
@@ -129,6 +135,7 @@ export function useNotifications(userId: string | null) {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
+          console.log('[useNotifications] Received DELETE event:', payload);
           const deletedNotification = payload.old as Notification;
           setNotifications((prev) => prev.filter((n) => n.id !== deletedNotification.id));
           if (!deletedNotification.is_read) {
@@ -136,9 +143,12 @@ export function useNotifications(userId: string | null) {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[useNotifications] Subscription status:', status);
+      });
 
     return () => {
+      console.log('[useNotifications] Cleaning up subscription');
       supabase.removeChannel(channel);
     };
   }, [userId, toast]);

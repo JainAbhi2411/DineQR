@@ -22,8 +22,10 @@ export default function CustomerDashboard() {
 
     if (!profile) return;
 
+    console.log('[CustomerDashboard] Setting up real-time subscription for customer:', profile.id);
+
     const channel = supabase
-      .channel('customer-orders-changes')
+      .channel(`customer-orders-${profile.id}`)
       .on(
         'postgres_changes',
         {
@@ -32,13 +34,17 @@ export default function CustomerDashboard() {
           table: 'orders',
           filter: `customer_id=eq.${profile.id}`,
         },
-        () => {
+        (payload) => {
+          console.log('[CustomerDashboard] Received order change:', payload);
           setTimeout(() => loadData(), 300);
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[CustomerDashboard] Subscription status:', status);
+      });
 
     return () => {
+      console.log('[CustomerDashboard] Cleaning up subscription');
       supabase.removeChannel(channel);
     };
   }, [profile]);

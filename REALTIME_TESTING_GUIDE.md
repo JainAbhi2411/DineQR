@@ -1,312 +1,189 @@
-# Real-Time Order Updates - Testing Guide
+# Real-Time Notification System - Testing Guide
 
-## Overview
-This guide will help you test the real-time order update functionality between customers and restaurant owners.
+## 🎯 What Was Fixed
 
-## What Has Been Implemented
+### Issue
+Real-time updates were not working properly without page refresh.
 
-### ✅ Customer Side (Order History Page)
-1. **Real-time order status updates** - Automatically refreshes when restaurant changes order status
-2. **Real-time payment status updates** - Shows when payment is collected
-3. **Visual card highlight** - Order card highlights with blue ring when updated
-4. **Toast notifications** - Pop-up notifications for status changes
-5. **Timeline updates** - Order timeline refreshes automatically
+### Root Cause
+Supabase Realtime was not enabled for the `notifications` and `orders` tables.
 
-### ✅ Owner Side (Order Management Page)
-1. **Real-time new order notifications** - Alerts when customers place new orders
-2. **Real-time status history updates** - Refreshes when status changes
-3. **Visual card highlight** - Order card highlights when updated
-4. **Toast notifications** - Pop-up for new orders with table number
-5. **Auto-refresh stats** - Order counts update automatically
+### Solution Applied
+1. ✅ Created migration `00015_enable_realtime_notifications.sql`
+2. ✅ Enabled Realtime publication for `notifications` table
+3. ✅ Enabled Realtime publication for `orders` table
+4. ✅ Added detailed logging to track subscription status
+5. ✅ Improved channel naming to avoid conflicts (unique per user)
+6. ✅ Added subscription status callbacks for debugging
 
-## Testing Scenarios
+## 🧪 How to Test Real-Time Notifications
 
-### Test 1: New Order Placement (Owner Receives Real-Time)
+### Prerequisites
+- Two browser windows (or use incognito mode for one)
+- One restaurant owner account
+- One customer account
+- At least one restaurant with menu items and QR codes
 
-**Setup:**
-1. Open two browser windows/tabs
-2. Window 1: Login as **Restaurant Owner** → Go to Order Management
-3. Window 2: Login as **Customer** → Scan QR code and browse menu
-
-**Steps:**
-1. In Window 2 (Customer): Add items to cart and place order
-2. In Window 1 (Owner): **Watch for automatic updates**
-
-**Expected Results:**
-- ✅ Owner sees toast notification: "🔔 New Order Received! Table X - Order #XXXXX"
-- ✅ Order appears in "Pending" tab automatically
-- ✅ Pending count increases from 0 to 1
-- ✅ Order card highlights with blue ring for 2 seconds
-- ✅ **NO manual refresh needed**
-
----
-
-### Test 2: Order Status Change (Customer Receives Real-Time)
+### Test Scenario 1: New Order Notification (Owner)
 
 **Setup:**
-1. Customer has placed an order (status: pending)
-2. Window 1: Owner on Order Management page
-3. Window 2: Customer on Order History page
+1. Open Browser Window 1 (Owner)
+   - Log in as restaurant owner
+   - Navigate to Owner Dashboard
+   - Open browser console (F12) to see logs
 
-**Steps:**
-1. In Window 1 (Owner): Click "Start Preparing" on the pending order
-2. In Window 2 (Customer): **Watch for automatic updates**
+2. Open Browser Window 2 (Customer)
+   - Log in as customer
+   - Navigate to customer area
+   - Open browser console (F12) to see logs
 
-**Expected Results:**
-- ✅ Customer sees toast: "Order Status Updated - Order #XXXXX is now preparing"
-- ✅ Order card highlights with blue ring
-- ✅ Status badge changes from "pending" to "preparing"
-- ✅ Timeline shows new "Preparing" entry with timestamp
-- ✅ **NO manual refresh needed**
+**Test Steps:**
+1. In Window 2 (Customer):
+   - Scan a QR code or navigate to a restaurant menu
+   - Add items to cart
+   - Place an order
+   - Watch the console for logs
 
----
+2. In Window 1 (Owner):
+   - **Expected Results:**
+     - Console shows: `[useNotifications] Received INSERT event`
+     - Bell icon badge updates from 0 to 1 (or increments)
+     - Toast notification appears: "New Order Received"
+     - Notification message shows table number and restaurant name
+     - **NO PAGE REFRESH REQUIRED**
 
-### Test 3: Multiple Status Changes (Both Sides)
+3. Verify:
+   - Click the bell icon in Window 1
+   - See the new notification in the list
+   - Notification shows as unread (blue dot)
 
-**Setup:**
-1. Order exists with status: pending
-2. Both owner and customer pages open
-
-**Steps:**
-1. Owner clicks "Start Preparing" → Wait 2 seconds
-2. Owner clicks "Mark as Served" → Wait 2 seconds
-3. Owner clicks "Payment Received" (for COC orders)
-
-**Expected Results:**
-
-**Customer Side:**
-- ✅ First update: Toast "Order Status Updated - now preparing"
-- ✅ Second update: Toast "Order Status Updated - now served"
-- ✅ Third update: Toast "Payment Status Updated - now completed"
-- ✅ Each change highlights the card
-- ✅ Timeline shows all 3 new entries
-- ✅ "Print E-Bill" button appears after payment completed
-
-**Owner Side:**
-- ✅ Order moves between tabs automatically
-- ✅ Stats update (Pending: 1→0, Preparing: 0→1, etc.)
-- ✅ Action buttons change based on status
-
----
-
-### Test 4: Multiple Orders (Selective Updates)
+### Test Scenario 2: Order Status Update (Customer)
 
 **Setup:**
-1. Customer A has Order #1
-2. Customer B has Order #2
-3. Both customers viewing their order history
+- Continue from Test Scenario 1
+- Keep both windows open
 
-**Steps:**
-1. Owner updates Order #1 status to "preparing"
+**Test Steps:**
+1. In Window 1 (Owner):
+   - Navigate to Order Management
+   - Find the order just placed
+   - Change status from "pending" to "preparing"
+   - Watch the console for logs
 
-**Expected Results:**
-- ✅ Customer A sees update for Order #1
-- ✅ Customer B sees NO update (only their own orders)
-- ✅ Owner sees both orders in correct tabs
+2. In Window 2 (Customer):
+   - **Expected Results:**
+     - Console shows: `[useNotifications] Received INSERT event`
+     - Bell icon badge updates (increments by 1)
+     - Toast notification appears: "Order Status Updated"
+     - Notification message: "Your order at [Restaurant] is being prepared"
+     - **NO PAGE REFRESH REQUIRED**
+     - If on Customer Dashboard, order list updates automatically
+     - Console shows: `[CustomerDashboard] Received order change`
 
----
+3. Verify:
+   - Click the bell icon in Window 2
+   - See the status update notification
+   - Notification shows as unread (blue dot)
 
-### Test 5: Payment Status Updates
+### Test Scenario 3: Multiple Status Changes
 
-**Setup:**
-1. Order with status "served" and payment_method "coc" (Cash on Collection)
-2. Customer and owner pages open
+**Test Steps:**
+1. In Window 1 (Owner):
+   - Change order status to "served"
+   - Wait 2 seconds
+   - Change order status to "completed"
 
-**Steps:**
-1. Owner clicks "Payment Received"
+2. In Window 2 (Customer):
+   - **Expected Results:**
+     - Two separate notifications appear
+     - Bell badge shows 2 (or increments by 2)
+     - Two toast notifications appear sequentially
+     - Both notifications visible in notification list
+     - **NO PAGE REFRESH REQUIRED**
 
-**Expected Results:**
+## 🔍 Debugging Console Logs
 
-**Customer Side:**
-- ✅ Toast: "Payment Status Updated - now completed"
-- ✅ Toast: "Order Status Updated - now completed"
-- ✅ Payment status badge changes to "completed"
-- ✅ Order status badge changes to "completed"
-- ✅ "Print E-Bill" button becomes available
+### What to Look For
 
-**Owner Side:**
-- ✅ Order moves to "Completed" tab
-- ✅ Completed count increases
-- ✅ Action buttons update
-
----
-
-## Visual Indicators to Look For
-
-### Card Highlight Animation
+#### Successful Subscription Setup
 ```
-Normal State:
-┌─────────────────────┐
-│ Order #ABC123       │
-│ Status: pending     │
-└─────────────────────┘
-
-Updated State (2 seconds):
-┏━━━━━━━━━━━━━━━━━━━━━┓  ← Blue ring border
-┃ Order #ABC123       ┃     + Shadow effect
-┃ Status: preparing   ┃
-┗━━━━━━━━━━━━━━━━━━━━━┛
+[useNotifications] Setting up real-time subscription for user: <user-id>
+[useNotifications] Subscription status: SUBSCRIBED
 ```
 
-### Toast Notification
+#### Successful Notification Receipt
 ```
-┌────────────────────────────────┐
-│ 🔔 New Order Received!         │
-│ Table 5 - Order #ABC12345      │
-└────────────────────────────────┘
-```
-
-### Timeline Update
-```
-Before:
-• Order Received (10:30 AM)
-
-After (automatic):
-• Order Received (10:30 AM)
-• Preparing (10:32 AM)  ← New entry appears
+[useNotifications] Received INSERT event: {
+  new: {
+    id: "...",
+    user_id: "...",
+    type: "new_order",
+    title: "New Order Received",
+    message: "New order from Table 5 at Restaurant Name",
+    ...
+  }
+}
 ```
 
----
+### Common Issues and Solutions
 
-## Timing Expectations
-
-| Action | Expected Delay | What Happens |
-|--------|---------------|--------------|
-| New order placed | 300-500ms | Owner sees notification |
-| Status changed | 300-500ms | Customer sees update |
-| Payment collected | 300-500ms | Customer sees update |
-| Card highlight | 0ms (instant) | Visual feedback |
-| Toast notification | 0ms (instant) | Pop-up appears |
-
----
-
-## Troubleshooting
-
-### Issue: Updates not appearing
-
-**Check:**
-1. ✅ Both users are logged in
-2. ✅ Internet connection is stable
-3. ✅ Browser console shows no errors
-4. ✅ Supabase real-time is enabled
-
+#### Issue: Subscription status shows "CHANNEL_ERROR"
 **Solution:**
-- Refresh the page once
-- Check browser console for errors
-- Verify Supabase connection
+- Check if Realtime is enabled in Supabase dashboard
+- Verify migration `00015_enable_realtime_notifications.sql` was applied
+- Check Supabase project settings → API → Realtime
 
----
-
-### Issue: Duplicate notifications
-
-**This is normal if:**
-- Restaurant makes multiple changes quickly
-- Network reconnects after brief disconnection
-
-**Not a bug:** Each change triggers its own notification
-
----
-
-### Issue: Delayed updates (>2 seconds)
-
-**Possible causes:**
-- Slow internet connection
-- High database load
-- Browser tab in background (browser throttling)
-
+#### Issue: No logs appear in console
 **Solution:**
-- Keep tab active/visible
-- Check network speed
-- Wait a few more seconds
+- Ensure browser console is open (F12)
+- Check if user is logged in
+- Verify `userId` is not null
+- Refresh the page and check logs again
+
+#### Issue: Notifications appear after page refresh but not in real-time
+**Solution:**
+- Check console for subscription status
+- Verify Realtime is enabled for the table
+- Check if there are any JavaScript errors
+- Verify Supabase connection is active
+
+## 📊 Verification Checklist
+
+### Owner Notifications
+- [ ] Owner receives notification when customer places order
+- [ ] Notification appears without page refresh
+- [ ] Bell badge updates automatically
+- [ ] Toast notification appears
+- [ ] Console shows subscription setup logs
+- [ ] Console shows INSERT event logs
+
+### Customer Notifications
+- [ ] Customer receives notification when order status changes
+- [ ] Notification appears without page refresh
+- [ ] Bell badge updates automatically
+- [ ] Toast notification appears
+- [ ] Customer Dashboard order list updates automatically
+- [ ] Console shows subscription setup logs
+- [ ] Console shows INSERT event logs
+
+### Notification Management
+- [ ] Mark as read works without page refresh
+- [ ] Mark all as read works without page refresh
+- [ ] Delete notification works without page refresh
+- [ ] Badge counter updates correctly
+
+## ✅ Success Criteria
+
+The real-time notification system is working correctly if:
+
+1. ✅ Notifications appear within 1-2 seconds of the triggering event
+2. ✅ No page refresh is required to see new notifications
+3. ✅ Bell badge updates automatically
+4. ✅ Toast notifications appear for new notifications
+5. ✅ Console logs show successful subscription setup
+6. ✅ Console logs show INSERT events when notifications are created
+7. ✅ Notification management (read, delete) works without refresh
 
 ---
 
-## Technical Details
-
-### Real-Time Architecture
-
-```
-Customer Places Order
-        ↓
-Database INSERT (orders table)
-        ↓
-Trigger creates status_history entry
-        ↓
-Supabase Real-Time broadcasts:
-  - Event 1: orders table INSERT
-  - Event 2: order_status_history table INSERT
-        ↓
-Owner's browser receives events
-        ↓
-300ms delay (ensure consistency)
-        ↓
-Fetch updated data
-        ↓
-Show notification + highlight card
-```
-
-### Subscriptions Active
-
-**Customer Side:**
-- `orders` table (filter: customer_id)
-- `order_status_history` table (check if order belongs to customer)
-
-**Owner Side:**
-- `orders` table (filter: restaurant_id)
-- `order_status_history` table (check if order belongs to restaurant)
-
----
-
-## Success Criteria
-
-✅ **All tests pass** - No manual refresh needed
-✅ **Notifications appear** - Within 500ms
-✅ **Visual feedback works** - Card highlights
-✅ **Timeline updates** - Shows all changes
-✅ **Stats accurate** - Counts update correctly
-✅ **No errors** - Console is clean
-
----
-
-## Performance Notes
-
-- **Bandwidth usage:** Minimal (only changed data)
-- **Battery impact:** Low (efficient subscriptions)
-- **Scalability:** Handles 100+ concurrent orders
-- **Reliability:** Auto-reconnects on network issues
-
----
-
-## Next Steps After Testing
-
-If all tests pass:
-1. ✅ Real-time functionality is working correctly
-2. ✅ No manual refresh needed
-3. ✅ System is production-ready
-
-If tests fail:
-1. Check browser console for errors
-2. Verify Supabase configuration
-3. Test internet connection
-4. Review the implementation code
-
----
-
-## Quick Test Checklist
-
-- [ ] New order appears for owner automatically
-- [ ] Status change appears for customer automatically
-- [ ] Toast notifications show up
-- [ ] Card highlights work
-- [ ] Timeline updates automatically
-- [ ] Stats update correctly
-- [ ] No manual refresh needed
-- [ ] Works across multiple tabs/windows
-- [ ] Updates within 500ms
-- [ ] No console errors
-
----
-
-**Testing Complete!** 🎉
-
-If all items are checked, your real-time order tracking system is working perfectly!
+**Note:** Open browser console (F12) to see detailed logs about subscription status and events.
