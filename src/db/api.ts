@@ -772,14 +772,52 @@ export const settingsApi = {
       .eq('restaurant_id', restaurantId)
       .maybeSingle();
     if (error) throw error;
+    
+    // If no settings exist, create default settings
+    if (!data) {
+      return await this.createDefaultSettings(restaurantId);
+    }
+    
     return data;
   },
 
-  async updateRestaurantSettings(restaurantId: string, updates: Partial<RestaurantSettings>): Promise<RestaurantSettings> {
+  async createDefaultSettings(restaurantId: string): Promise<RestaurantSettings> {
+    const { data, error } = await supabase
+      .from('restaurant_settings')
+      .insert({
+        restaurant_id: restaurantId,
+        timezone: 'America/New_York',
+        currency: 'USD',
+        auto_accept_orders: false,
+        online_ordering: true,
+        email_notifications: true,
+        sms_notifications: false,
+        push_notifications: true,
+        review_alerts: true,
+        tax_rate: 0,
+        service_charge: 0,
+        two_factor_auth: false,
+        business_hours: {
+          monday: { open: '09:00', close: '22:00', closed: false },
+          tuesday: { open: '09:00', close: '22:00', closed: false },
+          wednesday: { open: '09:00', close: '22:00', closed: false },
+          thursday: { open: '09:00', close: '22:00', closed: false },
+          friday: { open: '09:00', close: '22:00', closed: false },
+          saturday: { open: '09:00', close: '22:00', closed: false },
+          sunday: { open: '09:00', close: '22:00', closed: false },
+        },
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateRestaurantSettings(id: string, updates: Partial<RestaurantSettings>): Promise<RestaurantSettings> {
     const { data, error } = await supabase
       .from('restaurant_settings')
       .update(updates)
-      .eq('restaurant_id', restaurantId)
+      .eq('id', id)
       .select()
       .single();
     if (error) throw error;

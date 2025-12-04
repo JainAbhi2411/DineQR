@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Settings as SettingsIcon, Bell, Lock, Globe, CreditCard, Save } from 'lucide-react';
 import { settingsApi } from '@/db/api';
 import type { RestaurantSettings } from '@/types/types';
@@ -144,19 +145,45 @@ export default function Settings() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="timezone">Timezone</Label>
-                <Input 
-                  id="timezone" 
-                  value={settings.timezone} 
-                  onChange={(e) => updateSetting('timezone', e.target.value)}
-                />
+                <Select value={settings.timezone} onValueChange={(value) => updateSetting('timezone', value)}>
+                  <SelectTrigger id="timezone">
+                    <SelectValue placeholder="Select timezone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
+                    <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
+                    <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
+                    <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                    <SelectItem value="America/Anchorage">Alaska Time (AKT)</SelectItem>
+                    <SelectItem value="Pacific/Honolulu">Hawaii Time (HT)</SelectItem>
+                    <SelectItem value="Europe/London">London (GMT)</SelectItem>
+                    <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
+                    <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
+                    <SelectItem value="Asia/Shanghai">Shanghai (CST)</SelectItem>
+                    <SelectItem value="Asia/Dubai">Dubai (GST)</SelectItem>
+                    <SelectItem value="Australia/Sydney">Sydney (AEDT)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="currency">Currency</Label>
-                <Input 
-                  id="currency" 
-                  value={settings.currency} 
-                  onChange={(e) => updateSetting('currency', e.target.value)}
-                />
+                <Select value={settings.currency} onValueChange={(value) => updateSetting('currency', value)}>
+                  <SelectTrigger id="currency">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD - US Dollar ($)</SelectItem>
+                    <SelectItem value="EUR">EUR - Euro (€)</SelectItem>
+                    <SelectItem value="GBP">GBP - British Pound (£)</SelectItem>
+                    <SelectItem value="JPY">JPY - Japanese Yen (¥)</SelectItem>
+                    <SelectItem value="CNY">CNY - Chinese Yuan (¥)</SelectItem>
+                    <SelectItem value="AUD">AUD - Australian Dollar ($)</SelectItem>
+                    <SelectItem value="CAD">CAD - Canadian Dollar ($)</SelectItem>
+                    <SelectItem value="CHF">CHF - Swiss Franc (Fr)</SelectItem>
+                    <SelectItem value="INR">INR - Indian Rupee (₹)</SelectItem>
+                    <SelectItem value="AED">AED - UAE Dirham (د.إ)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
