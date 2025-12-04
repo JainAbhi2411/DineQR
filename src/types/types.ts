@@ -266,6 +266,17 @@ export interface Promotion {
   created_at: string;
 }
 
+export interface PromotionWithMenuItems extends Promotion {
+  menu_item_ids?: string[];
+}
+
+export interface PromotionMenuItem {
+  id: string;
+  promotion_id: string;
+  menu_item_id: string;
+  created_at: string;
+}
+
 export interface RestaurantSettings {
   id: string;
   restaurant_id: string;

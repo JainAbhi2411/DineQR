@@ -18,6 +18,7 @@ import type {
   Review,
   ReviewWithCustomer,
   Promotion,
+  PromotionWithMenuItems,
   RestaurantSettings,
   AnalyticsData,
 } from '@/types/types';
@@ -685,6 +686,81 @@ export const promotionApi = {
       promotion_id: id,
     });
     if (error) throw error;
+  },
+
+  async getPromotionMenuItems(promotionId: string): Promise<string[]> {
+    const { data, error } = await supabase
+      .from('promotion_menu_items')
+      .select('menu_item_id')
+      .eq('promotion_id', promotionId);
+    if (error) throw error;
+    return Array.isArray(data) ? data.map(item => item.menu_item_id) : [];
+  },
+
+  async setPromotionMenuItems(promotionId: string, menuItemIds: string[]): Promise<void> {
+    // First, delete existing associations
+    const { error: deleteError } = await supabase
+      .from('promotion_menu_items')
+      .delete()
+      .eq('promotion_id', promotionId);
+    if (deleteError) throw deleteError;
+
+    // Then, insert new associations if any
+    if (menuItemIds.length > 0) {
+      const { error: insertError } = await supabase
+        .from('promotion_menu_items')
+        .insert(
+          menuItemIds.map(menuItemId => ({
+            promotion_id: promotionId,
+            menu_item_id: menuItemId,
+          }))
+        );
+      if (insertError) throw insertError;
+    }
+  },
+
+  async getPromotionsForMenuItem(menuItemId: string): Promise<Promotion[]> {
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Get promotions that are linked to this menu item OR have no specific menu items (restaurant-wide)
+    const { data: linkedPromotions, error: linkedError } = await supabase
+      .from('promotion_menu_items')
+      .select('promotion_id')
+      .eq('menu_item_id', menuItemId);
+    if (linkedError) throw linkedError;
+
+    const linkedPromotionIds = Array.isArray(linkedPromotions) 
+      ? linkedPromotions.map(p => p.promotion_id) 
+      : [];
+
+    // Get all active promotions
+    const { data: allPromotions, error: allError } = await supabase
+      .from('promotions')
+      .select('*')
+      .eq('status', 'active')
+      .lte('start_date', today)
+      .gte('end_date', today);
+    if (allError) throw allError;
+
+    if (!Array.isArray(allPromotions)) return [];
+
+    // Filter promotions: include if it's linked to this item OR if it has no linked items (restaurant-wide)
+    const result = [];
+    for (const promo of allPromotions) {
+      const { data: promoItems } = await supabase
+        .from('promotion_menu_items')
+        .select('id')
+        .eq('promotion_id', promo.id)
+        .limit(1);
+      
+      const hasLinkedItems = Array.isArray(promoItems) && promoItems.length > 0;
+      
+      if (!hasLinkedItems || linkedPromotionIds.includes(promo.id)) {
+        result.push(promo);
+      }
+    }
+
+    return result;
   },
 };
 
