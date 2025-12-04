@@ -182,7 +182,7 @@ export default function MenuBrowsing() {
   const handleCheckout = () => {
     if (cart.length === 0) return;
     
-    navigate('/customer/checkout', {
+    navigate(`/customer/checkout/${restaurantId}${tableId ? `?table=${tableId}` : ''}`, {
       state: {
         cart,
         restaurant,

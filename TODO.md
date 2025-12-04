@@ -39,6 +39,13 @@
   - [x] Run linter
   - [x] Verify all flows work correctly
 
+- [x] Step 9: Bug Fixes
+  - [x] Fixed "Proceed to Checkout" navigation issue
+  - [x] Updated MenuBrowsing to include restaurantId in checkout URL
+  - [x] Updated Checkout to handle tableId from both URL and state
+  - [x] Added "Track Order" button to Order History
+  - [x] Created testing guide
+
 ## Notes
 - Database schema is already complete with all required fields
 - Stripe payment integration implemented with edge functions

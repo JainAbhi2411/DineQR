@@ -21,8 +21,9 @@ export default function Checkout() {
   const { toast } = useToast();
   const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   
-  const tableId = searchParams.get('table');
-  const { cart, restaurant } = location.state || {};
+  const tableIdFromUrl = searchParams.get('table');
+  const { cart, restaurant, tableId: tableIdFromState } = location.state || {};
+  const tableId = tableIdFromUrl || tableIdFromState;
   
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'coc'>('online');
