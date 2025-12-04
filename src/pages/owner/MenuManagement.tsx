@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
-import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame } from 'lucide-react';
+import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -260,16 +260,25 @@ export default function MenuManagement() {
           <TabsContent value="items" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-semibold">Menu Items</h2>
-              <Button 
-                disabled={categories.length === 0}
-                onClick={() => {
-                  setEditingItem(null);
-                  setItemDialogOpen(true);
-                }}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Menu Item
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => window.open(`/customer/menu/${restaurantId}`, '_blank')}
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Menu
+                </Button>
+                <Button 
+                  disabled={categories.length === 0}
+                  onClick={() => {
+                    setEditingItem(null);
+                    setItemDialogOpen(true);
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Menu Item
+                </Button>
+              </div>
             </div>
 
             <EnhancedMenuItemForm
