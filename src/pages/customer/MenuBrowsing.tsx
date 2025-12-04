@@ -13,6 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { 
   ShoppingCart, 
   Plus, 
@@ -42,6 +43,7 @@ export default function MenuBrowsing() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   const tableId = searchParams.get('table');
   
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -631,7 +633,7 @@ export default function MenuBrowsing() {
                             {/* Price and Add Button */}
                             <div className="flex items-center justify-between gap-2 mt-auto xl:gap-3">
                               <div className="text-lg font-bold text-primary xl:text-2xl">
-                                ${item.price.toFixed(2)}
+                                ${formatCurrency(item.price)}
                               </div>
                               
                               {quantity === 0 ? (
@@ -697,7 +699,7 @@ export default function MenuBrowsing() {
             <ShoppingCart className="w-5 h-5 mr-2 xl:w-6 xl:h-6 xl:mr-3" />
             <span>{getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'}</span>
             <Separator orientation="vertical" className="mx-2 h-6 bg-primary-foreground/30 xl:mx-4 xl:h-8" />
-            <span>${getTotalAmount().toFixed(2)}</span>
+            <span>${formatCurrency(getTotalAmount())}</span>
             <ChevronRight className="w-4 h-4 ml-1 xl:w-5 xl:h-5 xl:ml-2" />
           </Button>
         </div>
@@ -888,7 +890,7 @@ export default function MenuBrowsing() {
                           )}
                         </h4>
                         <p className="text-sm text-muted-foreground mb-2">
-                          ${itemPrice.toFixed(2)} each
+                          ${formatCurrency(itemPrice)} each
                         </p>
                         <div className="flex items-center gap-2">
                           <Button
@@ -912,7 +914,7 @@ export default function MenuBrowsing() {
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-lg">
-                          ${(itemPrice * cartItem.quantity).toFixed(2)}
+                          {formatCurrency((itemPrice * cartItem.quantity))}
                         </p>
                         <Button
                           onClick={() => setCart(cart.filter((item, i) => 
@@ -936,7 +938,7 @@ export default function MenuBrowsing() {
             <div className="border-t pt-4 mt-4 space-y-4">
               <div className="flex justify-between items-center text-lg">
                 <span className="font-semibold">Subtotal</span>
-                <span className="font-bold">${getTotalAmount().toFixed(2)}</span>
+                <span className="font-bold">${formatCurrency(getTotalAmount())}</span>
               </div>
               <Button
                 onClick={handleCheckout}
@@ -1077,7 +1079,7 @@ export default function MenuBrowsing() {
                               <p className="text-sm text-muted-foreground">{variant.description}</p>
                             )}
                           </div>
-                          <p className="font-bold text-primary">${variant.price.toFixed(2)}</p>
+                          <p className="font-bold text-primary">${formatCurrency(variant.price)}</p>
                         </div>
                       ))}
                     </div>
@@ -1088,7 +1090,7 @@ export default function MenuBrowsing() {
 
                 <div className="flex items-center justify-between">
                   <div className="text-3xl font-bold text-primary">
-                    ${selectedItem.price.toFixed(2)}
+                    ${formatCurrency(selectedItem.price)}
                   </div>
                   <Button
                     onClick={() => {
@@ -1144,7 +1146,7 @@ export default function MenuBrowsing() {
                         )}
                       </div>
                       <div className="text-lg font-bold text-primary">
-                        ${variant.price.toFixed(2)}
+                        ${formatCurrency(variant.price)}
                       </div>
                     </Label>
                   </div>

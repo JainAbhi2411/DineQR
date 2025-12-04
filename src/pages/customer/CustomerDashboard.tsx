@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { QrCode, ShoppingBag, History, User, Store, Clock, X, Sparkles, TrendingUp, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { supabase } from '@/db/supabase';
 
 export default function CustomerDashboard() {
@@ -15,6 +16,7 @@ export default function CustomerDashboard() {
   const [visitedRestaurants, setVisitedRestaurants] = useState<VisitedRestaurantWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -184,7 +186,7 @@ export default function CustomerDashboard() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="text-3xl font-bold gradient-text-primary">${getTotalSpent().toFixed(2)}</div>
+              <div className="text-3xl font-bold gradient-text-primary">${formatCurrency(getTotalSpent())}</div>
               <p className="text-xs text-muted-foreground mt-1">Completed orders</p>
             </CardContent>
           </Card>
@@ -327,7 +329,7 @@ export default function CustomerDashboard() {
                     <div>
                       <p className="font-medium text-lg">{order.restaurant?.name || 'Restaurant'}</p>
                       <p className="text-sm text-muted-foreground">
-                        {new Date(order.created_at).toLocaleDateString()} • ${order.total_amount.toFixed(2)}
+                        {new Date(order.created_at).toLocaleDateString()} • ${formatCurrency(order.total_amount)}
                       </p>
                     </div>
                     <div className="text-right">

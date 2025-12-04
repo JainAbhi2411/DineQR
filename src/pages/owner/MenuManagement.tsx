@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,6 +21,7 @@ export default function MenuManagement() {
   const { restaurantId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -334,7 +336,7 @@ export default function MenuManagement() {
                                   <CardTitle className="text-lg">{item.name}</CardTitle>
                                 </div>
                                 <span className="text-lg font-bold text-primary whitespace-nowrap">
-                                  ${item.price.toFixed(2)}
+                                  ${formatCurrency(item.price)}
                                 </span>
                               </div>
                               

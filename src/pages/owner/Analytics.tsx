@@ -6,6 +6,7 @@ import { BarChart3, TrendingUp, DollarSign, ShoppingBag, Users, Star, ChevronRig
 import { analyticsApi } from '@/db/api';
 import type { AnalyticsData } from '@/types/types';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -18,6 +19,7 @@ import {
 export default function Analytics() {
   const { restaurantId } = useParams();
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showRevenueDetails, setShowRevenueDetails] = useState(false);
@@ -69,7 +71,7 @@ export default function Analytics() {
   const stats = [
     {
       title: 'Total Revenue',
-      value: `$${analytics.totalRevenue.toFixed(2)}`,
+      value: `{formatCurrency(analytics.totalRevenue)}`,
       change: '+12.5%',
       icon: DollarSign,
       color: 'text-green-500',
@@ -165,7 +167,7 @@ export default function Analytics() {
                       <div key={index} className="space-y-1">
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                          <span className="font-bold gradient-text-primary">${item.revenue.toFixed(2)}</span>
+                          <span className="font-bold gradient-text-primary">${formatCurrency(item.revenue)}</span>
                         </div>
                         <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
                           <div 
@@ -262,7 +264,7 @@ export default function Analytics() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-lg gradient-text-primary">${item.total_revenue.toFixed(2)}</p>
+                          <p className="font-bold text-lg gradient-text-primary">${formatCurrency(item.total_revenue)}</p>
                           <p className="text-xs text-muted-foreground">Revenue</p>
                         </div>
                       </div>
@@ -302,14 +304,14 @@ export default function Analytics() {
                 <Card>
                   <CardContent className="p-4">
                     <p className="text-sm text-muted-foreground">Total Revenue</p>
-                    <p className="text-2xl font-bold gradient-text-primary">${analytics.totalRevenue.toFixed(2)}</p>
+                    <p className="text-2xl font-bold gradient-text-primary">${formatCurrency(analytics.totalRevenue)}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent className="p-4">
                     <p className="text-sm text-muted-foreground">Avg per Order</p>
                     <p className="text-2xl font-bold gradient-text-secondary">
-                      ${analytics.totalOrders > 0 ? (analytics.totalRevenue / analytics.totalOrders).toFixed(2) : '0.00'}
+                      {formatCurrency(analytics.totalOrders > 0 ? analytics.totalRevenue / analytics.totalOrders : 0)}
                     </p>
                   </CardContent>
                 </Card>
@@ -317,7 +319,7 @@ export default function Analytics() {
                   <CardContent className="p-4">
                     <p className="text-sm text-muted-foreground">Avg per Day</p>
                     <p className="text-2xl font-bold gradient-text-electric">
-                      ${analytics.revenueByDate.length > 0 ? (analytics.totalRevenue / analytics.revenueByDate.length).toFixed(2) : '0.00'}
+                      {formatCurrency(analytics.revenueByDate.length > 0 ? analytics.totalRevenue / analytics.revenueByDate.length : 0)}
                     </p>
                   </CardContent>
                 </Card>
@@ -337,7 +339,7 @@ export default function Analytics() {
                           <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">{new Date(item.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
                             <div className="text-right">
-                              <p className="font-bold gradient-text-primary">${item.revenue.toFixed(2)}</p>
+                              <p className="font-bold gradient-text-primary">${formatCurrency(item.revenue)}</p>
                               <p className="text-xs text-muted-foreground">{item.order_count} orders</p>
                             </div>
                           </div>
@@ -411,7 +413,7 @@ export default function Analytics() {
                             <span className="text-sm font-medium">{new Date(item.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
                             <div className="text-right">
                               <p className="font-bold gradient-text-secondary">{item.order_count} orders</p>
-                              <p className="text-xs text-muted-foreground">${item.revenue.toFixed(2)} revenue</p>
+                              <p className="text-xs text-muted-foreground">${formatCurrency(item.revenue)} revenue</p>
                             </div>
                           </div>
                           <div className="w-full bg-muted rounded-full h-3 overflow-hidden">

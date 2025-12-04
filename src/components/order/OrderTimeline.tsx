@@ -1,6 +1,7 @@
 import { OrderStatusHistory, OrderStatus, PaymentStatus } from '@/types/types';
 import { CheckCircle2, Clock, ChefHat, UtensilsCrossed, CreditCard, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { useFormatters } from '@/hooks/useFormatters';
 
 interface OrderTimelineProps {
   statusHistory: OrderStatusHistory[];
@@ -60,6 +61,7 @@ const getPaymentStatusLabel = (paymentStatus: PaymentStatus) => {
 };
 
 export default function OrderTimeline({ statusHistory, currentStatus, currentPaymentStatus }: OrderTimelineProps) {
+  const { formatDateTime } = useFormatters();
   const sortedHistory = [...statusHistory].sort(
     (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
   );
@@ -112,7 +114,7 @@ export default function OrderTimeline({ statusHistory, currentStatus, currentPay
                     )}
                   </div>
                   <time className="text-sm text-muted-foreground">
-                    {format(new Date(history.created_at), 'MMM dd, HH:mm')}
+                    {formatDateTime(history.created_at, 'MMM dd, HH:mm')}
                   </time>
                 </div>
               </div>

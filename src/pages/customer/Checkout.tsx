@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { ArrowLeft, CreditCard, ShoppingBag, Wallet, Banknote } from 'lucide-react';
 import { supabase } from '@/db/supabase';
 
@@ -18,6 +19,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { profile } = useAuth();
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   
   const tableId = searchParams.get('table');
   const { cart, restaurant } = location.state || {};
@@ -195,12 +197,12 @@ export default function Checkout() {
                               )}
                             </h4>
                             <p className="text-sm text-muted-foreground">
-                              ${itemPrice.toFixed(2)} × {item.quantity}
+                              ${formatCurrency(itemPrice)} × {item.quantity}
                             </p>
                           </div>
                         </div>
                         <span className="font-semibold">
-                          ${(itemPrice * item.quantity).toFixed(2)}
+                          {formatCurrency((itemPrice * item.quantity))}
                         </span>
                       </div>
                     );
@@ -265,15 +267,15 @@ export default function Checkout() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${getTotalAmount().toFixed(2)}</span>
+                    <span>${formatCurrency(getTotalAmount())}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Tax (10%)</span>
-                    <span>${(getTotalAmount() * 0.1).toFixed(2)}</span>
+                    <span>{formatCurrency((getTotalAmount() * 0.1))}</span>
                   </div>
                   <div className="border-t pt-2 flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span className="text-primary">${(getTotalAmount() * 1.1).toFixed(2)}</span>
+                    <span className="text-primary">{formatCurrency((getTotalAmount() * 1.1))}</span>
                   </div>
                 </div>
 

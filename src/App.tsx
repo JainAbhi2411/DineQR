@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RestaurantProvider } from './contexts/RestaurantContext';
+import { SettingsProvider } from './contexts/SettingsContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
@@ -58,7 +59,9 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <RestaurantProvider>
-          <AppContent />
+          <SettingsProvider>
+            <AppContent />
+          </SettingsProvider>
         </RestaurantProvider>
       </AuthProvider>
     </BrowserRouter>

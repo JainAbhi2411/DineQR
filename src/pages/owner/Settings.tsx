@@ -11,6 +11,7 @@ import { Settings as SettingsIcon, Bell, Lock, Globe, CreditCard, Save } from 'l
 import { settingsApi } from '@/db/api';
 import type { RestaurantSettings } from '@/types/types';
 import { useToast } from '@/hooks/use-toast';
+import { useSettings } from '@/contexts/SettingsContext';
 
 interface BusinessHours {
   [key: string]: { open: string; close: string; closed: boolean };
@@ -19,6 +20,7 @@ interface BusinessHours {
 export default function Settings() {
   const { restaurantId } = useParams();
   const { toast } = useToast();
+  const { refreshSettings } = useSettings();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [settings, setSettings] = useState<RestaurantSettings | null>(null);
@@ -70,9 +72,13 @@ export default function Settings() {
         ...settings,
         business_hours: businessHours,
       });
+      
+      // Refresh global settings context to apply changes throughout the app
+      await refreshSettings();
+      
       toast({
         title: 'Success',
-        description: 'Settings saved successfully',
+        description: 'Settings saved and applied successfully',
       });
     } catch (error) {
       console.error('Failed to save settings:', error);

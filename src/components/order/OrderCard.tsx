@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Printer, MapPin, User, CreditCard, Banknote } from 'lucide-react';
 import { format } from 'date-fns';
 import OrderTimeline from './OrderTimeline';
+import { useFormatters } from '@/hooks/useFormatters';
 
 interface OrderCardProps {
   order: OrderWithItems;
@@ -49,6 +50,7 @@ const getPaymentStatusColor = (status: string) => {
 };
 
 export default function OrderCard({ order, onPrint, showCustomerInfo = false, actions }: OrderCardProps) {
+  const { formatCurrency, formatDateTime } = useFormatters();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
 
@@ -138,14 +140,14 @@ export default function OrderCard({ order, onPrint, showCustomerInfo = false, ac
                       <p className="text-sm text-muted-foreground italic mt-1">Note: {item.notes}</p>
                     )}
                   </div>
-                  <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold">{formatCurrency((item.price * item.quantity))}</p>
                 </div>
               ))}
             </div>
             <div className="flex justify-between items-center mt-4 pt-4 border-t">
               <span className="font-semibold text-lg">Total</span>
               <span className="font-bold text-xl text-primary">
-                ${order.total_amount.toFixed(2)}
+                ${formatCurrency(order.total_amount)}
               </span>
             </div>
           </div>

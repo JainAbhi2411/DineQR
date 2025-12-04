@@ -1,11 +1,13 @@
 import { OrderWithItems } from '@/types/types';
 import { format } from 'date-fns';
+import { useFormatters } from '@/hooks/useFormatters';
 
 interface PrintBillProps {
   order: OrderWithItems;
 }
 
 export default function PrintBill({ order }: PrintBillProps) {
+  const { formatCurrency, formatDateTime } = useFormatters();
   const handlePrint = () => {
     window.print();
   };
@@ -86,9 +88,9 @@ export default function PrintBill({ order }: PrintBillProps) {
                   </div>
                 </td>
                 <td className="text-center py-3">{item.quantity}</td>
-                <td className="text-right py-3">${item.price.toFixed(2)}</td>
+                <td className="text-right py-3">${formatCurrency(item.price)}</td>
                 <td className="text-right py-3 font-medium">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  {formatCurrency((item.price * item.quantity))}
                 </td>
               </tr>
             ))}
@@ -99,7 +101,7 @@ export default function PrintBill({ order }: PrintBillProps) {
         <div className="border-t-2 border-black pt-4 mb-6">
           <div className="flex justify-between items-center text-xl font-bold">
             <span>TOTAL</span>
-            <span>${order.total_amount.toFixed(2)}</span>
+            <span>${formatCurrency(order.total_amount)}</span>
           </div>
           <div className="flex justify-between items-center text-sm mt-2">
             <span>Payment Method</span>

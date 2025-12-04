@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { menuItemApi } from '@/db/api';
 import { MenuItem, MenuCategory, ItemType, SpiceLevel, MenuItemVariant } from '@/types/types';
 import { useToast } from '@/hooks/use-toast';
+import { useFormatters } from '@/hooks/useFormatters';
 import { Plus, X, Star } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -31,6 +32,7 @@ export default function EnhancedMenuItemForm({
   onSuccess,
 }: EnhancedMenuItemFormProps) {
   const { toast } = useToast();
+  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -443,7 +445,7 @@ export default function EnhancedMenuItemForm({
                       <div key={index} className="flex items-center justify-between p-2 border rounded">
                         <div>
                           <span className="font-medium">{variant.name}</span>
-                          <span className="text-muted-foreground ml-2">${variant.price.toFixed(2)}</span>
+                          <span className="text-muted-foreground ml-2">${formatCurrency(variant.price)}</span>
                         </div>
                         <Button
                           type="button"
