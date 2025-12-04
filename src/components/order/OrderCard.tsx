@@ -128,20 +128,26 @@ export default function OrderCard({ order, onPrint, showCustomerInfo = false, ac
         <CardContent className="space-y-6">
           {/* Order Items */}
           <div>
-            <h4 className="font-semibold mb-3">Order Items</h4>
+            <h4 className="font-semibold mb-3">Order Items ({order.order_items?.length || 0})</h4>
             <div className="space-y-2">
-              {order.order_items?.map((item) => (
-                <div key={item.id} className="flex justify-between items-start p-3 bg-muted/50 rounded-lg">
-                  <div className="flex-1">
-                    <p className="font-medium">{item.menu_item_name}</p>
-                    <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
-                    {item.notes && (
-                      <p className="text-sm text-muted-foreground italic mt-1">Note: {item.notes}</p>
-                    )}
+              {order.order_items && order.order_items.length > 0 ? (
+                order.order_items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-start p-3 bg-muted/50 rounded-lg">
+                    <div className="flex-1">
+                      <p className="font-medium">{item.menu_item_name}</p>
+                      <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
+                      {item.notes && (
+                        <p className="text-sm text-muted-foreground italic mt-1">Note: {item.notes}</p>
+                      )}
+                    </div>
+                    <p className="font-semibold">{formatCurrency((item.price * item.quantity))}</p>
                   </div>
-                  <p className="font-semibold">{formatCurrency((item.price * item.quantity))}</p>
+                ))
+              ) : (
+                <div className="p-4 text-center text-muted-foreground bg-muted/30 rounded-lg">
+                  No items found in this order
                 </div>
-              ))}
+              )}
             </div>
             <div className="flex justify-between items-center mt-4 pt-4 border-t">
               <span className="font-semibold text-lg">Total</span>

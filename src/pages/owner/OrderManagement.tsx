@@ -34,10 +34,16 @@ export default function OrderManagement() {
     
     try {
       const previousOrders = ordersRef.current;
+      console.log('[OrderManagement] Loading data for restaurant:', restaurantId);
+      console.log('[OrderManagement] Previous orders count:', previousOrders.length);
+      
       const [restaurantData, ordersData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         orderApi.getOrdersByRestaurant(restaurantId),
       ]);
+      
+      console.log('[OrderManagement] Loaded orders:', ordersData.length);
+      console.log('[OrderManagement] Orders data:', ordersData);
       
       setRestaurant(restaurantData);
       setOrders(ordersData);
@@ -47,6 +53,8 @@ export default function OrderManagement() {
         const newOrders = ordersData.filter(
           newOrder => !previousOrders.some(oldOrder => oldOrder.id === newOrder.id)
         );
+        
+        console.log('[OrderManagement] New orders detected:', newOrders.length);
         
         newOrders.forEach(order => {
           const tableInfo = order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway';
