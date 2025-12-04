@@ -156,9 +156,11 @@ export default function OwnerDashboard() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold gradient-text-primary">Active Orders</h2>
-            <Button asChild variant="outline" className="morph-button">
-              <Link to="/owner/orders">View All</Link>
-            </Button>
+            {restaurants.length > 0 && (
+              <Button asChild variant="outline" className="morph-button">
+                <Link to={`/owner/orders/${restaurants[0].id}`}>View All</Link>
+              </Button>
+            )}
           </div>
 
           {activeOrders.length === 0 ? (
@@ -231,9 +233,11 @@ export default function OwnerDashboard() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold gradient-text-secondary">Your Menu</h2>
-            <Button asChild variant="outline" className="morph-button">
-              <Link to="/owner/menu">Manage Menu</Link>
-            </Button>
+            {restaurants.length > 0 && (
+              <Button asChild variant="outline" className="morph-button">
+                <Link to={`/owner/menu/${restaurants[0].id}`}>Manage Menu</Link>
+              </Button>
+            )}
           </div>
 
           {menuItems.length === 0 ? (
@@ -242,9 +246,11 @@ export default function OwnerDashboard() {
                 <Star className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
                 <p className="text-lg text-muted-foreground">No menu items yet</p>
                 <p className="text-sm text-muted-foreground mt-2">Add your first menu item to get started</p>
-                <Button asChild className="mt-4 morph-button">
-                  <Link to="/owner/menu">Add Menu Item</Link>
-                </Button>
+                {restaurants.length > 0 && (
+                  <Button asChild className="mt-4 morph-button">
+                    <Link to={`/owner/menu/${restaurants[0].id}`}>Add Menu Item</Link>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ) : (
@@ -259,27 +265,39 @@ export default function OwnerDashboard() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
                         <Star className="w-12 h-12 text-muted-foreground opacity-30" />
                       </div>
                     )}
                     {!item.is_available && (
-                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                        <Badge variant="destructive">Unavailable</Badge>
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                        <Badge variant="destructive" className="text-sm px-3 py-1">Unavailable</Badge>
                       </div>
                     )}
+                    <div className="absolute top-2 right-2">
+                      <Badge variant="outline" className="bg-background/90 backdrop-blur-sm">
+                        {item.item_type === 'veg' && '🥗 Veg'}
+                        {item.item_type === 'non_veg' && '🍖 Non-Veg'}
+                        {item.item_type === 'vegan' && '🌱 Vegan'}
+                        {item.item_type === 'egg' && '🥚 Egg'}
+                      </Badge>
+                    </div>
                   </div>
                   <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg line-clamp-1">{item.name}</h3>
-                      <Badge variant="outline" className="ml-2">{item.item_type}</Badge>
+                    <div className="mb-2">
+                      <h3 className="font-semibold text-lg line-clamp-1 mb-1">{item.name}</h3>
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{item.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold text-primary">${item.price.toFixed(2)}</span>
-                      <Button asChild size="sm" variant="outline" className="morph-button">
-                        <Link to={`/owner/menu/${item.id}`}>Edit</Link>
-                      </Button>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">
+                      {item.description || 'No description available'}
+                    </p>
+                    <div className="flex items-center justify-between pt-2 border-t border-border">
+                      <span className="text-xl font-bold gradient-text-primary">${item.price.toFixed(2)}</span>
+                      <Badge 
+                        variant={item.is_available ? 'default' : 'secondary'} 
+                        className={item.is_available ? 'bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/50' : ''}
+                      >
+                        {item.is_available ? '✓ Available' : '✗ Out of Stock'}
+                      </Badge>
                     </div>
                   </CardContent>
                 </Card>

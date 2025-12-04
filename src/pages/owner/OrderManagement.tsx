@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/db/supabase';
 import OrderCard from '@/components/order/OrderCard';
 import PrintBill from '@/components/order/PrintBill';
+import OwnerLayout from '@/components/owner/OwnerLayout';
 
 export default function OrderManagement() {
   const { restaurantId } = useParams();
@@ -224,28 +225,22 @@ export default function OrderManagement() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <Clock className="w-8 h-8 animate-spin text-primary" />
+      <OwnerLayout title="Order Management">
+        <div className="container mx-auto p-6">
+          <div className="flex items-center justify-center h-64">
+            <Clock className="w-8 h-8 animate-spin text-primary" />
+          </div>
         </div>
-      </div>
+      </OwnerLayout>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/owner/restaurants')}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+    <OwnerLayout title={`Order Management - ${restaurant?.name}`}>
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Order Management</h1>
             <p className="text-muted-foreground">{restaurant?.name}</p>
           </div>
         </div>
@@ -404,6 +399,6 @@ export default function OrderManagement() {
           {printOrder && <PrintBill order={printOrder} />}
         </DialogContent>
       </Dialog>
-    </div>
+    </OwnerLayout>
   );
 }

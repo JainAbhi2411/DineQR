@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import EnhancedMenuItemForm from '@/components/owner/EnhancedMenuItemForm';
+import OwnerLayout from '@/components/owner/OwnerLayout';
 
 export default function MenuManagement() {
   const { restaurantId } = useParams();
@@ -154,22 +155,18 @@ export default function MenuManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
+      <OwnerLayout title="Menu Management">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </OwnerLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <OwnerLayout title={`${restaurant?.name} - Menu Management`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button variant="ghost" onClick={() => navigate('/owner/restaurants')} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Restaurants
-        </Button>
-
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{restaurant?.name} - Menu Management</h1>
           <p className="text-muted-foreground">Manage your menu categories and items</p>
         </div>
 
@@ -411,6 +408,6 @@ export default function MenuManagement() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </OwnerLayout>
   );
 }

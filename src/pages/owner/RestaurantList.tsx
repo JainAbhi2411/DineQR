@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Plus, Store, MapPin, Phone, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import OwnerLayout from '@/components/owner/OwnerLayout';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -66,21 +67,22 @@ export default function RestaurantList() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
+      <OwnerLayout title="My Restaurants">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </OwnerLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <OwnerLayout title="My Restaurants">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">My Restaurants</h1>
             <p className="text-muted-foreground">Manage your restaurant profiles</p>
           </div>
-          <Button asChild>
+          <Button asChild className="morph-button hover-glow-orange">
             <Link to="/owner/restaurants/new">
               <Plus className="w-4 h-4 mr-2" />
               Add Restaurant
@@ -169,6 +171,6 @@ export default function RestaurantList() {
           </div>
         )}
       </div>
-    </div>
+    </OwnerLayout>
   );
 }

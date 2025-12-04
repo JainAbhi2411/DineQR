@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2, ArrowLeft, Download, QrCode as QrCodeIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import QRCode from 'qrcode';
+import OwnerLayout from '@/components/owner/OwnerLayout';
 
 export default function TableManagement() {
   const { restaurantId } = useParams();
@@ -146,22 +147,18 @@ export default function TableManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
+      <OwnerLayout title="Table Management">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </OwnerLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <OwnerLayout title={`${restaurant?.name} - Table Management`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button variant="ghost" onClick={() => navigate('/owner/restaurants')} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Restaurants
-        </Button>
-
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{restaurant?.name} - Table Management</h1>
           <p className="text-muted-foreground">Manage tables and generate QR codes for customers</p>
         </div>
 
@@ -169,7 +166,7 @@ export default function TableManagement() {
           <h2 className="text-2xl font-semibold">Tables</h2>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => { setEditingTable(null); setTableForm({ table_number: '', capacity: '' }); }}>
+              <Button onClick={() => { setEditingTable(null); setTableForm({ table_number: '', capacity: '' }); }} className="morph-button hover-glow-orange">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Table
               </Button>
@@ -297,6 +294,6 @@ export default function TableManagement() {
           </Dialog>
         )}
       </div>
-    </div>
+    </OwnerLayout>
   );
 }

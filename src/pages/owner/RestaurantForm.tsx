@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Plus, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import OwnerLayout from '@/components/owner/OwnerLayout';
 
 export default function RestaurantForm() {
   const { id } = useParams();
@@ -143,13 +144,8 @@ export default function RestaurantForm() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <OwnerLayout title={id ? 'Edit Restaurant' : 'Create New Restaurant'}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button variant="ghost" onClick={() => navigate('/owner/restaurants')} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Restaurants
-        </Button>
-
         <Card>
           <CardHeader>
             <CardTitle>{id ? 'Edit Restaurant' : 'Create New Restaurant'}</CardTitle>
@@ -345,6 +341,6 @@ export default function RestaurantForm() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </OwnerLayout>
   );
 }
