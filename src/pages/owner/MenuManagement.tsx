@@ -171,25 +171,30 @@ export default function MenuManagement() {
 
   return (
     <OwnerLayout title={`${restaurant?.name} - Menu Management`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <p className="text-muted-foreground">Manage your menu categories and items</p>
+      <div className="max-w-7xl mx-auto px-3 xl:px-4 sm:px-6 lg:px-8 py-4 xl:py-8">
+        <div className="mb-4 xl:mb-8">
+          <p className="text-muted-foreground text-sm xl:text-base">Manage your menu categories and items</p>
         </div>
 
-        <Tabs defaultValue="items" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="items">Menu Items</TabsTrigger>
-            <TabsTrigger value="categories">Categories</TabsTrigger>
+        <Tabs defaultValue="items" className="space-y-4 xl:space-y-6">
+          <TabsList className="w-full xl:w-auto">
+            <TabsTrigger value="items" className="flex-1 xl:flex-none">Menu Items</TabsTrigger>
+            <TabsTrigger value="categories" className="flex-1 xl:flex-none">Categories</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="categories" className="space-y-6">
+          <TabsContent value="categories" className="space-y-4 xl:space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Categories</h2>
+              <h2 className="text-lg xl:text-2xl font-semibold">Categories</h2>
               <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button onClick={() => { setEditingCategory(null); setCategoryForm({ name: '', description: '' }); }}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Category
+                  <Button 
+                    onClick={() => { setEditingCategory(null); setCategoryForm({ name: '', description: '' }); }}
+                    size="sm"
+                    className="h-8 xl:h-10"
+                  >
+                    <Plus className="w-3.5 h-3.5 xl:w-4 xl:h-4 xl:mr-2" />
+                    <span className="hidden xl:inline">Add Category</span>
+                    <span className="xl:hidden">Add</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -240,14 +245,14 @@ export default function MenuManagement() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 xl:gap-4 xl:grid-cols-2 2xl:grid-cols-3">
                 {categories.map((category) => (
                   <Card key={category.id}>
-                    <CardHeader>
-                      <CardTitle>{category.name}</CardTitle>
-                      <CardDescription>{category.description || 'No description'}</CardDescription>
+                    <CardHeader className="p-4 xl:p-6">
+                      <CardTitle className="text-base xl:text-lg">{category.name}</CardTitle>
+                      <CardDescription className="text-xs xl:text-sm">{category.description || 'No description'}</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex gap-2">
+                    <CardContent className="flex gap-2 p-4 xl:p-6">
                       <Button variant="outline" size="sm" onClick={() => openEditCategory(category)}>
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -261,16 +266,18 @@ export default function MenuManagement() {
             )}
           </TabsContent>
 
-          <TabsContent value="items" className="space-y-6">
+          <TabsContent value="items" className="space-y-4 xl:space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Menu Items</h2>
+              <h2 className="text-lg xl:text-2xl font-semibold">Menu Items</h2>
               <div className="flex gap-2">
                 <Button 
                   variant="outline"
                   onClick={() => setMenuPreviewOpen(true)}
+                  size="sm"
+                  className="h-8 xl:h-10"
                 >
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Menu
+                  <Eye className="w-3.5 h-3.5 xl:w-4 xl:h-4 xl:mr-2" />
+                  <span className="hidden xl:inline">View Menu</span>
                 </Button>
                 <Button 
                   disabled={categories.length === 0}
@@ -278,9 +285,12 @@ export default function MenuManagement() {
                     setEditingItem(null);
                     setItemDialogOpen(true);
                   }}
+                  size="sm"
+                  className="h-8 xl:h-10"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Menu Item
+                  <Plus className="w-3.5 h-3.5 xl:w-4 xl:h-4 xl:mr-2" />
+                  <span className="hidden xl:inline">Add Menu Item</span>
+                  <span className="xl:hidden">Add</span>
                 </Button>
               </div>
             </div>
@@ -327,12 +337,12 @@ export default function MenuManagement() {
 
                   return (
                     <div key={category.id}>
-                      <h3 className="text-xl font-semibold mb-4">{category.name}</h3>
-                      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+                      <h3 className="text-lg xl:text-xl font-semibold mb-3 xl:mb-4">{category.name}</h3>
+                      <div className="grid grid-cols-1 gap-3 xl:gap-4 xl:grid-cols-2 2xl:grid-cols-3">
                         {categoryItems.map((item) => (
                           <Card key={item.id} className="overflow-hidden">
                             {item.image_url && (
-                              <div className="h-48 overflow-hidden relative">
+                              <div className="h-32 xl:h-48 overflow-hidden relative">
                                 <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                                 {item.is_bestseller && (
                                   <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-full flex items-center gap-1 text-xs font-semibold">
@@ -342,24 +352,24 @@ export default function MenuManagement() {
                                 )}
                               </div>
                             )}
-                            <CardHeader>
+                            <CardHeader className="p-3 xl:p-6">
                               <div className="flex justify-between items-start gap-2">
                                 <div className="flex items-start gap-2 flex-1">
-                                  <span className="text-lg">{getFoodTypeIcon(item.item_type)}</span>
-                                  <CardTitle className="text-lg">{item.name}</CardTitle>
+                                  <span className="text-base xl:text-lg">{getFoodTypeIcon(item.item_type)}</span>
+                                  <CardTitle className="text-base xl:text-lg">{item.name}</CardTitle>
                                 </div>
-                                <span className="text-lg font-bold text-primary whitespace-nowrap">
+                                <span className="text-base xl:text-lg font-bold text-primary whitespace-nowrap">
                                   ${formatCurrency(item.price)}
                                 </span>
                               </div>
                               
                               {item.description && (
-                                <CardDescription className="line-clamp-2">
+                                <CardDescription className="line-clamp-2 text-xs xl:text-sm">
                                   {item.description}
                                 </CardDescription>
                               )}
 
-                              <div className="flex flex-wrap gap-2 mt-2">
+                              <div className="flex flex-wrap gap-1.5 xl:gap-2 mt-2">
                                 {item.preparation_time && (
                                   <Badge variant="secondary" className="text-xs">
                                     <Clock className="w-3 h-3 mr-1" />
@@ -399,15 +409,15 @@ export default function MenuManagement() {
                                 </div>
                               )}
                             </CardHeader>
-                            <CardContent className="flex gap-2">
-                              <Button variant="outline" size="sm" onClick={() => openEditItem(item)}>
-                                <Edit className="w-4 h-4" />
+                            <CardContent className="flex gap-2 p-3 xl:p-6">
+                              <Button variant="outline" size="sm" onClick={() => openEditItem(item)} className="h-8 xl:h-9">
+                                <Edit className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
                               </Button>
-                              <Button variant="outline" size="sm" onClick={() => handleDeleteItem(item.id)}>
-                                <Trash2 className="w-4 h-4 text-destructive" />
+                              <Button variant="outline" size="sm" onClick={() => handleDeleteItem(item.id)} className="h-8 xl:h-9">
+                                <Trash2 className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-destructive" />
                               </Button>
                               <div className="ml-auto flex items-center gap-2">
-                                <span className={`text-xs px-2 py-1 rounded-full ${item.is_available ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'}`}>
+                                <span className={`text-xs px-2 py-0.5 xl:py-1 rounded-full ${item.is_available ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'}`}>
                                   {item.is_available ? 'Available' : 'Unavailable'}
                                 </span>
                               </div>
