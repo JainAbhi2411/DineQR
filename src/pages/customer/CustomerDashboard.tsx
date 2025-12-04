@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { orderApi, visitedRestaurantApi } from '@/db/api';
-import { OrderWithItems, VisitedRestaurantWithDetails } from '@/types/types';
+import { orderApi } from '@/db/api';
+import { OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { QrCode, ShoppingBag, History, User, Store, Clock, X, Sparkles, TrendingUp, Award } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { QrCode, Clock, ChefHat, CheckCircle, AlertCircle, Scan, Hash } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import { supabase } from '@/db/supabase';
+import CustomerLayout from '@/components/customer/CustomerLayout';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export default function CustomerDashboard() {
   const { profile } = useAuth();
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
-  const [visitedRestaurants, setVisitedRestaurants] = useState<VisitedRestaurantWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
+  const [manualCode, setManualCode] = useState('');
   const { toast } = useToast();
-  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
+  const { formatCurrency, formatDateTime } = useFormatters();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,12 +60,8 @@ export default function CustomerDashboard() {
     
     try {
       setLoading(true);
-      const [ordersData, visitedData] = await Promise.all([
-        orderApi.getOrdersByCustomer(profile.id),
-        visitedRestaurantApi.getVisitedRestaurants(profile.id),
-      ]);
+      const ordersData = await orderApi.getOrdersByCustomer(profile.id);
       setOrders(ordersData);
-      setVisitedRestaurants(visitedData);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -73,303 +73,213 @@ export default function CustomerDashboard() {
     }
   };
 
-  const handleRemoveRestaurant = async (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await visitedRestaurantApi.deleteVisitedRestaurant(id);
-      setVisitedRestaurants(prev => prev.filter(r => r.id !== id));
-      toast({
-        title: 'Success',
-        description: 'Restaurant removed from your list',
-      });
-    } catch (error: any) {
+  const handleManualCodeSubmit = () => {
+    if (!manualCode.trim()) {
       toast({
         title: 'Error',
-        description: error.message || 'Failed to remove restaurant',
+        description: 'Please enter a QR code',
         variant: 'destructive',
       });
+      return;
+    }
+    
+    // Navigate to scan page with the manual code
+    navigate(`/customer/scan?code=${encodeURIComponent(manualCode)}`);
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <Clock className="w-4 h-4" />;
+      case 'preparing':
+        return <ChefHat className="w-4 h-4" />;
+      case 'served':
+        return <CheckCircle className="w-4 h-4" />;
+      case 'completed':
+        return <CheckCircle className="w-4 h-4" />;
+      case 'cancelled':
+        return <AlertCircle className="w-4 h-4" />;
+      default:
+        return <Clock className="w-4 h-4" />;
     }
   };
 
-  const handleRestaurantClick = (restaurantId: string) => {
-    navigate(`/customer/menu/${restaurantId}`);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100';
+      case 'preparing':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100';
+      case 'served':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100';
+      case 'completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100';
+      case 'cancelled':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100';
+    }
   };
 
-  const getLoyaltyPoints = () => {
-    return orders.filter(o => o.status === 'completed').length * 10;
-  };
-
-  const getTotalSpent = () => {
-    return orders
-      .filter(o => o.status === 'completed')
-      .reduce((sum, o) => sum + o.total_amount, 0);
-  };
+  // Get active orders (pending, preparing, served)
+  const activeOrders = orders.filter(o => ['pending', 'preparing', 'served'].includes(o.status));
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
-          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
+      <CustomerLayout title="Home">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
+            <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
+          </div>
         </div>
-      </div>
+      </CustomerLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(var(--secondary)/0.1),transparent_50%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,hsl(var(--primary)/0.08),transparent_50%)] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        <div className="mb-8 animate-fade-in-up">
-          <h1 className="text-4xl font-bold mb-2 gradient-text-secondary">
+    <CustomerLayout title="Home">
+      <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4 xl:py-8">
+        {/* Welcome Section */}
+        <div className="mb-6 xl:mb-8 animate-fade-in-up">
+          <h2 className="text-2xl xl:text-3xl font-bold mb-2 gradient-text-secondary">
             Welcome back, {profile?.full_name || 'Guest'}!
-          </h1>
-          <p className="text-muted-foreground text-lg">Browse menus, place orders, and track your dining experience</p>
+          </h2>
+          <p className="text-muted-foreground text-sm xl:text-base">Scan a QR code to start ordering</p>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-          <Card className="glass border-2 border-border hover:border-secondary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up group overflow-hidden">
+        {/* QR Scanner Section */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-6 mb-6 xl:mb-8">
+          {/* Scan QR Code */}
+          <Card className="glass border-2 border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up overflow-hidden group">
             <div className="scan-line" />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Orders</CardTitle>
-              <div className="w-10 h-10 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center group-hover:from-secondary group-hover:to-secondary-glow transition-all">
-                <ShoppingBag className="h-5 w-5 text-secondary group-hover:text-secondary-foreground transition-colors" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold gradient-text-secondary">{orders.length}</div>
-              <p className="text-xs text-muted-foreground mt-1">All time</p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass border-2 border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up animation-delay-200 group overflow-hidden">
-            <div className="scan-line" />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Active Orders</CardTitle>
-              <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center group-hover:from-primary group-hover:to-primary-glow transition-all">
-                <Clock className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold gradient-text-primary">
-                {orders.filter(o => ['pending', 'preparing', 'served'].includes(o.status)).length}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">In progress</p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass border-2 border-border hover:border-secondary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up animation-delay-400 group overflow-hidden">
-            <div className="scan-line" />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Loyalty Points</CardTitle>
-              <div className="w-10 h-10 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center group-hover:from-secondary group-hover:to-secondary-glow transition-all">
-                <Award className="h-5 w-5 text-secondary group-hover:text-secondary-foreground transition-colors" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold gradient-text-electric">{getLoyaltyPoints()}</div>
-              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-secondary" />
-                Earn more points
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass border-2 border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up animation-delay-600 group overflow-hidden">
-            <div className="scan-line" />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Spent</CardTitle>
-              <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center group-hover:from-primary group-hover:to-primary-glow transition-all">
-                <TrendingUp className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold gradient-text-primary">${formatCurrency(getTotalSpent())}</div>
-              <p className="text-xs text-muted-foreground mt-1">Completed orders</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 xl:gap-8 mb-8">
-          <Card className="glass border-2 border-border hover:border-primary/50 transition-all duration-300 animate-slide-in-left animation-delay-800 overflow-hidden group">
-            <div className="scan-line" />
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-primary" />
-                Quick Actions
+            <CardHeader className="p-4 xl:p-6 relative z-10">
+              <CardTitle className="text-lg xl:text-xl flex items-center gap-2">
+                <Scan className="w-5 h-5 xl:w-6 xl:h-6 text-primary" />
+                Scan QR Code
               </CardTitle>
-              <CardDescription>Start your dining experience</CardDescription>
+              <CardDescription className="text-xs xl:text-sm">Use your camera to scan the table QR code</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3 relative z-10">
-              <Button className="w-full justify-start morph-button hover-glow-orange text-lg py-6" asChild>
-                <Link to="/customer/scan">
-                  <QrCode className="w-5 h-5 mr-2" />
-                  Scan QR Code
-                </Link>
-              </Button>
-              <Button className="w-full justify-start morph-button hover-glow-purple" variant="outline" asChild>
-                <Link to="/customer/orders">
-                  <History className="w-5 h-5 mr-2" />
-                  View Order History
-                </Link>
-              </Button>
-              <Button className="w-full justify-start morph-button hover-glow-orange" variant="outline" asChild>
-                <Link to="/customer/profile">
-                  <User className="w-5 h-5 mr-2" />
-                  Manage Profile
-                </Link>
+            <CardContent className="p-4 xl:p-6 relative z-10">
+              <Button 
+                className="w-full morph-button hover-glow-orange text-base xl:text-lg py-5 xl:py-6" 
+                onClick={() => navigate('/customer/scan')}
+              >
+                <QrCode className="w-5 h-5 mr-2" />
+                Open Scanner
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="glass border-2 border-border hover:border-secondary/50 transition-all duration-300 animate-slide-in-right animation-delay-800 overflow-hidden group">
+          {/* Manual Code Entry */}
+          <Card className="glass border-2 border-border hover:border-secondary/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up animation-delay-200 overflow-hidden group">
             <div className="scan-line" />
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-secondary" />
-                How It Works
+            <CardHeader className="p-4 xl:p-6 relative z-10">
+              <CardTitle className="text-lg xl:text-xl flex items-center gap-2">
+                <Hash className="w-5 h-5 xl:w-6 xl:h-6 text-secondary" />
+                Enter Code Manually
               </CardTitle>
-              <CardDescription>Simple steps to order</CardDescription>
+              <CardDescription className="text-xs xl:text-sm">Type the QR code if scanning doesn't work</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 relative z-10">
-              <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-orange">
-                  1
-                </div>
-                <div>
-                  <h4 className="font-semibold text-lg">Scan QR Code</h4>
-                  <p className="text-sm text-muted-foreground">Scan the QR code on your table</p>
-                </div>
-              </div>
-              <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-secondary to-secondary-glow rounded-full flex items-center justify-center text-secondary-foreground font-bold flex-shrink-0 glow-purple">
-                  2
-                </div>
-                <div>
-                  <h4 className="font-semibold text-lg">Browse Menu</h4>
-                  <p className="text-sm text-muted-foreground">View items and add to cart</p>
-                </div>
-              </div>
-              <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-orange">
-                  3
-                </div>
-                <div>
-                  <h4 className="font-semibold text-lg">Place Order</h4>
-                  <p className="text-sm text-muted-foreground">Complete payment and enjoy</p>
-                </div>
-              </div>
+            <CardContent className="p-4 xl:p-6 space-y-3 relative z-10">
+              <Input
+                placeholder="Enter QR code..."
+                value={manualCode}
+                onChange={(e) => setManualCode(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleManualCodeSubmit()}
+                className="text-base"
+              />
+              <Button 
+                className="w-full morph-button hover-glow-purple" 
+                variant="outline"
+                onClick={handleManualCodeSubmit}
+              >
+                Submit Code
+              </Button>
             </CardContent>
           </Card>
         </div>
 
-        {visitedRestaurants.length > 0 && (
-          <Card className="mb-8 glass border-2 border-border hover:border-primary/50 transition-all duration-300 animate-fade-in-up animation-delay-1000 overflow-hidden group">
-            <div className="scan-line" />
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <Store className="w-6 h-6 text-primary" />
-                Your Restaurants
-              </CardTitle>
-              <CardDescription>Quick access to restaurants you've visited</CardDescription>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {visitedRestaurants.map((visited) => (
-                  <div
-                    key={visited.id}
-                    onClick={() => handleRestaurantClick(visited.restaurant_id)}
-                    className="relative group/card glass border-2 border-border rounded-lg p-4 hover:shadow-xl hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1"
-                  >
-                    <button
-                      onClick={(e) => handleRemoveRestaurant(visited.id, e)}
-                      className="absolute top-2 right-2 p-1.5 rounded-full glass hover:bg-destructive hover:text-destructive-foreground opacity-0 group-hover/card:opacity-100 transition-all z-10"
-                      aria-label="Remove restaurant"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                    <div className="flex items-start gap-3">
-                      <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover/card:from-primary group-hover/card:to-primary-glow transition-all">
-                        <Store className="w-7 h-7 text-primary group-hover/card:text-primary-foreground transition-colors" />
+        {/* Current Orders Section */}
+        <Card className="glass border-2 border-border animate-fade-in-up animation-delay-400 overflow-hidden">
+          <div className="scan-line" />
+          <CardHeader className="p-4 xl:p-6 relative z-10">
+            <CardTitle className="text-lg xl:text-2xl flex items-center gap-2">
+              <Clock className="w-5 h-5 xl:w-6 xl:h-6 text-primary" />
+              Current Orders
+            </CardTitle>
+            <CardDescription className="text-xs xl:text-sm">
+              {activeOrders.length > 0 
+                ? `You have ${activeOrders.length} active order${activeOrders.length > 1 ? 's' : ''}`
+                : 'No active orders at the moment'
+              }
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-4 xl:p-6 relative z-10">
+            {activeOrders.length === 0 ? (
+              <div className="text-center py-8 xl:py-12">
+                <div className="w-16 h-16 xl:w-20 xl:h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-8 h-8 xl:w-10 xl:h-10 text-muted-foreground" />
+                </div>
+                <p className="text-muted-foreground text-sm xl:text-base mb-4">No active orders</p>
+                <Button 
+                  onClick={() => navigate('/customer/scan')}
+                  className="morph-button hover-glow-orange"
+                >
+                  <QrCode className="w-4 h-4 mr-2" />
+                  Scan QR to Order
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3 xl:space-y-4">
+                {activeOrders.map((order) => (
+                  <Card key={order.id} className="border-2 hover:border-primary/50 transition-all">
+                    <CardHeader className="p-3 xl:p-4">
+                      <div className="flex justify-between items-start gap-2">
+                        <div className="flex-1">
+                          <CardTitle className="text-base xl:text-lg mb-1">
+                            {order.restaurant?.name || 'Restaurant'}
+                          </CardTitle>
+                          <CardDescription className="text-xs xl:text-sm">
+                            {order.table?.table_number ? `Table ${order.table.table_number} • ` : ''}{formatDateTime(order.created_at)}
+                          </CardDescription>
+                        </div>
+                        <Badge className={cn('text-xs flex items-center gap-1', getStatusColor(order.status))}>
+                          {getStatusIcon(order.status)}
+                          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </Badge>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg truncate">{visited.restaurant?.name || 'Restaurant'}</h3>
-                        <p className="text-sm text-muted-foreground truncate">
-                          {visited.restaurant?.location || 'Location not available'}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                          <Clock className="w-3 h-3" />
-                          <span>Visited {visited.visit_count} {visited.visit_count === 1 ? 'time' : 'times'}</span>
+                    </CardHeader>
+                    <CardContent className="p-3 xl:p-4 pt-0">
+                      <div className="space-y-2">
+                        {order.order_items?.slice(0, 3).map((item) => (
+                          <div key={item.id} className="flex justify-between text-xs xl:text-sm">
+                            <span className="text-muted-foreground">
+                              {item.quantity}x {item.menu_item?.name || 'Item'}
+                            </span>
+                            <span className="font-medium">${formatCurrency(item.price * item.quantity)}</span>
+                          </div>
+                        ))}
+                        {order.order_items && order.order_items.length > 3 && (
+                          <p className="text-xs text-muted-foreground">
+                            +{order.order_items.length - 3} more item{order.order_items.length - 3 > 1 ? 's' : ''}
+                          </p>
+                        )}
+                        <div className="pt-2 border-t flex justify-between items-center">
+                          <span className="font-semibold text-sm xl:text-base">Total</span>
+                          <span className="font-bold text-base xl:text-lg text-primary">
+                            ${formatCurrency(order.total_amount)}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {orders.length > 0 ? (
-          <Card className="glass border-2 border-border hover:border-secondary/50 transition-all duration-300 animate-fade-in-up animation-delay-1200 overflow-hidden group">
-            <div className="scan-line" />
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <ShoppingBag className="w-6 h-6 text-secondary" />
-                Recent Orders
-              </CardTitle>
-              <CardDescription>Your latest dining experiences</CardDescription>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="space-y-3">
-                {orders.slice(0, 5).map((order) => (
-                  <div key={order.id} className="flex items-center justify-between p-4 glass rounded-lg border border-border hover:border-secondary/50 transition-all">
-                    <div>
-                      <p className="font-medium text-lg">{order.restaurant?.name || 'Restaurant'}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(order.created_at).toLocaleDateString()} • ${formatCurrency(order.total_amount)}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
-                        order.status === 'completed' ? 'bg-primary/20 text-primary border border-primary/30' :
-                        order.status === 'preparing' ? 'bg-secondary/20 text-secondary border border-secondary/30' :
-                        order.status === 'served' ? 'bg-primary/20 text-primary border border-primary/30' :
-                        'bg-muted text-muted-foreground border border-border'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Button className="w-full mt-4 morph-button hover-glow-purple" variant="outline" asChild>
-                <Link to="/customer/orders">View All Orders</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="glass border-2 border-border hover:border-primary/50 transition-all animate-scale-in">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-              <div className="w-24 h-24 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center mb-6 animate-pulse-glow">
-                <ShoppingBag className="w-12 h-12 text-secondary" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-2">No Orders Yet</h3>
-              <p className="text-muted-foreground mb-6 text-center max-w-md">
-                Start by scanning a QR code at a restaurant table to begin your dining experience
-              </p>
-              <Button asChild size="lg" className="morph-button hover-glow-orange rounded-full px-8">
-                <Link to="/customer/scan">
-                  <QrCode className="w-5 h-5 mr-2" />
-                  Scan QR Code
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+            )}
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </CustomerLayout>
   );
 }
