@@ -10,12 +10,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
-import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, ArrowLeft, Save, Star, Clock, Flame, Eye, ChevronDown, ChevronUp, Leaf } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import EnhancedMenuItemForm from '@/components/owner/EnhancedMenuItemForm';
 import OwnerLayout from '@/components/owner/OwnerLayout';
+import { cn } from '@/lib/utils';
 
 export default function MenuManagement() {
   const { restaurantId } = useParams();
@@ -30,6 +33,7 @@ export default function MenuManagement() {
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<MenuCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [menuPreviewOpen, setMenuPreviewOpen] = useState(false);
 
   const [categoryForm, setCategoryForm] = useState({ name: '', description: '' });
 
@@ -263,7 +267,7 @@ export default function MenuManagement() {
               <div className="flex gap-2">
                 <Button 
                   variant="outline"
-                  onClick={() => window.open(`/customer/menu/${restaurantId}`, '_blank')}
+                  onClick={() => setMenuPreviewOpen(true)}
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   View Menu
@@ -418,6 +422,169 @@ export default function MenuManagement() {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Menu Preview Sheet */}
+        <Sheet open={menuPreviewOpen} onOpenChange={setMenuPreviewOpen}>
+          <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle className="text-2xl">Menu Preview</SheetTitle>
+              <SheetDescription>
+                This is how customers will see your menu
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="mt-6 space-y-6">
+              {/* Restaurant Info */}
+              {restaurant && (
+                <div className="pb-4 border-b">
+                  <h3 className="text-xl font-bold">{restaurant.name}</h3>
+                  {restaurant.location && (
+                    <p className="text-sm text-muted-foreground mt-1">{restaurant.location}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Menu Categories with Items */}
+              {categories.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>No menu items to display</p>
+                  <p className="text-sm mt-2">Add categories and items to see them here</p>
+                </div>
+              ) : (
+                <Accordion type="multiple" defaultValue={categories.map(c => c.id)} className="space-y-4">
+                  {categories.map((category) => {
+                    const categoryItems = menuItems.filter((item) => item.category_id === category.id && item.is_available);
+                    if (categoryItems.length === 0) return null;
+
+                    return (
+                      <AccordionItem key={category.id} value={category.id} className="border rounded-lg px-4">
+                        <AccordionTrigger className="hover:no-underline">
+                          <div className="flex items-center justify-between w-full pr-4">
+                            <div className="text-left">
+                              <h3 className="text-lg font-semibold">{category.name}</h3>
+                              {category.description && (
+                                <p className="text-sm text-muted-foreground">{category.description}</p>
+                              )}
+                            </div>
+                            <Badge variant="secondary">{categoryItems.length} items</Badge>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-4 pt-4">
+                            {categoryItems.map((item) => (
+                              <div key={item.id} className="flex gap-4 pb-4 border-b last:border-0">
+                                {/* Item Type Icon */}
+                                <div className="flex-shrink-0 mt-1">
+                                  <div className={cn(
+                                    "w-5 h-5 rounded-sm flex items-center justify-center border-2",
+                                    item.is_vegetarian 
+                                      ? "border-green-600" 
+                                      : item.is_vegan 
+                                      ? "border-green-700" 
+                                      : "border-red-600"
+                                  )}>
+                                    <div className={cn(
+                                      "w-2 h-2 rounded-full",
+                                      item.is_vegetarian 
+                                        ? "bg-green-600" 
+                                        : item.is_vegan 
+                                        ? "bg-green-700" 
+                                        : "bg-red-600"
+                                    )} />
+                                  </div>
+                                </div>
+
+                                {/* Item Details */}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <h4 className="font-semibold">{item.name}</h4>
+                                        {item.is_bestseller && (
+                                          <Badge variant="default" className="text-xs">
+                                            <Star className="w-3 h-3 mr-1 fill-current" />
+                                            Bestseller
+                                          </Badge>
+                                        )}
+                                      </div>
+                                      
+                                      {item.description && (
+                                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                          {item.description}
+                                        </p>
+                                      )}
+
+                                      {/* Item Metadata */}
+                                      <div className="flex flex-wrap gap-3 mt-2 text-xs text-muted-foreground">
+                                        {item.preparation_time && (
+                                          <span className="flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            {item.preparation_time} min
+                                          </span>
+                                        )}
+                                        {item.calories && (
+                                          <span className="flex items-center gap-1">
+                                            <Flame className="w-3 h-3" />
+                                            {item.calories} cal
+                                          </span>
+                                        )}
+                                        {item.rating && item.rating > 0 && (
+                                          <span className="flex items-center gap-1">
+                                            <Star className="w-3 h-3 fill-current text-yellow-500" />
+                                            {item.rating.toFixed(1)}
+                                          </span>
+                                        )}
+                                        {getSpiceLevelDisplay(item.spice_level) && (
+                                          <span>{getSpiceLevelDisplay(item.spice_level)}</span>
+                                        )}
+                                      </div>
+
+                                      {/* Dietary Badges */}
+                                      <div className="flex flex-wrap gap-2 mt-2">
+                                        {item.is_vegan && (
+                                          <Badge variant="outline" className="text-xs">
+                                            🌱 Vegan
+                                          </Badge>
+                                        )}
+                                        {item.is_gluten_free && (
+                                          <Badge variant="outline" className="text-xs">
+                                            Gluten-Free
+                                          </Badge>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* Item Image (if available) */}
+                                    {item.image_url && (
+                                      <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden">
+                                        <img 
+                                          src={item.image_url} 
+                                          alt={item.name}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Price */}
+                                  <div className="mt-3 flex items-center justify-between">
+                                    <span className="text-lg font-bold text-primary">
+                                      {formatCurrency(item.price)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              )}
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </OwnerLayout>
   );
