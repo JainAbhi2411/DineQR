@@ -26,7 +26,11 @@ import {
   X,
   ChevronRight,
   Award,
-  ChefHat
+  ChefHat,
+  Info,
+  LayoutGrid,
+  List,
+  AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -53,8 +57,10 @@ export default function MenuBrowsing() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
+  const [itemDetailDialogOpen, setItemDetailDialogOpen] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
   const [customization, setCustomization] = useState('');
+  const [viewMode, setViewMode] = useState<'grid' | 'menu'>('grid');
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
@@ -194,6 +200,11 @@ export default function MenuBrowsing() {
     }
   };
 
+  const handleItemClick = (item: MenuItem) => {
+    setSelectedItem(item);
+    setItemDetailDialogOpen(true);
+  };
+
   const getItemTypeIcon = (type: ItemType) => {
     switch (type) {
       case 'veg': return <Leaf className="w-3 h-3 xl:w-4 xl:h-4" />;
@@ -292,18 +303,42 @@ export default function MenuBrowsing() {
           </div>
 
           {/* Type Filter */}
-          <Tabs value={selectedItemType} onValueChange={(v) => setSelectedItemType(v as ItemType | 'all')} className="mb-3">
-            <TabsList className="w-full grid grid-cols-4 h-9">
-              <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
-              <TabsTrigger value="veg" className="text-xs">
-                <Leaf className="w-3 h-3 mr-1" /> Veg
-              </TabsTrigger>
-              <TabsTrigger value="non_veg" className="text-xs">
-                <Flame className="w-3 h-3 mr-1" /> Non-Veg
-              </TabsTrigger>
-              <TabsTrigger value="egg" className="text-xs">Egg</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="flex items-center gap-2 mb-3">
+            <Tabs value={selectedItemType} onValueChange={(v) => setSelectedItemType(v as ItemType | 'all')} className="flex-1">
+              <TabsList className="w-full grid grid-cols-4 h-9">
+                <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
+                <TabsTrigger value="veg" className="text-xs">
+                  <Leaf className="w-3 h-3 mr-1" /> Veg
+                </TabsTrigger>
+                <TabsTrigger value="non_veg" className="text-xs">
+                  <Flame className="w-3 h-3 mr-1" /> Non-Veg
+                </TabsTrigger>
+                <TabsTrigger value="egg" className="text-xs">Egg</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            
+            {/* View Mode Toggle */}
+            <div className="flex gap-1 border rounded-lg p-1 shrink-0">
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+                className="h-7 w-7 p-0"
+                title="Grid View"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'menu' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('menu')}
+                className="h-7 w-7 p-0"
+                title="Menu View"
+              >
+                <List className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
 
           {/* Category Tabs - Horizontal Scroll */}
           <div className="overflow-x-auto -mx-3 xl:-mx-6 px-3 xl:px-6 scrollbar-hide">
@@ -340,7 +375,88 @@ export default function MenuBrowsing() {
             <h3 className="text-xl font-semibold mb-2">No items found</h3>
             <p className="text-muted-foreground">Try adjusting your filters</p>
           </div>
+        ) : viewMode === 'menu' ? (
+          /* Traditional Menu View */
+          <div className="space-y-8">
+            {Object.entries(groupedItems).map(([categoryId, { category, items }]) => (
+              <div key={categoryId} ref={el => { categoryRefs.current[categoryId] = el; }}>
+                {/* Category Header */}
+                <div className="mb-6 text-center border-b-2 border-primary pb-2">
+                  <h2 className="text-2xl xl:text-3xl font-bold text-primary">{category.name}</h2>
+                  {category.description && (
+                    <p className="text-sm text-muted-foreground mt-1 italic">{category.description}</p>
+                  )}
+                </div>
+
+                {/* Menu Items List */}
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div 
+                      key={item.id} 
+                      className="border-b border-dashed border-border pb-4 last:border-0 cursor-pointer hover:bg-muted/50 p-3 rounded-lg transition-colors"
+                      onClick={() => handleItemClick(item)}
+                    >
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-start gap-2 mb-1">
+                            <div className={cn(
+                              "inline-flex items-center justify-center w-5 h-5 border-2 rounded shrink-0 mt-0.5",
+                              getItemTypeBadgeColor(item.item_type)
+                            )}>
+                              {getItemTypeIcon(item.item_type)}
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-bold text-base xl:text-lg">{item.name}</h3>
+                              {item.description && (
+                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                  {item.description}
+                                </p>
+                              )}
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {item.is_bestseller && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    <Award className="w-3 h-3 mr-1" /> Bestseller
+                                  </Badge>
+                                )}
+                                {item.tags?.includes('spicy') && (
+                                  <Badge variant="destructive" className="text-xs">
+                                    <Flame className="w-3 h-3 mr-1" /> Spicy
+                                  </Badge>
+                                )}
+                                {item.preparation_time > 0 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    <Clock className="w-3 h-3 mr-1" /> {item.preparation_time} mins
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <p className="font-bold text-lg text-primary mb-2">
+                            {formatCurrency(item.price)}
+                          </p>
+                          <Button
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToCart(item);
+                            }}
+                            className="text-xs"
+                          >
+                            <Plus className="w-3 h-3 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
+          /* Grid View */
           <div className="space-y-6">
             {Object.entries(groupedItems).map(([categoryId, { category, items }]) => (
               <div key={categoryId} ref={el => { categoryRefs.current[categoryId] = el; }}>
@@ -367,7 +483,7 @@ export default function MenuBrowsing() {
                           {/* Mobile: Horizontal Layout */}
                           <div className="flex gap-3 p-3 xl:hidden">
                             {/* Item Details */}
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 cursor-pointer" onClick={() => handleItemClick(item)}>
                               {/* Type Badge */}
                               <div className={cn(
                                 "inline-flex items-center justify-center w-5 h-5 border-2 rounded mb-2",
@@ -376,8 +492,11 @@ export default function MenuBrowsing() {
                                 {getItemTypeIcon(item.item_type)}
                               </div>
 
-                              {/* Name */}
-                              <h3 className="font-bold text-sm mb-1 line-clamp-2">{item.name}</h3>
+                              {/* Name with Info Icon */}
+                              <div className="flex items-start gap-1 mb-1">
+                                <h3 className="font-bold text-sm line-clamp-2 flex-1">{item.name}</h3>
+                                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                              </div>
 
                               {/* Price */}
                               <p className="font-semibold text-sm mb-2">
@@ -463,7 +582,10 @@ export default function MenuBrowsing() {
                           {/* Desktop: Vertical Layout */}
                           <div className="hidden xl:block">
                             {/* Image */}
-                            <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
+                            <div 
+                              className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 cursor-pointer"
+                              onClick={() => handleItemClick(item)}
+                            >
                               {item.image_url ? (
                                 <img
                                   src={item.image_url}
@@ -492,11 +614,24 @@ export default function MenuBrowsing() {
 
                               {/* Type Badge */}
                               <div className={cn(
-                                "absolute top-2 right-2 w-6 h-6 border-2 rounded bg-background/90 flex items-center justify-center",
+                                "absolute bottom-2 right-2 w-6 h-6 border-2 rounded bg-background/90 flex items-center justify-center",
                                 getItemTypeBadgeColor(item.item_type)
                               )}>
                                 {getItemTypeIcon(item.item_type)}
                               </div>
+
+                              {/* Info Button */}
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full shadow-lg"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleItemClick(item);
+                                }}
+                              >
+                                <Info className="w-4 h-4" />
+                              </Button>
                             </div>
 
                             {/* Details */}
@@ -684,6 +819,166 @@ export default function MenuBrowsing() {
           )}
         </SheetContent>
       </Sheet>
+
+      {/* Item Detail Dialog */}
+      <Dialog open={itemDetailDialogOpen} onOpenChange={setItemDetailDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">{selectedItem?.name}</DialogTitle>
+            <DialogDescription className="flex items-center gap-2 flex-wrap">
+              <div className={cn(
+                "inline-flex items-center justify-center w-5 h-5 border-2 rounded",
+                selectedItem && getItemTypeBadgeColor(selectedItem.item_type)
+              )}>
+                {selectedItem && getItemTypeIcon(selectedItem.item_type)}
+              </div>
+              <span className="font-semibold text-lg text-primary">
+                {selectedItem && formatCurrency(selectedItem.price)}
+              </span>
+              {selectedItem?.is_bestseller && (
+                <Badge variant="secondary">
+                  <Award className="w-3 h-3 mr-1" /> Bestseller
+                </Badge>
+              )}
+              {selectedItem?.tags?.includes('spicy') && (
+                <Badge variant="destructive">
+                  <Flame className="w-3 h-3 mr-1" /> Spicy
+                </Badge>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedItem && (
+            <div className="space-y-4">
+              {/* Image */}
+              {selectedItem.image_url && (
+                <div className="w-full h-64 rounded-lg overflow-hidden">
+                  <img
+                    src={selectedItem.image_url}
+                    alt={selectedItem.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Description */}
+              {selectedItem.description && (
+                <div>
+                  <h4 className="font-semibold mb-2">Description</h4>
+                  <p className="text-muted-foreground">{selectedItem.description}</p>
+                </div>
+              )}
+
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {selectedItem.preparation_time > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Prep Time</p>
+                      <p className="font-medium">{selectedItem.preparation_time} mins</p>
+                    </div>
+                  </div>
+                )}
+
+                {selectedItem.calories && (
+                  <div className="flex items-center gap-2">
+                    <Flame className="w-4 h-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Calories</p>
+                      <p className="font-medium">{selectedItem.calories} kcal</p>
+                    </div>
+                  </div>
+                )}
+
+                {selectedItem.rating > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-primary fill-primary" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Rating</p>
+                      <p className="font-medium">{selectedItem.rating.toFixed(1)}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Dietary Info */}
+              {(selectedItem.is_vegetarian || selectedItem.is_vegan || selectedItem.is_gluten_free) && (
+                <div>
+                  <h4 className="font-semibold mb-2">Dietary Information</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedItem.is_vegetarian && (
+                      <Badge variant="outline" className="border-green-600 text-green-600">
+                        <Leaf className="w-3 h-3 mr-1" /> Vegetarian
+                      </Badge>
+                    )}
+                    {selectedItem.is_vegan && (
+                      <Badge variant="outline" className="border-green-700 text-green-700">
+                        <Leaf className="w-3 h-3 mr-1" /> Vegan
+                      </Badge>
+                    )}
+                    {selectedItem.is_gluten_free && (
+                      <Badge variant="outline">Gluten Free</Badge>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Ingredients */}
+              {selectedItem.ingredients && (
+                <div>
+                  <h4 className="font-semibold mb-2">Ingredients</h4>
+                  <p className="text-sm text-muted-foreground">{selectedItem.ingredients}</p>
+                </div>
+              )}
+
+              {/* Allergens */}
+              {selectedItem.allergens && (
+                <div>
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-destructive" />
+                    Allergen Information
+                  </h4>
+                  <p className="text-sm text-muted-foreground">{selectedItem.allergens}</p>
+                </div>
+              )}
+
+              {/* Variants */}
+              {selectedItem.variants && selectedItem.variants.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">Available Sizes</h4>
+                  <div className="space-y-2">
+                    {selectedItem.variants.map((variant, idx) => (
+                      <div key={idx} className="flex items-center justify-between border rounded-lg p-3">
+                        <div>
+                          <p className="font-medium">{variant.name}</p>
+                          {variant.description && (
+                            <p className="text-xs text-muted-foreground">{variant.description}</p>
+                          )}
+                        </div>
+                        <span className="font-semibold">{formatCurrency(variant.price)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Add to Cart Button */}
+              <Button 
+                onClick={() => {
+                  setItemDetailDialogOpen(false);
+                  handleAddToCart(selectedItem);
+                }} 
+                className="w-full" 
+                size="lg"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add to Cart
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Item Variant Dialog */}
       <Dialog open={itemDialogOpen} onOpenChange={setItemDialogOpen}>
