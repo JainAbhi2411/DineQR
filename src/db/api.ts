@@ -713,72 +713,92 @@ export const settingsApi = {
 
 export const analyticsApi = {
   async getAnalytics(restaurantId: string): Promise<AnalyticsData> {
-    // Get total revenue and order count
+    // Get all orders with their items for accurate calculations
     const { data: orders, error: ordersError } = await supabase
       .from('orders')
-      .select('total_amount, customer_id, created_at, status')
+      .select(`
+        id,
+        total_amount,
+        customer_id,
+        created_at,
+        status,
+        payment_status
+      `)
       .eq('restaurant_id', restaurantId)
-      .in('status', ['completed', 'served']);
+      .order('created_at', { ascending: true });
     
     if (ordersError) throw ordersError;
 
-    const totalRevenue = orders?.reduce((sum, order) => sum + Number(order.total_amount), 0) || 0;
+    // Calculate total revenue from all orders (regardless of status for now, can filter if needed)
+    const totalRevenue = orders?.reduce((sum, order) => sum + Number(order.total_amount || 0), 0) || 0;
     const totalOrders = orders?.length || 0;
     const uniqueCustomers = new Set(orders?.map(o => o.customer_id).filter(Boolean)).size;
 
     // Get average rating
     const averageRating = await reviewApi.getAverageRating(restaurantId);
 
-    // Get popular items
-    const { data: popularItemsData, error: popularError } = await supabase
+    // Get all order items for this restaurant to calculate popular items
+    const { data: allOrderItems, error: itemsError } = await supabase
       .from('order_items')
       .select(`
+        id,
         menu_item_id,
         menu_item_name,
         quantity,
         price,
-        order:orders!inner(restaurant_id, status)
-      `)
-      .eq('order.restaurant_id', restaurantId)
-      .in('order.status', ['completed', 'served']);
+        order_id
+      `);
 
-    if (popularError) throw popularError;
+    if (itemsError) throw itemsError;
 
-    // Aggregate popular items
-    const itemsMap = new Map<string, { menu_item_id: string; menu_item_name: string; order_count: number; total_revenue: number }>();
-    popularItemsData?.forEach((item: any) => {
-      const existing = itemsMap.get(item.menu_item_id || 'unknown');
+    // Filter order items that belong to this restaurant's orders
+    const orderIds = new Set(orders?.map(o => o.id) || []);
+    const restaurantOrderItems = allOrderItems?.filter(item => orderIds.has(item.order_id)) || [];
+
+    // Aggregate popular items by counting total quantity ordered
+    const itemsMap = new Map<string, { 
+      menu_item_id: string; 
+      menu_item_name: string; 
+      order_count: number; 
+      total_revenue: number;
+    }>();
+
+    restaurantOrderItems.forEach((item) => {
+      const itemId = item.menu_item_id || 'unknown';
+      const existing = itemsMap.get(itemId);
+      const itemRevenue = Number(item.price || 0) * Number(item.quantity || 0);
+      
       if (existing) {
-        existing.order_count += item.quantity;
-        existing.total_revenue += Number(item.price) * item.quantity;
+        existing.order_count += Number(item.quantity || 0);
+        existing.total_revenue += itemRevenue;
       } else {
-        itemsMap.set(item.menu_item_id || 'unknown', {
-          menu_item_id: item.menu_item_id || 'unknown',
+        itemsMap.set(itemId, {
+          menu_item_id: itemId,
           menu_item_name: item.menu_item_name || 'Unknown Item',
-          order_count: item.quantity,
-          total_revenue: Number(item.price) * item.quantity,
+          order_count: Number(item.quantity || 0),
+          total_revenue: itemRevenue,
         });
       }
     });
 
+    // Sort by order count (most ordered items first)
     const popularItems = Array.from(itemsMap.values())
       .sort((a, b) => b.order_count - a.order_count)
       .slice(0, 10);
 
-    // Get revenue by date (last 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
+    // Get revenue by date
     const revenueByDateMap = new Map<string, { revenue: number; order_count: number }>();
     orders?.forEach(order => {
       const date = order.created_at.split('T')[0];
       const existing = revenueByDateMap.get(date);
+      const orderAmount = Number(order.total_amount || 0);
+      
       if (existing) {
-        existing.revenue += Number(order.total_amount);
+        existing.revenue += orderAmount;
         existing.order_count += 1;
       } else {
         revenueByDateMap.set(date, {
-          revenue: Number(order.total_amount),
+          revenue: orderAmount,
           order_count: 1,
         });
       }
