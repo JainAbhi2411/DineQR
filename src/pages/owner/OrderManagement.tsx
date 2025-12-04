@@ -49,9 +49,10 @@ export default function OrderManagement() {
         );
         
         newOrders.forEach(order => {
+          const tableInfo = order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway';
           toast({
             title: '🔔 New Order Received!',
-            description: `Table ${order.table?.table_number || 'N/A'} - Order #${order.id.slice(0, 8).toUpperCase()}`,
+            description: `${tableInfo} - Order #${order.id.slice(0, 8).toUpperCase()}`,
           });
         });
       }
@@ -91,15 +92,32 @@ export default function OrderManagement() {
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: '*',
+          schema: 'public',
+          table: 'order_items',
+        },
+        (payload) => {
+          console.log('[OrderManagement] Received order items change:', payload);
+          // Check if this order item belongs to one of the restaurant's orders
+          const orderId = (payload.new as any)?.order_id || (payload.old as any)?.order_id;
+          if (orderId && ordersRef.current.some(order => order.id === orderId)) {
+            console.log('[OrderManagement] Order item belongs to restaurant order, reloading...');
+            setTimeout(() => loadData(), 300);
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
           schema: 'public',
           table: 'order_status_history',
         },
         (payload) => {
           console.log('[OrderManagement] Received status history change:', payload);
           // Check if this status history belongs to one of the restaurant's orders
-          const orderId = payload.new.order_id;
-          if (ordersRef.current.some(order => order.id === orderId)) {
+          const orderId = (payload.new as any)?.order_id || (payload.old as any)?.order_id;
+          if (orderId && ordersRef.current.some(order => order.id === orderId)) {
             console.log('[OrderManagement] Status history belongs to restaurant order, reloading...');
             setTimeout(() => loadData(), 300);
           }

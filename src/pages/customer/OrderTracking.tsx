@@ -211,13 +211,11 @@ export default function OrderTracking() {
                     <span className="font-medium">Restaurant:</span>
                     <span>{order.restaurant?.name}</span>
                   </div>
-                  {order.table && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <UtensilsCrossed className="w-4 h-4 text-muted-foreground" />
-                      <span className="font-medium">Table:</span>
-                      <span>{order.table.table_number}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 text-sm">
+                    <UtensilsCrossed className="w-4 h-4 text-muted-foreground" />
+                    <span className="font-medium">Table:</span>
+                    <span>{order.table ? order.table.table_number : 'Walk-in / Takeaway'}</span>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">

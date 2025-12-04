@@ -59,7 +59,7 @@ export default function PrintBill({ order }: PrintBillProps) {
             <p><strong>Time:</strong> {format(new Date(order.created_at), 'HH:mm')}</p>
           </div>
           <div>
-            {order.table && <p><strong>Table:</strong> {order.table.table_number}</p>}
+            <p><strong>Table:</strong> {order.table ? order.table.table_number : 'Walk-in / Takeaway'}</p>
             {order.customer && (
               <p><strong>Customer:</strong> {order.customer.full_name || order.customer.username}</p>
             )}

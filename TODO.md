@@ -46,6 +46,14 @@
   - [x] Added "Track Order" button to Order History
   - [x] Created testing guide
 
+- [x] Step 10: Real-time and Table Number Fixes
+  - [x] Enhanced real-time subscriptions for order updates
+  - [x] Added subscription to order_items table
+  - [x] Updated order_status_history subscription to all events
+  - [x] Fixed table number display to show "Walk-in / Takeaway" when null
+  - [x] Updated OrderCard, OrderManagement, PrintBill, and OrderTracking components
+  - [x] Added proper TypeScript type casting for payload data
+
 ## Notes
 - Database schema is already complete with all required fields
 - Stripe payment integration implemented with edge functions

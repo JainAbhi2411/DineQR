@@ -96,12 +96,10 @@ export default function OrderCard({ order, onPrint, showCustomerInfo = false, ac
               )}
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-              {order.table && (
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  Table {order.table.table_number}
-                </span>
-              )}
+              <span className="flex items-center gap-1">
+                <MapPin className="w-4 h-4" />
+                {order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway'}
+              </span>
               {showCustomerInfo && order.customer && (
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
