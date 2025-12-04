@@ -140,7 +140,7 @@ export interface Staff {
   name: string;
   email: string | null;
   phone: string | null;
-  role: 'waiter' | 'chef' | 'manager';
+  role: 'waiter' | 'chef' | 'manager' | 'cashier';
   is_active: boolean;
   created_at: string;
   updated_at: string;
