@@ -10,6 +10,11 @@ import RestaurantForm from './pages/owner/RestaurantForm';
 import MenuManagement from './pages/owner/MenuManagement';
 import TableManagement from './pages/owner/TableManagement';
 import OrderManagement from './pages/owner/OrderManagement';
+import StaffManagement from './pages/owner/StaffManagement';
+import Analytics from './pages/owner/Analytics';
+import Reviews from './pages/owner/Reviews';
+import Promotions from './pages/owner/Promotions';
+import Settings from './pages/owner/Settings';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import CustomerProfile from './pages/customer/CustomerProfile';
 import ScanQR from './pages/customer/ScanQR';
@@ -104,6 +109,46 @@ const routes: RouteConfig[] = [
     name: 'Order Management',
     path: '/owner/orders/:restaurantId',
     component: OrderManagement,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Staff Management',
+    path: '/owner/staff/:restaurantId',
+    component: StaffManagement,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Analytics',
+    path: '/owner/analytics/:restaurantId',
+    component: Analytics,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Reviews',
+    path: '/owner/reviews/:restaurantId',
+    component: Reviews,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Promotions',
+    path: '/owner/promotions/:restaurantId',
+    component: Promotions,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Settings',
+    path: '/owner/settings/:restaurantId',
+    component: Settings,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],

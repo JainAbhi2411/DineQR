@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -8,11 +8,15 @@ import {
   ChevronRight,
   Store,
   ChevronLeft,
-  Menu
+  Menu,
+  Users,
+  BarChart3,
+  Settings,
+  MessageSquare,
+  Tag
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
-import { restaurantApi } from '@/db/api';
+import { useRestaurant } from '@/contexts/RestaurantContext';
 import { Button } from '@/components/ui/button';
 
 interface OwnerSidebarProps {
@@ -22,39 +26,7 @@ interface OwnerSidebarProps {
 
 export default function OwnerSidebar({ isCollapsed, onToggle }: OwnerSidebarProps) {
   const location = useLocation();
-  const { profile } = useAuth();
-  const [restaurantId, setRestaurantId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    const loadRestaurant = async () => {
-      if (!profile) {
-        setLoading(false);
-        return;
-      }
-      
-      try {
-        const restaurants = await restaurantApi.getRestaurantsByOwner(profile.id);
-        if (isMounted && restaurants.length > 0) {
-          setRestaurantId(restaurants[0].id);
-        }
-      } catch (error) {
-        console.error('Failed to load restaurant:', error);
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadRestaurant();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [profile]);
+  const { restaurantId, loading } = useRestaurant();
 
   const menuItems = useMemo(() => [
     {
@@ -85,6 +57,36 @@ export default function OwnerSidebar({ isCollapsed, onToggle }: OwnerSidebarProp
       title: 'Tables',
       icon: Table2,
       href: restaurantId ? `/owner/tables/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Staff Management',
+      icon: Users,
+      href: restaurantId ? `/owner/staff/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Analytics',
+      icon: BarChart3,
+      href: restaurantId ? `/owner/analytics/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Reviews',
+      icon: MessageSquare,
+      href: restaurantId ? `/owner/reviews/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Promotions',
+      icon: Tag,
+      href: restaurantId ? `/owner/promotions/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Settings',
+      icon: Settings,
+      href: restaurantId ? `/owner/settings/${restaurantId}` : '#',
       requiresRestaurant: true,
     },
   ], [restaurantId]);

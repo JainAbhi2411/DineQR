@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { RestaurantProvider } from './contexts/RestaurantContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
@@ -57,7 +58,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppContent />
+        <RestaurantProvider>
+          <AppContent />
+        </RestaurantProvider>
       </AuthProvider>
     </BrowserRouter>
   );
