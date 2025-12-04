@@ -15,6 +15,11 @@ import type {
   VisitedRestaurantWithDetails,
   Notification,
   NotificationWithOrder,
+  Review,
+  ReviewWithCustomer,
+  Promotion,
+  RestaurantSettings,
+  AnalyticsData,
 } from '@/types/types';
 
 export const profileApi = {
@@ -568,5 +573,232 @@ export const notificationApi = {
       .delete()
       .eq('id', id);
     if (error) throw error;
+  },
+};
+
+export const reviewApi = {
+  async getReviewsByRestaurant(restaurantId: string): Promise<ReviewWithCustomer[]> {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select(`
+        *,
+        customer:profiles!customer_id(*)
+      `)
+      .eq('restaurant_id', restaurantId)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async createReview(review: Omit<Review, 'id' | 'created_at' | 'reply' | 'replied_at'>): Promise<Review> {
+    const { data, error} = await supabase
+      .from('reviews')
+      .insert(review)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async replyToReview(reviewId: string, reply: string): Promise<Review> {
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({ 
+        reply, 
+        replied_at: new Date().toISOString() 
+      })
+      .eq('id', reviewId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async getAverageRating(restaurantId: string): Promise<number> {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('rating')
+      .eq('restaurant_id', restaurantId);
+    if (error) throw error;
+    if (!data || data.length === 0) return 0;
+    const sum = data.reduce((acc, review) => acc + review.rating, 0);
+    return sum / data.length;
+  },
+};
+
+export const promotionApi = {
+  async getPromotionsByRestaurant(restaurantId: string): Promise<Promotion[]> {
+    const { data, error } = await supabase
+      .from('promotions')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async getActivePromotions(restaurantId: string): Promise<Promotion[]> {
+    const today = new Date().toISOString().split('T')[0];
+    const { data, error } = await supabase
+      .from('promotions')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .eq('status', 'active')
+      .lte('start_date', today)
+      .gte('end_date', today)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async createPromotion(promotion: Omit<Promotion, 'id' | 'created_at' | 'usage_count'>): Promise<Promotion> {
+    const { data, error } = await supabase
+      .from('promotions')
+      .insert(promotion)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updatePromotion(id: string, updates: Partial<Promotion>): Promise<Promotion> {
+    const { data, error } = await supabase
+      .from('promotions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async deletePromotion(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('promotions')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  },
+
+  async incrementUsageCount(id: string): Promise<void> {
+    const { error } = await supabase.rpc('increment_promotion_usage', {
+      promotion_id: id,
+    });
+    if (error) throw error;
+  },
+};
+
+export const settingsApi = {
+  async getRestaurantSettings(restaurantId: string): Promise<RestaurantSettings | null> {
+    const { data, error } = await supabase
+      .from('restaurant_settings')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateRestaurantSettings(restaurantId: string, updates: Partial<RestaurantSettings>): Promise<RestaurantSettings> {
+    const { data, error } = await supabase
+      .from('restaurant_settings')
+      .update(updates)
+      .eq('restaurant_id', restaurantId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+};
+
+export const analyticsApi = {
+  async getAnalytics(restaurantId: string): Promise<AnalyticsData> {
+    // Get total revenue and order count
+    const { data: orders, error: ordersError } = await supabase
+      .from('orders')
+      .select('total_amount, customer_id, created_at, status')
+      .eq('restaurant_id', restaurantId)
+      .in('status', ['completed', 'served']);
+    
+    if (ordersError) throw ordersError;
+
+    const totalRevenue = orders?.reduce((sum, order) => sum + Number(order.total_amount), 0) || 0;
+    const totalOrders = orders?.length || 0;
+    const uniqueCustomers = new Set(orders?.map(o => o.customer_id).filter(Boolean)).size;
+
+    // Get average rating
+    const averageRating = await reviewApi.getAverageRating(restaurantId);
+
+    // Get popular items
+    const { data: popularItemsData, error: popularError } = await supabase
+      .from('order_items')
+      .select(`
+        menu_item_id,
+        menu_item_name,
+        quantity,
+        price,
+        order:orders!inner(restaurant_id, status)
+      `)
+      .eq('order.restaurant_id', restaurantId)
+      .in('order.status', ['completed', 'served']);
+
+    if (popularError) throw popularError;
+
+    // Aggregate popular items
+    const itemsMap = new Map<string, { menu_item_id: string; menu_item_name: string; order_count: number; total_revenue: number }>();
+    popularItemsData?.forEach((item: any) => {
+      const existing = itemsMap.get(item.menu_item_id || 'unknown');
+      if (existing) {
+        existing.order_count += item.quantity;
+        existing.total_revenue += Number(item.price) * item.quantity;
+      } else {
+        itemsMap.set(item.menu_item_id || 'unknown', {
+          menu_item_id: item.menu_item_id || 'unknown',
+          menu_item_name: item.menu_item_name || 'Unknown Item',
+          order_count: item.quantity,
+          total_revenue: Number(item.price) * item.quantity,
+        });
+      }
+    });
+
+    const popularItems = Array.from(itemsMap.values())
+      .sort((a, b) => b.order_count - a.order_count)
+      .slice(0, 10);
+
+    // Get revenue by date (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const revenueByDateMap = new Map<string, { revenue: number; order_count: number }>();
+    orders?.forEach(order => {
+      const date = order.created_at.split('T')[0];
+      const existing = revenueByDateMap.get(date);
+      if (existing) {
+        existing.revenue += Number(order.total_amount);
+        existing.order_count += 1;
+      } else {
+        revenueByDateMap.set(date, {
+          revenue: Number(order.total_amount),
+          order_count: 1,
+        });
+      }
+    });
+
+    const revenueByDate = Array.from(revenueByDateMap.entries())
+      .map(([date, data]) => ({
+        date,
+        revenue: data.revenue,
+        order_count: data.order_count,
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+      totalRevenue,
+      totalOrders,
+      uniqueCustomers,
+      averageRating,
+      popularItems,
+      revenueByDate,
+    };
   },
 };

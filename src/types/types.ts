@@ -232,3 +232,73 @@ export interface Notification {
 export interface NotificationWithOrder extends Notification {
   order?: Order;
 }
+
+export interface Review {
+  id: string;
+  restaurant_id: string;
+  customer_id: string;
+  order_id: string | null;
+  rating: number;
+  comment: string | null;
+  reply: string | null;
+  replied_at: string | null;
+  created_at: string;
+}
+
+export interface ReviewWithCustomer extends Review {
+  customer?: Profile;
+  order?: Order;
+}
+
+export type DiscountType = 'percentage' | 'fixed' | 'bogo';
+
+export interface Promotion {
+  id: string;
+  restaurant_id: string;
+  title: string;
+  description: string | null;
+  discount_type: DiscountType;
+  discount_value: number;
+  start_date: string;
+  end_date: string;
+  status: string;
+  usage_count: number;
+  created_at: string;
+}
+
+export interface RestaurantSettings {
+  id: string;
+  restaurant_id: string;
+  timezone: string;
+  currency: string;
+  auto_accept_orders: boolean;
+  online_ordering: boolean;
+  email_notifications: boolean;
+  sms_notifications: boolean;
+  push_notifications: boolean;
+  review_alerts: boolean;
+  tax_rate: number;
+  service_charge: number;
+  two_factor_auth: boolean;
+  business_hours: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AnalyticsData {
+  totalRevenue: number;
+  totalOrders: number;
+  uniqueCustomers: number;
+  averageRating: number;
+  popularItems: {
+    menu_item_id: string;
+    menu_item_name: string;
+    order_count: number;
+    total_revenue: number;
+  }[];
+  revenueByDate: {
+    date: string;
+    revenue: number;
+    order_count: number;
+  }[];
+}

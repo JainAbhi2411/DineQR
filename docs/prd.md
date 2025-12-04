@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Enhanced Sidebar Navigation)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Real-Time Data Integration)
 
 ## 1. Application Overview
 
@@ -6,7 +6,7 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, and personalized restaurant dashboard for quick reordering - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface.
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, and personalized restaurant dashboard for quick reordering - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. **All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, and performance metrics.**
 
 ## 2. Advanced Authentication System
 
@@ -21,8 +21,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
   - Biometric login support (fingerprint/face recognition) for mobile\n  - Session management with auto-logout after inactivity
   - Device tracking and suspicious login alerts
   - Single Sign-On (SSO) support for enterprise accounts
-  - **Post-Login Redirect**: Upon successful authentication, owners are immediately redirected to the **Owner Home Screen** (redesigned with Zomato-style layout)
-- **Password Management**:
+  - **Post-Login Redirect**: Upon successful authentication, owners are immediately redirected to the **Owner Home Screen** (redesigned with Zomato-style layout)\n- **Password Management**:
   - Secure password reset via email/SMS with time-limited tokens
   - Password change history tracking
   - Forced password update every 90 days for security
@@ -79,43 +78,48 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
   - **Purpose**: Customer acquisition and brand awareness
 \n- **Restaurant Owner (Logged-In)**:
   - **Interface**: Redirect to or display **Owner Home Screen** immediately after login (redesigned with Zomato-style layout)
-  - **Home Screen Content** (NEW DESIGN):
+  - **Home Screen Content** (NEW DESIGN WITH REAL-TIME DATA):
     - **Main Content Area** (center panel with scrollable content):
-      - **Active Orders Section** (explorable, Zomato-style):
+      - **Active Orders Section** (explorable, Zomato-style with real-time data):
         - Horizontal scrollable carousel or grid layout of active order cards
-        - Each order card displays:\n          - Order ID and timestamp (digital style with neon glow)
+        - Each order card displays:
+          - Order ID and timestamp (digital style with neon glow)
           - Table number with floor/section\n          - Customer name (real name from profile or'Guest')
           - Order status badge (color-coded with neon glow)
           - Order items summary (first 2 items +'X more')
-          - Total amount (bold with currency symbol in neon cyan)
+          - **Total amount (real-time calculated from order items, bold with currency symbol in neon cyan)**
           - Quick action buttons: 'View Details', 'Update Status' (futuristic buttons with neon gradient)
         - Tap on order card to expand full details in modal or slide-out panel
-        - Filter options: All Orders, New, Acknowledged, Preparing, Ready, Served, Payment Pending\n        - Sort options: Recent, Table Number, Amount\n        - Real-time updates: New orders appear instantly with slide-in animation and neon orange highlight\n      - **Restaurant Menu Section** (explorable, Zomato-style):
+        - Filter options: All Orders, New, Acknowledged, Preparing, Ready, Served, Payment Pending\n        - Sort options: Recent, Table Number, Amount\n        - **Real-time updates: New orders appear instantly with slide-in animation and neon orange highlight, order data fetched from live database**
+      - **Restaurant Menu Section** (explorable, Zomato-style with real-time data):
         - Category tabs (horizontal scrollable with glassmorphism design)
         - Food item cards in grid layout (2-3 columns on desktop, 1-2 on mobile)
         - Each item card displays:
           - Item image (16:9 aspect ratio with rounded corners)
           - Item type indicator (Veg/Non-Veg icon with neon glow)
-          - Item name (Orbitron font, white color)
-          - Price (neon cyan with glow)
-          - Rating (neon yellow stars)\n          - Availability status (In Stock/Out of Stock badge)
+          - Item name (Orbitron font, white color)\n          - **Price (real-time from database, neon cyan with glow)**
+          - **Rating (real-time average from customer reviews, neon yellow stars)**\n          - **Availability status (real-time from inventory, In Stock/Out of Stock badge)**
           - Quick action: 'Edit' icon (tap to edit item details)
         - Search bar at top (glassmorphism design with neon border on focus)
         - Filter options: Item Type, Category, Availability, Price Range
         - Add New Item button (floating action button with neon gradient)
-        - Tap on item card to view full details and edit
-      - **Quick Stats Overview** (compact cards at top of main content area):
-        - Today's Revenue (animated counter with neon cyan color)
-        - Active Orders Count (live count with pulsing badge)
-        - Table Occupancy Rate (circular progress indicator)
-        - Popular Items Today (top 3 items with sales count)
+        - Tap on item card to view full details and edit\n      - **Quick Stats Overview** (compact cards at top of main content area with real-time data):
+        - **Today's Revenue (real-time calculated from completed orders, animated counter with neon cyan color)**:\n          - Database query: SUM(order_total) WHERE order_status = 'Completed' AND order_date = TODAY AND payment_status = 'Paid'\n          - Updates automatically when new orders are completed and paid
+        - **Active Orders Count (real-time count from database, live count with pulsing badge)**:
+          - Database query: COUNT(order_id) WHERE order_status IN ('New', 'Acknowledged', 'Preparing', 'Ready', 'Served') AND order_date = TODAY
+          - Updates instantly when new orders arrive or status changes
+        - **Table Occupancy Rate (real-time calculated from table status, circular progress indicator)**:
+          - Database query: (COUNT(table_id WHERE status = 'Occupied') / COUNT(total_tables)) * 100
+          - Updates when tables are assigned or cleared
+        - **Popular Items Today (real-time top 3 items with sales count)**:
+          - Database query: SELECT item_name, COUNT(order_item_id) as sales_count FROM order_items WHERE order_date = TODAY GROUP BY item_id ORDER BY sales_count DESC LIMIT 3
+          - Updates as orders are placed throughout the day
     - **Sidebar Navigation Menu** (left sidebar with futuristic design, collapsible, persistent without refresh):
       - **Logo and Restaurant Name** at top
-      - **Navigation Items** (vertical list with icons and labels, **expanded with additional features**):
+      - **Navigation Items** (vertical list with icons and labels, expanded with additional features):
         - **Home** (default active, icon: house with neon glow)
-        - **Orders** (icon: receipt, badge showing active order count)
-          - Sub-menu: All Orders, Order History, Order Analytics
-        - **Menu Management** (icon: utensils)\n          - Sub-menu: View Menu, Add Item, Categories, Bulk Import
+        - **Orders** (icon: receipt, **badge showing real-time active order count from database**)
+          - Sub-menu: All Orders, Order History, Order Analytics\n        - **Menu Management** (icon: utensils)\n          - Sub-menu: View Menu, Add Item, Categories, Bulk Import
         - **Inventory** (icon: box)
           - Sub-menu: Stock Levels, Suppliers, Reorder Alerts, Inventory Reports
         - **Staff Management** (icon: users)
@@ -124,53 +128,51 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
           - Sub-menu: View Tables, QR Codes, Floor Plan, Table Status
         - **Customer Management** (icon: user-group)
           - Sub-menu: Customer Database, Loyalty Program, Customer Feedback, Reviews
-        - **Reservations** (icon: calendar)
-          - Sub-menu: View Reservations, Add Reservation, Reservation Settings\n        - **Marketing & Promotions** (icon: megaphone)
+        - **Reservations** (icon: calendar)\n          - Sub-menu: View Reservations, Add Reservation, Reservation Settings\n        - **Marketing & Promotions** (icon: megaphone)
           - Sub-menu: Campaigns, Offers & Discounts, Email/SMS Marketing, Social Media Integration
         - **Analytics & Reports** (icon: chart)\n          - Sub-menu: Sales Reports, Menu Performance, Customer Insights, Financial Reports, Export Data
         - **Payments** (icon: credit card)
           - Sub-menu: Payment History, COC Payments, Reconciliation, Payment Methods
-        - **Reviews & Ratings** (icon: star)
-          - Sub-menu: Customer Reviews, Respond to Reviews, Rating Analytics\n        - **Settings** (icon: gear)
+        - **Reviews & Ratings** (icon: star)\n          - Sub-menu: Customer Reviews, Respond to Reviews, Rating Analytics\n        - **Settings** (icon: gear)
           - Sub-menu: Restaurant Profile, Operating Hours, Payment Settings, Notification Settings, Security Settings
         - **Help & Support** (icon: question-circle)
-          - Sub-menu: Documentation, FAQs, Contact Support, Video Tutorials\n        - **Notifications** (icon: bell, badge showing unread count)
-        - **Logout** (icon: sign-out)
-      - Each navigation item with icon (24px) and label (Orbitron font)\n      - Active item highlighted with neon orange background and glow
+          - Sub-menu: Documentation, FAQs, Contact Support, Video Tutorials\n        - **Notifications** (icon: bell, **badge showing real-time unread count from database**)
+        - **Logout** (icon: sign-out)\n      - Each navigation item with icon (24px) and label (Orbitron font)\n      - Active item highlighted with neon orange background and glow
       - Hover effect: neon border and glow\n      - **Sidebar Behavior**: Sidebar remains persistent and does not refresh on navigation clicks; content area updates dynamically using client-side routing (SPA architecture)
       - Collapse/expand button at bottom of sidebar (hamburger icon)
     - **Top Header Bar** (sticky, glassmorphism design):
       - Restaurant logo (left)\n      - Search bar (center, global search for orders, items, customers)
-      - Notification bell icon (right, with unread count badge and real-time alerts)
+      - **Notification bell icon (right, with real-time unread count badge from database and real-time alerts)**
       - Profile avatar (right, dropdown menu with settings and logout)
       - Multi-restaurant selector (if owner has multiple restaurants, dropdown with animated transition)
   - **Navigation Flow**: Owners cannot access the public homepage while logged in; attempting to navigate to root URL redirects to Owner Home Screen
 \n- **Customer (Logged-In)**:
   - **Interface**: Display customized **Customer Homepage**
   - **Homepage Content**:
-    - **Personalized Greeting**:'Welcome back, [Customer Name]!' with animated typewriter effect
+    - **Personalized Greeting**: 'Welcome back, [Customer Name]!' with animated typewriter effect
     - **Quick Access Section**:
       - 'Browse Menu' button (primary CTA with glow effect)
       - 'Scan QR Code' button (secondary CTA with icon)
     - **Active Orders Section**:
-      - Display current active orders with real-time status updates
-      - Order cards showing: Restaurant name, order items summary, total amount, status badge, estimated time
+      - **Display current active orders with real-time status updates from database**
+      - Order cards showing: Restaurant name, order items summary, **total amount (real-time from database)**, status badge, **estimated time (real-time calculated)**
       - Tap to expand full order details and timeline
     - **Order History Section**:
-      - Recent orders displayed as cards (last 5 orders)
-      -'Reorder' button for quick reordering
+      - **Recent orders displayed as cards (last 5 orders from database)**
+      - 'Reorder' button for quick reordering
       - 'View All' link to full order history
     - **My Restaurants Section**:
       - Grid of saved restaurant cards (recently visited)
       - Quick access to favorite restaurants
       - 'View All' link to full My Restaurants dashboard
     - **Loyalty & Rewards Section**:
-      - Current points balance with animated counter
+      - **Current points balance (real-time from database) with animated counter**
       - Progress bar towards next reward\n      - Available rewards display\n    - **Personalized Recommendations**:
       - AI-suggested restaurants based on dining history
       - Trending items from favorite restaurants
     - **Navigation Menu** (bottom tab bar or sidebar):
-      - Home (active)\n      - Menu (browse all restaurants)
+      - Home (active)
+      - Menu (browse all restaurants)
       - Orders (active and history)
       - My Restaurants\n      - Profile\n      - Logout
   - **Navigation Flow**: Customers cannot access the Owner Dashboard; attempting to navigate to owner routes redirects to Customer Homepage
@@ -180,8 +182,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 - **Front-End Conditional Rendering**:
   - React/Vue/Angular router guards check user role upon navigation
   - Conditional component rendering based on authenticated user's role
-  - Immediate redirect after login based on role:\n    - Owner → `/owner/home` (redesigned home screen)
-    - Customer → `/customer/home`
+  - Immediate redirect after login based on role:\n    - Owner → `/owner/home` (redesigned home screen)\n    - Customer → `/customer/home`
     - Staff → `/staff/orders`
     - Guest → `/` (public homepage)
 - **Route Protection**:
@@ -201,29 +202,45 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 
 ### 3.1 Advanced Restaurant Owner Features
 
-#### 3.1.1 Owner Home Screen with Zomato-Style Layout and Real-Time Notification System (REDESIGNED)
+#### 3.1.1 Owner Home Screen with Zomato-Style Layout and Real-Time Data Integration (REDESIGNED)
 
-**Futuristic UI Design Specifications**:
+**Real-Time Data Architecture**:
+\n- **Database Connection**:
+  - Persistent WebSocket connection established on page load for real-time data streaming
+  - Fallback to Server-Sent Events (SSE) or polling if WebSocket unavailable
+  - Connection status indicator in UI (connected/disconnected with visual feedback)
+\n- **Data Synchronization**:
+  - All displayed data fetched from live database with automatic refresh
+  - No hardcoded or mock data; all statistics, counts, and metrics calculated in real-time
+  - Database queries optimized with indexing for fast retrieval
+  - Caching layer (Redis) for frequently accessed data to reduce database load
+
+- **Real-Time Updates**:
+  - New orders trigger instant UI updates via WebSocket push notifications
+  - Order status changes propagate immediately to all connected clients
+  - Revenue and statistics recalculated automatically on order completion
+  - Inventory levels update in real-time as orders are placed
+  - Table occupancy updates when tables are assigned or cleared
+\n**Futuristic UI Design Specifications**:
 \n- **Overall Aesthetic**:
   - **Dark-Themed Base**: Deep charcoal grey (#1A1A1A) or dark blue (#0D1B2A) background for main home screen
   - **Neon Accents**: Electric cyan (#00F0FF), vibrant magenta (#FF006E), electric blue (#3A86FF) for highlights, CTAs, and interactive elements
   - **Glassmorphism Effects**: Frosted glass cards with background blur (backdrop-filter: blur(10px)), semi-transparent backgrounds (rgba(255,255,255,0.1)), subtle borders with gradient overlays
   - **Gradients**: Smooth color transitions for hero sections, buttons, and cards
   - **Depth & Layering**: Multi-layered UI with floating elements, subtle shadows, and 3D effects
-
-- **Typography**:
+\n- **Typography**:
   - **Headings**: Orbitron Bold or Exo 2 Bold for main titles and section labels
   - **Body Text**: Poppins Regular or Inter Regular for readability
   - **Accent Text**: Orbitron Medium for buttons and interactive labels
   - **Font Sizes**: H1: 36px, H2: 28px, H3: 22px, Body: 16px, Small: 13px
   - **Font Colors**: White (#FFFFFF) or light grey (#E0E0E0) for text on dark backgrounds, neon colors for emphasis
 
-**Redesigned Owner Home Screen Layout (Zomato-Style)**:\n
-- **Left Sidebar Navigation** (collapsible, 240px width when expanded, 60px when collapsed, **persistent without refresh**):
+**Redesigned Owner Home Screen Layout (Zomato-Style with Real-Time Data)**:
+\n- **Left Sidebar Navigation** (collapsible, 240px width when expanded, 60px when collapsed, persistent without refresh):
   - **Logo and Restaurant Name** at top (centered when expanded, icon only when collapsed)
-  - **Navigation Items** (vertical list with icons and labels, **expanded with additional features**):
-    - **Home** (icon: house, active by default with neon orange background and glow)
-    - **Orders** (icon: receipt, badge showing active order count)
+  - **Navigation Items** (vertical list with icons and labels, expanded with additional features):\n    - **Home** (icon: house, active by default with neon orange background and glow)
+    - **Orders** (icon: receipt, **badge showing real-time active order count from database**)
+      - Database query: COUNT(order_id) WHERE order_status IN ('New', 'Acknowledged', 'Preparing', 'Ready', 'Served') AND restaurant_id = CURRENT_RESTAURANT\n      - Badge updates instantly via WebSocket when new orders arrive or status changes
       - Sub-menu (expandable on hover or click):
         - All Orders\n        - Order History
         - Order Analytics
@@ -233,16 +250,19 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
         - Categories
         - Bulk Import\n    - **Inventory** (icon: box)
       - Sub-menu:
-        - Stock Levels
-        - Suppliers\n        - Reorder Alerts
-        - Inventory Reports\n    - **Staff Management** (icon: users)
+        - Stock Levels\n        - Suppliers
+        - Reorder Alerts
+        - Inventory Reports
+    - **Staff Management** (icon: users)
       - Sub-menu:
         - All Staff
         - Add Staff
-        - Roles & Permissions\n        - Shift Schedules
+        - Roles & Permissions
+        - Shift Schedules
         - Attendance
         - Performance
-    - **Table Management** (icon: table)\n      - Sub-menu:
+    - **Table Management** (icon: table)
+      - Sub-menu:
         - View Tables
         - QR Codes
         - Floor Plan
@@ -251,8 +271,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
       - Sub-menu:
         - Customer Database
         - Loyalty Program
-        - Customer Feedback
-        - Reviews\n    - **Reservations** (icon: calendar)
+        - Customer Feedback\n        - Reviews
+    - **Reservations** (icon: calendar)
       - Sub-menu:
         - View Reservations
         - Add Reservation
@@ -289,7 +309,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
         - FAQs
         - Contact Support
         - Video Tutorials
-    - **Notifications** (icon: bell, badge showing unread count)
+    - **Notifications** (icon: bell, **badge showing real-time unread count from database**)
+      - Database query: COUNT(notification_id) WHERE is_read = FALSE AND user_id = CURRENT_USER\n      - Badge updates instantly when new notifications arrive
     - **Logout** (icon: sign-out)
   - Each item: Icon (24px) + Label (Orbitron font, 14px, white color)\n  - Active item: Neon orange background (#FF6B35) with glow, white text
   - Hover effect: Neon border (2px solid cyan) and subtle glow
@@ -305,8 +326,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 - **Top Header Bar** (sticky, full width, 60px height, glassmorphism design):
   - **Left Section**:
     - Sidebar toggle button (hamburger icon, visible on mobile)
-    - Restaurant logo (40px height)
-  - **Center Section**:
+    - Restaurant logo (40px height)\n  - **Center Section**:
     - Global search bar (400px width on desktop, expandable on mobile)
     - Placeholder: 'Search orders, menu items, customers...'
     - Glassmorphism input with neon border on focus
@@ -316,65 +336,81 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
       - Dropdown with restaurant names and logos
       - Current restaurant displayed with logo and name
       - Animated transition when switching restaurants
-    - Notification bell icon (28px, neon cyan on hover with glow):
-      - Unread count badge (neon red circle, 20px diameter, pulsing glow)
-      - Shake animation on new notification
-      - Click to open notification dropdown panel
+    - **Notification bell icon (28px, neon cyan on hover with glow)**:\n      - **Unread count badge (real-time from database, neon red circle, 20px diameter, pulsing glow)**
+      - Database query: COUNT(notification_id) WHERE is_read = FALSE AND user_id = CURRENT_USER\n      - Shake animation on new notification\n      - Click to open notification dropdown panel
     - Profile avatar (40px diameter, circular with neon border):
       - Click to open dropdown menu: Profile, Settings, Logout
-\n- **Main Content Area** (center panel, scrollable, full height minus header, **updates dynamically without sidebar refresh**):
-  - **Quick Stats Overview** (top section, horizontal row of compact cards):
+\n- **Main Content Area** (center panel, scrollable, full height minus header, updates dynamically without sidebar refresh):
+  - **Quick Stats Overview** (top section, horizontal row of compact cards with real-time data):
     - 4 stat cards in row (responsive: 2x2 grid on mobile)\n    - Each card (glassmorphism design, 200px width, 100px height):
       - Icon (32px, neon glow) at left
       - Label (Orbitron font, 14px, light grey) at top-right
-      - Value (Orbitron Bold, 28px, neon cyan with glow) at bottom-right\n      - Animated counter effect on page load
-    - Cards:\n      - Today's Revenue (icon: dollar sign, value with currency symbol)
-      - Active Orders (icon: receipt, live count with pulsing badge)
-      - Table Occupancy (icon: table, percentage with circular progress indicator)
-      - Popular Item (icon: star, top item name with sales count)
-    - Spacing: 16px gap between cards
-\n  - **Active Orders Section** (below stats, explorable Zomato-style):
+      - **Value (real-time from database, Orbitron Bold, 28px, neon cyan with glow) at bottom-right**
+      - Animated counter effect on page load and when value updates
+    - Cards:\n      - **Today's Revenue (real-time calculated)**:\n        - Database query: SELECT SUM(order_total) FROM orders WHERE order_status = 'Completed' AND payment_status = 'Paid' AND DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT
+        - Updates automatically when orders are completed and payments received
+        - Icon: dollar sign
+        - Value format: Currency symbol + amount (e.g., $1,234.56)
+      - **Active Orders (real-time count)**:
+        - Database query: SELECT COUNT(order_id) FROM orders WHERE order_status IN ('New', 'Acknowledged', 'Preparing', 'Ready', 'Served') AND DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT
+        - Updates instantly when new orders arrive or status changes\n        - Icon: receipt
+        - Value: Live count with pulsing badge
+      - **Table Occupancy (real-time percentage)**:
+        - Database query: SELECT (COUNT(CASE WHEN status = 'Occupied' THEN 1 END) * 100.0 / COUNT(table_id)) as occupancy_rate FROM tables WHERE restaurant_id = CURRENT_RESTAURANT
+        - Updates when tables are assigned or cleared
+        - Icon: table
+        - Value: Percentage with circular progress indicator
+      - **Popular Item (real-time top item)**:
+        - Database query: SELECT item_name, COUNT(order_item_id) as sales_count FROM order_items JOIN orders ON order_items.order_id = orders.order_id WHERE DATE(orders.order_date) = CURDATE() AND orders.restaurant_id = CURRENT_RESTAURANT GROUP BY item_id ORDER BY sales_count DESC LIMIT 1
+        - Updates as orders are placed throughout the day
+        - Icon: star
+        - Value: Top item name with sales count
+    - Spacing:16px gap between cards
+\n  - **Active Orders Section** (below stats, explorable Zomato-style with real-time data):
     - **Section Header**:
       - Title: 'Active Orders' (Orbitron SemiBold, 24px, white color with neon glow)
       - Filter buttons (horizontal row, glassmorphism chips):
         - All, New, Acknowledged, Preparing, Ready, Served, Payment Pending
         - Active filter: Neon orange background with glow
         - Tap to filter orders
-      - Sort dropdown (right-aligned): Recent, Table Number, Amount\n    - **Order Cards** (horizontal scrollable carousel or grid layout):
+      - Sort dropdown (right-aligned): Recent, Table Number, Amount\n    - **Order Cards** (horizontal scrollable carousel or grid layout with real-time data):
       - Grid: 3 columns on desktop, 2 on tablet, 1 on mobile
-      - Each order card (glassmorphism design, 320px width, 180px height):
+      - **Data source**: Real-time query from orders table
+      - Database query: SELECT orders.*, customers.name as customer_name, tables.table_number FROM orders LEFT JOIN customers ON orders.customer_id = customers.customer_id LEFT JOIN tables ON orders.table_id = tables.table_id WHERE orders.order_status IN ('New', 'Acknowledged', 'Preparing', 'Ready', 'Served', 'Payment Pending') AND orders.restaurant_id = CURRENT_RESTAURANT ORDER BY orders.created_at DESC\n      - Each order card (glassmorphism design, 320px width, 180px height):
         - **Card Header**:
-          - Order ID (Orbitron Bold, 16px, white color) at top-left
-          - Timestamp (digital style, 12px, light grey) below order ID
-          - Status badge (top-right, color-coded with neon glow):
-            - Orange: New Order
+          - **Order ID (real-time from database, Orbitron Bold, 16px, white color) at top-left**
+          - **Timestamp (real-time from database, digital style, 12px, light grey) below order ID**
+          - **Status badge (real-time from database, top-right, color-coded with neon glow)**:\n            - Orange: New Order
             - Blue: Acknowledged
             - Yellow: Preparing
             - Green: Ready
             - Purple: Served
             - Teal: Payment Pending
         - **Card Body**:
-          - Table number (Orbitron SemiBold, 18px, neon cyan) with icon
-          - Customer name (Poppins Regular, 14px, light grey)\n          - Order items summary (first 2 items +'X more', 13px, light grey)
-          - Total amount (Orbitron Bold, 20px, neon cyan with glow) at bottom-left
+          - **Table number (real-time from database, Orbitron SemiBold, 18px, neon cyan) with icon**
+          - **Customer name (real-time from database or'Guest', Poppins Regular, 14px, light grey)**
+          - **Order items summary (real-time from database, first2 items + 'X more', 13px, light grey)**
+          - **Total amount (real-time calculated from order items, Orbitron Bold, 20px, neon cyan with glow) at bottom-left**
+            - Database query: SELECT SUM(item_price * quantity) FROM order_items WHERE order_id = CURRENT_ORDER_ID
         - **Card Footer**:
           - Quick action buttons (horizontal row):
-            - 'View Details' (futuristic button, neon gradient, 80px width)
-            - 'Update Status' (futuristic button, glassmorphism, neon border, 100px width)
+            - 'View Details' (futuristic button, neon gradient, 80px width)\n            - 'Update Status' (futuristic button, glassmorphism, neon border, 100px width)
           - Buttons:32px height, rounded corners\n        - **Hover effect**: Scale(1.03) with glow intensifies\n        - **Tap to expand**: Full order details in modal or slide-out panel
       - **Real-time updates**:
-        - New orders appear instantly with slide-in animation from top and neon orange highlight border for3 seconds
-        - Order status updates automatically with smooth transition animation
-        - Order cards reorder based on status change
+        - **New orders appear instantly with slide-in animation from top and neon orange highlight border for 3 seconds**
+        - WebSocket push notification triggers UI update when new order inserted into database
+        - **Order status updates automatically with smooth transition animation**
+        - WebSocket push notification triggers UI update when order status changed in database
+        - Order cards reorder based on status change\n        - **Order total recalculates automatically if items are added/removed**
       - **Empty state** (if no active orders):
         - Illustration: Empty plate or checkmark icon with neon glow
         - Message: 'No active orders at the moment' (Orbitron font, white color)\n        - Subtext: 'New orders will appear here in real-time' (light grey)
     - **View All Orders Button** (at bottom of section):
-      - Futuristic button with neon gradient\n      - Text: 'View All Orders'\n      - Navigates to full Orders page
-\n  - **Restaurant Menu Section** (below active orders, explorable Zomato-style):
+      - Futuristic button with neon gradient\n      - Text: 'View All Orders'
+      - Navigates to full Orders page
+\n  - **Restaurant Menu Section** (below active orders, explorable Zomato-style with real-time data):
     - **Section Header**:
-      - Title: 'Restaurant Menu' (Orbitron SemiBold, 24px, white color with neon glow)
-      - Category tabs (horizontal scrollable, glassmorphism design):
+      - Title: 'Restaurant Menu' (Orbitron SemiBold, 24px, white color with neon glow)\n      - Category tabs (horizontal scrollable, glassmorphism design):
         - Each tab: Category name + icon (if available)
         - Active tab: Neon orange underline animation
         - Tap to filter items by category
@@ -382,28 +418,29 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
         - Placeholder: 'Search menu items...'
         - Neon border on focus
       - Filter button (icon: filter, opens filter panel)\n      - Add New Item button (floating action button, neon gradient, '+' icon)
-    - **Menu Item Cards** (grid layout):
+    - **Menu Item Cards** (grid layout with real-time data):
       - Grid: 3 columns on desktop, 2 on tablet, 1 on mobile
-      - Each item card (glassmorphism design, 280px width, 320px height):
+      - **Data source**: Real-time query from menu_items table
+      - Database query: SELECT menu_items.*, AVG(reviews.rating) as avg_rating, COUNT(reviews.review_id) as review_count, inventory.stock_level FROM menu_items LEFT JOIN reviews ON menu_items.item_id = reviews.item_id LEFT JOIN inventory ON menu_items.item_id = inventory.item_id WHERE menu_items.restaurant_id = CURRENT_RESTAURANT GROUP BY menu_items.item_id\n      - Each item card (glassmorphism design, 280px width, 320px height):
         - **Item Image** (top, 16:9 aspect ratio, rounded top corners):
-          - High-quality food photo
-          - Item type indicator (top-left overlay,36px diameter, neon glow):
+          - **High-quality food photo (real-time from database)**
+          - Item type indicator (top-left overlay, 36px diameter, neon glow):
             - Veg: Neon green circle with leaf icon
             - Non-Veg: Neon red circle with chicken leg icon
             - Vegan: Neon green circle with 'VG' icon
-          - Availability badge (top-right overlay):
-            - In Stock: Neon green badge\n            - Out of Stock: Neon red badge with semi-transparent dark overlay on image
-        - **Card Body** (below image, 12px padding):
-          - Item name (Orbitron SemiBold, 18px, white color, truncated to 2 lines)
-          - Rating (neon yellow stars, 16px) with count (light grey, 12px)
-          - Price (Orbitron Bold, 20px, neon cyan with glow):
-            - Single price or price range (for quantity-based or half/full)\n          - Quick action: 'Edit' icon (top-right of card body,24px, neon cyan on hover)
+          - **Availability badge (real-time from inventory, top-right overlay)**:
+            - In Stock: Neon green badge (if stock_level > 0)
+            - Out of Stock: Neon red badge with semi-transparent dark overlay on image (if stock_level = 0)\n        - **Card Body** (below image, 12px padding):
+          - **Item name (real-time from database, Orbitron SemiBold, 18px, white color, truncated to 2 lines)**
+          - **Rating (real-time average from customer reviews, neon yellow stars, 16px) with count (light grey, 12px)**
+            - Database query: AVG(rating) and COUNT(review_id) from reviews table
+          - **Price (real-time from database, Orbitron Bold, 20px, neon cyan with glow)**:\n            - Single price or price range (for quantity-based or half/full)\n          - Quick action: 'Edit' icon (top-right of card body,24px, neon cyan on hover)
         - **Hover effect**: Scale(1.05) with glow intensifies
         - **Tap to expand**: Full item details in modal for editing
       - **Empty state** (if no items in category):
         - Illustration: Empty plate icon with neon glow
         - Message: 'No items in this category' (Orbitron font, white color)
-        -'Add Item' button (futuristic button with neon gradient)
+        - 'Add Item' button (futuristic button with neon gradient)
     - **View All Menu Button** (at bottom of section):\n      - Futuristic button with neon gradient
       - Text: 'View Full Menu'
       - Navigates to full Menu Management page
@@ -412,9 +449,10 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
   - **Bell icon** positioned in top-right corner of header:\n    - Futuristic bell icon with neon outline (cyan or magenta)
     - Icon size: 28px
   - **Live notification badge**:
-    - Neon red circular badge (20px diameter) with unread count
-    - Pulsing glow animation (box-shadow with red neon)\n  - **Shake animation**:
+    - **Neon red circular badge (20px diameter) with real-time unread count from database**
+    - Database query: COUNT(notification_id) WHERE is_read = FALSE AND user_id = CURRENT_USER\n    - Pulsing glow animation (box-shadow with red neon)\n  - **Shake animation**:
     - Bell shakes with bounce effect when new order arrives (500ms animation)
+    - Triggered by WebSocket push notification
     - Rotation keyframes: rotate(-15deg) → rotate(15deg) → rotate(0deg)
   - **Sound notification**:
     - Futuristic beep or chime sound plays when new order received
@@ -426,16 +464,17 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
       - Neon gradient border (cyan to magenta)
       - Width: 380px (desktop), 100% (mobile)
       - Max height: 520px with custom scrollbar
-    - **Panel displays list of recent notifications** (last 10):
+    - **Panel displays list of recent notifications (real-time from database, last 10)**:\n      - Database query: SELECT * FROM notifications WHERE user_id = CURRENT_USER ORDER BY created_at DESC LIMIT 10
       - Each notification card shows:
         - **Notification icon** (order icon, payment icon, etc.) with neon glow
         - **Notification title** (e.g., 'New Order Received') in bold white text
         - **Brief message** (e.g., 'Table 12 placed an order for $45.50') in light grey
-        - **Timestamp** (e.g., '2 minutes ago') in small cyan text
-        - **Unread indicator**: Neon blue dot (8px diameter) for unread notifications
+        - **Timestamp** (e.g., '2 minutes ago', calculated from created_at) in small cyan text
+        - **Unread indicator**: Neon blue dot (8px diameter) for unread notifications (is_read = FALSE)
       - **Hover effect**: Card background lightens with subtle glow
-      - Click on notification to navigate to relevant order details
+      - Click on notification to navigate to relevant order details and mark as read
     - **'Mark All as Read' button** at bottom of panel:\n      - Futuristic button with neon gradient background
+      - Updates database: UPDATE notifications SET is_read = TRUE WHERE user_id = CURRENT_USER
       - Hover effect: glow intensifies
     - **'View All Notifications' link** to open full notification history page:\n      - Neon cyan text with underline animation on hover
   - **Notification types** (with color-coded icons):
@@ -453,8 +492,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
   - Lazy loading for non-critical animations
   - Efficient rendering with React.memo or Vue computed properties
   - **Client-side routing** (React Router, Vue Router, or Angular Router) ensures sidebar persistence without full page reload
-
-- **Responsive Design**:
+  - **Database query optimization**: Indexed columns for fast retrieval, query result caching with Redis
+  - **WebSocket connection pooling**: Efficient connection management for multiple concurrent users
+\n- **Responsive Design**:
   - Mobile: Sidebar collapses to hamburger menu, main content full width, stats in2x2 grid, order and menu cards in single column
   - Tablet: Sidebar collapsible, main content adjusts, stats in row, order and menu cards in 2columns
   - Desktop: Full sidebar visible, main content with optimal spacing, stats in row, order and menu cards in 3 columns
@@ -462,7 +502,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 **Multi-Restaurant Support**:
 - Manage unlimited restaurant locations from single account
 - Switch between restaurants with dropdown selector in top header (animated transition with slide effect)
-- Consolidated analytics across all locations
+- **Consolidated analytics across all locations (real-time from database)**
 - Location-specific settings and customization
 \n**Restaurant Profile** (Enhanced with Additional Fields):
 - **Basic Information**:
@@ -542,216 +582,116 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 (Content remains the same as originaldocument)\n
 #### 3.1.3 Advanced Inventory Management
 
-(Content remains the same as original document)
-\n#### 3.1.4 Enhanced QR Code Management
+(Content remains the same as original document)\n
+#### 3.1.4 Enhanced QR Code Management
 
 (Content remains the same as original document)
 
 #### 3.1.5 Advanced Order Management Dashboard with Enhanced Order Cards and Real-Time Auto-Refresh
 
-(Content remains the same as original document, accessible from sidebar navigation)
+(Content remains the same as original document, accessible from sidebar navigation, with all data real-time from database)
 
 #### 3.1.6 Enhanced Payment Management for Restaurant Owners
 
-(Content remains the same as original document)
-
+(Content remains the same as original document, with all payment data real-time from database)\n
 #### 3.1.7 Waiter/Agent Assignment System
 
-(Content remains the same as original document)
-
+(Content remains the same as original document)\n
 #### 3.1.8 Real-Time Communication Hub
 
-(Content remains the same as original document)
-
-#### 3.1.9 Advanced Analytics & Reports
-
-(Content remains the same as original document, accessible from sidebar navigation)
-
-#### 3.1.10 Staff Management System (NEW FEATURE)
+(Content remains the same as original document)\n
+#### 3.1.9 Advanced Analytics & Reports with Real-Time Data
 
 **Overview**:
-Comprehensive staff management module accessible from sidebar navigation, enabling restaurant owners to manage all aspects of staff operations including employee profiles, roles, permissions, shift scheduling, attendance tracking, and performance monitoring.
+Comprehensive analytics and reporting module accessible from sidebar navigation, providing restaurant owners with real-time insights into sales performance, menu analytics, customer behavior, and financial metrics. **All analytics are calculated in real-time from the live database with automatic updates.**
 
 **Key Features**:
-\n- **All Staff Dashboard**:
-  - Grid view of all staff members with profile cards
-  - Each card displays: Profile photo, name, role, employee ID, contact info, current shift status\n  - Filter options: Role, Department, Shift, Active/Inactive
-  - Search functionality by name or employee ID
-  - Quick actions: Edit, View Details, Deactivate
-\n- **Add Staff**:
-  - Multi-step form for adding new staff members
-  - Required fields: Name, email, phone, employee ID, role (waiter, chef, manager, cashier, etc.)
-  - Optional fields: Profile photo, address, emergency contact, date of joining, salary details
-  - Role assignment with predefined permissions
-  - Send invitation email for account setup
+\n- **Sales Reports (Real-Time)**:
+  - **Daily Sales Dashboard**:
+    - Total revenue (real-time calculated from completed orders)
+    - Database query: SELECT SUM(order_total) FROM orders WHERE order_status = 'Completed' AND payment_status = 'Paid' AND DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT
+    - Number of orders (real-time count)\n    - Database query: SELECT COUNT(order_id) FROM orders WHERE DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT
+    - Average order value (real-time calculated)\n    - Database query: SELECT AVG(order_total) FROM orders WHERE order_status = 'Completed' AND DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT
+    - Peak hours analysis (real-time from order timestamps)
+    - Database query: SELECT HOUR(created_at) as hour, COUNT(order_id) as order_count FROM orders WHERE DATE(order_date) = CURDATE() AND restaurant_id = CURRENT_RESTAURANT GROUP BY hour ORDER BY order_count DESC\n  - **Weekly/Monthly/Yearly Sales Trends**:
+    - Revenue trend charts (line graphs with real-time data)
+    - Order volume trends (bar charts with real-time data)
+    - Comparison with previous periods (real-time calculated)
+    - Growth rate analysis (real-time calculated)\n  - **Sales by Category**:
+    - Revenue breakdown by menu category (real-time calculated)
+    - Database query: SELECT categories.category_name, SUM(order_items.item_price * order_items.quantity) as category_revenue FROM order_items JOIN menu_items ON order_items.item_id = menu_items.item_id JOIN categories ON menu_items.category_id = categories.category_id JOIN orders ON order_items.order_id = orders.order_id WHERE orders.order_status = 'Completed' AND orders.restaurant_id = CURRENT_RESTAURANT GROUP BY categories.category_id\n    - Best-performing categories (real-time ranked)
+    - Category-wise order count (real-time calculated)
+\n- **Menu Performance (Real-Time)**:
+  - **Top-Selling Items**:
+    - Most ordered items (real-time ranked by order count)
+    - Database query: SELECT menu_items.item_name, COUNT(order_items.order_item_id) as order_count, SUM(order_items.item_price * order_items.quantity) as total_revenue FROM order_items JOIN menu_items ON order_items.item_id = menu_items.item_id JOIN orders ON order_items.order_id = orders.order_id WHERE orders.restaurant_id = CURRENT_RESTAURANT GROUP BY menu_items.item_id ORDER BY order_count DESC LIMIT 10
+    - Revenue contribution by item (real-time calculated)\n    - Order frequency trends (real-time from order history)
+  - **Low-Performing Items**:
+    - Least ordered items (real-time ranked)\n    - Items with low ratings (real-time from customer reviews)
+    - Database query: SELECT menu_items.item_name, AVG(reviews.rating) as avg_rating FROM menu_items LEFT JOIN reviews ON menu_items.item_id = reviews.item_id WHERE menu_items.restaurant_id = CURRENT_RESTAURANT GROUP BY menu_items.item_id HAVING avg_rating < 3.0 ORDER BY avg_rating ASC\n    - Recommendations for menu optimization\n  - **Item Ratings & Reviews**:
+    - Average rating per item (real-time from customer reviews)
+    - Review count and sentiment analysis (real-time calculated)
+    - Trending items based on recent reviews (real-time ranked)
+\n- **Customer Insights (Real-Time)**:
+  - **Customer Demographics**:
+    - Total registered customers (real-time count)
+    - Database query: SELECT COUNT(customer_id) FROM customers WHERE restaurant_id = CURRENT_RESTAURANT
+    - New customers vs. returning customers (real-time calculated)
+    - Customer acquisition trends (real-time from registration dates)
+  - **Customer Behavior**:
+    - Average order frequency (real-time calculated)
+    - Database query: SELECT AVG(order_count) FROM (SELECT customer_id, COUNT(order_id) as order_count FROM orders WHERE restaurant_id = CURRENT_RESTAURANT GROUP BY customer_id) as customer_orders\n    - Average spend per customer (real-time calculated)\n    - Database query: SELECT AVG(total_spend) FROM (SELECT customer_id, SUM(order_total) as total_spend FROM orders WHERE order_status = 'Completed' AND restaurant_id = CURRENT_RESTAURANT GROUP BY customer_id) as customer_spending
+    - Customer lifetime value (real-time calculated)\n  - **Loyalty Program Analytics**:
+    - Total loyalty points issued (real-time from database)
+    - Points redeemed (real-time from database)
+    - Active loyalty members (real-time count)
+    - Redemption rate (real-time calculated)\n\n- **Financial Reports (Real-Time)**:
+  - **Revenue Breakdown**:
+    - Total revenue (real-time calculated from completed orders)
+    - Revenue by payment method (cash, card, digital wallet) (real-time calculated)
+    - Database query: SELECT payment_method, SUM(order_total) as revenue FROM orders WHERE order_status = 'Completed' AND payment_status = 'Paid' AND restaurant_id = CURRENT_RESTAURANT GROUP BY payment_method\n    - Revenue by order type (dine-in, takeout, delivery) (real-time calculated)
+  - **Expense Tracking** (if integrated):
+    - Ingredient costs (real-time from inventory)
+    - Staff salaries (real-time from payroll)
+    - Operational expenses (real-time from expense records)
+  - **Profit Margin Analysis**:
+    - Gross profit (real-time calculated: revenue - cost of goods sold)
+    - Net profit (real-time calculated: gross profit - operational expenses)
+    - Profit margin percentage (real-time calculated)
+  - **Tax Reports**:
+    - Tax collected (real-time calculated from orders)
+    - Tax breakdown by category (real-time calculated)
+    - Export tax reports for filing
 
-- **Roles & Permissions**:
-  - Define custom roles with granular permissions
-  - Permission categories: Orders, Menu, Inventory, Payments, Reports, Settings
-  - Assign roles to staff members
-  - View and edit role permissions
-\n- **Shift Schedules**:
-  - Visual calendar view for shift planning
-  - Create recurring shifts (daily, weekly, monthly)
-  - Assign staff to shifts with drag-and-drop
-  - Shift templates for quick scheduling
-  - Conflict detection (overlapping shifts, double bookings)
-  - Staff availability management
-  - Shift swap requests and approvals
+- **Export Data**:
+  - Export reports to CSV, Excel, or PDF\n  - Scheduled report generation (daily, weekly, monthly)
+  - Email reports to stakeholders
+\n#### 3.1.10 Staff Management System (NEW FEATURE)
 
-- **Attendance Tracking**:
-  - Clock-in/clock-out system with timestamp
-  - Biometric or PIN-based attendance
-  - Attendance reports (daily, weekly, monthly)
-  - Late arrivals and early departures tracking
-  - Leave management (sick leave, vacation, etc.)
-  - Attendance analytics and trends
-
-- **Performance Monitoring**:
-  - Key performance indicators (KPIs) for each staff member
-  - Metrics: Orders handled, customer ratings, average service time, sales contribution
-  - Performance reports with charts and graphs
-  - Goal setting and tracking
-  - Feedback and reviews from managers
-  - Reward and recognition system
-
+(Content remains the same as original document)\n
 #### 3.1.11 Customer Management System (NEW FEATURE)
+\n(Content remains the same as original document, with all customer data real-time from database)
 
-**Overview**:
-Centralized customer management module accessible from sidebar navigation, enabling restaurant owners to manage customer database, loyalty programs, feedback, and reviews.
-
-**Key Features**:
-
-- **Customer Database**:
-  - Comprehensive list of all registered customers\n  - Customer profile cards with: Name, email, phone, registration date, total orders, total spend, loyalty points\n  - Filter options: Registration date, order frequency, spending tier\n  - Search functionality by name, email, or phone
-  - Export customer data to CSV\n
-- **Loyalty Program**:
-  - Create and manage loyalty programs
-  - Points-based rewards system
-  - Define earning rules (points per dollar spent, bonus points for specific items)
-  - Define redemption rules (discounts, free items, exclusive offers)
-  - Track customer points balance and redemption history
-  - Send loyalty program notifications and updates
-
-- **Customer Feedback**:
-  - Collect feedback through post-order surveys
-  - View and respond to customer feedback
-  - Categorize feedback (positive, negative, suggestions)
-  - Feedback analytics and sentiment analysis
-\n- **Reviews Management**:
-  - View all customer reviews and ratings
-  - Respond to reviews publicly or privately
-  - Flag inappropriate reviews for moderation
-  - Review analytics (average rating, rating distribution, trending topics)
-\n#### 3.1.12 Reservations Management System (NEW FEATURE)\n
-**Overview**:
-Reservation management module accessible from sidebar navigation, enabling restaurant owners to manage table reservations, booking settings, and availability.
-
-**Key Features**:
-
-- **View Reservations**:
-  - Calendar view of all reservations (daily, weekly, monthly)
-  - Reservation cards with: Customer name, date, time, party size, table number, status (confirmed, pending, cancelled)
-  - Filter options: Date range, status, party size\n  - Search functionality by customer name or reservation ID
-\n- **Add Reservation**:
-  - Manual reservation creation by owner/staff
-  - Required fields: Customer name, contact info, date, time, party size
-  - Optional fields: Special requests, dietary restrictions, occasion (birthday, anniversary)\n  - Table assignment (automatic or manual)
-  - Confirmation email/SMS to customer
-
-- **Reservation Settings**:
-  - Define reservation policies (advance booking period, cancellation policy)\n  - Set table availability and capacity
-  - Configure time slots and duration
-  - Enable/disable online reservations
-  - Customize reservation confirmation messages
+#### 3.1.12 Reservations Management System (NEW FEATURE)
+\n(Content remains the same as original document, with all reservation data real-time from database)
 
 #### 3.1.13 Marketing & Promotions System (NEW FEATURE)
 
-**Overview**:
-Marketing and promotions module accessible from sidebar navigation, enabling restaurant owners to create and manage marketing campaigns, offers, discounts, and social media integration.
-
-**Key Features**:
-
-- **Campaigns**:
-  - Create marketing campaigns (email, SMS, push notifications)
-  - Define target audience (all customers, loyalty members, new customers, etc.)
-  - Schedule campaign launch and end dates
-  - Track campaign performance (open rate, click rate, conversions)
-\n- **Offers & Discounts**:
-  - Create promotional offers (percentage discount, fixed amount discount, buy-one-get-one, etc.)
-  - Define offer validity period and usage limits
-  - Apply offers to specific menu items or categories
-  - Generate promo codes for online orders
-  - Track offer redemptions and revenue impact
-
-- **Email/SMS Marketing**:
-  - Send bulk emails/SMS to customer database
-  - Pre-designed templates for common campaigns (new menu launch, special events, holiday offers)
-  - Personalization with customer name and preferences
-  - Schedule messages for optimal delivery times
-  - Track delivery status and engagement metrics
-
-- **Social Media Integration**:
-  - Connect restaurant social media accounts (Facebook, Instagram, Twitter)\n  - Auto-post menu updates and promotions to social media
-  - Monitor social media mentions and engagement
-  - Respond to customer messages and comments
-  - Social media analytics (followers, reach, engagement)
-
+(Content remains the same as original document)\n
 #### 3.1.14 Reviews & Ratings Management (NEW FEATURE)
 
-**Overview**:
-Dedicated reviews and ratings module accessible from sidebar navigation, enabling restaurant owners to manage customer reviews, respond to feedback, and analyze rating trends.
+(Content remains the same as original document, with all review data real-time from database)
 
-**Key Features**:
-
-- **Customer Reviews**:
-  - View all customer reviews with ratings (1-5 stars)
-  - Filter reviews by rating, date, menu item\n  - Search reviews by keywords\n  - Flag inappropriate or fake reviews
-\n- **Respond to Reviews**:
-  - Reply to customer reviews publicly (visible to all customers)
-  - Send private messages to customers for sensitive issues
-  - Pre-written response templates for common feedback
-  - Track response rate and average response time
-
-- **Rating Analytics**:
-  - Overall restaurant rating with trend chart
-  - Rating distribution (5-star, 4-star, etc.)
-  - Menu item ratings and rankings
-  - Sentiment analysis (positive, neutral, negative)
-  - Identify top-rated and low-rated items
-  - Customer satisfaction score (CSAT)\n
 #### 3.1.15 Help & Support System (NEW FEATURE)\n
-**Overview**:
-Help and support module accessible from sidebar navigation, providing restaurant owners with documentation, FAQs, contact support, and video tutorials.
-
-**Key Features**:
-
-- **Documentation**:
-  - Comprehensive user guides for all platform features
-  - Step-by-step instructions with screenshots
-  - Searchable knowledge base\n  - Downloadable PDF guides
-\n- **FAQs**:\n  - Frequently asked questions organized by category
-  - Quick answers to common issues
-  - Search functionality
-\n- **Contact Support**:
-  - Submit support tickets with issue description and screenshots
-  - Live chat support (if available)
-  - Email support with guaranteed response time
-  - Phone support for urgent issues
-  - Track ticket status and resolution history
-
-- **Video Tutorials**:
-  - Video library covering all platform features
-  - Short tutorial videos (2-5 minutes each)
-  - Playlist for onboarding new users
-  - Advanced tutorials for power users
+(Content remains the same as original document)
 
 ### 3.2 Enhanced Customer Features
 
-(All customer features remain the same as original document)\n
+(All customer features remain the same as original document, with all data real-time from database)
+
 ## 4. Complete User Flows
 
-### 4.1 Restaurant Owner Complete Flow (Updated)
+### 4.1 Restaurant Owner Complete Flow (Updated with Real-Time Data)
 
 **Phase 1: Registration & Setup**
 1. Visit DineQR website/app and click 'Register as Restaurant Owner'
@@ -775,8 +715,7 @@ Help and support module accessible from sidebar navigation, providing restaurant
 1. Navigate to 'Inventory' from sidebar navigation
 2. Create ingredient master list\n3. Link ingredients to menu items with quantities (including separate quantities for half and full portions)
 4. Set minimum stock levels and alerts
-5. Add supplier information
-6. Log initial stock levels
+5. Add supplier information\n6. Log initial stock levels
 
 **Phase 5: QR Code Generation**
 1. Navigate to 'Table Management' from sidebar navigation
@@ -789,15 +728,22 @@ Help and support module accessible from sidebar navigation, providing restaurant
 1. Navigate to 'Staff Management' from sidebar navigation
 2. Add staff members (name, email, phone, employee ID, role, shift schedule)\n3. Send invitation email for account setup
 4. Staff members complete registration and login
-\n**Phase 7: Daily Operations with Real-Time Notifications (ENHANCED)**
+\n**Phase 7: Daily Operations with Real-Time Data and Notifications (ENHANCED)**
 1. Login to Owner Home Screen (automatically redirected upon login)
 2. **Dashboard automatically connects via WebSocket** for real-time updates
-3. **View Active Orders Section** on home screen:\n   - Monitor real-time order board with futuristic design
-   - **When new order arrives**:
+3. **View Quick Stats Overview** on home screen:\n   - **Today's Revenue**: Real-time calculated from completed and paid orders in database
+   - **Active Orders Count**: Real-time count from database, updates instantly when new orders arrive
+   - **Table Occupancy Rate**: Real-time calculated from table status in database
+   - **Popular Item Today**: Real-time top-selling item from database, updates as orders are placed
+4. **View Active Orders Section** on home screen:
+   - Monitor real-time order board with futuristic design
+   - **All order data fetched from live database**: Order ID, timestamp, table number, customer name, order items, total amount, status\n   - **When new order arrives**:
+     - **Order inserted into database by customer**
+     - **WebSocket push notification sent to owner's dashboard**
      - **Order appears instantly on home screen without manual refresh**
      - **Visual notification**: New order card slides in from top with bounce animation, neon orange highlight border for3 seconds
      - **Audio notification**: Futuristic notification sound plays (if enabled in settings)
-     - **Notification bell alert**: Bell icon shakes, red badge count increments, notification added to dropdown panel
+     - **Notification bell alert**: Bell icon shakes, red badge count increments (real-time from database), notification added to dropdown panel
      - **Desktop notification**: System notification appears (if browser permissions granted)
      - **Mobile push notification**: Push notification sent to owner's device (if app installed)
    - System validates restaurant ID from QR scan
@@ -806,41 +752,39 @@ Help and support module accessible from sidebar navigation, providing restaurant
    - Acknowledge order\n   - System auto-assigns waiter based on table location
    - Waiter receives notification and confirms\n   - Kitchen receives order and starts preparation
    - Update order status: Preparing → Ready → Served
-   - **Timeline automatically updates with timestamps for each stage**
-   - **Customer app automatically receives real-time timeline updates without manual refresh**
-4. **Explore Restaurant Menu Section** on home screen:
-   - Browse menu items by category\n   - Search for specific items\n   - View item details (image, name, price, rating, availability)
+   - **Timeline automatically updates with timestamps for each stage in database**
+   - **Customer app automatically receives real-time timeline updates via WebSocket without manual refresh**
+   - **Revenue and statistics automatically recalculate when order is completed and paid**
+5. **Explore Restaurant Menu Section** on home screen:
+   - Browse menu items by category\n   - **All menu data fetched from live database**: Item name, image, price, rating, availability\n   - Search for specific items
+   - View item details (image, name, price, rating, availability)
    - Quick edit items by tapping 'Edit' icon
    - Add new items by tapping floating '+' button
-5. **Navigate to other sections from sidebar** (sidebar remains persistent without refresh):
-   - Orders: Full order management dashboard
-   - Menu Management: Comprehensive menu editing
-   - Inventory: Stock management and supplier tracking
-   - Staff Management: Employee profiles, schedules, attendance, performance
-   - Table Management: Table status, QR codes, floor plan
-   - Customer Management: Customer database, loyalty program, feedback, reviews
-   - Reservations: View and manage table reservations
-   - Marketing & Promotions: Campaigns, offers, email/SMS marketing, social media
-   - Analytics & Reports: Sales reports, menu performance, customer insights, financial reports
-   - Payments: Payment history, COC payments, reconciliation
-   - Reviews & Ratings: Customer reviews, respond to feedback, rating analytics
+6. **Navigate to other sections from sidebar** (sidebar remains persistent without refresh):
+   - Orders: Full order management dashboard with real-time data
+   - Menu Management: Comprehensive menu editing with real-time data
+   - Inventory: Stock management and supplier tracking with real-time data
+   - Staff Management: Employee profiles, schedules, attendance, performance with real-time data
+   - Table Management: Table status, QR codes, floor plan with real-time data
+   - Customer Management: Customer database, loyalty program, feedback, reviews with real-time data
+   - Reservations: View and manage table reservations with real-time data\n   - Marketing & Promotions: Campaigns, offers, email/SMS marketing, social media\n   - Analytics & Reports: Sales reports, menu performance, customer insights, financial reports with real-time data
+   - Payments: Payment history, COC payments, reconciliation with real-time data
+   - Reviews & Ratings: Customer reviews, respond to feedback, rating analytics with real-time data
    - Settings: Restaurant profile, operating hours, payment settings, notification settings, security settings
    - Help & Support: Documentation, FAQs, contact support, video tutorials
-6. Monitor customer chats (accessible from sidebar or order details)
-7. **Handle COC Payments** (navigate to 'Payments' from sidebar or from order details)
-8. **Print E-Bills** (from order details)\n9. Manage inventory (navigate to 'Inventory' from sidebar)\n10. Review daily analytics and reports (navigate to 'Analytics & Reports' from sidebar)
+7. Monitor customer chats (accessible from sidebar or order details)
+8. **Handle COC Payments** (navigate to 'Payments' from sidebar or from order details, payment data real-time from database)
+9. **Print E-Bills** (from order details, bill data real-time from database)
+10. Manage inventory (navigate to 'Inventory' from sidebar, inventory data real-time from database)\n11. Review daily analytics and reports (navigate to 'Analytics & Reports' from sidebar, all analytics real-time from database)
 \n**Phase 8: Ongoing Management**
 1. Update menu based on inventory and customer feedback (via'Menu Management' in sidebar)
-2. Analyze sales trends and adjust pricing (via 'Analytics & Reports' in sidebar)
-3. Monitor item ratings and reviews\n4. Respond to customer reviews\n5. Manage staff schedules and performance (via 'Staff Management' in sidebar)
-6. Run promotional campaigns (via 'Marketing & Promotions' in sidebar)
-7. Export financial reports for accounting (via 'Analytics & Reports' in sidebar)
+2. Analyze sales trends and adjust pricing (via 'Analytics & Reports' in sidebar, all data real-time from database)
+3. Monitor item ratings and reviews (real-time from database)
+4. Respond to customer reviews\n5. Manage staff schedules and performance (via 'Staff Management' in sidebar, all data real-time from database)\n6. Run promotional campaigns (via 'Marketing & Promotions' in sidebar)\n7. Export financial reports for accounting (via 'Analytics & Reports' in sidebar, all data real-time from database)
 \n### 4.2 Customer Complete Flow\n
-(Content remains the same as original document)
-
-### 4.3 Waiter/Agent Complete Flow
-
-(Content remains the same as original document)
+(Content remains the same as original document, with all data real-time from database)
+\n### 4.3 Waiter/Agent Complete Flow\n
+(Content remains the same as original document, with all data real-time from database)
 
 ## 5. Advanced Design System with Futuristic UI Specifications
 
@@ -848,8 +792,7 @@ Help and support module accessible from sidebar navigation, providing restaurant
 
 ### 5.4 Component Design (Updated for Owner Home Screen)
 
-**Owner Home Screen Components**:
-\n- **Sidebar Navigation** (Futuristic Design, Persistent without Refresh):
+**Owner Home Screen Components**:\n\n- **Sidebar Navigation** (Futuristic Design, Persistent without Refresh):
   - **Width**: 240px (expanded), 60px (collapsed)
   - **Background**: Glassmorphism design with frosted glass effect (backdrop-filter: blur(10px), background: rgba(26,26,26,0.9))
   - **Border**: 2px solid with neon gradient (right edge)\n  - **Logo Section** (top,80px height):
@@ -858,7 +801,7 @@ Help and support module accessible from sidebar navigation, providing restaurant
   - **Navigation Items** (vertical list, 48px height each):
     - Icon (24px, left-aligned,16px padding from left)
     - Label (Orbitron Regular, 14px, white color, left-aligned, 12px padding from icon)
-    - Active item: Neon orange background (#FF6B35) with glow, white text\n    - Hover effect: Neon cyan border (2px solid) on left edge, subtle glow\n    - Badge (for Orders and Notifications): Neon red circle (18px diameter) with count, positioned top-right of item
+    - Active item: Neon orange background (#FF6B35) with glow, white text\n    - Hover effect: Neon cyan border (2px solid) on left edge, subtle glow\n    - **Badge (for Orders and Notifications): Neon red circle (18px diameter) with real-time count from database, positioned top-right of item**
     - Sub-menu items (if applicable): Indented with smaller font (13px), light grey color, hover effect with neon cyan underline
   - **Sidebar Behavior**:
     - Sidebar remains mounted and visible during navigation
@@ -868,8 +811,7 @@ Help and support module accessible from sidebar navigation, providing restaurant
     - Client-side routing ensures no full page reload
   - **Collapse/Expand Button** (bottom, 48px height):
     - Hamburger icon (24px) centered\n    - Tap to toggle sidebar width
-    - Smooth transition animation (300ms ease-in-out)
-\n- **Top Header Bar** (Futuristic Design):
+    - Smooth transition animation (300ms ease-in-out)\n\n- **Top Header Bar** (Futuristic Design):
   - **Height**: 60px\n  - **Background**: Glassmorphism design with frosted glass effect
   - **Border**: 2px solid with neon gradient (bottom edge)
   - **Left Section**:
@@ -880,83 +822,196 @@ Help and support module accessible from sidebar navigation, providing restaurant
       - Glassmorphism input with neon border on focus
       - Height: 40px, border radius: 20px
       - Placeholder:'Search orders, menu items, customers...'
-      - Search icon (left, 20px) and clear icon (right, 20px)
-- **Right Section**:
+      - Search icon (left, 20px) and clear icon (right, 20px)\n  - **Right Section**:
     - Multi-restaurant selector (if applicable):
       - Dropdown button (120px width, glassmorphism design)
       - Current restaurant logo (24px) + name (truncated)\n      - Dropdown arrow icon (16px)
       - Click to open dropdown menu with restaurant list
-    - Notification bell icon (28px, neon cyan on hover with glow):
-      - Unread count badge (neon red circle, 20px diameter, pulsing glow)
+    - **Notification bell icon (28px, neon cyan on hover with glow)**:\n      - **Unread count badge (real-time from database, neon red circle, 20px diameter, pulsing glow)**
       - Click to open notification dropdown panel
     - Profile avatar (40px diameter, circular with neon border):
       - Click to open dropdown menu: Profile, Settings, Logout
-\n- **Quick Stats Cards** (Futuristic Design):
+\n- **Quick Stats Cards** (Futuristic Design with Real-Time Data):
   - **Card Size**: 200px width x 100px height (desktop), full width on mobile
   - **Background**: Glassmorphism design with frosted glass effect
   - **Border**: 2px solid with neon gradient\n  - **Border Radius**: 12px
   - **Shadow**: 04px 12px rgba(0,0,0,0.3) with subtle neon glow
   - **Layout**:
     - Icon (32px, neon glow) at left,16px padding from left edge
-    - Label (Orbitron Regular, 14px, light grey) at top-right, 16px padding from top\n    - Value (Orbitron Bold, 28px, neon cyan with glow) at bottom-right, 16px padding from bottom\n  - **Animation**: Animated counter effect on page load (2s ease-out from 0 to target value)
-  - **Hover effect**: Scale(1.03) with glow intensifies\n
-- **Active Order Cards** (Futuristic Design):
+    - Label (Orbitron Regular, 14px, light grey) at top-right, 16px padding from top\n    - **Value (real-time from database, Orbitron Bold, 28px, neon cyan with glow) at bottom-right, 16px padding from bottom**\n  - **Animation**: Animated counter effect on page load and when value updates (2s ease-out from current to new value)
+  - **Hover effect**: Scale(1.03) with glow intensifies\n  - **Real-time updates**: Values update automatically via WebSocket when database changes
+
+- **Active Order Cards** (Futuristic Design with Real-Time Data):
   - **Card Size**: 320px width x 180px height\n  - **Background**: Glassmorphism design with frosted glass effect
   - **Border**: 2px solid with color-coded neon gradient based on status
   - **Border Radius**: 16px
   - **Shadow**: 0 4px 12px rgba(0,0,0,0.3) with subtle neon glow\n  - **Layout**:
     - Header (top, 40px height):
-      - Order ID (Orbitron Bold, 16px, white color) at left\n      - Timestamp (digital style, 12px, light grey) below order ID
-      - Status badge (top-right, color-coded with neon glow)
+      - **Order ID (real-time from database, Orbitron Bold, 16px, white color) at left**
+      - **Timestamp (real-time from database, digital style, 12px, light grey) below order ID**
+      - **Status badge (real-time from database, top-right, color-coded with neon glow)**
     - Body (middle, 80px height):
-      - Table number (Orbitron SemiBold, 18px, neon cyan) with icon
-      - Customer name (Poppins Regular, 14px, light grey)\n      - Order items summary (13px, light grey, truncated to 2 lines)
-      - Total amount (Orbitron Bold, 20px, neon cyan with glow) at bottom-left
+      - **Table number (real-time from database, Orbitron SemiBold, 18px, neon cyan) with icon**
+      - **Customer name (real-time from database or 'Guest', Poppins Regular, 14px, light grey)**
+      - **Order items summary (real-time from database, 13px, light grey, truncated to 2 lines)**
+      - **Total amount (real-time calculated from database, Orbitron Bold, 20px, neon cyan with glow) at bottom-left**
     - Footer (bottom, 40px height):
       - Quick action buttons:'View Details' and 'Update Status'
-      - Buttons:32px height, rounded corners, futuristic design
+      - Buttons: 32px height, rounded corners, futuristic design
   - **Hover effect**: Scale(1.03) with glow intensifies
-- **Tap to expand**: Full order details in modal or slide-out panel
-- **Real-time update animation**: Slide-in from top with bounce (500ms) and neon orange highlight border for 3 seconds
+  - **Tap to expand**: Full order details in modal or slide-out panel
+  - **Real-time update animation**: Slide-in from top with bounce (500ms) and neon orange highlight border for 3 seconds when new order arrives
+  - **Real-time data updates**: Order status, items, and total update automatically via WebSocket
 
-- **Menu Item Cards** (Futuristic Design):
+- **Menu Item Cards** (Futuristic Design with Real-Time Data):
   - **Card Size**: 280px width x 320px height
   - **Background**: Glassmorphism design with frosted glass effect
-  - **Border**: 2px solid with neon gradient\n  - **Border Radius**: 16px
-  - **Shadow**: 0 4px 12px rgba(0,0,0,0.3) with subtle neon glow
-  - **Layout**:
-    - Image (top, 16:9 aspect ratio, rounded top corners):
-      - High-quality food photo\n      - Item type indicator (top-left overlay, 36px diameter, neon glow)
-      - Availability badge (top-right overlay)\n    - Body (below image, 12px padding):
-      - Item name (Orbitron SemiBold, 18px, white color, truncated to 2 lines)
-      - Rating (neon yellow stars, 16px) with count (light grey, 12px)\n      - Price (Orbitron Bold, 20px, neon cyan with glow)\n      - Quick action: 'Edit' icon (top-right of card body, 24px, neon cyan on hover)
+  - **Border**: 2px solid with neon gradient
+  - **Border Radius**: 16px\n  - **Shadow**: 0 4px 12px rgba(0,0,0,0.3) with subtle neon glow
+  - **Layout**:\n    - Image (top, 16:9 aspect ratio, rounded top corners):
+      - **High-quality food photo (real-time from database)**
+      - Item type indicator (top-left overlay, 36px diameter, neon glow)
+      - **Availability badge (real-time from inventory database, top-right overlay)**
+    - Body (below image, 12px padding):
+      - **Item name (real-time from database, Orbitron SemiBold, 18px, white color, truncated to 2 lines)**
+      - **Rating (real-time average from customer reviews in database, neon yellow stars, 16px) with count (light grey, 12px)**
+      - **Price (real-time from database, Orbitron Bold, 20px, neon cyan with glow)**
+      - Quick action: 'Edit' icon (top-right of card body, 24px, neon cyan on hover)
   - **Hover effect**: Scale(1.05) with glow intensifies
   - **Tap to expand**: Full item details in modal for editing
-\n(All other component designs remain the same as original document)
+  - **Real-time data updates**: Price, rating, and availability update automatically via WebSocket
+
+(All other component designs remain the same as original document)
 
 ## 6. Technical Considerations
 
+### 6.1 Real-Time Database Architecture
+
+**Database Technology**:
+- **Primary Database**: PostgreSQL or MySQL for relational data (orders, menu items, customers, inventory, etc.)
+- **Caching Layer**: Redis for frequently accessed data and session management
+- **Real-Time Sync**: WebSocket server (Socket.IO or native WebSocket) for push notifications
+- **Database Indexing**: Optimized indexes on frequently queried columns (order_date, restaurant_id, customer_id, item_id, etc.)
+
+**Real-Time Data Flow**:
+1. **Customer places order** → Order inserted into database with timestamp
+2. **Database trigger or application logic** → Sends WebSocket event to owner's dashboard
+3. **Owner's dashboard receives event** → UI updates instantly without page refresh
+4. **Owner updates order status** → Status updated in database
+5. **Database trigger or application logic** → Sends WebSocket event to customer's app
+6. **Customer's app receives event** → Order timeline updates automatically
+
+**WebSocket Implementation**:
+- **Server-Side**: Node.js with Socket.IO or Python with WebSocket library
+- **Client-Side**: Socket.IO client library or native WebSocket API
+- **Connection Management**: Automatic reconnection on disconnect, heartbeat mechanism to detect connection status
+- **Room-Based Broadcasting**: Separate rooms for each restaurant to ensure notifications are sent only to relevant users
+- **Authentication**: JWT-based authentication for WebSocket connections
+
+**Database Query Optimization**:
+- **Prepared Statements**: Use parameterized queries to prevent SQL injection and improve performance
+- **Query Caching**: Cache frequently executed queries in Redis with TTL (Time To Live)
+- **Connection Pooling**: Maintain pool of database connections to reduce connection overhead
+- **Batch Operations**: Use batch inserts/updates for bulk operations (e.g., inventory updates)
+- **Asynchronous Queries**: Execute non-critical queries asynchronously to avoid blocking main thread
+
+**Data Consistency**:
+- **ACID Transactions**: Ensure atomicity, consistency, isolation, and durability for critical operations (order placement, payment processing)
+- **Optimistic Locking**: Prevent race conditions when multiple users update same data simultaneously
+- **Event Sourcing**: Log all state changes for audit trail and data recovery
+\n### 6.2 Performance Optimization
+
+**Front-End Optimization**:
+- **Code Splitting**: Load only necessary JavaScript bundles for current page
+- **Lazy Loading**: Load images and components on-demand\n- **Memoization**: Cache computed values to avoid redundant calculations (React.memo, useMemo, Vue computed)\n- **Virtual Scrolling**: Render only visible items in long lists (order history, menu items)
+- **Debouncing/Throttling**: Limit frequency of expensive operations (search, scroll events)
+\n**Back-End Optimization**:
+- **API Response Caching**: Cache API responses in Redis with appropriate TTL
+- **Database Query Optimization**: Use indexes, avoid N+1 queries, use joins efficiently
+- **Load Balancing**: Distribute traffic across multiple servers for high availability
+- **CDN for Static Assets**: Serve images, CSS, and JavaScript from CDN for faster delivery
+- **Compression**: Enable Gzip or Brotli compression for API responses
+
+**Real-Time Update Optimization**:
+- **Selective Updates**: Send only changed data via WebSocket instead of full objects
+- **Batch Updates**: Group multiple updates into single WebSocket message
+- **Client-Side Filtering**: Filter notifications on client-side to reduce server load
+- **Rate Limiting**: Limit frequency of WebSocket messages to prevent flooding
+\n### 6.3 Security Considerations
+
+**Authentication & Authorization**:
+- **JWT Tokens**: Secure token-based authentication with expiration and refresh tokens
+- **Role-Based Access Control (RBAC)**: Enforce permissions based on user roles
+- **Two-Factor Authentication (2FA)**: Mandatory for restaurant owners\n- **Session Management**: Secure session storage with HttpOnly cookies
+\n**Data Protection**:
+- **Encryption**: Encrypt sensitive data at rest (passwords, payment info) and in transit (HTTPS/TLS)
+- **Input Validation**: Sanitize all user inputs to prevent XSS and SQL injection
+- **CSRF Protection**: Use CSRF tokens for state-changing operations
+- **Rate Limiting**: Prevent brute-force attacks and API abuse
+
+**WebSocket Security**:
+- **Authentication**: Verify JWT token before establishing WebSocket connection
+- **Authorization**: Ensure users can only receive notifications for their own restaurant/orders
+- **Message Validation**: Validate all incoming WebSocket messages
+- **Connection Limits**: Limit number of concurrent connections per user
+
+### 6.4 Scalability Considerations
+
+**Horizontal Scaling**:
+- **Stateless Architecture**: Design application to be stateless for easy horizontal scaling
+- **Load Balancer**: Distribute traffic across multiple application servers
+- **Database Replication**: Use master-slave replication for read-heavy workloads
+- **Microservices**: Split application into independent services (order service, payment service, notification service)
+
+**Vertical Scaling**:
+- **Database Optimization**: Upgrade database server resources (CPU, RAM, SSD)
+- **Caching**: Implement multi-level caching (application cache, database cache, CDN)
+- **Connection Pooling**: Optimize database connection pool size
+\n**WebSocket Scaling**:
+- **Redis Pub/Sub**: Use Redis for broadcasting WebSocket messages across multiple servers
+- **Sticky Sessions**: Ensure WebSocket connections remain on same server
+- **WebSocket Gateway**: Use dedicated WebSocket gateway for managing connections
+
+### 6.5 Monitoring & Logging\n
+**Application Monitoring**:
+- **Performance Metrics**: Track response times, throughput, error rates
+- **Real-Time Dashboards**: Monitor active users, orders, revenue in real-time
+- **Alerting**: Set up alerts for critical issues (server down, high error rate, database slow)
+\n**Database Monitoring**:
+- **Query Performance**: Track slow queries and optimize\n- **Connection Pool**: Monitor connection pool usage and adjust size
+- **Replication Lag**: Monitor lag between master and slave databases
+
+**WebSocket Monitoring**:
+- **Connection Count**: Track number of active WebSocket connections
+- **Message Throughput**: Monitor number of messages sent/received per second
+- **Connection Errors**: Track failed connections and reconnection attempts
+
+**Logging**:
+- **Structured Logging**: Use JSON format for logs with consistent fields
+- **Log Levels**: Use appropriate log levels (DEBUG, INFO, WARN, ERROR)
+- **Centralized Logging**: Aggregate logs from all servers in centralized system (ELK stack, Splunk)
+- **Audit Logs**: Log all critical operations (order placement, payment, status changes)
+
+### 6.6 Backup & Disaster Recovery
+
+**Database Backup**:
+- **Automated Backups**: Daily full backups and hourly incremental backups
+- **Backup Retention**: Retain backups for 30 days\n- **Backup Testing**: Regularly test backup restoration process
+- **Offsite Storage**: Store backups in geographically separate location
+
+**Disaster Recovery Plan**:
+- **Recovery Time Objective (RTO)**: Target 1 hour for critical systems
+- **Recovery Point Objective (RPO)**: Target 15 minutes data loss maximum
+- **Failover Strategy**: Automated failover to backup servers
+- **Documentation**: Maintain detailed disaster recovery procedures
+
+(All other technical considerations remain the same as original document)
+
+## 7. Future Enhancements
+
 (Content remains the same as original document)
-
-**Additional Technical Considerations for Sidebar Persistence**:
-\n- **Client-Side Routing**:
-  - Implement Single Page Application (SPA) architecture using React Router, Vue Router, or Angular Router
-  - Sidebar component remains mounted throughout navigation
-  - Only main content area re-renders on route change
-  - Use lazy loading for route components to optimize performance
-\n- **State Management**:
-  - Use global state management (Redux, Vuex, NgRx) to maintain sidebar state\n  - Persist sidebar expanded/collapsed state in local storage
-  - Sync active navigation item with current route
-\n- **Performance Optimization**:\n  - Memoize sidebar component to prevent unnecessary re-renders
-  - Use virtual scrolling for long navigation lists
-  - Optimize animations with CSS transforms and GPU acceleration
-\n## 7. Future Enhancements
-
-(Content remains the same as original document)
-
-## 8. Design Style\n
-(Content remains the same as original document)
-
+\n## 8. Design Style\n
+(Content remains the same as original document)\n
 ---
 
 **End of Requirements Document**
