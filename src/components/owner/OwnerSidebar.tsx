@@ -1,62 +1,84 @@
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   UtensilsCrossed, 
   ShoppingBag, 
-  Users, 
   Table2, 
-  Package, 
-  BarChart3, 
-  Settings,
-  ChevronRight
+  ChevronRight,
+  Store
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const menuItems = [
-  {
-    title: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/owner/dashboard',
-  },
-  {
-    title: 'Menu Management',
-    icon: UtensilsCrossed,
-    href: '/owner/menu',
-  },
-  {
-    title: 'Orders',
-    icon: ShoppingBag,
-    href: '/owner/orders',
-  },
-  {
-    title: 'Tables',
-    icon: Table2,
-    href: '/owner/tables',
-  },
-  {
-    title: 'Staff',
-    icon: Users,
-    href: '/owner/staff',
-  },
-  {
-    title: 'Inventory',
-    icon: Package,
-    href: '/owner/inventory',
-  },
-  {
-    title: 'Analytics',
-    icon: BarChart3,
-    href: '/owner/analytics',
-  },
-  {
-    title: 'Settings',
-    icon: Settings,
-    href: '/owner/settings',
-  },
-];
+import { useAuth } from '@/contexts/AuthContext';
+import { restaurantApi } from '@/db/api';
 
 export default function OwnerSidebar() {
   const location = useLocation();
+  const { profile } = useAuth();
+  const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadRestaurant = async () => {
+      if (!profile) return;
+      
+      try {
+        const restaurants = await restaurantApi.getRestaurantsByOwner(profile.id);
+        if (restaurants.length > 0) {
+          setRestaurantId(restaurants[0].id);
+        }
+      } catch (error) {
+        console.error('Failed to load restaurant:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRestaurant();
+  }, [profile]);
+
+  const menuItems = [
+    {
+      title: 'Dashboard',
+      icon: LayoutDashboard,
+      href: '/owner/dashboard',
+      requiresRestaurant: false,
+    },
+    {
+      title: 'Restaurants',
+      icon: Store,
+      href: '/owner/restaurants',
+      requiresRestaurant: false,
+    },
+    {
+      title: 'Menu Management',
+      icon: UtensilsCrossed,
+      href: restaurantId ? `/owner/menu/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Orders',
+      icon: ShoppingBag,
+      href: restaurantId ? `/owner/orders/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Tables',
+      icon: Table2,
+      href: restaurantId ? `/owner/tables/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+  ];
+
+  if (loading) {
+    return (
+      <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 glass border-r border-border overflow-y-auto z-40">
+        <div className="p-4 flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 glass border-r border-border overflow-y-auto z-40">
@@ -69,7 +91,23 @@ export default function OwnerSidebar() {
         <nav className="space-y-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.href || 
+                           (item.requiresRestaurant && restaurantId && location.pathname.includes(item.href.split('/')[2]));
+            const isDisabled = item.requiresRestaurant && !restaurantId;
+
+            if (isDisabled) {
+              return (
+                <div
+                  key={item.title}
+                  className="flex items-center justify-between px-4 py-3 rounded-lg opacity-50 cursor-not-allowed"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-5 h-5" />
+                    <span className="font-medium">{item.title}</span>
+                  </div>
+                </div>
+              );
+            }
 
             return (
               <Link
@@ -96,6 +134,18 @@ export default function OwnerSidebar() {
             );
           })}
         </nav>
+
+        {!restaurantId && (
+          <div className="mt-6 p-4 bg-muted/50 rounded-lg border border-border">
+            <p className="text-xs text-muted-foreground mb-2">No restaurant found</p>
+            <Link 
+              to="/owner/restaurants/new"
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Create your first restaurant →
+            </Link>
+          </div>
+        )}
       </div>
     </aside>
   );
