@@ -15,16 +15,20 @@ const corsHeaders = {
 
 interface OrderItem {
   menu_item_id: string;
-  name: string;
+  menu_item_name: string;
   price: number;
   quantity: number;
   notes?: string;
+  portion_size?: string;
+  variant_name?: string;
+  image_url?: string;
 }
 
 interface CheckoutRequest {
   restaurant_id: string;
-  table_id: string;
+  table_id?: string;
   items: OrderItem[];
+  special_instructions?: string;
   currency?: string;
 }
 
@@ -58,14 +62,11 @@ function validateCheckoutRequest(request: CheckoutRequest): void {
   if (!request.restaurant_id) {
     throw new Error("Restaurant ID is required");
   }
-  if (!request.table_id) {
-    throw new Error("Table ID is required");
-  }
   if (!request.items?.length) {
     throw new Error("Order items cannot be empty");
   }
   for (const item of request.items) {
-    if (!item.menu_item_id || !item.name || item.price <= 0 || item.quantity <= 0) {
+    if (!item.menu_item_id || !item.menu_item_name || item.price <= 0 || item.quantity <= 0) {
       throw new Error("Invalid item information");
     }
   }
@@ -81,16 +82,20 @@ async function createCheckoutSession(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+  const currency = (request.currency || 'usd').toLowerCase();
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert({
       customer_id: userId,
       restaurant_id: request.restaurant_id,
-      table_id: request.table_id,
+      table_id: request.table_id || null,
       total_amount: totalAmount,
-      currency: (request.currency || 'usd').toLowerCase(),
+      currency: currency,
       status: "pending",
+      payment_status: "pending",
+      payment_method: "online",
+      special_instructions: request.special_instructions || null,
     })
     .select()
     .single();
@@ -103,10 +108,12 @@ async function createCheckoutSession(
       request.items.map(item => ({
         order_id: order.id,
         menu_item_id: item.menu_item_id,
-        menu_item_name: item.name,
+        menu_item_name: item.menu_item_name,
         quantity: item.quantity,
         price: item.price,
         notes: item.notes || null,
+        portion_size: item.portion_size || null,
+        variant_name: item.variant_name || null,
       }))
     );
 
@@ -115,9 +122,10 @@ async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     line_items: request.items.map(item => ({
       price_data: {
-        currency: (request.currency || 'usd').toLowerCase(),
+        currency: currency,
         product_data: {
-          name: item.name,
+          name: item.menu_item_name,
+          images: item.image_url ? [item.image_url] : [],
         },
         unit_amount: Math.round(item.price * 100),
       },
@@ -131,7 +139,7 @@ async function createCheckoutSession(
       order_id: order.id,
       user_id: userId || "",
       restaurant_id: request.restaurant_id,
-      table_id: request.table_id,
+      table_id: request.table_id || "",
     },
   });
 
@@ -140,6 +148,7 @@ async function createCheckoutSession(
     .update({
       stripe_session_id: session.id,
       stripe_payment_intent_id: session.payment_intent as string,
+      payment_status: "processing",
     })
     .eq("id", order.id);
 

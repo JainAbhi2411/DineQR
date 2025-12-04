@@ -55,16 +55,6 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = async () => {
-    // Validate required fields
-    if (!profile) {
-      toast({
-        title: 'Error',
-        description: 'Please login to place an order',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     if (!restaurantId) {
       toast({
         title: 'Error',
@@ -74,64 +64,70 @@ export default function Checkout() {
       return;
     }
 
-    if (!tableId) {
-      toast({
-        title: 'Error',
-        description: 'Table ID is required. Please scan a QR code first.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setLoading(true);
     try {
-      const orderData = {
-        restaurant_id: restaurantId,
-        customer_id: profile.id,
-        table_id: tableId,
-        total_amount: getTotalAmount(),
-        status: 'pending' as const,
-        payment_status: paymentMethod === 'coc' ? 'pending' : 'pending' as const,
-        payment_method: paymentMethod,
-        special_instructions: specialInstructions || null,
-        assigned_to: null,
-      };
-
-      const order = await orderApi.createOrder(orderData);
-
-      const orderItems = cart.map((item: any) => {
-        const menuItem = item.menuItem || item.menu_item;
-        const price = item.selectedVariant?.price || menuItem.price;
-        
-        return {
-          order_id: order.id,
-          menu_item_id: menuItem.id,
-          menu_item_name: menuItem.name,
-          quantity: item.quantity,
-          price: price,
-          portion_size: item.portionSize || null,
-          variant_name: item.selectedVariant?.name || null,
-          notes: item.notes || null,
-        };
-      });
-
-      await orderApi.createOrderItems(orderItems);
-
-      // Handle payment based on selected method
       if (paymentMethod === 'coc') {
-        // Cash on Counter - no online payment needed
+        const orderData = {
+          restaurant_id: restaurantId,
+          customer_id: profile?.id || null,
+          table_id: tableId || null,
+          total_amount: getTotalAmount(),
+          status: 'pending' as const,
+          payment_status: 'pending' as const,
+          payment_method: 'coc' as const,
+          special_instructions: specialInstructions || null,
+          assigned_to: null,
+        };
+
+        const order = await orderApi.createOrder(orderData);
+
+        const orderItems = cart.map((item: any) => {
+          const menuItem = item.menuItem || item.menu_item;
+          const price = item.selectedVariant?.price || menuItem.price;
+          
+          return {
+            order_id: order.id,
+            menu_item_id: menuItem.id,
+            menu_item_name: menuItem.name,
+            quantity: item.quantity,
+            price: price,
+            portion_size: item.portionSize || null,
+            variant_name: item.selectedVariant?.name || null,
+            notes: item.notes || null,
+          };
+        });
+
+        await orderApi.createOrderItems(orderItems);
+
         toast({
           title: 'Order Placed Successfully!',
           description: 'Please pay at the counter when you receive your order.',
         });
-        navigate('/customer/orders');
+        navigate(`/order-tracking/${order.id}`);
       } else {
-        // Online payment via Stripe
+        const items = cart.map((item: any) => {
+          const menuItem = item.menuItem || item.menu_item;
+          const price = item.selectedVariant?.price || menuItem.price;
+          
+          return {
+            menu_item_id: menuItem.id,
+            menu_item_name: menuItem.name,
+            price: price,
+            quantity: item.quantity,
+            notes: item.notes || null,
+            portion_size: item.portionSize || null,
+            variant_name: item.selectedVariant?.name || null,
+            image_url: menuItem.image_url || null,
+          };
+        });
+
         const { data, error } = await supabase.functions.invoke('create_stripe_checkout', {
           body: {
-            orderId: order.id,
-            amount: getTotalAmount(),
-            restaurantName: restaurant?.name || 'Restaurant',
+            restaurant_id: restaurantId,
+            table_id: tableId || null,
+            items: items,
+            special_instructions: specialInstructions || null,
+            currency: 'usd',
           },
         });
 
@@ -141,7 +137,14 @@ export default function Checkout() {
         }
 
         if (data?.data?.url) {
-          window.location.href = data.data.url;
+          window.open(data.data.url, '_blank');
+          toast({
+            title: 'Redirecting to Payment',
+            description: 'Please complete your payment in the new tab.',
+          });
+          setTimeout(() => {
+            navigate('/customer/orders');
+          }, 2000);
         } else {
           throw new Error('No payment URL received');
         }

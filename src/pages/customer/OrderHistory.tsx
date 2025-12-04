@@ -1,17 +1,20 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { orderApi } from '@/db/api';
 import { OrderWithItems } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Clock } from 'lucide-react';
+import { Clock, Eye } from 'lucide-react';
 import { supabase } from '@/db/supabase';
 import OrderCard from '@/components/order/OrderCard';
 import PrintBill from '@/components/order/PrintBill';
 import CustomerLayout from '@/components/customer/CustomerLayout';
 
 export default function OrderHistory() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
@@ -155,6 +158,17 @@ export default function OrderHistory() {
               key={order.id}
               order={order}
               onPrint={setPrintOrder}
+              actions={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(`/order-tracking/${order.id}`)}
+                  className="flex items-center gap-2"
+                >
+                  <Eye className="w-4 h-4" />
+                  Track Order
+                </Button>
+              }
             />
           ))}
         </div>

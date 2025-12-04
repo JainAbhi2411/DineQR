@@ -42,7 +42,7 @@ async function updateOrderStatus(
 ): Promise<boolean> {
   const { data: order, error: fetchError } = await supabase
     .from("orders")
-    .select("id, status")
+    .select("id, status, payment_status")
     .eq("stripe_session_id", sessionId)
     .single();
 
@@ -51,11 +51,11 @@ async function updateOrderStatus(
     return false;
   }
 
-  if (order.status === "completed") {
+  if (order.status === "completed" && order.payment_status === "completed") {
     return true;
   }
 
-  if (order.status !== "pending") {
+  if (order.status !== "pending" && order.status !== "preparing") {
     console.error(`Order status is ${order.status}, cannot complete payment`);
     return false;
   }
@@ -63,14 +63,14 @@ async function updateOrderStatus(
   const { error } = await supabase
     .from("orders")
     .update({
-      status: "completed",
+      status: "preparing",
+      payment_status: "completed",
       completed_at: new Date().toISOString(),
       customer_email: session.customer_details?.email,
       customer_name: session.customer_details?.name,
       stripe_payment_intent_id: session.payment_intent as string,
     })
-    .eq("id", order.id)
-    .eq("status", "pending");
+    .eq("id", order.id);
 
   if (error) {
     console.error("Failed to update order:", error);

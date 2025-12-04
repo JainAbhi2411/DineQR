@@ -3,7 +3,6 @@ import type { UserRole } from './types/types';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import PaymentSuccess from './pages/PaymentSuccess';
 import OwnerDashboard from './pages/owner/OwnerDashboard';
 import RestaurantList from './pages/owner/RestaurantList';
 import RestaurantForm from './pages/owner/RestaurantForm';
@@ -24,6 +23,8 @@ import ScanQR from './pages/customer/ScanQR';
 import MenuBrowsing from './pages/customer/MenuBrowsing';
 import Checkout from './pages/customer/Checkout';
 import OrderHistory from './pages/customer/OrderHistory';
+import PaymentSuccess from './pages/customer/PaymentSuccess';
+import OrderTracking from './pages/customer/OrderTracking';
 
 interface RouteConfig {
   name: string;
@@ -219,6 +220,12 @@ const routes: RouteConfig[] = [
     visible: false,
     protected: true,
     allowedRoles: ['customer'],
+  },
+  {
+    name: 'Order Tracking',
+    path: '/order-tracking/:orderId',
+    component: OrderTracking,
+    visible: false,
   },
   {
     name: 'Customer Profile',

@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Restaurant Type Display)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Checkout Flow)
 
 ## 1. Application Overview
 
@@ -167,8 +167,7 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 
 **Modal Layout**:
 - Full-screen overlay with glassmorphism panel sliding in from right
-- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:
-\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
+- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:\n\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
 - **Category**: Dropdown select from existing categories or '+ Create New Category' option (required)
 - **Description**: Textarea (optional, max 500 characters)
 - **Item Image**: Image upload with drag-and-drop or file browser, preview thumbnail,'Remove Image' option
@@ -442,7 +441,8 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 
 #### 3.1.6 Enhanced Payment Management for Restaurant Owners
 
-**Overview**:\nComprehensive payment tracking and management system with transaction history, payment method analytics, refund processing, and financial reports.
+**Overview**:
+Comprehensive payment tracking and management system with transaction history, payment method analytics, refund processing, and financial reports.
 
 **Key Features**:
 
@@ -465,7 +465,8 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 - Modal displays:
   - Transaction ID, order ID, customer info
   - Payment method, amount, taxes, discounts
-  - Payment timestamp\n  - Payment gateway response (if online payment)
+  - Payment timestamp
+  - Payment gateway response (if online payment)
   - Receipt download option (PDF)
 \n**C. Refund Processing**
 
@@ -522,7 +523,9 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
     - Performance rating (based on order completion time, customer feedback)
 \n**B. Automatic Assignment**
 
-- Toggle switch: 'Enable Auto-Assignment'\n- When enabled:\n  - New orders automatically assigned to available waiter with least workload
+- Toggle switch: 'Enable Auto-Assignment'
+- When enabled:
+  - New orders automatically assigned to available waiter with least workload
   - Assignment algorithm considers: Current orders, table proximity, waiter rating
 - Notification sent to assigned waiter instantly
 
@@ -599,8 +602,7 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
 \n- **Revenue Analytics**:
   - Line chart: Revenue over time (daily, weekly, monthly view)
   - Bar chart: Revenue by order type (dine-in, takeaway, delivery)
-  - Pie chart: Revenue by payment method
-\n- **Order Analytics**:
+  - Pie chart: Revenue by payment method\n\n- **Order Analytics**:
   - Bar chart: Orders by hour (peak times)
   - Line chart: Orders trend over time
   - Pie chart: Orders by status\n
@@ -649,7 +651,8 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   3. Staff On Leave\n  4. Pending Leave Requests
 \n- **Staff List Table**:
   - Columns: Profile Picture, Name, Employee ID, Role (Waiter/Chef/Manager), Contact, Status (Active/On Leave/Inactive), Actions
-  - Search by name, employee ID\n  - Filter by role, status\n  - Sort by name, join date
+  - Search by name, employee ID\n  - Filter by role, status
+  - Sort by name, join date
 
 **B. Add/Edit Staff Member**
 
@@ -701,8 +704,7 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   - Modal form: Select staff, shift date, start time, end time, role
   - Save and notify staff via notification/SMS
 - **Shift Swap Requests**:
-  - Staff can request shift swaps
-  - Owner approves/rejects requests
+  - Staff can request shift swaps\n  - Owner approves/rejects requests
 \n**F. Performance Analytics**
 
 - 'Performance' tab
@@ -858,7 +860,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Restaurant Name (editable)
   - Restaurant Logo Upload (with preview)
   - Cover Image Upload\n  - Description/About Us (textarea)
-  - **Restaurant Type** (dropdown: Veg, Non-Veg, Both) - **NEW FIELD**
+  - **Restaurant Type** (dropdown: Veg, Non-Veg, Both)
   - Cuisine Type (multi-select: Italian, Chinese, Indian, etc.)
   - Contact Number
   - Email Address
@@ -871,7 +873,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Operating Hours**:
   - Set opening and closing times for each day of the week
   - Option to mark specific days as closed
-  - Special hours for holidays\n- **Social Media Links**:
+  - Special hours for holidays
+- **Social Media Links**:
   - Facebook, Instagram, Twitter, YouTube URLs
 - Save button applies changes\n
 **C. Operational Settings**
@@ -1020,7 +1023,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Quick action buttons: 'Scan QR Code', 'Browse Restaurants', 'View Active Orders'
 \n**Active Orders Section**:
 - Display current active orders (if any)
-- Each order card shows: Restaurant name, order ID, status, estimated time,'Track Order' button
+- Each order card shows: Restaurant name, order ID, status, estimated time, 'Track Order' button
 - Real-time status updates without page refresh
 
 **Recently Scanned Restaurants Section**:
@@ -1051,14 +1054,14 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Real-time search results as user types
 \n- **Filter Options**:
   - Filter by cuisine type (Italian, Chinese, Indian, etc.)
-  - **Filter by restaurant type (Veg, Non-Veg, Both)** - **NEW FILTER**
+  - **Filter by restaurant type (Veg, Non-Veg, Both)**
   - Filter by location/area
   - Sort by: Recently Scanned, Name (A-Z), Rating\n
 - **Restaurant Cards Grid**:
   - Responsive grid layout (3 columns on desktop, 2 on tablet, 1 on mobile)
   - Each restaurant card displays:\n    - Restaurant logo/cover image
     - Restaurant name (bold)
-    - **Restaurant type badge (Veg/Non-Veg/Both) displayed prominently below restaurant name with color coding:** - **NEW ELEMENT**
+    - **Restaurant type badge (Veg/Non-Veg/Both) displayed prominently below restaurant name with color coding:**
       - **Veg: Green badge with leaf icon**
       - **Non-Veg: Red badge with meat icon**
       - **Both: Orange badge with dual icon (leaf + meat)**
@@ -1091,9 +1094,10 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Redirected to restaurant's digital menu
 \n**B. Digital Menu Display (with Restaurant Type in Header)**
 
-- **Menu Header:** - **UPDATED**
-  - Restaurant logo (left)\n  - Restaurant name (center, bold, large font)
-  - **Restaurant type badge (Veg/Non-Veg/Both) displayed immediately after restaurant name with color coding:** - **NEW ELEMENT**
+- **Menu Header:**
+  - Restaurant logo (left)
+  - Restaurant name (center, bold, large font)
+  - **Restaurant type badge (Veg/Non-Veg/Both) displayed immediately after restaurant name with color coding:**
     - **Veg: Green badge with leaf icon**
     - **Non-Veg: Red badge with meat icon**
     - **Both: Orange badge with dual icon (leaf + meat)**
@@ -1129,55 +1133,352 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Subtotal, taxes, total
   - 'Proceed to Checkout' button
   - Option to edit quantities or remove items
-\n---
-
-#### 3.2.4 Order Placement & Checkout\n
-**Overview**:
-Streamlined checkout process for placing orders with multiple payment options.\n
-**Key Features**:\n
-**A. Checkout Page**
-
-- **Order Summary**:
-  - List of cart items with quantities and prices
-  - Subtotal, taxes, discounts (if promo code applied), grand total
-\n- **Customer Information**:
-  - Name (pre-filled if logged in)
-  - Contact number (required)
-  - Table number (fordine-in, auto-detected from QR code)
-  - Special instructions (optional textarea)
-
-- **Promo Code**:
-  - Input field to enter promo code
-  -'Apply' button to validate and apply discount
-  - Display discount amount if valid
-
-- **Payment Method Selection**:
-  - Radio buttons: Cash, Card, UPI, Wallet\n  - If online payment selected: Redirect to payment gateway
-\n- **Place Order Button**:
-  - Primary action button
-  - On click: Order submitted to restaurant, confirmation screen displayed
-
-**B. Order Confirmation**
-
-- Success message: 'Order placed successfully!'
-- Display order ID and estimated preparation time
-- 'Track Order' button to view real-time status
-- Option to continue browsing menu or return to home
 
 ---
 
-#### 3.2.5 Real-Time Order Tracking
-\n**Overview**:
-Customers can track their orders in real-time with automatic status updates and estimated time.\n
-**Key Features**:\n
-**A. Order Tracking Page**
+#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED)
+
+**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking.
+
+---
+
+**STEP 1: Cart Review & Proceed to Checkout**
+
+**A. Cart Sidebar/Page**
+
+- **Location**: Accessible via floating cart icon (bottom-right corner) or dedicated cart page
+- **Layout**: Glassmorphism panel sliding in from right (sidebar) or full-page view
+\n**Cart Header**:
+- Title: 'Your Cart' (bold, large font)
+- Restaurant name and logo (if single restaurant order)
+- Close button (X icon) for sidebar view
+\n**Cart Items Section**:
+- **Each cart item displayed as a card**:
+  - Item image (small thumbnail, left)
+  - Item name (bold)\n  - Portion type (if applicable):'Half' or 'Full' badge
+  - Special instructions (if added): Displayed below item name in italics
+  - Quantity selector: '-' button, quantity number, '+' button (inline)
+  - Item price (right): Unit price x quantity = total (e.g., '$12x 2 = $24')
+  - 'Remove' icon (trash icon, top-right of card)
+- **Empty Cart State**:
+  - If cart is empty: Display message 'Your cart is empty' with 'Browse Menu' button
+\n**Price Breakdown Section**:
+- **Subtotal**: Sum of all item prices (e.g., 'Subtotal: $48.00')
+- **Taxes**: Calculated based on restaurant settings (e.g., 'GST (5%): $2.40')
+- **Discount**: If promo code applied, show discount amount (e.g., 'Discount (SAVE10): -$5.00')
+- **Delivery Fee**: If delivery order, show fee (e.g., 'Delivery Fee: $3.00')
+- **Grand Total**: Final amount in bold, large font with currency symbol (e.g., 'Total: $48.40')
+
+**Action Buttons**:
+- **'Continue Shopping' Button**: Secondary button (outline style), returns to menu page
+- **'Proceed to Checkout' Button**: Primary button (neon gradient, prominent), navigates to checkout page
+  - Button disabled if cart is empty
+  - On click: Smooth transition to checkout page (no full page reload)
+
+---
+
+**STEP 2: Checkout Page - Customer Information & Order Details**
+
+**A. Checkout Page Layout**
+
+- **Page Structure**: Two-column layout on desktop (left: form, right: order summary), single column on mobile (form on top, summary below)
+- **Progress Indicator**: Stepper at top showing: 1. Cart → **2. Checkout** → 3. Payment → 4. Confirmation (current step highlighted)
+\n**B. Left Column: Checkout Form**
+
+**Section 1: Customer Information**
+
+- **Heading**: 'Customer Details' (bold, with user icon)
+- **Form Fields**:
+  1. **Full Name**:\n     - Text input (required)
+     - Pre-filled if user is logged in
+     - Placeholder: 'Enter your full name'
+     - Validation: Cannot be empty, minimum 2 characters
+  2. **Contact Number**:
+     - Phone number input with country code dropdown (required)
+     - Pre-filled if user is logged in\n     - Placeholder: '+1 (555) 123-4567'
+     - Validation: Valid phone number format
+  3. **Email Address** (optional):
+     - Email input\n     - Pre-filled if user is logged in
+     - Placeholder: 'your.email@example.com'
+     - Validation: Valid email format if provided
+\n**Section 2: Order Type & Delivery Details**
+
+- **Heading**: 'Order Type' (bold, with location icon)
+- **Order Type Selection**: Radio buttons (large, card-style)
+  1. **Dine-In** (default if QR code scanned from table):
+     - Icon: Table icon
+     - Label: 'Dine-In'
+     - Sub-label: 'Enjoy your meal at the restaurant'
+     - **If selected**: Display table number (auto-detected from QR code, e.g., 'Table 5')
+       - Table number displayed as badge below radio button
+       - If table number not detected: Show input field 'Enter Table Number' (required)
+  2. **Takeaway**:
+     - Icon: Bag icon
+     - Label: 'Takeaway'
+     - Sub-label: 'Pick up your order from the restaurant'
+     - **If selected**: Display estimated pickup time (e.g., 'Ready in 20 mins')
+  3. **Delivery** (if enabled by restaurant):
+     - Icon: Delivery truck icon
+     - Label: 'Delivery'
+     - Sub-label: 'Get your order delivered to your doorstep'
+     - **If selected**: Show delivery address form:\n       - **Street Address**: Text input (required)
+       - **Apartment/Suite** (optional): Text input
+       - **City**: Text input (required)
+       - **State/Province**: Dropdown (required)
+       - **ZIP/Postal Code**: Text input (required)
+       - **Delivery Instructions** (optional): Textarea (e.g., 'Ring the doorbell twice')
+       - Display delivery fee and estimated delivery time (e.g., 'Delivery Fee: $3.00 | Estimated Time: 45 mins')
+\n**Section 3: Special Instructions**
+
+- **Heading**: 'Special Instructions' (bold, with note icon)
+- **Textarea**: Multi-line text input (optional)
+  - Placeholder: 'Any special requests for your order? (e.g., extra spicy, no onions)'
+  - Character limit: 500 characters
+  - Character counter displayed below textarea (e.g., '0/500')
+\n**Section 4: Promo Code**
+
+- **Heading**: 'Have a Promo Code?' (bold, with tag icon)
+- **Promo Code Input**:
+  - Text input with'Apply' button inline (right side)
+  - Placeholder: 'Enter promo code'
+  - On click 'Apply': Validate promo code via API
+    - **If valid**: Display success message 'Promo code applied! You saved $X' (green text with checkmark icon), update order summary with discount
+    - **If invalid**: Display error message 'Invalid or expired promo code' (red text with X icon)
+  - If promo code already applied: Show applied code with 'Remove' button (e.g., 'SAVE10 applied | Remove')
+
+**C. Right Column: Order Summary (Sticky on Desktop)**
+
+- **Heading**: 'Order Summary' (bold)\n- **Restaurant Info**:
+  - Restaurant logo and name
+  - Restaurant type badge (Veg/Non-Veg/Both)
+  - Order type badge (Dine-In/Takeaway/Delivery)
+\n**Order Items List**:
+- Compact list of cart items:\n  - Each item: Quantity x Item Name (Portion) - Price
+  - Example: '2x Margherita Pizza (Full) - $24.00'
+- Special instructions (if any) displayed below item in smaller font
+-'Edit Cart' link (navigates back to cart)
+\n**Price Breakdown**:
+- Subtotal\n- Taxes (with percentage)
+- Discount (if promo code applied, with code name)\n- Delivery Fee (if delivery order)
+- **Grand Total** (bold, large font, highlighted with neon border)
+
+**Estimated Time**:
+- Display estimated preparation/delivery time (e.g., 'Estimated Time: 25 mins')
+\n**Action Button**:
+- **'Proceed to Payment' Button**: Primary button (neon gradient, full-width)\n  - On click: Validate all required fields
+    - **If validation fails**: Scroll to first error field, display error messages below respective fields (red text)\n    - **If validation passes**: Smooth transition to payment page
+\n---
+
+**STEP 3: Payment Page - Payment Method Selection & Processing**
+
+**A. Payment Page Layout**
+
+- **Progress Indicator**: Stepper showing: 1. Cart → 2. Checkout → **3. Payment** → 4. Confirmation
+- **Page Structure**: Single column layout with payment options
+\n**B. Payment Method Selection**
+
+- **Heading**: 'Select Payment Method' (bold, with credit card icon)
+- **Payment Options**: Large card-style radio buttons (one option selected at a time)
+\n**Option 1: Cash on Delivery/Cash at Counter**
+- Icon: Cash icon
+- Label: 'Cash' (fordine-in/takeaway) or 'Cash on Delivery' (for delivery)
+- Sub-label: 'Pay with cash when you receive your order'
+- **If selected**: No additional fields required
+
+**Option 2: Credit/Debit Card**
+- Icon: Credit card icon
+- Label: 'Credit/Debit Card'
+- Sub-label: 'Pay securely with your card'
+- **If selected**: Display card input form:
+  - **Card Number**: Input with card type detection (Visa/Mastercard/Amex icons)
+    - Placeholder: '1234 5678 9012 3456'
+    - Validation: Valid card number (Luhn algorithm)
+  - **Cardholder Name**: Text input\n    - Placeholder: 'Name on card'
+  - **Expiry Date**: Input with format MM/YY\n    - Placeholder: 'MM/YY'
+    - Validation: Valid future date
+  - **CVV**: Input (3-4 digits)
+    - Placeholder: 'CVV'
+    - Tooltip: 'Last 3 digits on back of card'
+  - **Save Card for Future**: Checkbox (optional, if user is logged in)
+  - **Security Badge**: Display'Secured by Stripe/Razorpay' logo and SSL lock icon
+
+**Option 3: UPI (Unified Payments Interface)**
+- Icon: UPI icon
+- Label: 'UPI'\n- Sub-label: 'Pay using UPI apps like Google Pay, PhonePe, Paytm'
+- **If selected**: Display UPI ID input:\n  - **UPI ID**: Text input
+    - Placeholder: 'yourname@upi'
+    - Validation: Valid UPI ID format (e.g., name@bank)\n  - **OR**: Display QR code for UPI payment
+    - 'Scan QR Code with your UPI app' instruction
+    - QR code image (generated with payment details)
+
+**Option 4: Digital Wallets**
+- Icon: Wallet icon
+- Label: 'Digital Wallets'
+- Sub-label: 'Pay using Paytm, PhonePe, Amazon Pay, etc.'
+- **If selected**: Display wallet selection:\n  - Radio buttons or dropdown: Paytm, PhonePe, Amazon Pay, Google Pay\n  - On selection: Redirect to respective wallet app/website for payment authorization
+
+**C. Order Summary (Sticky Sidebar on Desktop)**
+
+- Same as checkout page: Restaurant info, order items, price breakdown, grand total
+\n**D. Action Buttons**
+
+- **'Back to Checkout' Button**: Secondary button (outline style), navigates back to checkout page
+- **'Place Order & Pay' Button**: Primary button (neon gradient, full-width, prominent)
+  - Button text changes based on payment method:\n    - Cash: 'Place Order'\n    - Card/UPI/Wallet: 'Pay $XX.XX & Place Order'
+  - On click:\n    - **If Cash**: Skip payment processing, directly place order
+    - **If Card/UPI/Wallet**: Process payment via payment gateway
+      - Display loading spinner with message 'Processing payment...'
+      - **If payment successful**: Place order and navigate to confirmation page
+      - **If payment failed**: Display error message 'Payment failed. Please try again or choose another method' (red alert banner), allow user to retry or change payment method
+
+**E. Payment Processing Flow**
+
+1. **User clicks 'Place Order & Pay'**:\n   - Frontend validates payment details (card number, UPI ID, etc.)
+   - If validation fails: Display error messages\n   - If validation passes: Send payment request to backend
+\n2. **Backend processes payment**:
+   - Integrate with payment gateway (Stripe, Razorpay, PayPal)\n   - Create payment intent/transaction
+   - Return payment status to frontend
+
+3. **Frontend handles payment response**:
+   - **Success**: Create order in database, send confirmation to customer and restaurant, navigate to confirmation page
+   - **Failure**: Display error, allow retry\n
+4. **For UPI QR Code**:
+   - Display QR code and wait for payment confirmation
+   - Poll backend every 5 seconds to check payment status
+   - Once payment confirmed: Proceed to order placement
+
+5. **For Wallet Redirect**:
+   - Redirect user to wallet app/website\n   - After payment, wallet redirects back to app with payment status
+   - Handle redirect and proceed accordingly
+
+---
+\n**STEP 4: Order Confirmation Page**
+
+**A. Confirmation Page Layout**
+
+- **Progress Indicator**: Stepper showing: 1. Cart → 2. Checkout → 3. Payment → **4. Confirmation** (all steps completed with checkmarks)
+\n**B. Success Message**
+
+- **Large Success Icon**: Animated checkmark icon (green, pulsing glow)
+- **Heading**: 'Order Placed Successfully!' (bold, large font, neon green color)
+- **Sub-heading**: 'Thank you for your order, [Customer Name]!' (personalized)
+\n**C. Order Details Card**
+
+- **Glassmorphism card with neon border**:\n  - **Order ID**: Large, bold (e.g., '#ORD-1234')
+  - **Restaurant Name**: With logo and restaurant type badge
+  - **Order Type**: Badge (Dine-In/Takeaway/Delivery)
+  - **Table Number** (if dine-in): Displayed prominently
+  - **Estimated Time**: 'Your order will be ready in approximately 25 minutes' (dynamic based on order type)
+  - **Order Timestamp**: Date and time order was placed
+\n**D. Order Summary**
+
+- **Order Items List**: Same as previous pages
+- **Price Breakdown**: Subtotal, taxes, discount, delivery fee, grand total
+- **Payment Method**: Display selected payment method (e.g., 'Paid via Credit Card ending in 1234')
+- **Payment Status**: Badge (Paid/Pending)\n\n**E. Action Buttons**
+
+- **'Track Your Order' Button**: Primary button (neon gradient)\n  - On click: Navigate to real-time order tracking page
+- **'Download Receipt' Button**: Secondary button (outline style)
+  - On click: Generate and download PDF receipt/e-bill
+- **'Back to Home' Button**: Tertiary button (text link)
+  - On click: Navigate to customer home screen
+
+**F. Additional Information**
+
+- **Notification Message**: 'We've sent a confirmation to your email/phone number'\n- **Customer Support**: 'Need help? Chat with us' button (opens chat interface)
+\n**G. Post-Order Actions**
+
+1. **Send Confirmation Notifications**:
+   - Email: Order confirmation with details and receipt
+   - SMS: Order ID and estimated time
+   - Push Notification: 'Your order has been placed!'
+
+2. **Notify Restaurant**:
+   - Real-time notification to restaurant owner dashboard (new order alert)
+   - Notification to assigned waiter (if auto-assignment enabled)
+   - Order appears in restaurant's order management dashboard
+
+3. **Update Database**:
+   - Create order record with all details
+   - Update inventory (deduct items if linked)\n   - Log transaction in payment records
+   - Add order to customer's order history
+
+4. **Initiate Order Tracking**:
+   - Create order timeline with initial status 'Order Placed'
+   - Enable real-time WebSocket connection for status updates
+\n---
+
+**STEP 5: Transition to Order Tracking**
+
+**A. Automatic Redirect (Optional)**
+
+- After5 seconds on confirmation page, display countdown: 'Redirecting to order tracking in 5... 4... 3...'
+- Auto-navigate to order tracking page
+- User can click 'Track Your Order' button anytime to skip countdown
+
+**B. Order Tracking Page**
+
+- Detailed order tracking interface (as described in section3.2.5)
+- Real-time status updates\n- Order timeline with progress indicators
+- Estimated time remaining
+- Chat with restaurant option
+
+---
+
+**Additional Checkout Features**
+
+**A. Guest Checkout**
+
+- Allow users to place orders without creating an account
+- Collect only essential information (name, contact number)\n- After order placement, prompt user to create account: 'Create an account to track your orders and earn rewards'
+- If user creates account: Link order to new account
+
+**B. Saved Addresses & Payment Methods (for Logged-In Users)**
+
+- **Saved Addresses**:
+  - Display list of saved delivery addresses
+  - 'Use this address' button for quick selection
+  - 'Add New Address' option\n- **Saved Payment Methods**:
+  - Display saved cards (last 4 digits)
+  - 'Use this card' button\n  - CVV input required for security
+  - 'Add New Card' option
+
+**C. Order Modifications**
+
+- 'Edit Order' button on checkout page (navigates back to cart)
+- Allow quantity changes, item removal, special instructions update
+- Recalculate totals in real-time
+
+**D. Accessibility & UX Enhancements**
+
+- **Loading States**: Display skeleton screens or spinners during data fetching
+- **Error Handling**: Clear error messages with suggestions (e.g., 'Payment failed. Please check your card details or try another method')
+- **Form Validation**: Real-time validation with inline error messages
+- **Keyboard Navigation**: All form fields and buttons accessible via keyboard
+- **Mobile Optimization**: Touch-friendly buttons, optimized input fields (numeric keyboard for phone/card numbers)
+- **Auto-Save**: Save form data in local storage to prevent data loss on accidental page close
+
+**E. Security Measures**
+
+- **SSL Encryption**: All payment data transmitted over HTTPS
+- **PCI Compliance**: Payment gateway handles sensitive card data (no card details stored on app servers)
+- **Tokenization**: Use payment tokens instead of raw card data
+- **Fraud Detection**: Integrate with payment gateway's fraud detection tools
+- **Session Timeout**: Expire checkout session after 15 minutes of inactivity
+
+---
+
+####3.2.5 Real-Time Order Tracking
+\n**Overview**:\nCustomers can track their orders in real-time with automatic status updates and estimated time.\n
+**Key Features**:\n\n**A. Order Tracking Page**
 
 - **Order Details Card**:
-  - Order ID, restaurant name, table number\n  - Order items list with quantities\n  - Order total\n\n- **Order Timeline**:
+  - Order ID, restaurant name, table number\n  - Order items list with quantities
+  - Order total\n\n- **Order Timeline**:
   - Visual timeline showing order progress:\n    - Order Placed ✓
     - Order Accepted ✓
-    - Preparing (current step, animated)\n    - Ready for Pickup/Serving\n    - Completed
-  - Each step shows timestamp\n  - Current step highlighted with pulsing animation
+    - Preparing (current step, animated)\n    - Ready for Pickup/Serving\n    - Completed\n  - Each step shows timestamp
+  - Current step highlighted with pulsing animation
 
 - **Estimated Time**:
   - Display estimated time remaining (e.g., 'Ready in 15 mins')
@@ -1216,7 +1517,7 @@ View past orders with detailed information and quick reorder functionality.
   - Filter by date range, restaurant, status
 \n**B. Order Details Modal**
 
-- Click 'View Details' to open modal\n- Modal displays:
+- Click'View Details' to open modal\n- Modal displays:
   - Complete order information (items, quantities, prices)
   - Order timeline
   - Payment details
@@ -1232,8 +1533,7 @@ View past orders with detailed information and quick reorder functionality.
 
 #### 3.2.7 Favorites & Saved Items
 
-**Overview**:
-Save favorite menu items and restaurants for quick access.
+**Overview**:\nSave favorite menu items and restaurants for quick access.
 
 **Key Features**:
 
@@ -1242,12 +1542,12 @@ Save favorite menu items and restaurants for quick access.
 - **Tabs**: Favorite Items, Favorite Restaurants\n\n- **Favorite Items Tab**:
   - Grid of saved menu items
   - Each item card shows: Image, name, restaurant name, price,'Add to Cart' button
-  -'Remove from Favorites' icon\n\n- **Favorite Restaurants Tab**:
+  - 'Remove from Favorites' icon
+\n- **Favorite Restaurants Tab**:
   - Grid of saved restaurants
   - Each restaurant card shows: Logo, name, cuisine type, 'View Menu' button
   - 'Remove from Favorites' icon
-
-**B. Add to Favorites**
+\n**B. Add to Favorites**
 
 - Heart icon on menu item cards and restaurant cards
 - Click to add/remove from favorites
@@ -1280,8 +1580,10 @@ View loyalty points, redeem rewards, and participate in referral program.
 **B. Referral Program**\n
 - **Referral Code**:
   - Display unique referral code
-  - 'Copy Code' button\n  - 'Share' button (share via WhatsApp, SMS, email)
-\n- **Referral Stats**:
+  - 'Copy Code' button
+  - 'Share' button (share via WhatsApp, SMS, email)
+
+- **Referral Stats**:
   - Total referrals made
   - Rewards earned from referrals
 \n- **How It Works**:
@@ -1308,7 +1610,8 @@ Manage customer profile information and app preferences.
   - Option to permanently delete account (with confirmation)
 
 **B. Settings Page**
-\n- **Notification Preferences**:
+
+- **Notification Preferences**:
   - Toggle switches for notification types:\n    - Order status updates
     - Promotional offers
     - Loyalty rewards
@@ -1322,9 +1625,9 @@ Manage customer profile information and app preferences.
 - **Privacy Settings**:
   - Manage data sharing preferences
 
----
+---\n
+#### 3.2.10 Help & Support
 
-#### 3.2.10 Help & Support\n
 **Overview**:
 Access help resources and contact support.\n
 **Key Features**:\n
@@ -1353,16 +1656,14 @@ Access help resources and contact support.\n
 
 #### 3.3.1 Waiter Dashboard
 
-**Overview**:
-Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-time updates.
+**Overview**:\nWaiter-facing dashboard displaying assigned orders, tables, and tasks with real-time updates.
 
 **Key Features**:
 
 **A. Dashboard Layout**
 
 - **Top Metrics Cards**:
-  1. Assigned Orders (count)
-  2. Active Tables (count)
+  1. Assigned Orders (count)\n  2. Active Tables (count)
   3. Pending Tasks (count)
   4. Orders Completed Today\n\n- **Assigned Orders Section**:
   - List of orders assigned to waiter
@@ -1373,25 +1674,23 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
   - Grid of assigned tables
   - Each table card shows: Table number, customer count, order status, 'View Order' button
 \n**B. Order Management**
-
-- **View Order Details**:
+\n- **View Order Details**:
   - Click on order card to view full details
   - Modal displays: Order items, customer info, special instructions, order timeline
 \n- **Update Order Status**:
-  - Buttons to update status:'Mark as Preparing', 'Mark as Ready', 'Mark as Served'
+  - Buttons to update status: 'Mark as Preparing', 'Mark as Ready', 'Mark as Served'
   - Status update sent to owner and customer in real-time
 
 **C. Communication**
 
 - **Chat with Owner**:
-  - 'Message Owner' button
-  - Real-time chat interface
+  - 'Message Owner' button\n  - Real-time chat interface
 \n- **Chat with Customer**:
-  - 'Message Customer' button on order details\n  - Real-time chat for queries or updates
+  - 'Message Customer' button on order details
+  - Real-time chat for queries or updates
 
 **D. Notifications**
-
-- Notification bell with badge count
+\n- Notification bell with badge count
 - Notifications for: New order assigned, order status change request, customer message
 
 ---
@@ -1405,8 +1704,7 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 **A. Profile Page**
 
 - Display profile information: Name, employee ID, role, contact\n- View performance metrics: Orders handled, average completion time, customer ratings
-
-**B. Attendance**
+\n**B. Attendance**
 
 - **Clock In/Out**:
   - 'Clock In' button at start of shift
@@ -1428,8 +1726,7 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 
 ### 4.1 Restaurant Owner Flow
 
-1. **Sign Up/Login** → Owner Dashboard
-2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details (including restaurant type: Veg/Non-Veg/Both) → Save
+1. **Sign Up/Login** → Owner Dashboard\n2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details (including restaurant type: Veg/Non-Veg/Both) → Save
 3. **Add Menu Items** → Menu Management → + Add Menu Item → Fill form → Save
 4. **Generate QR Codes** → QR Codes → + Generate QR Code → Configure → Download/Print
 5. **Receive Order** → Real-time notification → View order details → Accept/Reject
@@ -1438,16 +1735,19 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 8. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n9. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch
 10. **View Analytics** → Analytics → View reports and charts\n11. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
 
-### 4.2 Customer Flow
+### 4.2 Customer Flow (Complete Checkout Flow)
 
 1. **Sign Up/Login** → Customer Home
 2. **Scan QR Code** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header
 3. **Browse Menu** → View categories and items → Click item for details\n4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart
-5. **Checkout** → Review cart → Enter details → Apply promo code → Select payment method → Place Order
-6. **Track Order** → Real-time order tracking page → View timeline and estimated time
-7. **Receive Order** → Order status updates to'Ready' → Notification received\n8. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
-9. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu\n10. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
-11. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow
+5. **Review Cart** → Click cart icon → View cart items → Edit quantities or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type (Dine-In/Takeaway/Delivery) → Enter delivery address (if delivery) → Add special instructions → Apply promo code (optional) → Review order summary → Click 'Proceed to Payment'
+7. **Payment Page** → Select payment method (Cash/Card/UPI/Wallet) → Enter payment details (if online payment) → Review order summary → Click 'Place Order & Pay'
+8. **Payment Processing** → System processes payment → If successful: Order placed → If failed: Display error, allow retry
+9. **Order Confirmation** → View success message → View order details (Order ID, estimated time) → Download receipt → Click 'Track Your Order'
+10. **Track Order** → Real-time order tracking page → View timeline and estimated time → Receive notifications on status updates
+11. **Receive Order** → Order status updates to'Ready' → Notification received\n12. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
+13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu\n14. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
+15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow
 
 1. **Login** → Waiter Dashboard
 2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list
@@ -1478,7 +1778,8 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - **Warning**: Neon yellow (#FFFF00)
 - **Error**: Neon red (#FF073A)
 - **Text**: White (#FFFFFF) or light grey (#E0E0E0)
-- **Restaurant Type Badges:** - **NEW**\n  - **Veg Badge**: Bright green (#39FF14) background with white text and leaf icon
+- **Restaurant Type Badges:**
+  - **Veg Badge**: Bright green (#39FF14) background with white text and leaf icon
   - **Non-Veg Badge**: Bright red (#FF073A) background with white text and meat icon
   - **Both Badge**: Bright orange (#FF8C00) background with white text and dual icon (leaf + meat)
 
@@ -1521,8 +1822,7 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - **Authentication**: JWT tokens, OAuth 2.0 for Google login, OTP via Twilio or Firebase\n- **Payment Gateway**: Stripe, Razorpay, or PayPal integration
 - **Cloud Storage**: AWS S3 or Cloudinary for image uploads
 - **Hosting**: AWS, Google Cloud, or Vercel for deployment
-
-### 6.2 Real-Time Features
+\n### 6.2 Real-Time Features
 
 - **WebSocket Connection**: Persistent connection for instant data updates (orders, notifications, chat)
 - **Event-Driven Architecture**: Backend emits events on data changes, frontend listens and updates UI
@@ -1573,7 +1873,9 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - Warning: Neon yellow (#FFFF00)
 - Error: Neon red (#FF073A)
 - Text: White (#FFFFFF) or light grey (#E0E0E0)
-- Restaurant Type Badges:\n  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon\n  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
+- Restaurant Type Badges:
+  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon
+  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
   - Both Badge: Bright orange (#FF8C00) background with white text and dual icon\n
 **UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus. Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side.\n
 **Animations**: Slide-in animations for new orders (500ms bounce), pulsing glow for notification badges, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading.\n
