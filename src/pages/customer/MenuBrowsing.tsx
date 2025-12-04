@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, menuCategoryApi, menuItemApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem, ItemType, MenuItemVariant, CartItem } from '@/types/types';
+import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -223,6 +223,35 @@ export default function MenuBrowsing() {
     }
   };
 
+  const getRestaurantTypeBadge = (type: RestaurantType) => {
+    switch (type) {
+      case 'veg':
+        return (
+          <Badge variant="outline" className="border-green-600 text-green-600 text-xs xl:text-sm">
+            <Leaf className="w-3 h-3 xl:w-4 xl:h-4 mr-1" /> Pure Veg
+          </Badge>
+        );
+      case 'non_veg':
+        return (
+          <Badge variant="outline" className="border-red-600 text-red-600 text-xs xl:text-sm">
+            <Flame className="w-3 h-3 xl:w-4 xl:h-4 mr-1" /> Non-Veg
+          </Badge>
+        );
+      case 'both':
+        return (
+          <Badge variant="outline" className="border-orange-600 text-orange-600 text-xs xl:text-sm">
+            <div className="flex items-center gap-1">
+              <Leaf className="w-3 h-3 xl:w-4 xl:h-4" />
+              <Flame className="w-3 h-3 xl:w-4 xl:h-4" />
+            </div>
+            <span className="ml-1">Veg & Non-Veg</span>
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -247,7 +276,10 @@ export default function MenuBrowsing() {
         <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl xl:text-3xl font-bold mb-1 truncate">{restaurant.name}</h1>
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <h1 className="text-xl xl:text-3xl font-bold truncate">{restaurant.name}</h1>
+                {restaurant.restaurant_type && getRestaurantTypeBadge(restaurant.restaurant_type)}
+              </div>
               <p className="text-sm text-muted-foreground mb-2 line-clamp-1">
                 {restaurant.cuisine_types?.join(', ') || 'Multi-cuisine'}
               </p>

@@ -1,17 +1,20 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Sidebar Functionality & Browse Restaurants)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Restaurant Type Display)
 
 ## 1. Application Overview
 
-### 1.1 Application Name\nDineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
+### 1.1 Application Name
+DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, and fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. **All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, and campaign analytics. Currency and timezone settings are automatically applied system-wide upon changes.**
-\n## 2. Advanced Authentication System
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, and fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. **All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, and campaign analytics. Currency and timezone settings are automatically applied system-wide upon changes.**
+
+## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
 
 **User Roles**:
-- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings\n- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, chat with restaurant, payment, order history, browse previously scanned restaurants
+- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings
+- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, chat with restaurant, payment, order history, browse previously scanned restaurants
 
 **Authentication Flow**:
 1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
@@ -55,8 +58,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
 - **Orders** (clipboard icon) - Real-time order management dashboard
 - **Inventory** (box icon) - Complete inventory tracking and management
 - **QR Codes** (qr-code icon) - QR code generation and table management
-- **Staff** (users icon) - Complete staff management with attendance and performance
-- **Analytics** (chart icon) - Advanced analytics and reports with real-time data
+- **Staff** (users icon) - Complete staff management with attendance and performance\n- **Analytics** (chart icon) - Advanced analytics and reports with real-time data
 - **Marketing** (megaphone icon) - Complete marketing and promotions system
 - **Payments** (credit-card icon) - Payment management and transaction history
 - **Chat** (message icon) - Real-time communication hub with customers and staff
@@ -109,8 +111,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
 
 **Popular Menu Items Section**:
 - Heading: 'Top Selling Items'
-- Horizontal scrollable cards showing top 5 menu items:\n  - Item image
-  - Item name
+- Horizontal scrollable cards showing top 5 menu items:\n  - Item image\n  - Item name
   - Total orders count
   - Revenue generated
 - Glassmorphism cards with neon borders\n
@@ -140,8 +141,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
 #### 3.1.2 Advanced Menu Management System
 
 **Overview**:
-Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, pricing options (half/full portions), inventory linking, availability scheduling, and real-time preview.
-
+Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, pricing options (half/full portions), inventory linking, availability scheduling, and real-time preview.\n
 **Key Features**:
 \n**A. Menu Item Management Interface**
 \n- **Action Buttons Section**:
@@ -154,26 +154,27 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 \n- **Menu Items Grid/List View**:
   - Toggle between grid view (cards with images) and list view (compact table)\n  - Each menu item card displays:
     - Item image (placeholder if no image uploaded)
-    - Item name\n    - Category tag
+    - Item name
+    - Category tag
     - Price (shows both half/full if applicable, e.g., 'Half: $8| Full: $12')
     - Availability status (toggle switch: Available/Out of Stock)
     - Quick action icons: Edit (pencil icon), Delete (trash icon), Duplicate (copy icon)
   - Search bar to filter items by name or category
   - Filter options: All Items, Available, Out of Stock, By Category
   - Sort options: Name (A-Z), Price (Low to High), Recently Added
-\n**B. Add/Edit Menu Item Modal**
+
+**B. Add/Edit Menu Item Modal**
 
 **Modal Layout**:
 - Full-screen overlay with glassmorphism panel sliding in from right
-- Close button (X icon) at top-right
-- Form sections organized in tabs or accordion:\n\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
+- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:
+\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
 - **Category**: Dropdown select from existing categories or '+ Create New Category' option (required)
 - **Description**: Textarea (optional, max 500 characters)
 - **Item Image**: Image upload with drag-and-drop or file browser, preview thumbnail,'Remove Image' option
 \n**2. Pricing & Portions Tab**:
 - **Pricing Type**: Radio buttons\n  - Single Price (default)
-  - Half/Full Portions
-- **If Single Price**:
+  - Half/Full Portions\n- **If Single Price**:
   - Price input field (required, number with currency symbol)
 - **If Half/Full Portions**:
   - Half Portion Price input (required)
@@ -204,7 +205,7 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
   - Each menu item card shows:
     - High-quality item image
     - Item name (bold, prominent)
-    - Item description (truncated with 'Read more' if long)
+    - Item description (truncated with'Read more' if long)
     - Price display (half/full portions if applicable)
     - Dietary tags (veg/non-veg icons, spicy level indicators)
     - Availability badge (if out of stock, greyed out with 'Currently Unavailable' label)
@@ -235,7 +236,8 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 
 #### 3.1.3 Advanced Inventory Management
 
-**Overview**:\nComplete inventory tracking system with real-time stock monitoring, low stock alerts, automatic deductions on order placement, supplier management, and inventory reports.
+**Overview**:
+Complete inventory tracking system with real-time stock monitoring, low stock alerts, automatic deductions on order placement, supplier management, and inventory reports.
 
 **Key Features**:
 
@@ -345,8 +347,7 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 
 #### 3.1.5 Advanced Order Management Dashboard with Enhanced Order Cards and Real-Time Auto-Refresh
 
-**Overview**:
-Centralized order management interface displaying all orders with real-time status updates, detailed order information, timeline tracking, waiter assignment, and instant notifications without page refresh.
+**Overview**:\nCentralized order management interface displaying all orders with real-time status updates, detailed order information, timeline tracking, waiter assignment, and instant notifications without page refresh.
 
 **Key Features**:
 
@@ -441,8 +442,7 @@ Centralized order management interface displaying all orders with real-time stat
 
 #### 3.1.6 Enhanced Payment Management for Restaurant Owners
 
-**Overview**:
-Comprehensive payment tracking and management system with transaction history, payment method analytics, refund processing, and financial reports.
+**Overview**:\nComprehensive payment tracking and management system with transaction history, payment method analytics, refund processing, and financial reports.
 
 **Key Features**:
 
@@ -467,8 +467,7 @@ Comprehensive payment tracking and management system with transaction history, p
   - Payment method, amount, taxes, discounts
   - Payment timestamp\n  - Payment gateway response (if online payment)
   - Receipt download option (PDF)
-
-**C. Refund Processing**
+\n**C. Refund Processing**
 
 - 'Process Refund' button for completed payments
 - Modal form:
@@ -523,9 +522,7 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
     - Performance rating (based on order completion time, customer feedback)
 \n**B. Automatic Assignment**
 
-- Toggle switch: 'Enable Auto-Assignment'
-- When enabled:
-  - New orders automatically assigned to available waiter with least workload
+- Toggle switch: 'Enable Auto-Assignment'\n- When enabled:\n  - New orders automatically assigned to available waiter with least workload
   - Assignment algorithm considers: Current orders, table proximity, waiter rating
 - Notification sent to assigned waiter instantly
 
@@ -652,8 +649,7 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   3. Staff On Leave\n  4. Pending Leave Requests
 \n- **Staff List Table**:
   - Columns: Profile Picture, Name, Employee ID, Role (Waiter/Chef/Manager), Contact, Status (Active/On Leave/Inactive), Actions
-  - Search by name, employee ID\n  - Filter by role, status
-  - Sort by name, join date
+  - Search by name, employee ID\n  - Filter by role, status\n  - Sort by name, join date
 
 **B. Add/Edit Staff Member**
 
@@ -705,7 +701,8 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   - Modal form: Select staff, shift date, start time, end time, role
   - Save and notify staff via notification/SMS
 - **Shift Swap Requests**:
-  - Staff can request shift swaps\n  - Owner approves/rejects requests
+  - Staff can request shift swaps
+  - Owner approves/rejects requests
 \n**F. Performance Analytics**
 
 - 'Performance' tab
@@ -861,6 +858,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Restaurant Name (editable)
   - Restaurant Logo Upload (with preview)
   - Cover Image Upload\n  - Description/About Us (textarea)
+  - **Restaurant Type** (dropdown: Veg, Non-Veg, Both) - **NEW FIELD**
   - Cuisine Type (multi-select: Italian, Chinese, Indian, etc.)
   - Contact Number
   - Email Address
@@ -873,8 +871,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Operating Hours**:
   - Set opening and closing times for each day of the week
   - Option to mark specific days as closed
-  - Special hours for holidays
-- **Social Media Links**:
+  - Special hours for holidays\n- **Social Media Links**:
   - Facebook, Instagram, Twitter, YouTube URLs
 - Save button applies changes\n
 **C. Operational Settings**
@@ -1023,7 +1020,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Quick action buttons: 'Scan QR Code', 'Browse Restaurants', 'View Active Orders'
 \n**Active Orders Section**:
 - Display current active orders (if any)
-- Each order card shows: Restaurant name, order ID, status, estimated time, 'Track Order' button
+- Each order card shows: Restaurant name, order ID, status, estimated time,'Track Order' button
 - Real-time status updates without page refresh
 
 **Recently Scanned Restaurants Section**:
@@ -1041,10 +1038,10 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 ---
 
-#### 3.2.2 Browse Restaurants (Complete Functionality)
+#### 3.2.2 Browse Restaurants (Complete Functionality with Restaurant Type Display)
 
-**Overview**:
-Dedicated page displaying all restaurants previously scanned by the customer with search and filter functionality for easy access.\n
+**Overview**:\nDedicated page displaying all restaurants previously scanned by the customer with search and filter functionality for easy access. **Restaurant type (Veg/Non-Veg/Both) is prominently displayed on each restaurant card.**
+
 **Key Features**:
 
 **A. Restaurant List Layout**
@@ -1054,14 +1051,18 @@ Dedicated page displaying all restaurants previously scanned by the customer wit
   - Real-time search results as user types
 \n- **Filter Options**:
   - Filter by cuisine type (Italian, Chinese, Indian, etc.)
+  - **Filter by restaurant type (Veg, Non-Veg, Both)** - **NEW FILTER**
   - Filter by location/area
-  - Sort by: Recently Scanned, Name (A-Z), Rating\n\n- **Restaurant Cards Grid**:
+  - Sort by: Recently Scanned, Name (A-Z), Rating\n
+- **Restaurant Cards Grid**:
   - Responsive grid layout (3 columns on desktop, 2 on tablet, 1 on mobile)
-  - Each restaurant card displays:
-    - Restaurant logo/cover image
+  - Each restaurant card displays:\n    - Restaurant logo/cover image
     - Restaurant name (bold)
-    - Cuisine type tags
-    - Average rating (stars) and review count
+    - **Restaurant type badge (Veg/Non-Veg/Both) displayed prominently below restaurant name with color coding:** - **NEW ELEMENT**
+      - **Veg: Green badge with leaf icon**
+      - **Non-Veg: Red badge with meat icon**
+      - **Both: Orange badge with dual icon (leaf + meat)**
+    - Cuisine type tags\n    - Average rating (stars) and review count
     - Last scanned date (e.g., 'Scanned 2 days ago')
     - 'View Menu' button (primary action)
     - 'Favorite' icon (heart) to save restaurant
@@ -1078,27 +1079,35 @@ Dedicated page displaying all restaurants previously scanned by the customer wit
 
 ---
 
-#### 3.2.3 QR Code Scanning & Menu Access
+#### 3.2.3 QR Code Scanning & Menu Access (with Restaurant Type Display in Header)
 
-**Overview**:\nCustomers scan restaurant QR codes to access digital menu, browse items, and place orders.\n
-**Key Features**:\n
-**A. QR Code Scanner**
+**Overview**:\nCustomers scan restaurant QR codes to access digital menu, browse items, and place orders. **Restaurant type (Veg/Non-Veg/Both) is displayed in the menu page header next to the restaurant name.**
+\n**Key Features**:
+\n**A. QR Code Scanner**
 
 - 'Scan QR Code' button on customer home screen
 - Opens camera interface for scanning\n- Automatic QR code detection and validation
 - On successful scan:\n  - Restaurant added to 'Browse Restaurants' list
   - Redirected to restaurant's digital menu
-\n**B. Digital Menu Display**
+\n**B. Digital Menu Display (with Restaurant Type in Header)**
 
-- Zomato-style layout with sticky category navigation
-- Display all menu categories and items
-- Each item card shows:
-  - Item image
-  - Item name and description
-  - Price (half/full portions if applicable)
-  - Dietary tags (veg/non-veg, spicy level)
-  - Availability status
-  - 'Add to Cart' button
+- **Menu Header:** - **UPDATED**
+  - Restaurant logo (left)\n  - Restaurant name (center, bold, large font)
+  - **Restaurant type badge (Veg/Non-Veg/Both) displayed immediately after restaurant name with color coding:** - **NEW ELEMENT**
+    - **Veg: Green badge with leaf icon**
+    - **Non-Veg: Red badge with meat icon**
+    - **Both: Orange badge with dual icon (leaf + meat)**
+  - Average rating and review count (right)
+  - 'Favorite' icon (heart) to save restaurant
+\n- **Menu Layout:**
+  - Zomato-style layout with sticky category navigation
+  - Display all menu categories and items
+  - Each item card shows:\n    - Item image
+    - Item name and description
+    - Price (half/full portions if applicable)
+    - Dietary tags (veg/non-veg, spicy level)
+    - Availability status
+    - 'Add to Cart' button
 \n**C. Item Details Modal**
 
 - Click on item card to view full details
@@ -1120,15 +1129,12 @@ Dedicated page displaying all restaurants previously scanned by the customer wit
   - Subtotal, taxes, total
   - 'Proceed to Checkout' button
   - Option to edit quantities or remove items
+\n---
 
----
-
-#### 3.2.4 Order Placement & Checkout
-
-**Overview**:\nStreamlined checkout process for placing orders with multiple payment options.
-
-**Key Features**:
-
+#### 3.2.4 Order Placement & Checkout\n
+**Overview**:
+Streamlined checkout process for placing orders with multiple payment options.\n
+**Key Features**:\n
 **A. Checkout Page**
 
 - **Order Summary**:
@@ -1146,8 +1152,7 @@ Dedicated page displaying all restaurants previously scanned by the customer wit
   - Display discount amount if valid
 
 - **Payment Method Selection**:
-  - Radio buttons: Cash, Card, UPI, Wallet
-  - If online payment selected: Redirect to payment gateway
+  - Radio buttons: Cash, Card, UPI, Wallet\n  - If online payment selected: Redirect to payment gateway
 \n- **Place Order Button**:
   - Primary action button
   - On click: Order submitted to restaurant, confirmation screen displayed
@@ -1171,7 +1176,8 @@ Customers can track their orders in real-time with automatic status updates and 
   - Order ID, restaurant name, table number\n  - Order items list with quantities\n  - Order total\n\n- **Order Timeline**:
   - Visual timeline showing order progress:\n    - Order Placed ✓
     - Order Accepted ✓
-    - Preparing (current step, animated)\n    - Ready for Pickup/Serving\n    - Completed\n  - Each step shows timestamp\n  - Current step highlighted with pulsing animation
+    - Preparing (current step, animated)\n    - Ready for Pickup/Serving\n    - Completed
+  - Each step shows timestamp\n  - Current step highlighted with pulsing animation
 
 - **Estimated Time**:
   - Display estimated time remaining (e.g., 'Ready in 15 mins')
@@ -1218,7 +1224,8 @@ View past orders with detailed information and quick reorder functionality.
   - 'Rate Order' button (if not rated yet)
 
 **C. Reorder Functionality**
-\n- Click 'Reorder' button\n- All items from previous order added to cart
+
+- Click 'Reorder' button\n- All items from previous order added to cart
 - Customer can modify quantities or add/remove items
 - Proceed to checkout\n
 ---
@@ -1269,13 +1276,12 @@ View loyalty points, redeem rewards, and participate in referral program.
 - **Points History**:
   - Table showing points earned/redeemed with timestamps
   - Filter by date range
-\n**B. Referral Program**
 
+**B. Referral Program**\n
 - **Referral Code**:
   - Display unique referral code
   - 'Copy Code' button\n  - 'Share' button (share via WhatsApp, SMS, email)
-
-- **Referral Stats**:
+\n- **Referral Stats**:
   - Total referrals made
   - Rewards earned from referrals
 \n- **How It Works**:
@@ -1316,9 +1322,9 @@ Manage customer profile information and app preferences.
 - **Privacy Settings**:
   - Manage data sharing preferences
 
----\n
-#### 3.2.10 Help & Support
+---
 
+#### 3.2.10 Help & Support\n
 **Overview**:
 Access help resources and contact support.\n
 **Key Features**:\n
@@ -1360,8 +1366,8 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
   3. Pending Tasks (count)
   4. Orders Completed Today\n\n- **Assigned Orders Section**:
   - List of orders assigned to waiter
-  - Each order card shows: Order ID, table number, items, status, 'View Details' button
-- Real-time updates when new order assigned or status changes
+  - Each order card shows: Order ID, table number, items, status,'View Details' button
+  - Real-time updates when new order assigned or status changes
 
 - **Active Tables Section**:
   - Grid of assigned tables
@@ -1422,27 +1428,26 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 
 ### 4.1 Restaurant Owner Flow
 
-1. **Sign Up/Login** → Owner Dashboard\n2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details → Save
+1. **Sign Up/Login** → Owner Dashboard
+2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details (including restaurant type: Veg/Non-Veg/Both) → Save
 3. **Add Menu Items** → Menu Management → + Add Menu Item → Fill form → Save
 4. **Generate QR Codes** → QR Codes → + Generate QR Code → Configure → Download/Print
 5. **Receive Order** → Real-time notification → View order details → Accept/Reject
-6. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm\n7. **Track Order** → Order updates automatically in real-time
+6. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm
+7. **Track Order** → Order updates automatically in real-time
 8. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n9. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch
 10. **View Analytics** → Analytics → View reports and charts\n11. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
 
 ### 4.2 Customer Flow
 
 1. **Sign Up/Login** → Customer Home
-2. **Scan QR Code** → Camera opens → Scan → Restaurant menu displayed
+2. **Scan QR Code** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header
 3. **Browse Menu** → View categories and items → Click item for details\n4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart
 5. **Checkout** → Review cart → Enter details → Apply promo code → Select payment method → Place Order
 6. **Track Order** → Real-time order tracking page → View timeline and estimated time
-7. **Receive Order** → Order status updates to'Ready' → Notification received
-8. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
-9. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter → View previously scanned restaurants → Select restaurant → View menu
-10. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
-11. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards
-\n### 4.3 Waiter Flow
+7. **Receive Order** → Order status updates to'Ready' → Notification received\n8. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
+9. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu\n10. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
+11. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow
 
 1. **Login** → Waiter Dashboard
 2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list
@@ -1473,14 +1478,16 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - **Warning**: Neon yellow (#FFFF00)
 - **Error**: Neon red (#FF073A)
 - **Text**: White (#FFFFFF) or light grey (#E0E0E0)
+- **Restaurant Type Badges:** - **NEW**\n  - **Veg Badge**: Bright green (#39FF14) background with white text and leaf icon
+  - **Non-Veg Badge**: Bright red (#FF073A) background with white text and meat icon
+  - **Both Badge**: Bright orange (#FF8C00) background with white text and dual icon (leaf + meat)
 
 ### 5.4 UI Components
 
 - **Cards**: Glassmorphism effect with frosted glass background, semi-transparent (rgba(255, 255, 255, 0.1)), backdrop blur (10px), neon gradient borders (2px), rounded corners (12-16px border radius), subtle shadows with neon glow (box-shadow: 0 8px 32px rgba(0, 240, 255, 0.3))
 - **Buttons**: Neon gradient backgrounds (linear-gradient from cyan to magenta), rounded corners (8px), bold text, hover effects (scale1.05, glow intensifies), active state (scale 0.95)
-- **Inputs**: Dark background with neon border on focus, rounded corners, placeholder text in light grey\n- **Badges**: Small circular or pill-shaped elements with neon background, white text, used for counts and status indicators
-- **Icons**: Line-style icons with neon colors, consistent size (24px default)
-\n### 5.5 Animations
+- **Inputs**: Dark background with neon border on focus, rounded corners, placeholder text in light grey\n- **Badges**: Small circular or pill-shaped elements with neon background, white text, used for counts and status indicators. **Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side.**
+- **Icons**: Line-style icons with neon colors, consistent size (24px default)\n\n### 5.5 Animations
 
 - **Slide-in**: New order cards slide in from top with500ms bounce animation
 - **Pulsing Glow**: Notification badges and active elements have pulsing glow effect (keyframes animation)
@@ -1510,8 +1517,9 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 
 - **Frontend**: React.js or Next.js for dynamic UI, Tailwind CSS for styling, Framer Motion for animations
 - **Backend**: Node.js with Express.js or Django for API, WebSocket (Socket.io) for real-time communication
-- **Database**: PostgreSQL or MongoDB for data storage, Redis for caching and session management
-- **Authentication**: JWT tokens, OAuth 2.0 for Google login, OTP via Twilio or Firebase\n- **Payment Gateway**: Stripe, Razorpay, or PayPal integration\n- **Cloud Storage**: AWS S3 or Cloudinary for image uploads
+- **Database**: PostgreSQL or MongoDB for data storage (with restaurant_type field in restaurant schema: ENUM('Veg', 'Non-Veg', 'Both')), Redis for caching and session management
+- **Authentication**: JWT tokens, OAuth 2.0 for Google login, OTP via Twilio or Firebase\n- **Payment Gateway**: Stripe, Razorpay, or PayPal integration
+- **Cloud Storage**: AWS S3 or Cloudinary for image uploads
 - **Hosting**: AWS, Google Cloud, or Vercel for deployment
 
 ### 6.2 Real-Time Features
@@ -1519,8 +1527,7 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - **WebSocket Connection**: Persistent connection for instant data updates (orders, notifications, chat)
 - **Event-Driven Architecture**: Backend emits events on data changes, frontend listens and updates UI
 - **Optimistic UI Updates**: UI updates immediately on user action, syncs with backend in background
-\n### 6.3 Security
-
+\n### 6.3 Security\n
 - **Data Encryption**: HTTPS for all communications, encrypted storage for sensitive data
 - **Input Validation**: Server-side validation to prevent SQL injection, XSS attacks
 - **Rate Limiting**: Prevent abuse with rate limiting on API endpoints
@@ -1530,7 +1537,7 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - **Lazy Loading**: Load images and components on demand
 - **Code Splitting**: Split JavaScript bundles for faster initial load
 - **Caching**: Cache static assets and API responses
-- **Database Indexing**: Optimize database queries with proper indexing
+- **Database Indexing**: Optimize database queries with proper indexing (including index on restaurant_type field for fast filtering)
 - **CDN**: Use CDN for static assets to reduce latency
 
 ### 6.5 Scalability
@@ -1557,7 +1564,8 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 **Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue), glassmorphism effects (frosted glass cards with background blur and semi-transparent backgrounds), smooth gradients, multi-layered UI with floating elements, subtle shadows, and 3D effects.\n
 **Typography**: Orbitron Bold/Exo 2 Bold for headings, Poppins Regular/Inter Regular for body text, Orbitron Medium for buttons and interactive labels. Font colors: White or light grey on dark backgrounds, neon colors for emphasis.
 
-**Color Palette**:\n- Background: Deep charcoal grey (#1A1A1A) or dark blue (#0D1B2A)
+**Color Palette**:
+- Background: Deep charcoal grey (#1A1A1A) or dark blue (#0D1B2A)
 - Primary Accent: Electric cyan (#00F0FF)
 - Secondary Accent: Vibrant magenta (#FF006E)
 - Tertiary Accent: Electric blue (#3A86FF)
@@ -1565,8 +1573,9 @@ Waiter-facing dashboard displaying assigned orders, tables, and tasks with real-
 - Warning: Neon yellow (#FFFF00)
 - Error: Neon red (#FF073A)
 - Text: White (#FFFFFF) or light grey (#E0E0E0)
-\n**UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus.
-
+- Restaurant Type Badges:\n  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon\n  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
+  - Both Badge: Bright orange (#FF8C00) background with white text and dual icon\n
+**UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus. Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side.\n
 **Animations**: Slide-in animations for new orders (500ms bounce), pulsing glow for notification badges, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading.\n
 **Responsive Design**: Mobile-first approach, collapsible sidebar on mobile (hamburger menu), adaptive grid layouts (3 columns on desktop, 2 on tablet, 1 on mobile), touch-friendly buttons and inputs (minimum 44px height), optimized for all screen sizes.
 

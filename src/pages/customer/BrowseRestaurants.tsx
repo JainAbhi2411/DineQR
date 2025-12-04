@@ -2,17 +2,46 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { visitedRestaurantApi } from '@/db/api';
-import { VisitedRestaurantWithDetails } from '@/types/types';
+import { VisitedRestaurantWithDetails, RestaurantType } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Store, Search, X, MapPin, Star, Clock, ChevronRight } from 'lucide-react';
+import { Store, Search, X, MapPin, Star, Clock, ChevronRight, Leaf, Flame } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import CustomerLayout from '@/components/customer/CustomerLayout';
+import { cn } from '@/lib/utils';
 
 export default function BrowseRestaurants() {
+  const getRestaurantTypeBadge = (type: RestaurantType) => {
+    switch (type) {
+      case 'veg':
+        return (
+          <Badge variant="outline" className="border-green-600 text-green-600 text-xs">
+            <Leaf className="w-3 h-3 mr-1" /> Pure Veg
+          </Badge>
+        );
+      case 'non_veg':
+        return (
+          <Badge variant="outline" className="border-red-600 text-red-600 text-xs">
+            <Flame className="w-3 h-3 mr-1" /> Non-Veg
+          </Badge>
+        );
+      case 'both':
+        return (
+          <Badge variant="outline" className="border-orange-600 text-orange-600 text-xs">
+            <div className="flex items-center gap-1">
+              <Leaf className="w-3 h-3" />
+              <Flame className="w-3 h-3" />
+            </div>
+            <span className="ml-1">Veg & Non-Veg</span>
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
   const { profile } = useAuth();
   const [restaurants, setRestaurants] = useState<VisitedRestaurantWithDetails[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<VisitedRestaurantWithDetails[]>([]);
@@ -190,10 +219,13 @@ export default function BrowseRestaurants() {
                 </div>
 
                 <CardContent className="p-4">
-                  {/* Restaurant Name */}
-                  <h3 className="font-bold text-lg xl:text-xl mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-                    {visited.restaurant?.name || 'Unknown Restaurant'}
-                  </h3>
+                  {/* Restaurant Name & Type */}
+                  <div className="flex items-start gap-2 mb-2">
+                    <h3 className="font-bold text-lg xl:text-xl line-clamp-1 group-hover:text-primary transition-colors flex-1">
+                      {visited.restaurant?.name || 'Unknown Restaurant'}
+                    </h3>
+                    {visited.restaurant?.restaurant_type && getRestaurantTypeBadge(visited.restaurant.restaurant_type)}
+                  </div>
 
                   {/* Cuisine Types */}
                   {visited.restaurant?.cuisine_types && visited.restaurant.cuisine_types.length > 0 && (
