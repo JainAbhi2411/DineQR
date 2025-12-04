@@ -17,6 +17,9 @@ import Promotions from './pages/owner/Promotions';
 import Settings from './pages/owner/Settings';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import CustomerProfile from './pages/customer/CustomerProfile';
+import BrowseRestaurants from './pages/customer/BrowseRestaurants';
+import Rewards from './pages/customer/Rewards';
+import CustomerSettings from './pages/customer/Settings';
 import ScanQR from './pages/customer/ScanQR';
 import MenuBrowsing from './pages/customer/MenuBrowsing';
 import Checkout from './pages/customer/Checkout';
@@ -157,6 +160,30 @@ const routes: RouteConfig[] = [
     name: 'Customer Dashboard',
     path: '/customer/dashboard',
     component: CustomerDashboard,
+    visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
+  },
+  {
+    name: 'Browse Restaurants',
+    path: '/customer/restaurants',
+    component: BrowseRestaurants,
+    visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
+  },
+  {
+    name: 'Rewards',
+    path: '/customer/rewards',
+    component: Rewards,
+    visible: false,
+    protected: true,
+    allowedRoles: ['customer'],
+  },
+  {
+    name: 'Customer Settings',
+    path: '/customer/settings',
+    component: CustomerSettings,
     visible: false,
     protected: true,
     allowedRoles: ['customer'],

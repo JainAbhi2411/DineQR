@@ -9,6 +9,7 @@ import { Clock } from 'lucide-react';
 import { supabase } from '@/db/supabase';
 import OrderCard from '@/components/order/OrderCard';
 import PrintBill from '@/components/order/PrintBill';
+import CustomerLayout from '@/components/customer/CustomerLayout';
 
 export default function OrderHistory() {
   const { user } = useAuth();
@@ -115,33 +116,38 @@ export default function OrderHistory() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <Clock className="w-8 h-8 animate-spin text-primary" />
+      <CustomerLayout title="Order History">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
+            <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
+          </div>
         </div>
-      </div>
+      </CustomerLayout>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Order History</h1>
-        <p className="text-muted-foreground mt-2">
-          Track your orders and view order details
-        </p>
-      </div>
+    <CustomerLayout title="Order History">
+      <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4 xl:py-8 space-y-6">
+        <div className="animate-fade-in-up">
+          <p className="text-muted-foreground text-sm xl:text-base">
+            Track your orders and view order details
+          </p>
+        </div>
 
-      {orders.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center h-64">
-            <Clock className="w-12 h-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No orders yet</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              Start by scanning a QR code at a restaurant table
-            </p>
-          </CardContent>
-        </Card>
+        {orders.length === 0 ? (
+          <Card className="glass border-2 border-border animate-fade-in-up">
+            <CardContent className="flex flex-col items-center justify-center p-8 xl:p-12">
+              <div className="w-16 h-16 xl:w-20 xl:h-20 bg-muted rounded-full flex items-center justify-center mb-4">
+                <Clock className="w-8 h-8 xl:w-10 xl:h-10 text-muted-foreground" />
+              </div>
+              <p className="text-muted-foreground text-base xl:text-lg">No orders yet</p>
+              <p className="text-sm xl:text-base text-muted-foreground mt-2">
+                Start by scanning a QR code at a restaurant table
+              </p>
+            </CardContent>
+          </Card>
       ) : (
         <div className="space-y-4">
           {orders.map(order => (
@@ -163,6 +169,7 @@ export default function OrderHistory() {
           {printOrder && <PrintBill order={printOrder} />}
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </CustomerLayout>
   );
 }

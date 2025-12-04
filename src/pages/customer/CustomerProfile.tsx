@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import CustomerLayout from '@/components/customer/CustomerLayout';
 import { 
   User, 
   Mail, 
@@ -133,30 +134,33 @@ export default function CustomerProfile() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <CustomerLayout title="My Profile">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
+            <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
+          </div>
         </div>
-      </div>
+      </CustomerLayout>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-5xl">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">My Profile</h1>
-        <p className="text-muted-foreground">Manage your personal information and preferences</p>
-      </div>
+    <CustomerLayout title="My Profile">
+      <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4 xl:py-8">
+        <div className="mb-6 animate-fade-in-up">
+          <p className="text-muted-foreground text-sm xl:text-base">Manage your personal information and preferences</p>
+        </div>
 
-      <div className="grid gap-6 xl:grid-cols-3">
-        {/* Profile Card */}
-        <Card className="xl:col-span-1">
-          <CardContent className="pt-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="relative">
-                <Avatar className="w-32 h-32">
-                  <AvatarImage src={profile?.avatar_url || undefined} />
-                  <AvatarFallback className="text-2xl font-bold bg-primary text-primary-foreground">
+        <div className="grid gap-6 xl:grid-cols-3">
+          {/* Profile Card */}
+          <Card className="xl:col-span-1 glass border-2 border-border animate-fade-in-up">
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center text-center">
+                <div className="relative">
+                  <Avatar className="w-32 h-32">
+                    <AvatarImage src={profile?.avatar_url || undefined} />
+                    <AvatarFallback className="text-2xl font-bold bg-primary text-primary-foreground">
                     {getInitials()}
                   </AvatarFallback>
                 </Avatar>
@@ -422,6 +426,7 @@ export default function CustomerProfile() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </CustomerLayout>
   );
 }
