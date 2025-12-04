@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { visitedRestaurantApi } from '@/db/api';
 import { VisitedRestaurantWithDetails } from '@/types/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Store, Search, X, Clock, MapPin, Phone, Mail } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Store, Search, X, MapPin, Star, Clock, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import CustomerLayout from '@/components/customer/CustomerLayout';
-import { Badge } from '@/components/ui/badge';
 
 export default function BrowseRestaurants() {
   const { profile } = useAuth();
@@ -27,7 +27,6 @@ export default function BrowseRestaurants() {
   }, [profile]);
 
   useEffect(() => {
-    // Filter restaurants based on search query
     if (searchQuery.trim() === '') {
       setFilteredRestaurants(restaurants);
     } else {
@@ -60,15 +59,18 @@ export default function BrowseRestaurants() {
     }
   };
 
-  const handleRemoveRestaurant = async (id: string, e: React.MouseEvent) => {
+  const handleRemoveRestaurant = async (visitedRestaurantId: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    if (!profile) return;
+
     try {
-      await visitedRestaurantApi.deleteVisitedRestaurant(id);
-      setRestaurants(prev => prev.filter(r => r.id !== id));
+      await visitedRestaurantApi.deleteVisitedRestaurant(visitedRestaurantId);
       toast({
         title: 'Success',
         description: 'Restaurant removed from your list',
       });
+      loadRestaurants();
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -78,7 +80,7 @@ export default function BrowseRestaurants() {
     }
   };
 
-  const handleRestaurantClick = (restaurantId: string) => {
+  const handleViewMenu = (restaurantId: string) => {
     navigate(`/customer/menu/${restaurantId}`);
   };
 
@@ -87,8 +89,7 @@ export default function BrowseRestaurants() {
       <CustomerLayout title="Browse Restaurants">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
-            <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
           </div>
         </div>
       </CustomerLayout>
@@ -97,118 +98,136 @@ export default function BrowseRestaurants() {
 
   return (
     <CustomerLayout title="Browse Restaurants">
-      <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4 xl:py-8">
-        {/* Search Section */}
-        <div className="mb-6 xl:mb-8 animate-fade-in-up">
-          <div className="relative">
+      <div className="px-3 xl:px-6 py-4 xl:py-6">
+        {/* Search Bar */}
+        <div className="mb-6 animate-fade-in-up">
+          <div className="relative max-w-2xl">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
-              placeholder="Search restaurants by name, location, or email..."
+              type="text"
+              placeholder="Search restaurants by name, location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-12 text-base"
+              className="pl-10 pr-10 h-12 text-base border-2 focus:border-primary"
             />
             {searchQuery && (
               <Button
                 variant="ghost"
-                size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2"
+                size="sm"
                 onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
               >
                 <X className="w-4 h-4" />
               </Button>
             )}
           </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            {filteredRestaurants.length} restaurant{filteredRestaurants.length !== 1 ? 's' : ''} found
-          </p>
         </div>
 
-        {/* Restaurants Grid */}
+        {/* Results Count */}
+        {filteredRestaurants.length > 0 && (
+          <div className="mb-4">
+            <p className="text-sm text-muted-foreground">
+              {filteredRestaurants.length} restaurant{filteredRestaurants.length !== 1 ? 's' : ''} found
+            </p>
+          </div>
+        )}
+
+        {/* Restaurant Grid */}
         {filteredRestaurants.length === 0 ? (
-          <Card className="glass border-2 border-border animate-fade-in-up">
-            <CardContent className="p-8 xl:p-12 text-center">
-              <div className="w-16 h-16 xl:w-20 xl:h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                <Store className="w-8 h-8 xl:w-10 xl:h-10 text-muted-foreground" />
-              </div>
-              <h3 className="text-lg xl:text-xl font-semibold mb-2">
-                {searchQuery ? 'No restaurants found' : 'No visited restaurants yet'}
-              </h3>
-              <p className="text-muted-foreground text-sm xl:text-base mb-4">
-                {searchQuery 
-                  ? 'Try adjusting your search terms'
-                  : 'Scan a QR code at a restaurant to get started'
-                }
-              </p>
-              {!searchQuery && (
-                <Button 
-                  onClick={() => navigate('/customer/scan')}
-                  className="morph-button hover-glow-orange"
-                >
-                  Scan QR Code
-                </Button>
-              )}
-            </CardContent>
-          </Card>
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center animate-fade-in-up">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Store className="w-10 h-10 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">No Restaurants Found</h3>
+            <p className="text-muted-foreground mb-6 max-w-md">
+              {searchQuery 
+                ? 'Try adjusting your search terms'
+                : 'Start exploring by scanning a restaurant QR code'}
+            </p>
+            {!searchQuery && (
+              <Button onClick={() => navigate('/customer/scan')} size="lg">
+                Scan QR Code
+              </Button>
+            )}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 xl:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-6">
             {filteredRestaurants.map((visited, index) => (
-              <Card 
-                key={visited.id} 
-                className="glass border-2 border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden group animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => handleRestaurantClick(visited.restaurant_id)}
+              <Card
+                key={visited.id}
+                className="group cursor-pointer overflow-hidden border-2 hover:border-primary hover:shadow-xl transition-all duration-300 animate-fade-in-up"
+                style={{ animationDelay: `${index * 50}ms` }}
+                onClick={() => handleViewMenu(visited.restaurant_id)}
               >
-                <div className="scan-line" />
-                <CardHeader className="p-4 xl:p-6 relative z-10">
-                  <div className="flex justify-between items-start gap-2 mb-2">
-                    <div className="flex items-start gap-3 flex-1">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0">
-                        {visited.restaurant?.name?.charAt(0) || 'R'}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-base xl:text-lg mb-1 truncate">
-                          {visited.restaurant?.name || 'Restaurant'}
-                        </CardTitle>
-                        <CardDescription className="text-xs xl:text-sm flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          Last visited: {formatDateTime(visited.last_visited_at)}
-                        </CardDescription>
-                      </div>
+                {/* Restaurant Image */}
+                <div className="relative h-40 xl:h-48 overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                  {visited.restaurant?.images?.[0] ? (
+                    <img
+                      src={visited.restaurant.images[0]}
+                      alt={visited.restaurant.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Store className="w-16 h-16 text-primary/30" />
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="shrink-0 h-8 w-8"
-                      onClick={(e) => handleRemoveRestaurant(visited.id, e)}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
+                  )}
+                  
+                  {/* Remove Button */}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={(e) => handleRemoveRestaurant(visited.id, e)}
+                    className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+
+                  {/* Visit Count Badge */}
+                  <Badge className="absolute bottom-2 left-2 bg-background/90 text-foreground border">
+                    Visited {visited.visit_count}x
+                  </Badge>
+                </div>
+
+                <CardContent className="p-4">
+                  {/* Restaurant Name */}
+                  <h3 className="font-bold text-lg xl:text-xl mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                    {visited.restaurant?.name || 'Unknown Restaurant'}
+                  </h3>
+
+                  {/* Cuisine Types */}
+                  {visited.restaurant?.cuisine_types && visited.restaurant.cuisine_types.length > 0 && (
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-1">
+                      {visited.restaurant.cuisine_types.join(', ')}
+                    </p>
+                  )}
+
+                  {/* Rating & Delivery Time */}
+                  <div className="flex items-center gap-4 mb-3 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-primary text-primary" />
+                      <span className="font-semibold">{visited.restaurant?.average_rating?.toFixed(1) || '4.0'}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <Clock className="w-4 h-4" />
+                      <span>25-30 mins</span>
+                    </div>
                   </div>
-                </CardHeader>
-                <CardContent className="p-4 xl:p-6 pt-0 space-y-2 relative z-10">
+
+                  {/* Location */}
                   {visited.restaurant?.location && (
-                    <div className="flex items-start gap-2 text-xs xl:text-sm text-muted-foreground">
+                    <div className="flex items-start gap-2 text-xs xl:text-sm text-muted-foreground mb-3">
                       <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
                       <span className="line-clamp-2">{visited.restaurant.location}</span>
                     </div>
                   )}
-                  {visited.restaurant?.phone && (
-                    <div className="flex items-center gap-2 text-xs xl:text-sm text-muted-foreground">
-                      <Phone className="w-4 h-4 shrink-0" />
-                      <span>{visited.restaurant.phone}</span>
-                    </div>
-                  )}
-                  {visited.restaurant?.contact_details && (
-                    <div className="flex items-center gap-2 text-xs xl:text-sm text-muted-foreground">
-                      <Mail className="w-4 h-4 shrink-0" />
-                      <span className="truncate">{visited.restaurant.contact_details}</span>
-                    </div>
-                  )}
-                  <div className="pt-2 mt-2 border-t">
-                    <Badge variant="secondary" className="text-xs">
-                      Visited {visited.visit_count} time{visited.visit_count !== 1 ? 's' : ''}
-                    </Badge>
+
+                  {/* Last Visited */}
+                  <div className="flex items-center justify-between pt-3 border-t">
+                    <span className="text-xs text-muted-foreground">
+                      Last visited {formatDateTime(visited.last_visited_at)}
+                    </span>
+                    <ChevronRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
                   </div>
                 </CardContent>
               </Card>

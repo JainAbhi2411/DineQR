@@ -6,8 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -20,73 +19,43 @@ import {
   Minus, 
   Search, 
   MapPin, 
-  Phone, 
   Star,
   Clock,
   Leaf,
   Flame,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Info,
-  ChevronRight,
   X,
-  Check,
-  Egg,
+  ChevronRight,
   Award,
   ChefHat
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+interface ExtendedCartItem extends CartItem {
+  id: string;
+}
 
 export default function MenuBrowsing() {
   const { restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { formatCurrency, formatDateTime, formatDate } = useFormatters();
+  const { formatCurrency } = useFormatters();
   const tableId = searchParams.get('table');
   
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [showFilters, setShowFilters] = useState(false);
-  const [showCart, setShowCart] = useState(false);
+  const [selectedItemType, setSelectedItemType] = useState<ItemType | 'all'>('all');
+  const [cart, setCart] = useState<ExtendedCartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showPortionDialog, setShowPortionDialog] = useState(false);
-  const [itemForPortionSelection, setItemForPortionSelection] = useState<MenuItem | null>(null);
+  const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
-  
-  // Filters
-  const [itemTypeFilter, setItemTypeFilter] = useState<ItemType | 'all'>('all');
-  const [vegOnly, setVegOnly] = useState(false);
-  const [veganOnly, setVeganOnly] = useState(false);
-  const [glutenFreeOnly, setGlutenFreeOnly] = useState(false);
-  const [bestsellerOnly, setBestsellerOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<'default' | 'price-low' | 'price-high' | 'name' | 'rating'>('default');
-
+  const [customization, setCustomization] = useState('');
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  // Helper function to get item type icon and color
-  const getItemTypeInfo = (itemType: ItemType) => {
-    switch (itemType) {
-      case 'veg':
-        return { icon: Leaf, color: 'text-green-600', bgColor: 'bg-green-100', label: 'Veg' };
-      case 'non_veg':
-        return { icon: ChefHat, color: 'text-red-600', bgColor: 'bg-red-100', label: 'Non-Veg' };
-      case 'vegan':
-        return { icon: Leaf, color: 'text-emerald-600', bgColor: 'bg-emerald-100', label: 'Vegan' };
-      case 'egg':
-        return { icon: Egg, color: 'text-amber-600', bgColor: 'bg-amber-100', label: 'Egg' };
-      default:
-        return { icon: ChefHat, color: 'text-gray-600', bgColor: 'bg-gray-100', label: 'Other' };
-    }
-  };
 
   useEffect(() => {
     loadData();
@@ -94,18 +63,18 @@ export default function MenuBrowsing() {
 
   const loadData = async () => {
     if (!restaurantId) return;
-    
+
     try {
       setLoading(true);
       const [restaurantData, categoriesData, itemsData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         menuCategoryApi.getCategoriesByRestaurant(restaurantId),
-        menuItemApi.getItemsByRestaurant(restaurantId),
+        menuItemApi.getItemsByRestaurant(restaurantId)
       ]);
-      
+
       setRestaurant(restaurantData);
       setCategories(categoriesData);
-      setMenuItems(itemsData.filter(item => item.is_available));
+      setMenuItems(itemsData);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -117,115 +86,103 @@ export default function MenuBrowsing() {
     }
   };
 
-  const addToCart = (item: MenuItem, variant?: MenuItemVariant) => {
-    // Check if item has portions and no variant is selected
-    if (item.has_portions && item.variants && item.variants.length > 0 && !variant) {
-      setItemForPortionSelection(item);
-      setSelectedVariant(item.variants[0]); // Default to first variant
-      setShowPortionDialog(true);
+  const filteredItems = menuItems.filter(item => {
+    const matchesSearch = searchQuery === '' || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = selectedCategory === 'all' || item.category_id === selectedCategory;
+    const matchesType = selectedItemType === 'all' || item.item_type === selectedItemType;
+    const isAvailable = item.is_available;
+
+    return matchesSearch && matchesCategory && matchesType && isAvailable;
+  });
+
+  const groupedItems = categories.reduce((acc, category) => {
+    const items = filteredItems.filter(item => item.category_id === category.id);
+    if (items.length > 0) {
+      acc[category.id] = { category, items };
+    }
+    return acc;
+  }, {} as { [key: string]: { category: MenuCategory; items: MenuItem[] } });
+
+  const handleAddToCart = (item: MenuItem, variant?: MenuItemVariant) => {
+    if (item.variants && item.variants.length > 0 && !variant) {
+      setSelectedItem(item);
+      setSelectedVariant(item.variants[0]);
+      setItemDialogOpen(true);
       return;
     }
 
-    const portionSize = variant?.name || null;
-    const price = variant?.price || item.price;
-    
-    // Create a unique key for cart items with different portions
-    const cartKey = `${item.id}-${portionSize || 'default'}`;
-    const existingItem = cart.find((cartItem) => 
-      cartItem.menu_item.id === item.id && cartItem.portionSize === portionSize
-    );
-    
-    if (existingItem) {
-      setCart(cart.map((cartItem) =>
-        cartItem.menu_item.id === item.id && cartItem.portionSize === portionSize
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      ));
-    } else {
-      setCart([...cart, { 
-        menu_item: item, 
-        quantity: 1,
-        selectedVariant: variant,
-        portionSize: portionSize,
-      }]);
-    }
-    
+    const cartItem: ExtendedCartItem = {
+      id: `${item.id}-${variant?.name || 'default'}-${Date.now()}`,
+      menu_item: item,
+      quantity: 1,
+      notes: customization || undefined,
+      selectedVariant: variant,
+    };
+
+    setCart([...cart, cartItem]);
+    setCustomization('');
     toast({
-      title: '✓ Added to cart',
-      description: `${item.name}${portionSize ? ` (${portionSize})` : ''} added successfully`,
+      title: 'Added to cart',
+      description: `${item.name} ${variant ? `(${variant.name})` : ''} added to cart`,
     });
   };
 
-  const confirmPortionSelection = () => {
-    if (itemForPortionSelection && selectedVariant) {
-      addToCart(itemForPortionSelection, selectedVariant);
-      setShowPortionDialog(false);
-      setItemForPortionSelection(null);
-      setSelectedVariant(null);
-    }
+  const handleConfirmAddToCart = () => {
+    if (!selectedItem) return;
+    handleAddToCart(selectedItem, selectedVariant || undefined);
+    setItemDialogOpen(false);
+    setSelectedItem(null);
+    setSelectedVariant(null);
   };
 
-  const removeFromCart = (itemId: string, portionSize?: string | null) => {
-    const existingItem = cart.find((cartItem) => 
-      cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
-    );
-    
-    if (existingItem && existingItem.quantity > 1) {
-      setCart(cart.map((cartItem) =>
-        cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
-      ));
-    } else {
-      setCart(cart.filter((cartItem) => 
-        !(cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize)
-      ));
-    }
+  const updateCartItemQuantity = (cartItemId: string, delta: number) => {
+    setCart(prevCart => {
+      const newCart = prevCart.map(item => {
+        if (item.id === cartItemId) {
+          const newQuantity = item.quantity + delta;
+          if (newQuantity <= 0) return null;
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      }).filter(Boolean) as ExtendedCartItem[];
+      return newCart;
+    });
   };
 
-  const getCartItemQuantity = (itemId: string, portionSize?: string | null) => {
-    const item = cart.find((cartItem) => 
-      cartItem.menu_item.id === itemId && cartItem.portionSize === portionSize
-    );
-    return item ? item.quantity : 0;
+  const removeFromCart = (cartItemId: string) => {
+    setCart(cart.filter(item => item.id !== cartItemId));
   };
 
-  const getTotalAmount = () => {
-    return cart.reduce((total, item) => {
-      const price = item.selectedVariant?.price || item.menu_item.price;
-      return total + price * item.quantity;
-    }, 0);
+  const getCartItemCount = (menuItemId: string, variantName?: string) => {
+    return cart
+      .filter(item => item.menu_item.id === menuItemId && item.selectedVariant?.name === variantName)
+      .reduce((sum, item) => sum + item.quantity, 0);
   };
 
-  const getTotalItems = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+  const getItemPrice = (item: MenuItem, variant?: MenuItemVariant) => {
+    return variant?.price || item.price;
   };
+
+  const cartTotal = cart.reduce((sum, item) => {
+    const price = getItemPrice(item.menu_item, item.selectedVariant);
+    return sum + (price * item.quantity);
+  }, 0);
+  
+  const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCheckout = () => {
-    if (cart.length === 0) {
-      toast({
-        title: 'Cart is empty',
-        description: 'Please add items to your cart',
-        variant: 'destructive',
-      });
-      return;
-    }
+    if (cart.length === 0) return;
     
-    navigate(`/customer/checkout/${restaurantId}?table=${tableId}`, {
-      state: { cart, restaurant },
+    navigate('/customer/checkout', {
+      state: {
+        cart,
+        restaurant,
+        tableId
+      }
     });
-  };
-
-  const toggleFavorite = (itemId: string) => {
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(itemId)) {
-      newFavorites.delete(itemId);
-      toast({ title: 'Removed from favorites' });
-    } else {
-      newFavorites.add(itemId);
-      toast({ title: '❤️ Added to favorites' });
-    }
-    setFavorites(newFavorites);
   };
 
   const scrollToCategory = (categoryId: string) => {
@@ -237,447 +194,360 @@ export default function MenuBrowsing() {
     }
   };
 
-  const filteredItems = menuItems.filter((item) => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || item.category_id === selectedCategory;
-    const matchesItemType = itemTypeFilter === 'all' || item.item_type === itemTypeFilter;
-    const matchesVeg = !vegOnly || item.is_vegetarian;
-    const matchesVegan = !veganOnly || item.is_vegan;
-    const matchesGlutenFree = !glutenFreeOnly || item.is_gluten_free;
-    const matchesBestseller = !bestsellerOnly || item.is_bestseller;
-    
-    return matchesSearch && matchesCategory && matchesItemType && matchesVeg && matchesVegan && matchesGlutenFree && matchesBestseller;
-  });
-
-  const sortedItems = [...filteredItems].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-low':
-        return a.price - b.price;
-      case 'price-high':
-        return b.price - a.price;
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'rating':
-        return (b.rating || 0) - (a.rating || 0);
-      default:
-        return 0;
+  const getItemTypeIcon = (type: ItemType) => {
+    switch (type) {
+      case 'veg': return <Leaf className="w-3 h-3 xl:w-4 xl:h-4" />;
+      case 'non_veg': return <Flame className="w-3 h-3 xl:w-4 xl:h-4" />;
+      case 'egg': return <div className="w-3 h-3 xl:w-4 xl:h-4 rounded-full border-2 border-yellow-600" />;
+      default: return null;
     }
-  });
+  };
 
-  const groupedItems = categories.reduce((acc, category) => {
-    const items = sortedItems.filter((item) => item.category_id === category.id);
-    if (items.length > 0) {
-      acc[category.id] = { category, items };
+  const getItemTypeBadgeColor = (type: ItemType) => {
+    switch (type) {
+      case 'veg': return 'border-green-600 text-green-600';
+      case 'non_veg': return 'border-red-600 text-red-600';
+      case 'egg': return 'border-yellow-600 text-yellow-600';
+      default: return '';
     }
-    return acc;
-  }, {} as Record<string, { category: MenuCategory; items: MenuItem[] }>);
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-primary/5 to-background">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-primary/40 rounded-full animate-spin" style={{ animationDuration: '0.8s' }} />
-        </div>
-        <p className="mt-4 text-muted-foreground animate-pulse">Loading delicious menu...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
-  const activeFiltersCount = [vegOnly, veganOnly, glutenFreeOnly, bestsellerOnly, itemTypeFilter !== 'all'].filter(Boolean).length;
+  if (!restaurant) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <h2 className="text-2xl font-bold mb-4">Restaurant Not Found</h2>
+        <Button onClick={() => navigate('/customer/browse')}>Browse Restaurants</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Restaurant Header with Images and Enhanced Info */}
-      <div className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground overflow-hidden">
-        {/* Restaurant Images Carousel */}
-        {restaurant?.images && restaurant.images.length > 0 && (
-          <div className="relative h-48 xl:h-80 overflow-hidden">
-            <img
-              src={restaurant.images[currentImageIndex]}
-              alt={restaurant.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            
-            {/* Image Navigation Dots */}
-            {restaurant.images.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-                {restaurant.images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={cn(
-                      "w-2 h-2 rounded-full transition-all",
-                      index === currentImageIndex ? "bg-white w-6" : "bg-white/50"
-                    )}
-                  />
-                ))}
+      {/* Restaurant Header */}
+      <div className="bg-gradient-to-b from-primary/10 to-background border-b sticky top-0 z-40 backdrop-blur-sm bg-background/80">
+        <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl xl:text-3xl font-bold mb-1 truncate">{restaurant.name}</h1>
+              <p className="text-sm text-muted-foreground mb-2 line-clamp-1">
+                {restaurant.cuisine_types?.join(', ') || 'Multi-cuisine'}
+              </p>
+              <div className="flex items-center gap-3 xl:gap-4 text-xs xl:text-sm flex-wrap">
+                <div className="flex items-center gap-1">
+                  <Star className="w-4 h-4 fill-primary text-primary" />
+                  <span className="font-semibold">{restaurant.average_rating?.toFixed(1) || '4.0'}</span>
+                </div>
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <Clock className="w-4 h-4" />
+                  <span>25-30 mins</span>
+                </div>
+                {restaurant.location && (
+                  <div className="flex items-center gap-1 text-muted-foreground">
+                    <MapPin className="w-4 h-4" />
+                    <span className="truncate max-w-[200px]">{restaurant.location}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            {restaurant.images?.[0] && (
+              <div className="w-16 h-16 xl:w-20 xl:h-20 rounded-lg overflow-hidden shrink-0 border-2 border-primary/20">
+                <img src={restaurant.images[0]} alt={restaurant.name} className="w-full h-full object-cover" />
               </div>
             )}
           </div>
-        )}
-        
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMS4xLjktMiAyLTJzMiAuOSAyIDItLjkgMi0yIDItMi0uOS0yLTJ6bS04IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnptLTE2IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 py-6 xl:px-8 xl:py-8">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl font-bold xl:text-4xl animate-fade-in">{restaurant?.name}</h1>
-                {restaurant?.restaurant_type && (
-                  <Badge className={cn(
-                    "text-xs xl:text-sm",
-                    restaurant.restaurant_type === 'veg' ? 'bg-green-600' :
-                    restaurant.restaurant_type === 'non_veg' ? 'bg-red-600' :
-                    'bg-amber-600'
-                  )}>
-                    {restaurant.restaurant_type === 'veg' ? '🌿 Pure Veg' :
-                     restaurant.restaurant_type === 'non_veg' ? '🍖 Non-Veg' :
-                     '🌿🍖 Veg & Non-Veg'}
-                  </Badge>
-                )}
-              </div>
-              
-              {restaurant?.cuisine_types && restaurant.cuisine_types.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {restaurant.cuisine_types.map((cuisine, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border-0">
-                      {cuisine}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-              
-              <div className="flex flex-wrap gap-2 text-xs xl:gap-4 xl:text-sm opacity-90">
-                {restaurant?.address && (
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    <span>{restaurant.address}</span>
-                  </div>
-                )}
-                {restaurant?.phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <span>{restaurant.phone}</span>
-                  </div>
-                )}
-                {restaurant?.average_rating !== undefined && restaurant.average_rating > 0 && (
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 fill-current" />
-                    <span>{restaurant.average_rating.toFixed(1)} Rating</span>
-                  </div>
-                )}
-                {restaurant?.opening_hours && (
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>Open Now</span>
-                  </div>
-                )}
-              </div>
-              {restaurant?.description && (
-                <p className="mt-2 text-xs xl:mt-3 xl:text-sm opacity-90 max-w-2xl line-clamp-2 xl:line-clamp-none">{restaurant.description}</p>
-              )}
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Sticky Search and Filters Bar */}
-      <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-lg border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 xl:px-8">
-          {/* Veg/Non-Veg Toggle for restaurants with "both" type */}
-          {restaurant?.restaurant_type === 'both' && (
-            <div className="mb-3">
-              <Tabs value={itemTypeFilter} onValueChange={(value) => setItemTypeFilter(value as ItemType | 'all')} className="w-full">
-                <TabsList className="grid w-full grid-cols-4 h-10">
-                  <TabsTrigger value="all" className="text-xs xl:text-sm">All</TabsTrigger>
-                  <TabsTrigger value="veg" className="text-xs xl:text-sm">
-                    <Leaf className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
-                    Veg
-                  </TabsTrigger>
-                  <TabsTrigger value="non_veg" className="text-xs xl:text-sm">
-                    <ChefHat className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
-                    Non-Veg
-                  </TabsTrigger>
-                  <TabsTrigger value="vegan" className="text-xs xl:text-sm">
-                    <Leaf className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
-                    Vegan
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-          )}
-          
-          <div className="flex gap-2 items-center xl:gap-3">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 xl:w-5 xl:h-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search for dishes..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 h-10 text-sm xl:pl-10 xl:h-11 xl:text-base border-2 focus:border-primary"
-              />
-            </div>
-            <Button
-              variant="outline"
-              size="default"
-              onClick={() => setShowFilters(true)}
-              className="relative h-10 w-10 p-0 xl:h-11 xl:w-auto xl:px-4"
-            >
-              <SlidersHorizontal className="w-4 h-4 xl:w-5 xl:h-5" />
-              {activeFiltersCount > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-4 w-4 xl:-top-2 xl:-right-2 xl:h-5 xl:w-5 p-0 flex items-center justify-center text-xs">
-                  {activeFiltersCount}
-                </Badge>
-              )}
-            </Button>
-          </div>
-          
-          {/* Category Pills - Horizontal Scroll */}
-          <div className="flex gap-2 mt-3 overflow-x-auto pb-2 scrollbar-hide">
-            <Button
-              variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => scrollToCategory('all')}
-              className="whitespace-nowrap text-xs h-8 xl:text-sm xl:h-9"
-            >
-              All Items
-            </Button>
-            {categories.map((category) => (
+      {/* Search and Filters */}
+      <div className="sticky top-[120px] xl:top-[140px] z-30 bg-background border-b shadow-sm">
+        <div className="max-w-7xl mx-auto px-3 xl:px-6 py-3">
+          {/* Search Bar */}
+          <div className="relative mb-3">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search for dishes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10 h-10 text-sm"
+            />
+            {searchQuery && (
               <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? 'default' : 'outline'}
+                variant="ghost"
                 size="sm"
-                onClick={() => scrollToCategory(category.id)}
-                className="whitespace-nowrap text-xs h-8 xl:text-sm xl:h-9"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
               >
-                {category.name}
+                <X className="w-4 h-4" />
               </Button>
-            ))}
+            )}
+          </div>
+
+          {/* Type Filter */}
+          <Tabs value={selectedItemType} onValueChange={(v) => setSelectedItemType(v as ItemType | 'all')} className="mb-3">
+            <TabsList className="w-full grid grid-cols-4 h-9">
+              <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
+              <TabsTrigger value="veg" className="text-xs">
+                <Leaf className="w-3 h-3 mr-1" /> Veg
+              </TabsTrigger>
+              <TabsTrigger value="non_veg" className="text-xs">
+                <Flame className="w-3 h-3 mr-1" /> Non-Veg
+              </TabsTrigger>
+              <TabsTrigger value="egg" className="text-xs">Egg</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Category Tabs - Horizontal Scroll */}
+          <div className="overflow-x-auto -mx-3 xl:-mx-6 px-3 xl:px-6 scrollbar-hide">
+            <div className="flex gap-2 min-w-max">
+              <Button
+                variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => scrollToCategory('all')}
+                className="shrink-0 h-8 text-xs"
+              >
+                All Items
+              </Button>
+              {categories.map(category => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => scrollToCategory(category.id)}
+                  className="shrink-0 h-8 text-xs"
+                >
+                  {category.name}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Menu Items Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-4 xl:px-8 xl:py-6">
+      {/* Menu Items */}
+      <div className="max-w-7xl mx-auto px-3 xl:px-6 py-4">
         {Object.keys(groupedItems).length === 0 ? (
-          <Card className="border-2 border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-              <Search className="w-16 h-16 text-muted-foreground mb-4 opacity-50" />
-              <h3 className="text-xl font-semibold mb-2">No items found</h3>
-              <p className="text-muted-foreground text-center max-w-md">
-                Try adjusting your search or filters to find what you're looking for
-              </p>
-            </CardContent>
-          </Card>
+          <div className="text-center py-16">
+            <ChefHat className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No items found</h3>
+            <p className="text-muted-foreground">Try adjusting your filters</p>
+          </div>
         ) : (
-          <div className="space-y-8">
-            {Object.values(groupedItems).map(({ category, items }) => (
-              <div 
-                key={category.id} 
-                ref={(el) => { if (el) categoryRefs.current[category.id] = el; }}
-                className="scroll-mt-32"
-              >
-                <div className="mb-4 xl:mb-6">
-                  <h2 className="text-xl font-bold mb-1 xl:text-3xl xl:mb-2">{category.name}</h2>
+          <div className="space-y-6">
+            {Object.entries(groupedItems).map(([categoryId, { category, items }]) => (
+              <div key={categoryId} ref={el => { categoryRefs.current[categoryId] = el; }}>
+                {/* Category Header */}
+                <div className="mb-4">
+                  <h2 className="text-lg xl:text-2xl font-bold">{category.name}</h2>
                   {category.description && (
-                    <p className="text-sm text-muted-foreground xl:text-base">{category.description}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{category.description}</p>
                   )}
-                  <Separator className="mt-2 xl:mt-3" />
                 </div>
-                
-                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4">
-                  {items.map((item) => {
-                    const quantity = getCartItemQuantity(item.id);
-                    const isFavorite = favorites.has(item.id);
-                    const itemTypeInfo = getItemTypeInfo(item.item_type);
-                    const ItemTypeIcon = itemTypeInfo.icon;
+
+                {/* Items Grid - Mobile: Horizontal Cards, Desktop: Grid */}
+                <div className="space-y-3 xl:grid xl:grid-cols-2 xl:gap-4 xl:space-y-0">
+                  {items.map((item, index) => {
+                    const itemCount = getCartItemCount(item.id);
                     
                     return (
-                      <Card 
-                        key={item.id} 
-                        className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/50 cursor-pointer"
+                      <Card
+                        key={item.id}
+                        className="overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-in-up border-2 hover:border-primary/50"
+                        style={{ animationDelay: `${index * 30}ms` }}
                       >
-                        <div className="flex h-full">
-                          {/* Item Image */}
-                          {item.image_url && (
-                            <div className="relative w-24 flex-shrink-0 overflow-hidden xl:w-40">
-                              <img
-                                src={item.image_url}
-                                alt={item.name}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                loading="lazy"
-                              />
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleFavorite(item.id);
-                                }}
-                                className="absolute top-1 right-1 w-7 h-7 xl:top-2 xl:right-2 xl:w-8 xl:h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg"
-                              >
-                                <Heart 
-                                  className={cn(
-                                    "w-3 h-3 xl:w-4 xl:h-4 transition-colors",
-                                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"
-                                  )} 
-                                />
-                              </button>
-                              
-                              {/* Item Type Badge on Image */}
-                              <div className="absolute top-1 left-1 xl:top-2 xl:left-2">
-                                <Badge className={cn("border-0 h-6 px-2 xl:h-7 xl:px-2.5", itemTypeInfo.bgColor, itemTypeInfo.color)}>
-                                  <ItemTypeIcon className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
-                                </Badge>
+                        <CardContent className="p-0">
+                          {/* Mobile: Horizontal Layout */}
+                          <div className="flex gap-3 p-3 xl:hidden">
+                            {/* Item Details */}
+                            <div className="flex-1 min-w-0">
+                              {/* Type Badge */}
+                              <div className={cn(
+                                "inline-flex items-center justify-center w-5 h-5 border-2 rounded mb-2",
+                                getItemTypeBadgeColor(item.item_type)
+                              )}>
+                                {getItemTypeIcon(item.item_type)}
                               </div>
-                              
-                              {/* Bestseller & Spice Level Badges */}
-                              <div className="absolute bottom-1 left-1 flex gap-1 xl:bottom-2 xl:left-2">
-                                {item.is_bestseller && (
-                                  <Badge className="bg-amber-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
-                                    <Award className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
-                                  </Badge>
-                                )}
-                                {item.spice_level && item.spice_level !== 'none' && (
-                                  <Badge className="bg-red-500 text-white border-0 h-5 px-1.5 xl:h-6 xl:px-2">
-                                    <Flame className="w-2.5 h-2.5 xl:w-3 xl:h-3" />
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Item Details */}
-                          <div 
-                            className="flex-1 p-3 flex flex-col xl:p-4"
-                            onClick={() => setSelectedItem(item)}
-                          >
-                            <div className="flex-1">
-                              <div className="flex items-start justify-between gap-2 mb-1 xl:mb-2">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors xl:text-xl">
-                                      {item.name}
-                                    </h3>
-                                    {item.is_bestseller && (
-                                      <Badge variant="secondary" className="text-xs h-5 bg-amber-100 text-amber-700">
-                                        Bestseller
-                                      </Badge>
-                                    )}
-                                  </div>
-                                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    {item.rating > 0 && (
-                                      <div className="flex items-center gap-1">
-                                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                                        <span className="font-medium">{item.rating.toFixed(1)}</span>
-                                      </div>
-                                    )}
-                                    {item.preparation_time && (
-                                      <div className="flex items-center gap-1">
-                                        <Clock className="w-3 h-3" />
-                                        <span>{item.preparation_time} mins</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedItem(item);
-                                  }}
-                                  className="text-primary hover:text-primary/80"
-                                >
-                                  <Info className="w-5 h-5" />
-                                </button>
-                              </div>
-                              
+
+                              {/* Name */}
+                              <h3 className="font-bold text-sm mb-1 line-clamp-2">{item.name}</h3>
+
+                              {/* Price */}
+                              <p className="font-semibold text-sm mb-2">
+                                {formatCurrency(item.price)}
+                              </p>
+
+                              {/* Description */}
                               {item.description && (
-                                <p className="text-xs text-muted-foreground line-clamp-2 mb-2 xl:text-sm xl:mb-3">
+                                <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
                                   {item.description}
                                 </p>
                               )}
-                              
-                              {/* Tags */}
-                              {item.tags && item.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mb-2">
-                                  {item.tags.slice(0, 3).map((tag, index) => (
-                                    <Badge key={index} variant="outline" className="text-xs h-5 xl:h-6">
-                                      {tag}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              )}
-                              
-                              {/* Dietary Info Badges */}
-                              <div className="flex flex-wrap gap-1 mb-2 xl:mb-3">
-                                {item.is_vegan && (
-                                  <Badge variant="secondary" className="text-xs h-5 xl:h-6">
-                                    Vegan
+
+                              {/* Badges */}
+                              <div className="flex flex-wrap gap-1">
+                                {item.is_bestseller && (
+                                  <Badge variant="secondary" className="text-xs h-5 px-1.5">
+                                    <Award className="w-3 h-3 mr-0.5" /> Bestseller
                                   </Badge>
                                 )}
-                                {item.is_gluten_free && (
-                                  <Badge variant="secondary" className="text-xs h-5 xl:h-6">
-                                    Gluten-Free
-                                  </Badge>
-                                )}
-                                {item.calories && (
-                                  <Badge variant="outline" className="text-xs h-5 xl:h-6">
-                                    {item.calories} cal
+                                {item.tags?.includes('spicy') && (
+                                  <Badge variant="destructive" className="text-xs h-5 px-1.5">
+                                    <Flame className="w-3 h-3 mr-0.5" /> Spicy
                                   </Badge>
                                 )}
                               </div>
                             </div>
-                            
-                            {/* Price and Add Button */}
-                            <div className="flex items-center justify-between gap-2 mt-auto xl:gap-3">
-                              <div className="text-lg font-bold text-primary xl:text-2xl">
-                                ${formatCurrency(item.price)}
-                              </div>
-                              
-                              {quantity === 0 ? (
-                                <Button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    addToCart(item);
-                                  }}
-                                  size="sm"
-                                  className="font-semibold h-8 text-xs xl:h-9 xl:text-sm"
-                                >
-                                  <Plus className="w-3 h-3 mr-1 xl:w-4 xl:h-4" />
-                                  Add
-                                </Button>
+
+                            {/* Image and Add Button */}
+                            <div className="relative shrink-0">
+                              {item.image_url ? (
+                                <div className="w-24 h-24 rounded-lg overflow-hidden">
+                                  <img
+                                    src={item.image_url}
+                                    alt={item.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
                               ) : (
-                                <div className="flex items-center gap-1.5 bg-primary text-primary-foreground rounded-lg p-0.5 xl:gap-2 xl:p-1">
+                                <div className="w-24 h-24 rounded-lg bg-muted flex items-center justify-center">
+                                  <ChefHat className="w-8 h-8 text-muted-foreground" />
+                                </div>
+                              )}
+                              
+                              {/* Add Button */}
+                              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
+                                {itemCount > 0 ? (
+                                  <div className="flex items-center gap-1 bg-primary text-primary-foreground rounded-lg shadow-lg">
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => {
+                                        const cartItem = cart.find(ci => ci.menu_item.id === item.id);
+                                        if (cartItem) updateCartItemQuantity(cartItem.id, -1);
+                                      }}
+                                      className="h-7 w-7 p-0 hover:bg-primary-foreground/20"
+                                    >
+                                      <Minus className="w-3 h-3" />
+                                    </Button>
+                                    <span className="text-sm font-bold min-w-[20px] text-center">{itemCount}</span>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => handleAddToCart(item)}
+                                      className="h-7 w-7 p-0 hover:bg-primary-foreground/20"
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                ) : (
                                   <Button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      removeFromCart(item.id);
-                                    }}
-                                    size="icon"
-                                    variant="ghost"
-                                    className="h-7 w-7 hover:bg-primary-foreground/20 xl:h-8 xl:w-8"
+                                    size="sm"
+                                    onClick={() => handleAddToCart(item)}
+                                    className="h-7 px-3 text-xs font-bold shadow-lg"
                                   >
-                                    <Minus className="w-3 h-3 xl:w-4 xl:h-4" />
+                                    ADD
                                   </Button>
-                                  <span className="font-bold min-w-[1.5rem] text-center text-sm xl:text-base">{quantity}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Desktop: Vertical Layout */}
+                          <div className="hidden xl:block">
+                            {/* Image */}
+                            <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
+                              {item.image_url ? (
+                                <img
+                                  src={item.image_url}
+                                  alt={item.name}
+                                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <ChefHat className="w-16 h-16 text-muted-foreground/30" />
+                                </div>
+                              )}
+
+                              {/* Badges on Image */}
+                              <div className="absolute top-2 left-2 flex flex-col gap-1">
+                                {item.is_bestseller && (
+                                  <Badge className="bg-background/90 text-foreground border">
+                                    <Award className="w-3 h-3 mr-1" /> Bestseller
+                                  </Badge>
+                                )}
+                                {item.tags?.includes('spicy') && (
+                                  <Badge variant="destructive" className="bg-red-500/90">
+                                    <Flame className="w-3 h-3 mr-1" /> Spicy
+                                  </Badge>
+                                )}
+                              </div>
+
+                              {/* Type Badge */}
+                              <div className={cn(
+                                "absolute top-2 right-2 w-6 h-6 border-2 rounded bg-background/90 flex items-center justify-center",
+                                getItemTypeBadgeColor(item.item_type)
+                              )}>
+                                {getItemTypeIcon(item.item_type)}
+                              </div>
+                            </div>
+
+                            {/* Details */}
+                            <div className="p-4">
+                              <h3 className="font-bold text-lg mb-2 line-clamp-1">{item.name}</h3>
+                              
+                              <p className="font-semibold text-lg text-primary mb-2">
+                                {formatCurrency(item.price)}
+                              </p>
+
+                              {item.description && (
+                                <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                                  {item.description}
+                                </p>
+                              )}
+
+                              {/* Add Button */}
+                              {itemCount > 0 ? (
+                                <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-lg p-2">
                                   <Button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      addToCart(item);
-                                    }}
-                                    size="icon"
+                                    size="sm"
                                     variant="ghost"
-                                    className="h-7 w-7 hover:bg-primary-foreground/20 xl:h-8 xl:w-8"
+                                    onClick={() => {
+                                      const cartItem = cart.find(ci => ci.menu_item.id === item.id);
+                                      if (cartItem) updateCartItemQuantity(cartItem.id, -1);
+                                    }}
+                                    className="h-8 w-8 p-0 hover:bg-primary-foreground/20"
                                   >
-                                    <Plus className="w-3 h-3 xl:w-4 xl:h-4" />
+                                    <Minus className="w-4 h-4" />
+                                  </Button>
+                                  <span className="text-lg font-bold min-w-[30px] text-center">{itemCount}</span>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => handleAddToCart(item)}
+                                    className="h-8 w-8 p-0 hover:bg-primary-foreground/20"
+                                  >
+                                    <Plus className="w-4 h-4" />
                                   </Button>
                                 </div>
+                              ) : (
+                                <Button
+                                  onClick={() => handleAddToCart(item)}
+                                  className="w-full font-bold"
+                                >
+                                  ADD TO CART
+                                </Button>
                               )}
                             </div>
                           </div>
-                        </div>
+                        </CardContent>
                       </Card>
                     );
                   })}
@@ -689,486 +559,181 @@ export default function MenuBrowsing() {
       </div>
 
       {/* Floating Cart Button */}
-      {cart.length > 0 && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 animate-bounce-subtle xl:bottom-6">
+      {cartItemCount > 0 && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-md animate-slide-up">
           <Button
-            onClick={() => setShowCart(true)}
+            onClick={() => setCartOpen(true)}
             size="lg"
-            className="h-12 px-6 rounded-full shadow-2xl text-sm font-bold hover:scale-105 transition-transform xl:h-14 xl:px-8 xl:text-lg"
+            className="w-full h-14 text-base font-bold shadow-2xl"
           >
-            <ShoppingCart className="w-5 h-5 mr-2 xl:w-6 xl:h-6 xl:mr-3" />
-            <span>{getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'}</span>
-            <Separator orientation="vertical" className="mx-2 h-6 bg-primary-foreground/30 xl:mx-4 xl:h-8" />
-            <span>${formatCurrency(getTotalAmount())}</span>
-            <ChevronRight className="w-4 h-4 ml-1 xl:w-5 xl:h-5 xl:ml-2" />
+            <ShoppingCart className="w-5 h-5 mr-2" />
+            View Cart ({cartItemCount} {cartItemCount === 1 ? 'item' : 'items'})
+            <span className="ml-auto">{formatCurrency(cartTotal)}</span>
+            <ChevronRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       )}
 
-      {/* Filters Sheet */}
-      <Sheet open={showFilters} onOpenChange={setShowFilters}>
-        <SheetContent side="bottom" className="h-[80vh]">
-          <SheetHeader>
-            <SheetTitle className="text-2xl">Filters & Sort</SheetTitle>
-            <SheetDescription>
-              Customize your menu browsing experience
-            </SheetDescription>
-          </SheetHeader>
-          
-          <div className="mt-6 space-y-6 overflow-y-auto max-h-[calc(80vh-8rem)]">
-            {/* Dietary Filters */}
-            <div>
-              <h3 className="font-semibold mb-3 text-lg">Dietary Preferences</h3>
-              <div className="space-y-3">
-                <button
-                  onClick={() => setVegOnly(!vegOnly)}
-                  className={cn(
-                    "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all",
-                    vegOnly ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center",
-                      vegOnly ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                      <Leaf className="w-5 h-5" />
-                    </div>
-                    <span className="font-medium">Vegetarian Only</span>
-                  </div>
-                  {vegOnly && <Check className="w-5 h-5 text-primary" />}
-                </button>
-
-                <button
-                  onClick={() => setVeganOnly(!veganOnly)}
-                  className={cn(
-                    "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all",
-                    veganOnly ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center",
-                      veganOnly ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                      <Leaf className="w-5 h-5" />
-                    </div>
-                    <span className="font-medium">Vegan Only</span>
-                  </div>
-                  {veganOnly && <Check className="w-5 h-5 text-primary" />}
-                </button>
-
-                <button
-                  onClick={() => setGlutenFreeOnly(!glutenFreeOnly)}
-                  className={cn(
-                    "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all",
-                    glutenFreeOnly ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center",
-                      glutenFreeOnly ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                      <Leaf className="w-5 h-5" />
-                    </div>
-                    <span className="font-medium">Gluten-Free Only</span>
-                  </div>
-                  {glutenFreeOnly && <Check className="w-5 h-5 text-primary" />}
-                </button>
-                
-                <button
-                  onClick={() => setBestsellerOnly(!bestsellerOnly)}
-                  className={cn(
-                    "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all",
-                    bestsellerOnly ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center",
-                      bestsellerOnly ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                      <Award className="w-5 h-5" />
-                    </div>
-                    <span className="font-medium">Bestsellers Only</span>
-                  </div>
-                  {bestsellerOnly && <Check className="w-5 h-5 text-primary" />}
-                </button>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Sort Options */}
-            <div>
-              <h3 className="font-semibold mb-3 text-lg">Sort By</h3>
-              <div className="space-y-2">
-                {[
-                  { value: 'default', label: 'Default' },
-                  { value: 'rating', label: 'Rating: High to Low' },
-                  { value: 'price-low', label: 'Price: Low to High' },
-                  { value: 'price-high', label: 'Price: High to Low' },
-                  { value: 'name', label: 'Name: A to Z' },
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => setSortBy(option.value as typeof sortBy)}
-                    className={cn(
-                      "w-full flex items-center justify-between p-3 rounded-lg border transition-all",
-                      sortBy === option.value 
-                        ? "border-primary bg-primary/5 font-medium" 
-                        : "border-border hover:border-primary/50"
-                    )}
-                  >
-                    <span>{option.label}</span>
-                    {sortBy === option.value && <Check className="w-5 h-5 text-primary" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => {
-                  setVegOnly(false);
-                  setVeganOnly(false);
-                  setGlutenFreeOnly(false);
-                  setBestsellerOnly(false);
-                  setItemTypeFilter('all');
-                  setSortBy('default');
-                }}
-              >
-                Clear All
-              </Button>
-              <Button
-                className="flex-1"
-                onClick={() => setShowFilters(false)}
-              >
-                Apply Filters
-              </Button>
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet>
-
       {/* Cart Sheet */}
-      <Sheet open={showCart} onOpenChange={setShowCart}>
-        <SheetContent side="bottom" className="h-[90vh]">
-          <SheetHeader>
-            <SheetTitle className="text-2xl">Your Order</SheetTitle>
-            <SheetDescription>
-              {getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'} • Table {tableId}
-            </SheetDescription>
+      <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+        <SheetContent side="bottom" className="h-[90vh] flex flex-col p-0">
+          <SheetHeader className="p-4 xl:p-6 border-b">
+            <SheetTitle className="text-xl xl:text-2xl">Your Cart ({cartItemCount} items)</SheetTitle>
           </SheetHeader>
-          
-          <div className="mt-6 flex flex-col h-[calc(100%-8rem)]">
-            <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-              {cart.map((cartItem, index) => {
-                const itemPrice = cartItem.selectedVariant?.price || cartItem.menu_item.price;
-                const cartKey = `${cartItem.menu_item.id}-${cartItem.portionSize || 'default'}-${index}`;
-                
-                return (
-                  <Card key={cartKey} className="overflow-hidden">
-                    <div className="flex gap-4 p-4">
-                      {cartItem.menu_item.image_url && (
-                        <img
-                          src={cartItem.menu_item.image_url}
-                          alt={cartItem.menu_item.name}
-                          className="w-20 h-20 object-cover rounded-lg"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <h4 className="font-semibold mb-1">
-                          {cartItem.menu_item.name}
-                          {cartItem.portionSize && (
-                            <Badge variant="secondary" className="ml-2">
-                              {cartItem.portionSize}
-                            </Badge>
+
+          <div className="flex-1 overflow-y-auto p-4 xl:p-6">
+            {cart.length === 0 ? (
+              <div className="text-center py-16">
+                <ShoppingCart className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Your cart is empty</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {cart.map((cartItem) => (
+                  <Card key={cartItem.id} className="overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="flex gap-3">
+                        {/* Item Image */}
+                        {cartItem.menu_item.image_url && (
+                          <div className="w-16 h-16 xl:w-20 xl:h-20 rounded-lg overflow-hidden shrink-0">
+                            <img
+                              src={cartItem.menu_item.image_url}
+                              alt={cartItem.menu_item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+
+                        {/* Item Details */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-sm xl:text-base line-clamp-1">
+                                {cartItem.menu_item.name}
+                              </h4>
+                              {cartItem.selectedVariant && (
+                                <p className="text-xs text-muted-foreground">{cartItem.selectedVariant.name}</p>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeFromCart(cartItem.id)}
+                              className="h-8 w-8 p-0 shrink-0"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+
+                          {cartItem.notes && (
+                            <p className="text-xs text-muted-foreground mb-2">
+                              Note: {cartItem.notes}
+                            </p>
                           )}
-                        </h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          ${formatCurrency(itemPrice)} each
-                        </p>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() => removeFromCart(cartItem.menu_item.id, cartItem.portionSize)}
-                            size="icon"
-                            variant="outline"
-                            className="h-8 w-8"
-                          >
-                            <Minus className="w-4 h-4" />
-                          </Button>
-                          <span className="font-bold min-w-[2rem] text-center">{cartItem.quantity}</span>
-                          <Button
-                            onClick={() => addToCart(cartItem.menu_item, cartItem.selectedVariant || undefined)}
-                            size="icon"
-                            variant="outline"
-                            className="h-8 w-8"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </Button>
+
+                          <div className="flex items-center justify-between">
+                            {/* Quantity Controls */}
+                            <div className="flex items-center gap-2 border rounded-lg">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => updateCartItemQuantity(cartItem.id, -1)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </Button>
+                              <span className="text-sm font-semibold min-w-[20px] text-center">
+                                {cartItem.quantity}
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => updateCartItemQuantity(cartItem.id, 1)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </Button>
+                            </div>
+
+                            {/* Price */}
+                            <p className="font-semibold text-sm xl:text-base">
+                              {formatCurrency(getItemPrice(cartItem.menu_item, cartItem.selectedVariant) * cartItem.quantity)}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-lg">
-                          {formatCurrency((itemPrice * cartItem.quantity))}
-                        </p>
-                        <Button
-                          onClick={() => setCart(cart.filter((item, i) => 
-                            !(item.menu_item.id === cartItem.menu_item.id && 
-                              item.portionSize === cartItem.portionSize && 
-                              i === index)
-                          ))}
-                          size="sm"
-                          variant="ghost"
-                          className="mt-2 text-destructive hover:text-destructive"
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+                    </CardContent>
                   </Card>
-                );
-              })}
-            </div>
-
-            <div className="border-t pt-4 mt-4 space-y-4">
-              <div className="flex justify-between items-center text-lg">
-                <span className="font-semibold">Subtotal</span>
-                <span className="font-bold">${formatCurrency(getTotalAmount())}</span>
+                ))}
               </div>
-              <Button
-                onClick={handleCheckout}
-                size="lg"
-                className="w-full h-14 text-lg font-bold"
-              >
+            )}
+          </div>
+
+          {/* Cart Footer */}
+          {cart.length > 0 && (
+            <div className="border-t p-4 xl:p-6 bg-background">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-lg font-semibold">Total</span>
+                <span className="text-2xl font-bold text-primary">{formatCurrency(cartTotal)}</span>
+              </div>
+              <Button onClick={handleCheckout} size="lg" className="w-full text-base font-bold">
                 Proceed to Checkout
                 <ChevronRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
-          </div>
+          )}
         </SheetContent>
       </Sheet>
 
-      {/* Item Details Dialog */}
-      <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          {selectedItem && (
-            <>
-              <DialogHeader>
-                <div className="flex items-center gap-2">
-                  <DialogTitle className="text-2xl">{selectedItem.name}</DialogTitle>
-                  {selectedItem.is_bestseller && (
-                    <Badge className="bg-amber-500">
-                      <Award className="w-3 h-3 mr-1" />
-                      Bestseller
-                    </Badge>
-                  )}
-                </div>
-                <DialogDescription className="flex items-center gap-3 mt-2">
-                  {selectedItem.rating > 0 && (
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <span className="font-medium">{selectedItem.rating.toFixed(1)} Rating</span>
-                    </div>
-                  )}
-                  {selectedItem.preparation_time && (
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{selectedItem.preparation_time} mins</span>
-                    </div>
-                  )}
-                </DialogDescription>
-              </DialogHeader>
-              
-              <div className="space-y-4">
-                {selectedItem.image_url && (
-                  <img
-                    src={selectedItem.image_url}
-                    alt={selectedItem.name}
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                )}
-                
-                <div className="flex flex-wrap gap-2">
-                  {(() => {
-                    const itemTypeInfo = getItemTypeInfo(selectedItem.item_type);
-                    const ItemTypeIcon = itemTypeInfo.icon;
-                    return (
-                      <Badge className={cn(itemTypeInfo.bgColor, itemTypeInfo.color)}>
-                        <ItemTypeIcon className="w-3 h-3 mr-1" />
-                        {itemTypeInfo.label}
-                      </Badge>
-                    );
-                  })()}
-                  {selectedItem.is_vegan && (
-                    <Badge className="bg-green-600">Vegan</Badge>
-                  )}
-                  {selectedItem.is_gluten_free && (
-                    <Badge variant="secondary">Gluten-Free</Badge>
-                  )}
-                  {selectedItem.spice_level && selectedItem.spice_level !== 'none' && (
-                    <Badge className="bg-red-500">
-                      <Flame className="w-3 h-3 mr-1" />
-                      Spicy ({selectedItem.spice_level})
-                    </Badge>
-                  )}
-                </div>
-
-                {selectedItem.tags && selectedItem.tags.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Tags</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedItem.tags.map((tag, index) => (
-                        <Badge key={index} variant="outline">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {selectedItem.description && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Description</h4>
-                    <p className="text-muted-foreground">{selectedItem.description}</p>
-                  </div>
-                )}
-
-                {selectedItem.ingredients && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Ingredients</h4>
-                    <p className="text-muted-foreground">{selectedItem.ingredients}</p>
-                  </div>
-                )}
-
-                {selectedItem.allergens && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Allergens</h4>
-                    <p className="text-destructive">{selectedItem.allergens}</p>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedItem.preparation_time && (
-                    <div>
-                      <h4 className="font-semibold mb-1">Prep Time</h4>
-                      <p className="text-muted-foreground">{selectedItem.preparation_time} mins</p>
-                    </div>
-                  )}
-                  {selectedItem.calories && (
-                    <div>
-                      <h4 className="font-semibold mb-1">Calories</h4>
-                      <p className="text-muted-foreground">{selectedItem.calories} cal</p>
-                    </div>
-                  )}
-                </div>
-
-                {selectedItem.variants && selectedItem.variants.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Available Variants</h4>
-                    <div className="space-y-2">
-                      {selectedItem.variants.map((variant, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{variant.name}</p>
-                            {variant.description && (
-                              <p className="text-sm text-muted-foreground">{variant.description}</p>
-                            )}
-                          </div>
-                          <p className="font-bold text-primary">${formatCurrency(variant.price)}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <Separator />
-
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-primary">
-                    ${formatCurrency(selectedItem.price)}
-                  </div>
-                  <Button
-                    onClick={() => {
-                      addToCart(selectedItem);
-                      setSelectedItem(null);
-                    }}
-                    size="lg"
-                    className="font-semibold"
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add to Cart
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Portion Selection Dialog */}
-      <Dialog open={showPortionDialog} onOpenChange={setShowPortionDialog}>
+      {/* Item Variant Dialog */}
+      <Dialog open={itemDialogOpen} onOpenChange={setItemDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Choose Portion Size</DialogTitle>
-            <DialogDescription>
-              Select your preferred portion for {itemForPortionSelection?.name}
-            </DialogDescription>
+            <DialogTitle>{selectedItem?.name}</DialogTitle>
+            <DialogDescription>{selectedItem?.description}</DialogDescription>
           </DialogHeader>
-          
-          {itemForPortionSelection && itemForPortionSelection.variants && (
-            <div className="space-y-4 py-4">
-              <RadioGroup
-                value={selectedVariant?.name}
-                onValueChange={(value) => {
-                  const variant = itemForPortionSelection.variants?.find(v => v.name === value);
-                  if (variant) setSelectedVariant(variant);
-                }}
-              >
-                {itemForPortionSelection.variants.map((variant) => (
-                  <div
-                    key={variant.name}
-                    className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
-                  >
-                    <RadioGroupItem value={variant.name} id={variant.name} />
-                    <Label
-                      htmlFor={variant.name}
-                      className="flex-1 cursor-pointer flex justify-between items-center"
-                    >
-                      <div>
-                        <div className="font-semibold">{variant.name}</div>
-                        {variant.description && (
-                          <div className="text-sm text-muted-foreground">{variant.description}</div>
-                        )}
-                      </div>
-                      <div className="text-lg font-bold text-primary">
-                        ${formatCurrency(variant.price)}
-                      </div>
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
 
-              <div className="flex gap-2 pt-4">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setShowPortionDialog(false)}
+          {selectedItem?.variants && selectedItem.variants.length > 0 && (
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base font-semibold mb-3 block">Select Size</Label>
+                <RadioGroup
+                  value={selectedVariant?.name}
+                  onValueChange={(value) => {
+                    const variant = selectedItem.variants?.find(v => v.name === value);
+                    setSelectedVariant(variant || null);
+                  }}
+                  className="space-y-2"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={confirmPortionSelection}
-                  disabled={!selectedVariant}
-                >
-                  Add to Cart
-                </Button>
+                  {selectedItem.variants.map((variant, idx) => (
+                    <div key={idx} className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value={variant.name} id={variant.name} />
+                        <Label htmlFor={variant.name} className="cursor-pointer font-medium">
+                          {variant.name}
+                        </Label>
+                      </div>
+                      <span className="font-semibold">{formatCurrency(variant.price)}</span>
+                    </div>
+                  ))}
+                </RadioGroup>
               </div>
+
+              <div>
+                <Label htmlFor="customization" className="text-base font-semibold mb-2 block">
+                  Special Instructions (Optional)
+                </Label>
+                <Input
+                  id="customization"
+                  placeholder="e.g., Less spicy, no onions"
+                  value={customization}
+                  onChange={(e) => setCustomization(e.target.value)}
+                />
+              </div>
+
+              <Button onClick={handleConfirmAddToCart} className="w-full" size="lg">
+                Add to Cart - {formatCurrency(selectedVariant?.price || selectedItem.price)}
+              </Button>
             </div>
           )}
         </DialogContent>
