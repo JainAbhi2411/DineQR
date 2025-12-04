@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,19 +8,39 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function Home() {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     if (user && profile) {
+      setIsRedirecting(true);
       if (profile.role === 'owner') {
-        navigate('/owner/dashboard');
+        navigate('/owner/dashboard', { replace: true });
       } else if (profile.role === 'customer') {
-        navigate('/customer/dashboard');
+        navigate('/customer/dashboard', { replace: true });
       }
     }
   }, [user, profile, navigate]);
 
   if (user && profile) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-cyan"></div>
+          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-primary opacity-20"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-cyan"></div>
+          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-primary opacity-20"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
