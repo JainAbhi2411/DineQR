@@ -19,44 +19,44 @@ Futuristic theme with neon colors, glassmorphism, and modern typography
     --card-foreground: 220 15% 20%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 20%;
-    --primary: 189 94% 43%;
+    --primary: 25 95% 53%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 189 94% 55%;
-    --secondary: 321 100% 50%;
+    --primary-glow: 25 95% 65%;
+    --secondary: 271 81% 56%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-glow: 321 100% 65%;
-    --electric: 210 100% 56%;
+    --secondary-glow: 271 81% 68%;
+    --electric: 217 91% 60%;
     --electric-foreground: 0 0% 100%;
     --muted: 220 15% 92%;
     --muted-foreground: 220 10% 45%;
-    --accent: 189 94% 43%;
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 15% 88%;
     --input: 220 15% 88%;
-    --ring: 189 94% 43%;
-    --chart-1: 189 94% 43%;
-    --chart-2: 321 100% 50%;
-    --chart-3: 210 100% 56%;
-    --chart-4: 280 80% 60%;
+    --ring: 25 95% 53%;
+    --chart-1: 25 95% 53%;
+    --chart-2: 271 81% 56%;
+    --chart-3: 217 91% 60%;
+    --chart-4: 142 76% 36%;
     --chart-5: 45 100% 55%;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 220 15% 20%;
-    --sidebar-primary: 189 94% 43%;
+    --sidebar-primary: 25 95% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 15% 95%;
-    --sidebar-accent-foreground: 189 94% 43%;
+    --sidebar-accent-foreground: 25 95% 53%;
     --sidebar-border: 220 15% 88%;
-    --sidebar-ring: 189 94% 43%;
-    --gradient-primary: linear-gradient(135deg, hsl(189 94% 43%), hsl(189 94% 55%));
-    --gradient-secondary: linear-gradient(135deg, hsl(321 100% 50%), hsl(321 100% 65%));
-    --gradient-electric: linear-gradient(135deg, hsl(210 100% 56%), hsl(189 94% 43%));
-    --gradient-hero: linear-gradient(180deg, hsl(220 20% 97%), hsl(189 94% 95%));
-    --shadow-neon-cyan: 0 0 20px hsl(189 94% 43% / 0.4), 0 0 40px hsl(189 94% 43% / 0.2);
-    --shadow-neon-magenta: 0 0 20px hsl(321 100% 50% / 0.4), 0 0 40px hsl(321 100% 50% / 0.2);
-    --shadow-neon-blue: 0 0 20px hsl(210 100% 56% / 0.4), 0 0 40px hsl(210 100% 56% / 0.2);
-    --shadow-elegant: 0 10px 30px -10px hsl(189 94% 43% / 0.3);
+    --sidebar-ring: 25 95% 53%;
+    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(271 81% 56%), hsl(271 81% 68%));
+    --gradient-electric: linear-gradient(135deg, hsl(217 91% 60%), hsl(25 95% 53%));
+    --gradient-hero: linear-gradient(180deg, hsl(220 20% 97%), hsl(25 95% 95%));
+    --shadow-neon-orange: 0 0 20px hsl(25 95% 53% / 0.4), 0 0 40px hsl(25 95% 53% / 0.2);
+    --shadow-neon-purple: 0 0 20px hsl(271 81% 56% / 0.4), 0 0 40px hsl(271 81% 56% / 0.2);
+    --shadow-neon-blue: 0 0 20px hsl(217 91% 60% / 0.4), 0 0 40px hsl(217 91% 60% / 0.2);
+    --shadow-elegant: 0 10px 30px -10px hsl(25 95% 53% / 0.3);
     --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -69,44 +69,44 @@ Futuristic theme with neon colors, glassmorphism, and modern typography
     --card-foreground: 0 0% 98%;
     --popover: 220 25% 10%;
     --popover-foreground: 0 0% 98%;
-    --primary: 189 94% 50%;
+    --primary: 25 95% 58%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 189 94% 65%;
-    --secondary: 321 100% 55%;
+    --primary-glow: 25 95% 70%;
+    --secondary: 271 81% 60%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-glow: 321 100% 70%;
-    --electric: 210 100% 60%;
+    --secondary-glow: 271 81% 72%;
+    --electric: 217 91% 65%;
     --electric-foreground: 0 0% 100%;
     --muted: 220 25% 15%;
     --muted-foreground: 220 15% 65%;
-    --accent: 189 94% 50%;
+    --accent: 25 95% 58%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 25% 18%;
     --input: 220 25% 18%;
-    --ring: 189 94% 50%;
-    --chart-1: 189 94% 50%;
-    --chart-2: 321 100% 55%;
-    --chart-3: 210 100% 60%;
-    --chart-4: 280 80% 65%;
+    --ring: 25 95% 58%;
+    --chart-1: 25 95% 58%;
+    --chart-2: 271 81% 60%;
+    --chart-3: 217 91% 65%;
+    --chart-4: 142 76% 40%;
     --chart-5: 45 100% 60%;
     --sidebar-background: 220 25% 10%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 189 94% 50%;
+    --sidebar-primary: 25 95% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 25% 15%;
-    --sidebar-accent-foreground: 189 94% 50%;
+    --sidebar-accent-foreground: 25 95% 58%;
     --sidebar-border: 220 25% 18%;
-    --sidebar-ring: 189 94% 50%;
-    --gradient-primary: linear-gradient(135deg, hsl(189 94% 50%), hsl(189 94% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(321 100% 55%), hsl(321 100% 70%));
-    --gradient-electric: linear-gradient(135deg, hsl(210 100% 60%), hsl(189 94% 50%));
+    --sidebar-ring: 25 95% 58%;
+    --gradient-primary: linear-gradient(135deg, hsl(25 95% 58%), hsl(25 95% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(271 81% 60%), hsl(271 81% 72%));
+    --gradient-electric: linear-gradient(135deg, hsl(217 91% 65%), hsl(25 95% 58%));
     --gradient-hero: linear-gradient(180deg, hsl(220 25% 8%), hsl(220 25% 12%));
-    --shadow-neon-cyan: 0 0 30px hsl(189 94% 50% / 0.6), 0 0 60px hsl(189 94% 50% / 0.3);
-    --shadow-neon-magenta: 0 0 30px hsl(321 100% 55% / 0.6), 0 0 60px hsl(321 100% 55% / 0.3);
-    --shadow-neon-blue: 0 0 30px hsl(210 100% 60% / 0.6), 0 0 60px hsl(210 100% 60% / 0.3);
-    --shadow-elegant: 0 10px 30px -10px hsl(189 94% 50% / 0.4);
+    --shadow-neon-orange: 0 0 30px hsl(25 95% 58% / 0.6), 0 0 60px hsl(25 95% 58% / 0.3);
+    --shadow-neon-purple: 0 0 30px hsl(271 81% 60% / 0.6), 0 0 60px hsl(271 81% 60% / 0.3);
+    --shadow-neon-blue: 0 0 30px hsl(217 91% 65% / 0.6), 0 0 60px hsl(217 91% 65% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(25 95% 58% / 0.4);
     --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -386,12 +386,12 @@ Futuristic theme with neon colors, glassmorphism, and modern typography
   }
 
   /* Neon glow effects */
-  .glow-cyan {
-    box-shadow: var(--shadow-neon-cyan);
+  .glow-orange {
+    box-shadow: var(--shadow-neon-orange);
   }
 
-  .glow-magenta {
-    box-shadow: var(--shadow-neon-magenta);
+  .glow-purple {
+    box-shadow: var(--shadow-neon-purple);
   }
 
   .glow-blue {
@@ -399,20 +399,20 @@ Futuristic theme with neon colors, glassmorphism, and modern typography
   }
 
   /* Hover glow effect */
-  .hover-glow-cyan {
+  .hover-glow-orange {
     transition: var(--transition-smooth);
   }
 
-  .hover-glow-cyan:hover {
-    box-shadow: var(--shadow-neon-cyan);
+  .hover-glow-orange:hover {
+    box-shadow: var(--shadow-neon-orange);
   }
 
-  .hover-glow-magenta {
+  .hover-glow-purple {
     transition: var(--transition-smooth);
   }
 
-  .hover-glow-magenta:hover {
-    box-shadow: var(--shadow-neon-magenta);
+  .hover-glow-purple:hover {
+    box-shadow: var(--shadow-neon-purple);
   }
 
   /* Gradient text */

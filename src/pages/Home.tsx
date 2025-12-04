@@ -1,46 +1,32 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { UtensilsCrossed, QrCode, ShoppingCart, Receipt, Store, User, Sparkles, Zap } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
-  const { user, profile } = useAuth();
-  const navigate = useNavigate();
-  const [isRedirecting, setIsRedirecting] = useState(false);
+  const { user, profile, loading } = useAuth();
 
-  useEffect(() => {
-    if (user && profile) {
-      setIsRedirecting(true);
-      if (profile.role === 'owner') {
-        navigate('/owner/dashboard', { replace: true });
-      } else if (profile.role === 'customer') {
-        navigate('/customer/dashboard', { replace: true });
-      }
-    }
-  }, [user, profile, navigate]);
-
-  if (user && profile) {
+  // Show loading spinner while auth is being checked
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-cyan"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-orange"></div>
           <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-primary opacity-20"></div>
         </div>
       </div>
     );
   }
 
-  if (isRedirecting) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-cyan"></div>
-          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-primary opacity-20"></div>
-        </div>
-      </div>
-    );
+  // Redirect authenticated users immediately without rendering homepage
+  if (user && profile) {
+    if (profile.role === 'owner') {
+      return <Navigate to="/owner/dashboard" replace />;
+    }
+    if (profile.role === 'customer') {
+      return <Navigate to="/customer/dashboard" replace />;
+    }
   }
 
   return (
@@ -49,7 +35,7 @@ export default function Home() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         <div className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary to-primary-glow rounded-full mb-6 animate-float glow-cyan">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary to-primary-glow rounded-full mb-6 animate-float glow-orange">
             <UtensilsCrossed className="w-12 h-12 text-primary-foreground" />
           </div>
           <h1 className="text-6xl font-bold mb-4 gradient-text-primary animate-fade-in-up animation-delay-200">
@@ -66,10 +52,10 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center gap-4 mb-16 animate-fade-in-up animation-delay-800">
-          <Button size="lg" asChild className="morph-button hover-glow-cyan text-lg px-8 py-6 rounded-full">
+          <Button size="lg" asChild className="morph-button hover-glow-orange text-lg px-8 py-6 rounded-full">
             <Link to="/register">Get Started</Link>
           </Button>
-          <Button size="lg" variant="outline" asChild className="morph-button hover-glow-magenta text-lg px-8 py-6 rounded-full border-2">
+          <Button size="lg" variant="outline" asChild className="morph-button hover-glow-purple text-lg px-8 py-6 rounded-full border-2">
             <Link to="/login">Sign In</Link>
           </Button>
         </div>

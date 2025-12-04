@@ -92,7 +92,7 @@ export default function OwnerDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-cyan"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent glow-orange"></div>
           <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-primary opacity-20"></div>
         </div>
       </div>
@@ -120,7 +120,7 @@ export default function OwnerDashboard() {
               <p className="text-muted-foreground mb-6 text-center max-w-md">
                 Get started by creating your first restaurant profile and unlock the full potential of DineQR
               </p>
-              <Button asChild size="lg" className="morph-button hover-glow-cyan rounded-full px-8">
+              <Button asChild size="lg" className="morph-button hover-glow-orange rounded-full px-8">
                 <Link to="/owner/restaurants/new">
                   <Plus className="w-5 h-5 mr-2" />
                   Create Restaurant
@@ -207,7 +207,7 @@ export default function OwnerDashboard() {
                   <CardDescription>Manage your restaurant operations</CardDescription>
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 gap-3 relative z-10">
-                  <Button className="w-full justify-start morph-button hover-glow-cyan" variant="outline" asChild>
+                  <Button className="w-full justify-start morph-button hover-glow-orange" variant="outline" asChild>
                     <Link to="/owner/restaurants">
                       <Store className="w-5 h-5 mr-2" />
                       Manage Restaurants
@@ -215,19 +215,19 @@ export default function OwnerDashboard() {
                   </Button>
                   {restaurants.length > 0 && (
                     <>
-                      <Button className="w-full justify-start morph-button hover-glow-magenta" variant="outline" asChild>
+                      <Button className="w-full justify-start morph-button hover-glow-purple" variant="outline" asChild>
                         <Link to={`/owner/menu/${restaurants[0].id}`}>
                           <UtensilsCrossed className="w-5 h-5 mr-2" />
                           Manage Menu
                         </Link>
                       </Button>
-                      <Button className="w-full justify-start morph-button hover-glow-cyan" variant="outline" asChild>
+                      <Button className="w-full justify-start morph-button hover-glow-orange" variant="outline" asChild>
                         <Link to={`/owner/tables/${restaurants[0].id}`}>
                           <QrCode className="w-5 h-5 mr-2" />
                           Tables & QR Codes
                         </Link>
                       </Button>
-                      <Button className="w-full justify-start morph-button hover-glow-magenta" variant="outline" asChild>
+                      <Button className="w-full justify-start morph-button hover-glow-purple" variant="outline" asChild>
                         <Link to={`/owner/orders/${restaurants[0].id}`}>
                           <ShoppingBag className="w-5 h-5 mr-2" />
                           View All Orders
@@ -292,7 +292,7 @@ export default function OwnerDashboard() {
                       </Button>
                     </div>
                   ))}
-                  <Button className="w-full morph-button hover-glow-cyan" variant="outline" asChild>
+                  <Button className="w-full morph-button hover-glow-orange" variant="outline" asChild>
                     <Link to="/owner/restaurants/new">
                       <Plus className="w-5 h-5 mr-2" />
                       Add Restaurant
@@ -335,7 +335,7 @@ export default function OwnerDashboard() {
                         ))}
                       </div>
                       {restaurants.length > 0 && (
-                        <Button className="w-full mt-4 morph-button hover-glow-magenta" variant="outline" asChild>
+                        <Button className="w-full mt-4 morph-button hover-glow-purple" variant="outline" asChild>
                           <Link to={`/owner/orders/${restaurants[0].id}`}>View All Orders</Link>
                         </Button>
                       )}

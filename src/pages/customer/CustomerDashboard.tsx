@@ -107,7 +107,7 @@ export default function CustomerDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-magenta"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent glow-purple"></div>
           <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-2 border-secondary opacity-20"></div>
         </div>
       </div>
@@ -201,19 +201,19 @@ export default function CustomerDashboard() {
               <CardDescription>Start your dining experience</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 relative z-10">
-              <Button className="w-full justify-start morph-button hover-glow-cyan text-lg py-6" asChild>
+              <Button className="w-full justify-start morph-button hover-glow-orange text-lg py-6" asChild>
                 <Link to="/customer/scan">
                   <QrCode className="w-5 h-5 mr-2" />
                   Scan QR Code
                 </Link>
               </Button>
-              <Button className="w-full justify-start morph-button hover-glow-magenta" variant="outline" asChild>
+              <Button className="w-full justify-start morph-button hover-glow-purple" variant="outline" asChild>
                 <Link to="/customer/orders">
                   <History className="w-5 h-5 mr-2" />
                   View Order History
                 </Link>
               </Button>
-              <Button className="w-full justify-start morph-button hover-glow-cyan" variant="outline" asChild>
+              <Button className="w-full justify-start morph-button hover-glow-orange" variant="outline" asChild>
                 <Link to="/customer/profile">
                   <User className="w-5 h-5 mr-2" />
                   Manage Profile
@@ -233,7 +233,7 @@ export default function CustomerDashboard() {
             </CardHeader>
             <CardContent className="space-y-4 relative z-10">
               <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-cyan">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-orange">
                   1
                 </div>
                 <div>
@@ -242,7 +242,7 @@ export default function CustomerDashboard() {
                 </div>
               </div>
               <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-secondary to-secondary-glow rounded-full flex items-center justify-center text-secondary-foreground font-bold flex-shrink-0 glow-magenta">
+                <div className="w-10 h-10 bg-gradient-to-br from-secondary to-secondary-glow rounded-full flex items-center justify-center text-secondary-foreground font-bold flex-shrink-0 glow-purple">
                   2
                 </div>
                 <div>
@@ -251,7 +251,7 @@ export default function CustomerDashboard() {
                 </div>
               </div>
               <div className="flex gap-4 group/item hover:translate-x-1 transition-transform">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-cyan">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center text-primary-foreground font-bold flex-shrink-0 glow-orange">
                   3
                 </div>
                 <div>
@@ -343,7 +343,7 @@ export default function CustomerDashboard() {
                   </div>
                 ))}
               </div>
-              <Button className="w-full mt-4 morph-button hover-glow-magenta" variant="outline" asChild>
+              <Button className="w-full mt-4 morph-button hover-glow-purple" variant="outline" asChild>
                 <Link to="/customer/orders">View All Orders</Link>
               </Button>
             </CardContent>
@@ -358,7 +358,7 @@ export default function CustomerDashboard() {
               <p className="text-muted-foreground mb-6 text-center max-w-md">
                 Start by scanning a QR code at a restaurant table to begin your dining experience
               </p>
-              <Button asChild size="lg" className="morph-button hover-glow-cyan rounded-full px-8">
+              <Button asChild size="lg" className="morph-button hover-glow-orange rounded-full px-8">
                 <Link to="/customer/scan">
                   <QrCode className="w-5 h-5 mr-2" />
                   Scan QR Code
