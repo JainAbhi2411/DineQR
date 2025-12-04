@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ interface OrderCardProps {
   order: OrderWithItems;
   onPrint?: (order: OrderWithItems) => void;
   showCustomerInfo?: boolean;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
 }
 
 const getStatusColor = (status: string) => {
