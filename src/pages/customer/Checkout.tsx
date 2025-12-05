@@ -84,6 +84,7 @@ export default function Checkout() {
           payment_method: 'coc' as const,
           special_instructions: specialInstructions || null,
           assigned_to: null,
+          waiter_id: null,
         };
 
         const order = await orderApi.createOrder(orderData);

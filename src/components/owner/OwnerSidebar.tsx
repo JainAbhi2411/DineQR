@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   Menu,
   Users,
+  UserCheck,
   BarChart3,
   Settings,
   MessageSquare,
@@ -72,6 +73,12 @@ export default function OwnerSidebar({
       title: 'Staff Management',
       icon: Users,
       href: restaurantId ? `/owner/staff/${restaurantId}` : '#',
+      requiresRestaurant: true,
+    },
+    {
+      title: 'Waiter Management',
+      icon: UserCheck,
+      href: restaurantId ? `/owner/waiters/${restaurantId}` : '#',
       requiresRestaurant: true,
     },
     {

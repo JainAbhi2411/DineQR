@@ -1,12 +1,13 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { restaurantApi, orderApi } from '@/db/api';
-import { Restaurant, OrderWithItems, OrderStatus } from '@/types/types';
+import { restaurantApi, orderApi, waiterApi } from '@/db/api';
+import { Restaurant, OrderWithItems, OrderStatus, Waiter } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, Banknote, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, Banknote, ChevronDown, UserCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/db/supabase';
 import OrderCard from '@/components/order/OrderCard';
@@ -33,6 +34,7 @@ export default function OrderManagement() {
     served: ORDERS_PER_PAGE,
     completed: ORDERS_PER_PAGE,
   });
+  const [waiters, setWaiters] = useState<Waiter[]>([]);
   const ordersRef = useRef<OrderWithItems[]>([]);
 
   // Keep ref in sync with state
@@ -48,16 +50,19 @@ export default function OrderManagement() {
       console.log('[OrderManagement] Loading data for restaurant:', restaurantId);
       console.log('[OrderManagement] Previous orders count:', previousOrders.length);
       
-      const [restaurantData, ordersData] = await Promise.all([
+      const [restaurantData, ordersData, waitersData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         orderApi.getOrdersByRestaurant(restaurantId),
+        waiterApi.getActiveWaitersByRestaurant(restaurantId),
       ]);
       
       console.log('[OrderManagement] Loaded orders:', ordersData.length);
       console.log('[OrderManagement] Orders data:', ordersData);
+      console.log('[OrderManagement] Loaded waiters:', waitersData.length);
       
       setRestaurant(restaurantData);
       setOrders(ordersData);
+      setWaiters(waitersData);
 
       // Check for new orders and show notification
       if (previousOrders.length > 0 && ordersData.length > previousOrders.length) {
@@ -229,6 +234,23 @@ export default function OrderManagement() {
     }
   };
 
+  const assignWaiter = async (orderId: string, waiterId: string | null) => {
+    try {
+      await orderApi.assignWaiterToOrder(orderId, waiterId);
+      toast({
+        title: 'Success',
+        description: waiterId ? 'Waiter assigned successfully' : 'Waiter assignment removed',
+      });
+      loadData();
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to assign waiter',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const filterOrders = (status: string) => {
     if (status === 'all') return orders;
     return orders.filter(order => order.status === status);
@@ -274,6 +296,7 @@ export default function OrderManagement() {
                 order={order}
                 showCustomerInfo
                 onPrint={setPrintOrder}
+                waiterAssignment={getWaiterAssignment(order)}
                 actions={getOrderActions(order)}
               />
             </div>
@@ -292,6 +315,32 @@ export default function OrderManagement() {
           </div>
         )}
       </>
+    );
+  };
+
+  const getWaiterAssignment = (order: OrderWithItems) => {
+    if (waiters.length === 0) return null;
+
+    return (
+      <div className="flex items-center gap-2">
+        <UserCheck className="w-4 h-4 text-muted-foreground" />
+        <Select
+          value={order.waiter_id || 'none'}
+          onValueChange={(value) => assignWaiter(order.id, value === 'none' ? null : value)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Assign waiter" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">No waiter</SelectItem>
+            {waiters.map((waiter) => (
+              <SelectItem key={waiter.id} value={waiter.id}>
+                {waiter.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     );
   };
 

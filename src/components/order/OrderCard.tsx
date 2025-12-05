@@ -4,7 +4,7 @@ import { OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, Printer, MapPin, User, CreditCard, Banknote } from 'lucide-react';
+import { ChevronDown, ChevronUp, Printer, MapPin, User, CreditCard, Banknote, UserCheck } from 'lucide-react';
 import { format } from 'date-fns';
 import OrderTimeline from './OrderTimeline';
 import { useFormatters } from '@/hooks/useFormatters';
@@ -14,6 +14,7 @@ interface OrderCardProps {
   onPrint?: (order: OrderWithItems) => void;
   showCustomerInfo?: boolean;
   actions?: ReactNode;
+  waiterAssignment?: ReactNode;
 }
 
 const getStatusColor = (status: string) => {
@@ -50,7 +51,7 @@ const getPaymentStatusColor = (status: string) => {
   }
 };
 
-export default function OrderCard({ order, onPrint, showCustomerInfo = false, actions }: OrderCardProps) {
+export default function OrderCard({ order, onPrint, showCustomerInfo = false, actions, waiterAssignment }: OrderCardProps) {
   const { formatCurrency, formatDateTime } = useFormatters();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
@@ -104,6 +105,12 @@ export default function OrderCard({ order, onPrint, showCustomerInfo = false, ac
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
                   {order.customer.full_name || order.customer.username}
+                </span>
+              )}
+              {order.waiter && (
+                <span className="flex items-center gap-1">
+                  <UserCheck className="w-4 h-4" />
+                  {order.waiter.name}
                 </span>
               )}
               <span>{format(new Date(order.created_at), 'MMM dd, yyyy HH:mm')}</span>
@@ -191,6 +198,7 @@ export default function OrderCard({ order, onPrint, showCustomerInfo = false, ac
                 Print E-Bill
               </Button>
             )}
+            {waiterAssignment}
             {actions}
           </div>
         </CardContent>

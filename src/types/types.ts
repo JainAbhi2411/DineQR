@@ -4,6 +4,7 @@ export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 
 export type RestaurantType = 'veg' | 'non_veg' | 'both';
 export type ItemType = 'veg' | 'non_veg' | 'vegan' | 'egg';
 export type SpiceLevel = 'none' | 'mild' | 'medium' | 'hot' | 'extra_hot';
+export type WaiterStatus = 'active' | 'inactive';
 
 export interface Profile {
   id: string;
@@ -118,6 +119,7 @@ export interface Order {
   restaurant_id: string;
   table_id: string | null;
   assigned_to: string | null;
+  waiter_id: string | null;
   status: OrderStatus;
   payment_status: PaymentStatus;
   payment_method: 'online' | 'coc';
@@ -144,6 +146,15 @@ export interface Staff {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface Waiter {
+  id: string;
+  restaurant_id: string;
+  name: string;
+  phone: string | null;
+  status: WaiterStatus;
+  created_at: string;
 }
 
 export interface Message {
@@ -187,6 +198,7 @@ export interface OrderWithItems extends Order {
   restaurant?: Restaurant;
   customer?: Profile;
   staff?: Staff;
+  waiter?: Waiter;
   status_history?: OrderStatusHistory[];
 }
 

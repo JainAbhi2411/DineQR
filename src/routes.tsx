@@ -10,6 +10,7 @@ import MenuManagement from './pages/owner/MenuManagement';
 import TableManagement from './pages/owner/TableManagement';
 import OrderManagement from './pages/owner/OrderManagement';
 import StaffManagement from './pages/owner/StaffManagement';
+import WaiterManagement from './pages/owner/WaiterManagement';
 import Analytics from './pages/owner/Analytics';
 import Reviews from './pages/owner/Reviews';
 import Promotions from './pages/owner/Promotions';
@@ -121,6 +122,14 @@ const routes: RouteConfig[] = [
     name: 'Staff Management',
     path: '/owner/staff/:restaurantId',
     component: StaffManagement,
+    visible: false,
+    protected: true,
+    allowedRoles: ['owner'],
+  },
+  {
+    name: 'Waiter Management',
+    path: '/owner/waiters/:restaurantId',
+    component: WaiterManagement,
     visible: false,
     protected: true,
     allowedRoles: ['owner'],

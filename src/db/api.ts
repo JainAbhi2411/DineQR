@@ -10,6 +10,7 @@ import type {
   OrderWithItems,
   OrderStatus,
   Staff,
+  Waiter,
   Message,
   VisitedRestaurant,
   VisitedRestaurantWithDetails,
@@ -305,6 +306,7 @@ export const orderApi = {
         order_items(*, menu_item:menu_items(*)),
         table:tables(*),
         staff(*),
+        waiter:waiters(*),
         customer:profiles!customer_id(*),
         status_history:order_status_history(*)
       `)
@@ -325,6 +327,7 @@ export const orderApi = {
         restaurant:restaurants(*),
         customer:profiles!customer_id(*),
         staff(*),
+        waiter:waiters(*),
         status_history:order_status_history(*)
       `)
       .eq('id', id)
@@ -466,6 +469,14 @@ export const orderApi = {
       });
     if (historyError) throw historyError;
   },
+
+  async assignWaiterToOrder(orderId: string, waiterId: string | null): Promise<void> {
+    const { error } = await supabase
+      .from('orders')
+      .update({ waiter_id: waiterId })
+      .eq('id', orderId);
+    if (error) throw error;
+  },
 };
 
 export const imageApi = {
@@ -539,6 +550,58 @@ export const staffApi = {
       order_id: orderId,
       staff_id: staffId,
     });
+    if (error) throw error;
+  },
+};
+
+export const waiterApi = {
+  async getWaitersByRestaurant(restaurantId: string): Promise<Waiter[]> {
+    const { data, error } = await supabase
+      .from('waiters')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .order('name', { ascending: true });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async getActiveWaitersByRestaurant(restaurantId: string): Promise<Waiter[]> {
+    const { data, error } = await supabase
+      .from('waiters')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .eq('status', 'active')
+      .order('name', { ascending: true });
+    if (error) throw error;
+    return Array.isArray(data) ? data : [];
+  },
+
+  async createWaiter(waiter: Omit<Waiter, 'id' | 'created_at'>): Promise<Waiter> {
+    const { data, error } = await supabase
+      .from('waiters')
+      .insert(waiter)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateWaiter(id: string, updates: Partial<Omit<Waiter, 'id' | 'created_at' | 'restaurant_id'>>): Promise<Waiter> {
+    const { data, error } = await supabase
+      .from('waiters')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteWaiter(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('waiters')
+      .delete()
+      .eq('id', id);
     if (error) throw error;
   },
 };
