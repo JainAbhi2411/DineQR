@@ -112,9 +112,10 @@ export default function Checkout() {
 
         toast({
           title: 'Order Placed Successfully!',
-          description: 'Please pay at the counter when you receive your order.',
+          description: 'You can add more items anytime. Please pay at the counter when you receive your order.',
         });
-        navigate(`/order-tracking/${order.id}`);
+        // Navigate back to menu so customer can easily add more items
+        navigate(`/customer/menu/${restaurantId}?table=${tableId}`);
       } else {
         const items = cart.map((item: any) => {
           const menuItem = item.menuItem || item.menu_item;

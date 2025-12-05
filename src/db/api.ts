@@ -373,6 +373,8 @@ export const orderApi = {
   },
 
   async getActiveOrderForCustomer(customerId: string, restaurantId: string, tableId?: string): Promise<OrderWithItems | null> {
+    console.log('🔍 API: Checking for active order...', { customerId, restaurantId, tableId });
+    
     let query = supabase
       .from('orders')
       .select(`
@@ -386,27 +388,55 @@ export const orderApi = {
       .eq('restaurant_id', restaurantId)
       .in('status', ['pending', 'preparing'])
       .order('created_at', { ascending: false })
-      .order('created_at', { foreignTable: 'order_status_history', ascending: true });
+      .limit(1);
 
-    if (tableId) {
-      query = query.eq('table_id', tableId);
+    // Don't filter by table - customer may have moved tables or table context lost
+    // if (tableId) {
+    //   query = query.eq('table_id', tableId);
+    // }
+
+    const { data, error } = await query;
+    
+    console.log('📊 API: Query result:', { data, error });
+    
+    if (error) {
+      console.error('❌ API: Error fetching active order:', error);
+      throw error;
     }
-
-    const { data, error } = await query.maybeSingle();
-    if (error) throw error;
+    
+    // Get the first order (most recent)
+    const order = Array.isArray(data) && data.length > 0 ? data[0] : null;
+    
+    if (!order) {
+      console.log('➡️ API: No active order found');
+      return null;
+    }
     
     // Smart filtering: Only return orders created within the last hour
-    if (data) {
-      const orderAge = Date.now() - new Date(data.created_at).getTime();
-      const oneHourInMs = 60 * 60 * 1000;
-      
-      // If order is older than 1 hour, don't suggest adding to it
-      if (orderAge > oneHourInMs) {
-        return null;
-      }
+    const orderAge = Date.now() - new Date(order.created_at).getTime();
+    const oneHourInMs = 60 * 60 * 1000;
+    const ageInMinutes = Math.floor(orderAge / 60000);
+    
+    console.log('⏰ API: Order age check:', { 
+      orderId: order.id,
+      ageInMinutes, 
+      withinOneHour: orderAge <= oneHourInMs 
+    });
+    
+    // If order is older than 1 hour, don't suggest adding to it
+    if (orderAge > oneHourInMs) {
+      console.log('⏰ API: Order too old (> 1 hour), not suggesting to add');
+      return null;
     }
     
-    return data;
+    console.log('✅ API: Active order found and valid!', {
+      orderId: order.id,
+      status: order.status,
+      itemCount: order.order_items?.length,
+      ageInMinutes
+    });
+    
+    return order;
   },
 
   async addItemsToExistingOrder(orderId: string, items: Omit<OrderItem, 'id' | 'created_at'>[], newTotal: number): Promise<void> {
