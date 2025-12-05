@@ -396,23 +396,35 @@ export default function MenuBrowsing() {
     }
 
     try {
-      // Check for existing active order
+      console.log('🔍 Checking for active order...', { userId: user.id, restaurantId });
+      
+      // Check for existing active order (don't filter by table - customer may have moved tables)
       const activeOrder = await orderApi.getActiveOrderForCustomer(
         user.id,
-        restaurantId!,
-        tableId
+        restaurantId!
+        // Note: Not passing tableId to allow finding orders from any table
       );
 
+      console.log('📊 Active order check result:', activeOrder ? 'Found order' : 'No active order', activeOrder);
+
       if (activeOrder) {
+        console.log('✅ Active order found! Showing dialog...', {
+          orderId: activeOrder.id,
+          status: activeOrder.status,
+          itemCount: activeOrder.order_items?.length,
+          createdAt: activeOrder.created_at
+        });
+        
         // Show dialog to add to existing order or create new
         setExistingOrder(activeOrder);
         setAddToExistingDialogOpen(true);
       } else {
+        console.log('➡️ No active order found, proceeding to normal checkout');
         // No existing order, proceed to checkout normally
         proceedToCheckout();
       }
     } catch (error) {
-      console.error('Error checking for existing order:', error);
+      console.error('❌ Error checking for existing order:', error);
       // If error, proceed to checkout normally
       proceedToCheckout();
     }
