@@ -57,7 +57,20 @@ const cartItem: ExtendedCartItem = {
 };
 ```
 
-#### 3. Enhanced Dialog UI
+#### 3. Mutually Exclusive Portions and Variants
+```typescript
+// Portions shown ONLY if has_portions is true
+{selectedItem.has_portions && (
+  <div>Choose Portion: Full / Half</div>
+)}
+
+// Variants shown ONLY if has_portions is false AND variants exist
+{!selectedItem.has_portions && selectedItem.variants && selectedItem.variants.length > 0 && (
+  <div>Choose Size: variants</div>
+)}
+```
+
+#### 4. Enhanced Dialog UI
 - Increased padding: `p-4` instead of `p-3`
 - Added visual selection state with `border-2` and `bg-primary/5`
 - Made entire card clickable, not just radio button
@@ -120,7 +133,7 @@ When a menu item has variants (e.g., Small, Medium, Large):
 1. **Variant Selection**: Shows all available sizes
 2. **Price Display**: Each variant shows its specific price
 3. **Description**: Optional description text for each variant
-4. **Combined Selection**: If item has both variants AND portions, both are shown
+4. **Mutually Exclusive**: Items with variants do NOT show portion selection (it's either variants OR portions, not both)
 
 ### For Regular Items
 Items without portions or variants:
@@ -150,14 +163,14 @@ Items without portions or variants:
 6. Click "Add Item"
 7. Verify correct variant added to cart
 
-### Test Scenario 3: Item with Both
-1. Find an item with both variants and portions
+### Test Scenario 3: Item with Variants (Not Portions)
+1. Find an item with size variants (Small, Medium, Large)
 2. Click "ADD"
-3. Verify both "Choose Size" and "Choose Portion" sections appear
-4. Select a variant
-5. Select a portion
-6. Verify button shows correct calculated price
-7. Add to cart and verify
+3. Verify dialog shows "Choose Size" with all variants
+4. Verify NO portion selection appears (variants and portions are mutually exclusive)
+5. Select a variant
+6. Click "Add Item"
+7. Verify correct variant added to cart
 
 ## Future Enhancements
 

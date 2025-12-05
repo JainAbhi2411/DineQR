@@ -11,11 +11,21 @@ Portions allow customers to order different serving sizes of the same dish:
 - **Full Portion**: Standard serving size at full price
 - **Half Portion**: Smaller serving at half the price
 
-### Common Use Cases
+**Important**: Portions and Variants are **mutually exclusive**:
+- Use **Portions** (`has_portions: true`) for simple Half/Full split
+- Use **Variants** for different sizes with custom pricing (Small, Medium, Large)
+- **Never use both** on the same item
+
+### Common Use Cases for Portions
 - **Biryani**: Full plate ($18) or Half plate ($9)
 - **Curry Dishes**: Full serving or Half serving
 - **Appetizers**: Regular or Small portion
 - **Desserts**: Full or Half portion
+
+### When to Use Variants Instead
+- **Pizza**: Small (8"), Medium (12"), Large (16") - different prices
+- **Beverages**: Small, Regular, Large - custom pricing
+- **Combo Meals**: Different size combinations
 
 ---
 
@@ -157,24 +167,38 @@ Result:
 - Large: $24.00
 ```
 
-### Example 3: Both Variants and Portions
+### Example 3: Portions vs Variants (Choose One)
 ```
+❌ WRONG - Don't use both:
 Item: Butter Chicken
 Base Price: $16.00
 has_portions: true
-variants: [
-  {"name": "Regular", "price": 16.00},
-  {"name": "Extra Spicy", "price": 17.00}
-]
+variants: [...]  // Don't do this!
+
+✅ CORRECT - Use portions only:
+Item: Butter Chicken
+Base Price: $16.00
+has_portions: true
+variants: null
 
 Result:
-Regular:
 - Full: $16.00
 - Half: $8.00
 
-Extra Spicy:
-- Full: $17.00
-- Half: $8.50
+✅ CORRECT - Use variants only:
+Item: Butter Chicken
+Base Price: $16.00
+has_portions: false
+variants: [
+  {"name": "Regular", "price": 16.00},
+  {"name": "Extra Spicy", "price": 17.00},
+  {"name": "Family Size", "price": 28.00}
+]
+
+Result:
+- Regular: $16.00
+- Extra Spicy: $17.00
+- Family Size: $28.00
 ```
 
 ---

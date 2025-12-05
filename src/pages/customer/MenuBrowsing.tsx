@@ -1261,8 +1261,55 @@ export default function MenuBrowsing() {
 
           {selectedItem && (
             <div className="space-y-6">
-              {/* Variant Selection */}
-              {selectedItem.variants && selectedItem.variants.length > 0 && (
+              {/* Portion Selection - Only for items with has_portions enabled */}
+              {selectedItem.has_portions && (
+                <div>
+                  <Label className="text-base font-semibold mb-3 block">Choose Portion</Label>
+                  <RadioGroup
+                    value={selectedPortionSize}
+                    onValueChange={(value) => setSelectedPortionSize(value as 'full' | 'half')}
+                    className="space-y-3"
+                  >
+                    <div 
+                      className={cn(
+                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                        selectedPortionSize === 'full' ? "border-primary bg-primary/5" : "border-border"
+                      )}
+                      onClick={() => setSelectedPortionSize('full')}
+                    >
+                      <div className="flex items-center gap-3 flex-1">
+                        <RadioGroupItem value="full" id="portion-full" />
+                        <Label htmlFor="portion-full" className="cursor-pointer font-semibold text-base">
+                          Full
+                        </Label>
+                      </div>
+                      <span className="font-bold text-primary text-lg ml-3">
+                        {formatCurrency(selectedItem.price)}
+                      </span>
+                    </div>
+                    <div 
+                      className={cn(
+                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                        selectedPortionSize === 'half' ? "border-primary bg-primary/5" : "border-border"
+                      )}
+                      onClick={() => setSelectedPortionSize('half')}
+                    >
+                      <div className="flex items-center gap-3 flex-1">
+                        <RadioGroupItem value="half" id="portion-half" />
+                        <Label htmlFor="portion-half" className="cursor-pointer font-semibold text-base">
+                          Half
+                        </Label>
+                      </div>
+                      <span className="font-bold text-primary text-lg ml-3">
+                        {formatCurrency(selectedItem.price / 2)}
+                      </span>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+
+              {/* Variant Selection - Only for items with variants (not portions) */}
+              {!selectedItem.has_portions && selectedItem.variants && selectedItem.variants.length > 0 && (
                 <div>
                   <Label className="text-base font-semibold mb-3 block">Choose Size</Label>
                   <RadioGroup
@@ -1296,53 +1343,6 @@ export default function MenuBrowsing() {
                         <span className="font-bold text-primary text-lg ml-3">{formatCurrency(variant.price)}</span>
                       </div>
                     ))}
-                  </RadioGroup>
-                </div>
-              )}
-
-              {/* Portion Selection */}
-              {selectedItem.has_portions && (
-                <div>
-                  <Label className="text-base font-semibold mb-3 block">Choose Portion</Label>
-                  <RadioGroup
-                    value={selectedPortionSize}
-                    onValueChange={(value) => setSelectedPortionSize(value as 'full' | 'half')}
-                    className="space-y-3"
-                  >
-                    <div 
-                      className={cn(
-                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
-                        selectedPortionSize === 'full' ? "border-primary bg-primary/5" : "border-border"
-                      )}
-                      onClick={() => setSelectedPortionSize('full')}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <RadioGroupItem value="full" id="portion-full" />
-                        <Label htmlFor="portion-full" className="cursor-pointer font-semibold text-base">
-                          Full
-                        </Label>
-                      </div>
-                      <span className="font-bold text-primary text-lg ml-3">
-                        {formatCurrency(selectedVariant?.price || selectedItem.price)}
-                      </span>
-                    </div>
-                    <div 
-                      className={cn(
-                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
-                        selectedPortionSize === 'half' ? "border-primary bg-primary/5" : "border-border"
-                      )}
-                      onClick={() => setSelectedPortionSize('half')}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <RadioGroupItem value="half" id="portion-half" />
-                        <Label htmlFor="portion-half" className="cursor-pointer font-semibold text-base">
-                          Half
-                        </Label>
-                      </div>
-                      <span className="font-bold text-primary text-lg ml-3">
-                        {formatCurrency((selectedVariant?.price || selectedItem.price) / 2)}
-                      </span>
-                    </div>
                   </RadioGroup>
                 </div>
               )}
