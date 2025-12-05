@@ -371,6 +371,59 @@ export const orderApi = {
     if (error) throw error;
     return Array.isArray(data) ? data : [];
   },
+
+  async getActiveOrderForCustomer(customerId: string, restaurantId: string, tableId?: string): Promise<OrderWithItems | null> {
+    let query = supabase
+      .from('orders')
+      .select(`
+        *,
+        order_items(*, menu_item:menu_items(*)),
+        table:tables(*),
+        restaurant:restaurants(*),
+        status_history:order_status_history(*)
+      `)
+      .eq('customer_id', customerId)
+      .eq('restaurant_id', restaurantId)
+      .in('status', ['pending', 'preparing'])
+      .order('created_at', { ascending: false })
+      .order('created_at', { foreignTable: 'order_status_history', ascending: true });
+
+    if (tableId) {
+      query = query.eq('table_id', tableId);
+    }
+
+    const { data, error } = await query.maybeSingle();
+    if (error) throw error;
+    return data;
+  },
+
+  async addItemsToExistingOrder(orderId: string, items: Omit<OrderItem, 'id' | 'created_at'>[], newTotal: number): Promise<void> {
+    // Insert new order items
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(items);
+    if (itemsError) throw itemsError;
+
+    // Update order total and timestamp
+    const { error: orderError } = await supabase
+      .from('orders')
+      .update({
+        total_amount: newTotal,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', orderId);
+    if (orderError) throw orderError;
+
+    // Add status history entry for tracking
+    const { error: historyError } = await supabase
+      .from('order_status_history')
+      .insert({
+        order_id: orderId,
+        status: 'pending',
+        notes: 'Additional items added to order',
+      });
+    if (historyError) throw historyError;
+  },
 };
 
 export const imageApi = {

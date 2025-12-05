@@ -1,35 +1,56 @@
-# Task: Improve Portion Selection UX (Zomato-style)
+# Task: Add to Existing Order Feature
 
-## Current State
-- Menu items can have `has_portions` flag
-- When adding to cart, a dialog shows with portion selection (Half/Full) and special instructions
-- Special instructions are shown alongside portion selection
+## Problem
+When a customer places an order and wants to add more items later (e.g., ordering 1 more roti after already ordering dal fry, paneer masala, and 2 rotis), the system creates a new separate order. This results in:
+- Multiple orders for the same table/session
+- Multiple bills
+- Poor customer experience
+- Difficult order management
 
-## Required Changes (Zomato-style)
-1. When clicking "Add" on an item with portions enabled:
-   - Show a clean dialog with ONLY portion variants (Half, Full, Small, etc.)
-   - Remove special instructions from this dialog
-   - Show prices for each portion variant
-   - Default selection should be "Full" portion
-
-2. Update the portion selection dialog:
-   - Clean, minimal design
-   - Clear price display for each portion
-   - Easy selection with radio buttons
-   - Confirm button shows selected portion and price
-
-3. Special instructions should be added separately (in cart or checkout)
+## Solution
+Implement "Add to Existing Order" feature that:
+1. Checks if customer has an active order (pending/preparing status)
+2. Shows dialog asking if they want to add to existing order or create new
+3. Adds items to existing order and updates total
+4. Notifies restaurant of additional items
 
 ## Implementation Plan
-- [x] Analyze current code structure
-- [x] Update MenuBrowsing.tsx to remove special instructions from portion dialog
-- [x] Improve portion selection UI to match Zomato's clean design
-- [x] Ensure default selection is "Full" portion
-- [x] Test the flow: Add item → Select portion → Add to cart
-- [x] Run lint to check for issues
 
-## Completed ✅
-All changes have been successfully implemented!
+- [x] Step 1: Add API function to check for active orders
+  - [x] Create `getActiveOrderForCustomer()` function
+  - [x] Query orders with pending/preparing status
+  
+- [x] Step 2: Add API function to add items to existing order
+  - [x] Create `addItemsToExistingOrder()` function
+  - [x] Update order total
+  - [x] Create order status history entry
+  
+- [x] Step 3: Update checkout flow in MenuBrowsing
+  - [x] Check for active orders before checkout
+  - [x] Show dialog if active order exists
+  - [x] Handle "add to existing" vs "create new" choice
+  
+- [x] Step 4: Create AddToExistingOrderDialog component
+  - [x] Show existing order details
+  - [x] Show new items to be added
+  - [x] Show updated total
+  - [x] Confirm/Cancel buttons
+  
+- [x] Step 5: Update order notifications
+  - [x] Notify restaurant when items are added to existing order
+  - [x] Show "Additional items" indicator
+  
+- [ ] Step 6: Test the feature
+  - [ ] Test adding items to existing order
+  - [ ] Test creating new order when desired
+  - [ ] Test with different order statuses
+  - [ ] Test notifications
 
-## Files to Modify
-- `/workspace/app-7x1ojvae4075/src/pages/customer/MenuBrowsing.tsx` - Main menu browsing page with portion dialog
+## Notes
+- Only allow adding to orders with status: pending or preparing
+- Don't allow adding to completed/cancelled orders
+- Clear cart after adding to existing order
+- Update order timestamp to reflect latest addition
+
+## Implementation Complete ✅
+All code has been implemented and passes linting checks.

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { restaurantApi, menuCategoryApi, menuItemApi, tableApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem } from '@/types/types';
+import { restaurantApi, menuCategoryApi, menuItemApi, tableApi, orderApi } from '@/db/api';
+import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem, OrderWithItems } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +34,9 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
+import AddToExistingOrderDialog from '@/components/customer/AddToExistingOrderDialog';
 import { supabase } from '@/db/supabase';
+import { useAuth } from 'miaoda-auth-react';
 
 interface ExtendedCartItem extends CartItem {
   id: string;
@@ -46,6 +48,7 @@ export default function MenuBrowsing() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { formatCurrency } = useFormatters();
+  const { user } = useAuth();
   const tableId = searchParams.get('table');
   
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -65,6 +68,8 @@ export default function MenuBrowsing() {
   const [viewMode, setViewMode] = useState<'grid' | 'menu'>('grid');
   const [tableSelectionOpen, setTableSelectionOpen] = useState(false);
   const [selectedTableNumber, setSelectedTableNumber] = useState<string>('');
+  const [existingOrder, setExistingOrder] = useState<OrderWithItems | null>(null);
+  const [addToExistingDialogOpen, setAddToExistingDialogOpen] = useState(false);
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
@@ -370,7 +375,7 @@ export default function MenuBrowsing() {
   
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (cart.length === 0) return;
     
     // If no table is selected, show table selection dialog
@@ -378,7 +383,42 @@ export default function MenuBrowsing() {
       setTableSelectionOpen(true);
       return;
     }
-    
+
+    // Check if user is logged in
+    if (!user) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to place an order',
+        variant: 'destructive',
+      });
+      navigate('/login');
+      return;
+    }
+
+    try {
+      // Check for existing active order
+      const activeOrder = await orderApi.getActiveOrderForCustomer(
+        user.id,
+        restaurantId!,
+        tableId
+      );
+
+      if (activeOrder) {
+        // Show dialog to add to existing order or create new
+        setExistingOrder(activeOrder);
+        setAddToExistingDialogOpen(true);
+      } else {
+        // No existing order, proceed to checkout normally
+        proceedToCheckout();
+      }
+    } catch (error) {
+      console.error('Error checking for existing order:', error);
+      // If error, proceed to checkout normally
+      proceedToCheckout();
+    }
+  };
+
+  const proceedToCheckout = () => {
     navigate(`/customer/checkout/${restaurantId}?table=${tableId}`, {
       state: {
         cart,
@@ -386,6 +426,61 @@ export default function MenuBrowsing() {
         tableId
       }
     });
+  };
+
+  const handleAddToExistingOrder = async () => {
+    if (!existingOrder || !user) return;
+
+    try {
+      // Prepare order items
+      const orderItems = cart.map(item => {
+        const price = getItemPrice(item.menu_item, item.selectedVariant, item.portionSize);
+        return {
+          order_id: existingOrder.id,
+          menu_item_id: item.menu_item.id,
+          menu_item_name: item.menu_item.name,
+          quantity: item.quantity,
+          price,
+          portion_size: item.portionSize?.toLowerCase() || null,
+          variant_name: item.selectedVariant?.name || (item.portionSize ? item.portionSize : null),
+          notes: null,
+        };
+      });
+
+      // Calculate new total
+      const newItemsTotal = cart.reduce((sum, item) => {
+        return sum + (getItemPrice(item.menu_item, item.selectedVariant, item.portionSize) * item.quantity);
+      }, 0);
+      const newTotal = existingOrder.total_amount + newItemsTotal;
+
+      // Add items to existing order
+      await orderApi.addItemsToExistingOrder(existingOrder.id, orderItems, newTotal);
+
+      toast({
+        title: 'Items Added',
+        description: 'Your items have been added to your existing order',
+      });
+
+      // Clear cart and close dialogs
+      setCart([]);
+      setAddToExistingDialogOpen(false);
+      setCartOpen(false);
+
+      // Navigate to order tracking
+      navigate(`/customer/order-tracking/${existingOrder.id}`);
+    } catch (error) {
+      console.error('Error adding items to existing order:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to add items to existing order. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleCreateNewOrder = () => {
+    setAddToExistingDialogOpen(false);
+    proceedToCheckout();
   };
 
   const handleTableSelected = (selectedTableId: string, tableNumber: string) => {
@@ -1388,6 +1483,18 @@ export default function MenuBrowsing() {
           onOpenChange={setTableSelectionOpen}
           restaurantId={restaurantId}
           onTableSelected={handleTableSelected}
+        />
+      )}
+
+      {/* Add to Existing Order Dialog */}
+      {existingOrder && (
+        <AddToExistingOrderDialog
+          open={addToExistingDialogOpen}
+          onOpenChange={setAddToExistingDialogOpen}
+          existingOrder={existingOrder}
+          newItems={cart}
+          onAddToExisting={handleAddToExistingOrder}
+          onCreateNew={handleCreateNewOrder}
         />
       )}
     </div>
