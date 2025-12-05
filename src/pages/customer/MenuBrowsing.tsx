@@ -308,19 +308,45 @@ export default function MenuBrowsing() {
     }
 
     const finalPortionSize = portionSize || 'full';
-    const cartItem: ExtendedCartItem = {
-      id: `${item.id}-${variant?.name || 'default'}-${finalPortionSize}-${Date.now()}`,
-      menu_item: item,
-      quantity: 1,
-      selectedVariant: variant,
-      portionSize: item.has_portions ? finalPortionSize : undefined,
-    };
+    
+    // Check if item already exists in cart (same menu item, variant, and portion size)
+    const existingItemIndex = cart.findIndex(cartItem => 
+      cartItem.menu_item.id === item.id &&
+      cartItem.selectedVariant?.name === variant?.name &&
+      cartItem.portionSize === (item.has_portions ? finalPortionSize : undefined)
+    );
 
-    setCart([...cart, cartItem]);
-    toast({
-      title: 'Added to cart',
-      description: `${item.name} ${variant ? `(${variant.name})` : ''} ${item.has_portions ? `(${finalPortionSize === 'half' ? 'Half' : 'Full'})` : ''} added to cart`,
-    });
+    if (existingItemIndex !== -1) {
+      // Item exists, increment quantity
+      setCart(prevCart => {
+        const newCart = [...prevCart];
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + 1
+        };
+        return newCart;
+      });
+      
+      toast({
+        title: 'Quantity Updated',
+        description: `${item.name} quantity increased to ${cart[existingItemIndex].quantity + 1}`,
+      });
+    } else {
+      // Item doesn't exist, add new entry
+      const cartItem: ExtendedCartItem = {
+        id: `${item.id}-${variant?.name || 'default'}-${finalPortionSize}-${Date.now()}`,
+        menu_item: item,
+        quantity: 1,
+        selectedVariant: variant,
+        portionSize: item.has_portions ? finalPortionSize : undefined,
+      };
+
+      setCart([...cart, cartItem]);
+      toast({
+        title: 'Added to Cart',
+        description: `${item.name} ${variant ? `(${variant.name})` : ''} ${item.has_portions ? `(${finalPortionSize === 'half' ? 'Half' : 'Full'})` : ''} added to cart`,
+      });
+    }
   };
 
   const handleConfirmAddToCart = () => {
