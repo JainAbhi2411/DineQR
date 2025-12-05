@@ -36,7 +36,7 @@ import { cn } from '@/lib/utils';
 import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
 import AddToExistingOrderDialog from '@/components/customer/AddToExistingOrderDialog';
 import { supabase } from '@/db/supabase';
-import { useAuth } from 'miaoda-auth-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ExtendedCartItem extends CartItem {
   id: string;

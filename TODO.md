@@ -40,7 +40,12 @@ Implement "Add to Existing Order" feature that:
   - [x] Notify restaurant when items are added to existing order
   - [x] Show "Additional items" indicator
   
-- [ ] Step 6: Test the feature
+- [x] Step 6: Bug Fix - Menu Not Showing
+  - [x] Fixed incorrect useAuth import
+  - [x] Changed from 'miaoda-auth-react' to '@/contexts/AuthContext'
+  - [x] Verified linting passes
+  
+- [ ] Step 7: Test the feature
   - [ ] Test adding items to existing order
   - [ ] Test creating new order when desired
   - [ ] Test with different order statuses
@@ -52,5 +57,14 @@ Implement "Add to Existing Order" feature that:
 - Clear cart after adding to existing order
 - Update order timestamp to reflect latest addition
 
+## Bug Fixes
+### Bug: Menu Not Showing (FIXED ✅)
+**Issue**: When clicking on a restaurant, nothing shows on the screen.  
+**Cause**: Incorrect import of useAuth hook from 'miaoda-auth-react' instead of '@/contexts/AuthContext'.  
+**Fix**: Changed import to use correct AuthContext.  
+**Status**: Fixed and verified with linting.  
+**Details**: See BUGFIX_MENU_NOT_SHOWING.md
+
 ## Implementation Complete ✅
 All code has been implemented and passes linting checks.
+Bug fix applied and verified.
