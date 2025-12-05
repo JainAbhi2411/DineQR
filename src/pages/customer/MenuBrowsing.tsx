@@ -89,11 +89,19 @@ export default function MenuBrowsing() {
           filter: `restaurant_id=eq.${restaurantId}`
         },
         (payload) => {
-          console.log('[MenuBrowsing] Menu item change:', payload);
+          console.log('[MenuBrowsing] Menu item change detected:', {
+            eventType: payload.eventType,
+            table: payload.table,
+            timestamp: new Date().toISOString()
+          });
+          console.log('[MenuBrowsing] Full payload:', payload);
           
           if (payload.eventType === 'INSERT') {
             const newItem = payload.new as MenuItem;
-            setMenuItems(prev => [...prev, newItem]);
+            setMenuItems(prev => {
+              console.log('[MenuBrowsing] Adding new item, current count:', prev.length);
+              return [...prev, newItem];
+            });
             toast({
               title: '🎉 New Item Added!',
               description: `${newItem.name} is now available`,
@@ -101,13 +109,47 @@ export default function MenuBrowsing() {
             });
           } else if (payload.eventType === 'UPDATE') {
             const updatedItem = payload.new as MenuItem;
-            setMenuItems(prev => prev.map(item => 
-              item.id === updatedItem.id ? updatedItem : item
-            ));
+            const oldItem = payload.old as MenuItem;
+            
+            console.log('[MenuBrowsing] Item updated:', {
+              id: updatedItem.id,
+              name: updatedItem.name,
+              oldPreparationTime: oldItem.preparation_time,
+              newPreparationTime: updatedItem.preparation_time,
+              oldPrice: oldItem.price,
+              newPrice: updatedItem.price,
+              allChanges: payload
+            });
+            
+            setMenuItems(prev => {
+              const itemIndex = prev.findIndex(item => item.id === updatedItem.id);
+              if (itemIndex === -1) {
+                console.warn('[MenuBrowsing] Item not found in current list:', updatedItem.id);
+                return prev;
+              }
+              
+              const updated = prev.map(item => 
+                item.id === updatedItem.id ? updatedItem : item
+              );
+              console.log('[MenuBrowsing] Menu items updated successfully, count:', updated.length);
+              console.log('[MenuBrowsing] Updated item at index:', itemIndex);
+              return updated;
+            });
+            
+            // Show detailed notification
+            const changes = [];
+            if (oldItem.name !== updatedItem.name) changes.push('name');
+            if (oldItem.price !== updatedItem.price) changes.push('price');
+            if (oldItem.preparation_time !== updatedItem.preparation_time) changes.push('preparation time');
+            if (oldItem.description !== updatedItem.description) changes.push('description');
+            if (oldItem.is_available !== updatedItem.is_available) changes.push('availability');
+            
+            const changeText = changes.length > 0 ? ` (${changes.join(', ')})` : '';
+            
             toast({
               title: '✏️ Menu Updated',
-              description: `${updatedItem.name} has been updated`,
-              duration: 2000,
+              description: `${updatedItem.name} has been updated${changeText}`,
+              duration: 3000,
             });
           } else if (payload.eventType === 'DELETE') {
             const deletedItem = payload.old as MenuItem;
@@ -120,7 +162,14 @@ export default function MenuBrowsing() {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[MenuBrowsing] Menu items subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('[MenuBrowsing] ✅ Successfully subscribed to menu items changes');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('[MenuBrowsing] ❌ Error subscribing to menu items');
+        }
+      });
 
     // Subscribe to categories changes
     const categoriesChannel = supabase
@@ -159,7 +208,14 @@ export default function MenuBrowsing() {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[MenuBrowsing] Categories subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('[MenuBrowsing] ✅ Successfully subscribed to categories changes');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('[MenuBrowsing] ❌ Error subscribing to categories');
+        }
+      });
 
     // Cleanup subscriptions
     return () => {
