@@ -30,6 +30,54 @@ export default function OwnerDashboard() {
     ordersRef.current = orders;
   }, [orders]);
 
+  // Load orders data function
+  const loadOrdersData = useCallback(async () => {
+    if (!restaurants.length || !restaurants[0]?.id) return;
+
+    try {
+      const previousOrders = ordersRef.current;
+      const ordersData = await orderApi.getOrdersByRestaurant(restaurants[0].id);
+      
+      console.log('[OwnerDashboard] Loaded orders:', ordersData.length);
+      console.log('[OwnerDashboard] Orders with items:', ordersData.map(o => ({ id: o.id.slice(0, 8), items: o.order_items?.length || 0 })));
+      setOrders(ordersData);
+
+      // Check for new orders and show notification
+      if (previousOrders.length > 0 && ordersData.length > previousOrders.length) {
+        const newOrders = ordersData.filter(
+          newOrder => !previousOrders.some(oldOrder => oldOrder.id === newOrder.id)
+        );
+        
+        console.log('[OwnerDashboard] New orders detected:', newOrders.length);
+        
+        newOrders.forEach(order => {
+          const tableInfo = order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway';
+          toast({
+            title: '🔔 New Order Received!',
+            description: `${tableInfo} - Order #${order.id.slice(0, 8)}`,
+            duration: 5000,
+          });
+        });
+      }
+    } catch (error: any) {
+      console.error('[OwnerDashboard] Error loading orders:', error);
+    }
+  }, [restaurants, toast]);
+
+  // Schedule reload with debounce
+  const scheduleReload = useCallback(() => {
+    // Clear any existing timeout
+    if (reloadTimeoutRef.current) {
+      clearTimeout(reloadTimeoutRef.current);
+    }
+
+    // Schedule a reload after 300ms to debounce multiple rapid changes
+    reloadTimeoutRef.current = setTimeout(() => {
+      console.log('[OwnerDashboard] Reloading data due to real-time update');
+      loadOrdersData();
+    }, 300);
+  }, [loadOrdersData]);
+
   useEffect(() => {
     loadData();
   }, [profile]);
@@ -100,20 +148,7 @@ export default function OwnerDashboard() {
         channelRef.current = null;
       }
     };
-  }, [restaurants]);
-
-  const scheduleReload = useCallback(() => {
-    // Clear any existing timeout
-    if (reloadTimeoutRef.current) {
-      clearTimeout(reloadTimeoutRef.current);
-    }
-
-    // Schedule a reload after 300ms to debounce multiple rapid changes
-    reloadTimeoutRef.current = setTimeout(() => {
-      console.log('[OwnerDashboard] Reloading data due to real-time update');
-      loadOrdersData();
-    }, 300);
-  }, []);
+  }, [restaurants, scheduleReload]);
 
   const loadData = async () => {
     if (!profile) return;
@@ -139,38 +174,6 @@ export default function OwnerDashboard() {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadOrdersData = async () => {
-    if (!restaurants.length || !restaurants[0]?.id) return;
-
-    try {
-      const previousOrders = ordersRef.current;
-      const ordersData = await orderApi.getOrdersByRestaurant(restaurants[0].id);
-      
-      console.log('[OwnerDashboard] Loaded orders:', ordersData.length);
-      setOrders(ordersData);
-
-      // Check for new orders and show notification
-      if (previousOrders.length > 0 && ordersData.length > previousOrders.length) {
-        const newOrders = ordersData.filter(
-          newOrder => !previousOrders.some(oldOrder => oldOrder.id === newOrder.id)
-        );
-        
-        console.log('[OwnerDashboard] New orders detected:', newOrders.length);
-        
-        newOrders.forEach(order => {
-          const tableInfo = order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway';
-          toast({
-            title: '🔔 New Order Received!',
-            description: `${tableInfo} - Order #${order.id.slice(0, 8)}`,
-            duration: 5000,
-          });
-        });
-      }
-    } catch (error: any) {
-      console.error('[OwnerDashboard] Error loading orders:', error);
     }
   };
 
