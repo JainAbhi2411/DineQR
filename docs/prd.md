@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Checkout Flow)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Checkout Flow with Table Number Entry for Browse Orders)
 
 ## 1. Application Overview
 
@@ -162,12 +162,12 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
   - Search bar to filter items by name or category
   - Filter options: All Items, Available, Out of Stock, By Category
   - Sort options: Name (A-Z), Price (Low to High), Recently Added
-
-**B. Add/Edit Menu Item Modal**
+\n**B. Add/Edit Menu Item Modal**
 
 **Modal Layout**:
 - Full-screen overlay with glassmorphism panel sliding in from right
-- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:\n\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
+- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:
+\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
 - **Category**: Dropdown select from existing categories or '+ Create New Category' option (required)
 - **Description**: Textarea (optional, max 500 characters)
 - **Item Image**: Image upload with drag-and-drop or file browser, preview thumbnail,'Remove Image' option
@@ -314,7 +314,8 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 - '+ Generate QR Code' button\n- Modal form:\n  - QR Code Type: Radio buttons (Dine-in Table, Takeaway, Delivery)
   - Table Number/Name (ifdine-in)
   - Custom URL (optional, defaults to restaurant menu page)
-  - Design Options: QR code color, logo overlay (restaurant logo in center)\n- Generate button creates QR code\n- Preview QR code in modal
+  - Design Options: QR code color, logo overlay (restaurant logo in center)
+- Generate button creates QR code\n- Preview QR code in modal
 - Download options: PNG, SVG, PDF
 - Print option (opens print dialog)
 
@@ -465,8 +466,7 @@ Comprehensive payment tracking and management system with transaction history, p
 - Modal displays:
   - Transaction ID, order ID, customer info
   - Payment method, amount, taxes, discounts
-  - Payment timestamp
-  - Payment gateway response (if online payment)
+  - Payment timestamp\n  - Payment gateway response (if online payment)
   - Receipt download option (PDF)
 \n**C. Refund Processing**
 
@@ -523,8 +523,7 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
     - Performance rating (based on order completion time, customer feedback)
 \n**B. Automatic Assignment**
 
-- Toggle switch: 'Enable Auto-Assignment'
-- When enabled:
+- Toggle switch: 'Enable Auto-Assignment'\n- When enabled:
   - New orders automatically assigned to available waiter with least workload
   - Assignment algorithm considers: Current orders, table proximity, waiter rating
 - Notification sent to assigned waiter instantly
@@ -536,9 +535,8 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
 - Shows each waiter's current workload\n- Select waiter and confirm assignment
 - Notification sent to waiter
 
-**D. Waiter Performance Tracking**
-
--'View Performance' button for each waiter
+**D. Waiter Performance Tracking**\n
+- 'View Performance' button for each waiter
 - Performance metrics:
   - Total orders handled today/week/month
   - Average order completion time
@@ -602,7 +600,8 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
 \n- **Revenue Analytics**:
   - Line chart: Revenue over time (daily, weekly, monthly view)
   - Bar chart: Revenue by order type (dine-in, takeaway, delivery)
-  - Pie chart: Revenue by payment method\n\n- **Order Analytics**:
+  - Pie chart: Revenue by payment method
+\n- **Order Analytics**:
   - Bar chart: Orders by hour (peak times)
   - Line chart: Orders trend over time
   - Pie chart: Orders by status\n
@@ -704,7 +703,8 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   - Modal form: Select staff, shift date, start time, end time, role
   - Save and notify staff via notification/SMS
 - **Shift Swap Requests**:
-  - Staff can request shift swaps\n  - Owner approves/rejects requests
+  - Staff can request shift swaps
+  - Owner approves/rejects requests
 \n**F. Performance Analytics**
 
 - 'Performance' tab
@@ -1079,8 +1079,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 \n**C. Empty State**
 
 - If no restaurants scanned yet:\n  - Display message: 'You haven't scanned any restaurants yet'\n  - 'Scan QR Code' button to scan first restaurant
-
----
+\n---
 
 #### 3.2.3 QR Code Scanning & Menu Access (with Restaurant Type Display in Header)
 
@@ -1136,9 +1135,9 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 ---
 
-#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED)
+#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED) - Updated with Table Number Entry for Browse Orders
 
-**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking.
+**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking. **Updated to include mandatory table number entry for dine-in orders placed via Browse Restaurants (without QR code scan).**
 
 ---
 
@@ -1177,7 +1176,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 ---
 
-**STEP 2: Checkout Page - Customer Information & Order Details**
+**STEP 2: Checkout Page - Customer Information & Order Details (Updated with Table Number Entry Logic)**
 
 **A. Checkout Page Layout**
 
@@ -1186,8 +1185,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 \n**B. Left Column: Checkout Form**
 
 **Section 1: Customer Information**
-
-- **Heading**: 'Customer Details' (bold, with user icon)
+\n- **Heading**: 'Customer Details' (bold, with user icon)
 - **Form Fields**:
   1. **Full Name**:\n     - Text input (required)
      - Pre-filled if user is logged in
@@ -1201,17 +1199,20 @@ Advanced marketing module for creating, managing, and tracking promotional campa
      - Email input\n     - Pre-filled if user is logged in
      - Placeholder: 'your.email@example.com'
      - Validation: Valid email format if provided
-\n**Section 2: Order Type & Delivery Details**
+\n**Section 2: Order Type & Delivery Details (Updated with Table Number Entry Logic)**
 
 - **Heading**: 'Order Type' (bold, with location icon)
-- **Order Type Selection**: Radio buttons (large, card-style)
-  1. **Dine-In** (default if QR code scanned from table):
+- **Order Type Selection**: Radio buttons (large, card-style)\n  1. **Dine-In** (default if QR code scanned from table):
      - Icon: Table icon
      - Label: 'Dine-In'
      - Sub-label: 'Enjoy your meal at the restaurant'
-     - **If selected**: Display table number (auto-detected from QR code, e.g., 'Table 5')
-       - Table number displayed as badge below radio button
-       - If table number not detected: Show input field 'Enter Table Number' (required)
+     - **If selected**:
+       - **Case A: Order placed via QR code scan (table number auto-detected)**:\n         - Display table number as badge below radio button (e.g., 'Table 5')
+         - Table number is read-only and auto-filled from QR code data
+       - **Case B: Order placed via Browse Restaurants (no QR code scan)**:
+         - Display input field: 'Enter Table Number' (required)
+         - Text input with placeholder: 'e.g., Table 5 or 5'\n         - Validation: Cannot be empty, must be alphanumeric
+         - Error message if left empty: 'Please enter your table number for dine-in orders'
   2. **Takeaway**:
      - Icon: Bag icon
      - Label: 'Takeaway'
@@ -1249,15 +1250,14 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 **C. Right Column: Order Summary (Sticky on Desktop)**
 
 - **Heading**: 'Order Summary' (bold)\n- **Restaurant Info**:
-  - Restaurant logo and name
-  - Restaurant type badge (Veg/Non-Veg/Both)
+  - Restaurant logo and name\n  - Restaurant type badge (Veg/Non-Veg/Both)
   - Order type badge (Dine-In/Takeaway/Delivery)
 \n**Order Items List**:
-- Compact list of cart items:\n  - Each item: Quantity x Item Name (Portion) - Price
-  - Example: '2x Margherita Pizza (Full) - $24.00'
+- Compact list of cart items:\n  - Each item: Quantity x Item Name (Portion) - Price\n  - Example: '2x Margherita Pizza (Full) - $24.00'
 - Special instructions (if any) displayed below item in smaller font
--'Edit Cart' link (navigates back to cart)
-\n**Price Breakdown**:
+- 'Edit Cart' link (navigates back to cart)
+
+**Price Breakdown**:
 - Subtotal\n- Taxes (with percentage)
 - Discount (if promo code applied, with code name)\n- Delivery Fee (if delivery order)
 - **Grand Total** (bold, large font, highlighted with neon border)
@@ -1266,8 +1266,12 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Display estimated preparation/delivery time (e.g., 'Estimated Time: 25 mins')
 \n**Action Button**:
 - **'Proceed to Payment' Button**: Primary button (neon gradient, full-width)\n  - On click: Validate all required fields
-    - **If validation fails**: Scroll to first error field, display error messages below respective fields (red text)\n    - **If validation passes**: Smooth transition to payment page
-\n---
+    - **If validation fails**: Scroll to first error field, display error messages below respective fields (red text)\n    - **Validation includes**:
+      - Customer name and contact number must be filled
+      - **If Dine-In selected and order placed via Browse Restaurants (no QR scan)**: Table number must be entered\n      - If Delivery selected: All delivery address fields must be filled
+    - **If validation passes**: Smooth transition to payment page
+
+---
 
 **STEP 3: Payment Page - Payment Method Selection & Processing**
 
@@ -1281,7 +1285,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Payment Options**: Large card-style radio buttons (one option selected at a time)
 \n**Option 1: Cash on Delivery/Cash at Counter**
 - Icon: Cash icon
-- Label: 'Cash' (fordine-in/takeaway) or 'Cash on Delivery' (for delivery)
+- Label: 'Cash' (for dine-in/takeaway) or 'Cash on Delivery' (for delivery)
 - Sub-label: 'Pay with cash when you receive your order'
 - **If selected**: No additional fields required
 
@@ -1310,14 +1314,12 @@ Advanced marketing module for creating, managing, and tracking promotional campa
     - Validation: Valid UPI ID format (e.g., name@bank)\n  - **OR**: Display QR code for UPI payment
     - 'Scan QR Code with your UPI app' instruction
     - QR code image (generated with payment details)
-
-**Option 4: Digital Wallets**
+\n**Option 4: Digital Wallets**
 - Icon: Wallet icon
 - Label: 'Digital Wallets'
 - Sub-label: 'Pay using Paytm, PhonePe, Amazon Pay, etc.'
 - **If selected**: Display wallet selection:\n  - Radio buttons or dropdown: Paytm, PhonePe, Amazon Pay, Google Pay\n  - On selection: Redirect to respective wallet app/website for payment authorization
-
-**C. Order Summary (Sticky Sidebar on Desktop)**
+\n**C. Order Summary (Sticky Sidebar on Desktop)**
 
 - Same as checkout page: Restaurant info, order items, price breakdown, grand total
 \n**D. Action Buttons**
@@ -1364,10 +1366,11 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Sub-heading**: 'Thank you for your order, [Customer Name]!' (personalized)
 \n**C. Order Details Card**
 
-- **Glassmorphism card with neon border**:\n  - **Order ID**: Large, bold (e.g., '#ORD-1234')
+- **Glassmorphism card with neon border**:
+  - **Order ID**: Large, bold (e.g., '#ORD-1234')
   - **Restaurant Name**: With logo and restaurant type badge
   - **Order Type**: Badge (Dine-In/Takeaway/Delivery)
-  - **Table Number** (if dine-in): Displayed prominently
+  - **Table Number** (if dine-in): Displayed prominently (whether auto-detected from QR or manually entered)
   - **Estimated Time**: 'Your order will be ready in approximately 25 minutes' (dynamic based on order type)
   - **Order Timestamp**: Date and time order was placed
 \n**D. Order Summary**
@@ -1399,12 +1402,12 @@ Advanced marketing module for creating, managing, and tracking promotional campa
    - Order appears in restaurant's order management dashboard
 
 3. **Update Database**:
-   - Create order record with all details
+   - Create order record with all details (including table number whether from QR or manual entry)
    - Update inventory (deduct items if linked)\n   - Log transaction in payment records
    - Add order to customer's order history
 
 4. **Initiate Order Tracking**:
-   - Create order timeline with initial status 'Order Placed'
+   - Create order timeline with initial status'Order Placed'
    - Enable real-time WebSocket connection for status updates
 \n---
 
@@ -1448,8 +1451,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - 'Edit Order' button on checkout page (navigates back to cart)
 - Allow quantity changes, item removal, special instructions update
 - Recalculate totals in real-time
-
-**D. Accessibility & UX Enhancements**
+\n**D. Accessibility & UX Enhancements**
 
 - **Loading States**: Display skeleton screens or spinners during data fetching
 - **Error Handling**: Clear error messages with suggestions (e.g., 'Payment failed. Please check your card details or try another method')
@@ -1735,20 +1737,22 @@ Access help resources and contact support.\n
 8. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n9. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch
 10. **View Analytics** → Analytics → View reports and charts\n11. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
 
-### 4.2 Customer Flow (Complete Checkout Flow)
+### 4.2 Customer Flow (Complete Checkout Flow with Table Number Entry)
 
 1. **Sign Up/Login** → Customer Home
-2. **Scan QR Code** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header
-3. **Browse Menu** → View categories and items → Click item for details\n4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart
-5. **Review Cart** → Click cart icon → View cart items → Edit quantities or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type (Dine-In/Takeaway/Delivery) → Enter delivery address (if delivery) → Add special instructions → Apply promo code (optional) → Review order summary → Click 'Proceed to Payment'
+2. **Scan QR Code** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header → Table number auto-detected\n3. **Browse Menu** → View categories and items → Click item for details\n4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart
+5. **Review Cart** → Click cart icon → View cart items → Edit quantities or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type:\n   - **If Dine-In via QR scan**: Table number auto-filled and displayed
+   - **If Dine-In via Browse Restaurants**: Enter table number manually (required)
+   - **If Takeaway**: No table number needed
+   - **If Delivery**: Enter delivery address
+   → Add special instructions → Apply promo code (optional) → Review order summary → Click 'Proceed to Payment'
 7. **Payment Page** → Select payment method (Cash/Card/UPI/Wallet) → Enter payment details (if online payment) → Review order summary → Click 'Place Order & Pay'
 8. **Payment Processing** → System processes payment → If successful: Order placed → If failed: Display error, allow retry
-9. **Order Confirmation** → View success message → View order details (Order ID, estimated time) → Download receipt → Click 'Track Your Order'
+9. **Order Confirmation** → View success message → View order details (Order ID, table number, estimated time) → Download receipt → Click 'Track Your Order'
 10. **Track Order** → Real-time order tracking page → View timeline and estimated time → Receive notifications on status updates
 11. **Receive Order** → Order status updates to'Ready' → Notification received\n12. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
-13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu\n14. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
-15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow
-
+13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu → Add items to cart → Proceed to checkout → **Enter table number manually if selecting Dine-In** → Complete order
+14. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout\n15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow\n
 1. **Login** → Waiter Dashboard
 2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list
 4. **View Order Details** → Click order card → View items and instructions
@@ -1793,8 +1797,7 @@ Access help resources and contact support.\n
 - **Slide-in**: New order cards slide in from top with500ms bounce animation
 - **Pulsing Glow**: Notification badges and active elements have pulsing glow effect (keyframes animation)
 - **Shake**: Notification bell shakes when new notification arrives (500ms rotation keyframes)
-- **Ripple Effect**: Button clicks trigger ripple effect from click point
-- **Smooth Transitions**: All state changes use300ms ease-in-out transitions
+- **Ripple Effect**: Button clicks trigger ripple effect from click point\n- **Smooth Transitions**: All state changes use300ms ease-in-out transitions
 - **Loading Animations**: Neon spinners or skeleton screens with shimmer effect
 - **Page Transitions**: Smooth fade or slide transitions without full page reload (client-side routing)
 

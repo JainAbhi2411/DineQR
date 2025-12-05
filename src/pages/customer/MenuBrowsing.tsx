@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { restaurantApi, menuCategoryApi, menuItemApi } from '@/db/api';
+import { restaurantApi, menuCategoryApi, menuItemApi, tableApi } from '@/db/api';
 import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,6 +33,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
 
 interface ExtendedCartItem extends CartItem {
   id: string;
@@ -40,7 +41,7 @@ interface ExtendedCartItem extends CartItem {
 
 export default function MenuBrowsing() {
   const { restaurantId } = useParams();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { formatCurrency } = useFormatters();
@@ -61,11 +62,33 @@ export default function MenuBrowsing() {
   const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
   const [customization, setCustomization] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'menu'>('grid');
+  const [tableSelectionOpen, setTableSelectionOpen] = useState(false);
+  const [selectedTableNumber, setSelectedTableNumber] = useState<string>('');
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     loadData();
   }, [restaurantId]);
+
+  // Load table number when tableId is present
+  useEffect(() => {
+    const loadTableNumber = async () => {
+      if (tableId) {
+        try {
+          const table = await tableApi.getTableById(tableId);
+          if (table) {
+            setSelectedTableNumber(table.table_number);
+          }
+        } catch (error) {
+          console.error('Failed to load table details:', error);
+        }
+      } else {
+        setSelectedTableNumber('');
+      }
+    };
+    
+    loadTableNumber();
+  }, [tableId]);
 
   const loadData = async () => {
     if (!restaurantId) return;
@@ -182,13 +205,41 @@ export default function MenuBrowsing() {
   const handleCheckout = () => {
     if (cart.length === 0) return;
     
-    navigate(`/customer/checkout/${restaurantId}${tableId ? `?table=${tableId}` : ''}`, {
+    // If no table is selected, show table selection dialog
+    if (!tableId) {
+      setTableSelectionOpen(true);
+      return;
+    }
+    
+    navigate(`/customer/checkout/${restaurantId}?table=${tableId}`, {
       state: {
         cart,
         restaurant,
         tableId
       }
     });
+  };
+
+  const handleTableSelected = (selectedTableId: string, tableNumber: string) => {
+    // Update URL with table parameter
+    setSearchParams({ table: selectedTableId });
+    setSelectedTableNumber(tableNumber);
+    
+    toast({
+      title: 'Table Selected',
+      description: `You've selected Table ${tableNumber}`,
+    });
+    
+    // If cart has items, proceed to checkout
+    if (cart.length > 0) {
+      navigate(`/customer/checkout/${restaurantId}?table=${selectedTableId}`, {
+        state: {
+          cart,
+          restaurant,
+          tableId: selectedTableId
+        }
+      });
+    }
   };
 
   const scrollToCategory = (categoryId: string) => {
@@ -297,6 +348,23 @@ export default function MenuBrowsing() {
                     <MapPin className="w-4 h-4" />
                     <span className="truncate max-w-[200px]">{restaurant.location}</span>
                   </div>
+                )}
+                {tableId && selectedTableNumber && (
+                  <Badge variant="secondary" className="gap-1">
+                    <MapPin className="w-3 h-3" />
+                    Table {selectedTableNumber}
+                  </Badge>
+                )}
+                {!tableId && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setTableSelectionOpen(true)}
+                    className="h-6 text-xs gap-1"
+                  >
+                    <MapPin className="w-3 h-3" />
+                    Select Table
+                  </Button>
                 )}
               </div>
             </div>
@@ -1065,6 +1133,16 @@ export default function MenuBrowsing() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Table Selection Dialog */}
+      {restaurantId && (
+        <TableSelectionDialog
+          open={tableSelectionOpen}
+          onOpenChange={setTableSelectionOpen}
+          restaurantId={restaurantId}
+          onTableSelected={handleTableSelected}
+        />
+      )}
     </div>
   );
 }
