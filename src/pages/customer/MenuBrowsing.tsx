@@ -352,11 +352,15 @@ export default function MenuBrowsing() {
   };
 
   const getItemPrice = (item: MenuItem, variant?: MenuItemVariant, portionSize?: string) => {
-    const basePrice = variant?.price || item.price;
-    if (item.has_portions && portionSize === 'half') {
-      return basePrice / 2;
+    // If item has portions and a portion size is specified, find the variant price
+    if (item.has_portions && portionSize && item.variants) {
+      const portionVariant = item.variants.find(v => v.name.toLowerCase() === portionSize.toLowerCase());
+      if (portionVariant) {
+        return portionVariant.price;
+      }
     }
-    return basePrice;
+    // Otherwise use variant price or base price
+    return variant?.price || item.price;
   };
 
   const cartTotal = cart.reduce((sum, item) => {
@@ -698,7 +702,14 @@ export default function MenuBrowsing() {
                         </div>
                         <div className="text-right shrink-0">
                           <p className="font-bold text-lg text-primary mb-2">
-                            {formatCurrency(item.price)}
+                            {item.has_portions && item.variants && item.variants.length > 0 ? (
+                              <span>
+                                <span className="text-xs text-muted-foreground block">From</span>
+                                {formatCurrency(Math.min(...item.variants.map(v => v.price)))}
+                              </span>
+                            ) : (
+                              formatCurrency(item.price)
+                            )}
                           </p>
                           <Button
                             size="sm"
@@ -764,7 +775,14 @@ export default function MenuBrowsing() {
 
                               {/* Price */}
                               <p className="font-semibold text-sm mb-2">
-                                {formatCurrency(item.price)}
+                                {item.has_portions && item.variants && item.variants.length > 0 ? (
+                                  <span>
+                                    <span className="text-xs text-muted-foreground">From </span>
+                                    {formatCurrency(Math.min(...item.variants.map(v => v.price)))}
+                                  </span>
+                                ) : (
+                                  formatCurrency(item.price)
+                                )}
                               </p>
 
                               {/* Description */}
@@ -903,7 +921,14 @@ export default function MenuBrowsing() {
                               <h3 className="font-bold text-lg mb-2 line-clamp-1">{item.name}</h3>
                               
                               <p className="font-semibold text-lg text-primary mb-2">
-                                {formatCurrency(item.price)}
+                                {item.has_portions && item.variants && item.variants.length > 0 ? (
+                                  <span>
+                                    <span className="text-sm text-muted-foreground">From </span>
+                                    {formatCurrency(Math.min(...item.variants.map(v => v.price)))}
+                                  </span>
+                                ) : (
+                                  formatCurrency(item.price)
+                                )}
                               </p>
 
                               {item.description && (
@@ -1262,7 +1287,7 @@ export default function MenuBrowsing() {
           {selectedItem && (
             <div className="space-y-6">
               {/* Portion Selection - Only for items with has_portions enabled */}
-              {selectedItem.has_portions && (
+              {selectedItem.has_portions && selectedItem.variants && selectedItem.variants.length > 0 && (
                 <div>
                   <Label className="text-base font-semibold mb-3 block">Choose Portion</Label>
                   <RadioGroup
@@ -1270,40 +1295,34 @@ export default function MenuBrowsing() {
                     onValueChange={(value) => setSelectedPortionSize(value as 'full' | 'half')}
                     className="space-y-3"
                   >
-                    <div 
-                      className={cn(
-                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
-                        selectedPortionSize === 'full' ? "border-primary bg-primary/5" : "border-border"
-                      )}
-                      onClick={() => setSelectedPortionSize('full')}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <RadioGroupItem value="full" id="portion-full" />
-                        <Label htmlFor="portion-full" className="cursor-pointer font-semibold text-base">
-                          Full
-                        </Label>
-                      </div>
-                      <span className="font-bold text-primary text-lg ml-3">
-                        {formatCurrency(selectedItem.price)}
-                      </span>
-                    </div>
-                    <div 
-                      className={cn(
-                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
-                        selectedPortionSize === 'half' ? "border-primary bg-primary/5" : "border-border"
-                      )}
-                      onClick={() => setSelectedPortionSize('half')}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <RadioGroupItem value="half" id="portion-half" />
-                        <Label htmlFor="portion-half" className="cursor-pointer font-semibold text-base">
-                          Half
-                        </Label>
-                      </div>
-                      <span className="font-bold text-primary text-lg ml-3">
-                        {formatCurrency(selectedItem.price / 2)}
-                      </span>
-                    </div>
+                    {selectedItem.variants.map((variant) => {
+                      const portionValue = variant.name.toLowerCase() as 'full' | 'half';
+                      return (
+                        <div 
+                          key={variant.name}
+                          className={cn(
+                            "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                            selectedPortionSize === portionValue ? "border-primary bg-primary/5" : "border-border"
+                          )}
+                          onClick={() => setSelectedPortionSize(portionValue)}
+                        >
+                          <div className="flex items-center gap-3 flex-1">
+                            <RadioGroupItem value={portionValue} id={`portion-${portionValue}`} />
+                            <div className="cursor-pointer">
+                              <Label htmlFor={`portion-${portionValue}`} className="cursor-pointer font-semibold text-base block">
+                                {variant.name}
+                              </Label>
+                              {variant.description && (
+                                <p className="text-sm text-muted-foreground mt-0.5">{variant.description}</p>
+                              )}
+                            </div>
+                          </div>
+                          <span className="font-bold text-primary text-lg ml-3">
+                            {formatCurrency(variant.price)}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </RadioGroup>
                 </div>
               )}

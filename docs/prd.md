@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Enhanced Portion Selection with Price Variants)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Enhanced Portion Selection with Database-Driven Price Variants)
 
 ## 1. Application Overview
 
@@ -6,7 +6,7 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with **enhanced Zomato-style portion selection UI featuring price variants (Half, Full, Small, Large, etc.) with Full Portion as default**, AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, and real-time synchronization of menu updates (new items, category changes, item modifications, deletions) and table updates to customer dashboards without page refresh - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, campaign analytics, menu items, categories, and table information. Currency and timezone settings are automatically applied system-wide upon changes.\n
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with **enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants (Half, Small, Large, etc.) stored in database with custom names and prices**, AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, and real-time synchronization of menu updates (new items, category changes, item modifications, deletions) and table updates to customer dashboards without page refresh - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, campaign analytics, menu items, categories, and table information. Currency and timezone settings are automatically applied system-wide upon changes.\n
 ## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
@@ -17,7 +17,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 **Authentication Flow**:
 1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
 2. **Sign Up Options**:
-   - Email/Password registration with role selection (Owner/Waiter/Customer)\n   - Google OAuth integration (using OSS Google login method)
+   - Email/Password registration with role selection (Owner/Waiter/Customer)
+   - Google OAuth integration (using OSS Google login method)
    - Phone number OTP verification
 3. **Sign In Options**:
    - Email/Password login
@@ -86,7 +87,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
    - Glassmorphism card with neon green border glow
 
 **Recent Orders Section**:\n- Heading: 'Recent Orders' with 'View All' link (navigates to Orders page)
-- Display last 5 orders in compact card format:\n  - Order ID, Table number, Customer name\n  - Order items summary (e.g., '2x Burger (Full), 1x Fries (Half)')
+- Display last 5 orders in compact card format:\n  - Order ID, Table number, Customer name\n  - Order items summary (e.g., '2x Burger (Full Portion), 1x Fries (Half Crispy Spring Roll)')
   - Order status badge (Pending/Preparing/Ready/Completed)
   - Order time (e.g., '5mins ago')
   - Quick action buttons: View Details, Update Status\n- Real-time updates: New orders slide in from top with animation, status changes update instantly
@@ -136,14 +137,16 @@ The Owner Home Screen serves as the central command center, displaying real-time
 
 ---
 
-#### 3.1.2 Advanced Menu Management System with Enhanced Zomato-Style Portion Selection (Price Variants with Full Portion as Default) and Real-Time Customer Synchronization
+#### 3.1.2 Advanced Menu Management System with Database-Driven Portion Selection (Full Portion as Default with Additional Price Variants) and Real-Time Customer Synchronization
 
 **Overview**:
-Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, **enhanced Zomato-style portion selection UI featuring price variants (Half, Full, Small, Large, etc.) with Full Portion as default**, inventory linking, availability scheduling, and real-time preview. All menu changes (new items, category additions, item modifications, deletions) are instantly synchronized to customer dashboards without page refresh via WebSocket.\n
-**Key Features**:\n\n**A. Menu Item Management Interface**
+Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, **database-driven portion selection featuring Full Portion as default (original item price) and additional price variants (Half, Small, Large, etc.) stored in database with custom names and prices**, inventory linking, availability scheduling, and real-time preview. All menu changes (new items, category additions, item modifications, deletions) are instantly synchronized to customer dashboards without page refresh via WebSocket.\n
+**Key Features**:
+\n**A. Menu Item Management Interface**
 \n- **Action Buttons Section**:
   - **'+ Add Menu Item' Button**: Primary action button positioned at top-right of menu management page, opens modal/slide-in panel for creating new menu item
-  - **'View Menu' Button**: Secondary action button positioned directly below the '+ Add Menu Item' button, styled with glassmorphism effect and neon border. When clicked, displays the complete menu in a Zomato-style layout showing all categories and items with images, prices, descriptions, and availability status. Provides customer-facing preview of how the menu appears when accessed via QR code.\n\n- **Menu Categories Section**:
+  - **'View Menu' Button**: Secondary action button positioned directly below the '+ Add Menu Item' button, styled with glassmorphism effect and neon border. When clicked, displays the complete menu in a Zomato-style layout showing all categories and items with images, prices, descriptions, and availability status. Provides customer-facing preview of how the menu appears when accessed via QR code.
+\n- **Menu Categories Section**:
   - Display all menu categories in expandable/collapsible accordion or tab layout
   - Each category shows: Category name, item count, category image (optional), edit/delete icons\n  - Drag-and-drop functionality to reorder categories
   - '+ Add Category' button to create new categories
@@ -152,83 +155,88 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
     - Item image (placeholder if no image uploaded)
     - Item name
     - Category tag
-    - **Portion availability indicator**: Badge showing 'Single Size', 'Price Variants Available' (if half/full or multiple portions enabled)
-    - Price display:\n      - **If Single Price**: Shows single price (e.g., '$12')
-      - **If Price Variants Enabled**: Shows price range (e.g., '$8- $12') with 'View Variants' link
+    - **Portion availability indicator**: Badge showing 'Full Portion Only' or 'Additional Portions Available' (if additional price variants exist in database)
+    - Price display:\n      - **If Full Portion Only**: Shows full portion price (e.g., '$8.99')
+      - **If Additional Portions Available**: Shows price range (e.g., '$4.45 - $8.99') with 'View Variants' link
     - Availability status (toggle switch: Available/Out of Stock)
     - Quick action icons: Edit (pencil icon), Delete (trash icon), Duplicate (copy icon)
   - Search bar to filter items by name or category
-  - Filter options: All Items, Available, Out of Stock, By Category, By Portion Type (Single/Price Variants)
-  - Sort options: Name (A-Z), Price (Low to High), Recently Added
-
-**B. Add/Edit Menu Item Modal with Enhanced Zomato-Style Portion Selection (Price Variants with Full Portion as Default)**
-
-**Modal Layout**:
+  - Filter options: All Items, Available, Out of Stock, By Category, By Portion Type (Full Only/Additional Portions)
+  - Sort options: Name (A-Z), Price (Low to High), Recently Added\n\n**B. Add/Edit Menu Item Modal with Database-Driven Portion Selection (Full Portion as Default with Additional Price Variants)**
+\n**Modal Layout**:
 - Full-screen overlay with glassmorphism panel sliding in from right
-- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:\n\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
+- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:
+\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
 - **Category**: Dropdown select from existing categories or '+ Create New Category' option (required)
 - **Description**: Textarea (optional, max 500 characters)
 - **Item Image**: Image upload with drag-and-drop or file browser, preview thumbnail,'Remove Image' option
-\n**2. Pricing & Portions Tab (Enhanced Zomato-Style UI with Price Variants)**:
-\n**Portion Configuration Section**:
-- **Heading**: 'Portion Options' (bold, with portion icon)
-- **Portion Type Selector**: Large card-style radio buttons (visual selection)
-\n  **Option 1: Single Size (Default)**
-  - Icon: Single plate icon
-  - Label: 'Single Size'
-  - Sub-label: 'One standard portion for this item'
-  - **If selected**:
-    - Display single price input field:\n      - Label: 'Price'
-      - Input: Number field with currency symbol prefix (e.g., '$')\n      - Placeholder: 'Enter price'
-      - Validation: Required, must be positive number
-    - Example preview below:'Customers will see: Margherita Pizza - $12'\n
-  **Option 2: Price Variants (Zomato-Style with Full Portion as Default)**
-  - Icon: Multiple plates icon (different sizes)
-  - Label: 'Price Variants'
-  - Sub-label: 'Offer multiple portion sizes with different prices (e.g., Half, Full, Small, Large)'
-  - **If selected**:
-    - Display dynamic price variant builder:
-      - **'+ Add Price Variant' button** to add new variant
-      - **Minimum2 variants required** (e.g., Half and Full)
-      - Each variant displayed as a card with:
-        - **Variant Name** input (e.g., 'Half', 'Full', 'Small', 'Medium', 'Large', 'Regular', 'Family Size')
-          - Dropdown with common options: Half, Full, Small, Medium, Large, Regular, Extra Large, Family Size, Custom (allows free text)
-        - **Price** input with currency symbol (required, must be positive number)
-        - **Portion Size Details** input (optional, e.g., '250g', '6 inches', '500ml')
-        - **'Set as Default' radio button** (only one variant can be default, **Full Portion is default by default**)
-        - **'Remove Variant' button** (minimum 2 variants required, cannot remove if only2 left)
-      - Drag-and-drop to reorder variants (display order on customer menu)
-      - **Smart Default Selection**: When owner first enables price variants, system auto-creates two variants:\n        - **Half Portion**: Price input empty (owner fills)\n        - **Full Portion**: Price input empty (owner fills), **pre-selected as default with radio button checked**
-      - Visual preview showing how price variants appear to customers
-\n**Price Variant Best Practices (Info Box)**:
-- Display helpful tips in collapsible info box:\n  - 'Full Portion is set as default to encourage larger orders'
-  - 'Use clear variant names like Half/Full or Small/Large for easy understanding'
-  - 'Add portion size details (weight, dimensions) to help customers decide'
-  - 'Price variants are great for items like pizzas, salads, beverages'\n\n**Discount Section** (applies to all portion types):
+\n**2. Pricing & Portions Tab (Database-Driven with Full Portion as Default)**:\n\n**Full Portion Configuration (Always Present)**:
+- **Heading**: 'Full Portion (Default)' (bold, with plate icon)
+- **Full Portion Price**: Number input field with currency symbol prefix (e.g., '$')
+  - Label: 'Full Portion Price'\n  - Placeholder: 'Enter full portion price'
+  - Validation: Required, must be positive number
+  - Info text: 'This is the default portion shown to customers. Example: $8.99 for Crispy Spring Roll'
+- **Full Portion is always the default selection** when customers view the item
+- This price represents the original item price and is stored in the main menu_items table
+
+**Additional Price Variants Section (Optional)**:
+- **Heading**: 'Additional Portions (Optional)' (bold, with multiple plates icon)
+- **Toggle Switch**: 'Enable Additional Portions' (off by default)
+- **If toggle is OFF**:
+  - Item has only Full Portion available
+  - Customers see single price and no portion selection
+- **If toggle is ON**:
+  - Display '+ Add Price Variant' button to add additional portions
+  - Each additional variant is stored in database with custom name and price
+  - **Additional Variant Card** (one per variant):
+    - **Variant Name** input (required)
+      - Label: 'Portion Name'
+      - Placeholder: 'e.g., Half Crispy Spring Roll, Small, Large'\n      - Free text input allowing custom names
+      - Example: 'Half Crispy Spring Roll'\n    - **Variant Price** input (required)
+      - Label: 'Price'
+      - Input: Number field with currency symbol prefix\n      - Placeholder: 'Enter price'
+      - Validation: Required, must be positive number, typically less than full portion price
+      - Example: $4.45\n    - **Portion Size Details** input (optional)
+      - Label: 'Size Details'
+      - Placeholder: 'e.g., 250g, 6 inches, 500ml'
+      - Example: '3 pieces' or '150g'\n    - **'Remove Variant' button** (trash icon, removes this additional variant)
+  - Drag-and-drop to reorder additional variants (display order on customer menu)
+  - **Database Storage**: Each additional variant stored in price_variants table with fields: variant_id, menu_item_id, variant_name, variant_price, size_details, display_order
+
+**Pricing Logic Summary**:
+- **Full Portion**: Always exists, price stored in menu_items.price field, always shown as default to customers
+- **Additional Variants**: Optional, stored in separate price_variants table, fetched from database when item is loaded
+- **Customer View**: Full Portion displayed first as default, followed by additional variants (if any) fetched from database
+\n**Example Configuration**:
+- Item: Crispy Spring Roll\n- Full Portion Price: $8.99 (default, stored in menu_items.price)
+- Additional Portions (stored in price_variants table):
+  - Half Crispy Spring Roll: $4.45\n  - Large Crispy Spring Roll: $12.99
+\n**Discount Section** (applies to all portion types):
 - **Discount Toggle**: Switch to enable discount\n- **If enabled**:
-  - Discount type: Radio buttons (Percentage Off, Fixed Amount Off)\n  - Discount value input\n  - Discount applies to: Dropdown (All Variants, Specific Variants)\n  - If'Specific Variants' selected: Checkboxes to select which variants get discount
+  - Discount type: Radio buttons (Percentage Off, Fixed Amount Off)\n  - Discount value input\n  - Discount applies to: Dropdown (All Portions, Full Portion Only, Specific Additional Variants)
+  - If'Specific Additional Variants' selected: Checkboxes to select which additional variants get discount
   - Discount validity: Optional date range picker (start date, end date)
   - Display original and discounted prices in preview
 
 **3. Inventory & Availability Tab**:
 - **Link to Inventory**: Toggle switch\n  - If enabled: Dropdown to select inventory item(s) and quantity consumed per order
-  - **Variant-specific inventory**: If price variants enabled, option to set different inventory consumption per variant
+  - **Portion-specific inventory**: If additional variants enabled, option to set different inventory consumption per variant
   - Auto-deduct inventory on order placement
 - **Availability Schedule**: Toggle switch
   - If enabled: Time range picker (e.g., available only during lunch12 PM - 3 PM)
 - **Stock Status**: Toggle switch (Available/Out of Stock)
-  - **Variant-specific availability**: If price variants enabled, option to mark specific variants as out of stock while keeping others available
+  - **Variant-specific availability**: If additional variants enabled, option to mark specific variants as out of stock while keeping others available
 \n**4. Additional Details Tab**:
 - **Dietary Tags**: Multi-select checkboxes (Vegetarian, Vegan, Gluten-Free, Spicy, etc.)
 - **Allergen Information**: Text input (e.g., 'Contains nuts, dairy')
 - **Preparation Time**: Number input (minutes)
-  - **Variant-specific prep time**: If price variants enabled, option to set different prep times per variant
-- **Nutritional Information**: Optional fields (Calories, Protein, Carbs, Fat)\n  - **Variant-specific nutrition**: If price variants enabled, separate nutrition info per variant
+  - **Variant-specific prep time**: If additional variants enabled, option to set different prep times per variant
+- **Nutritional Information**: Optional fields (Calories, Protein, Carbs, Fat)\n  - **Variant-specific nutrition**: If additional variants enabled, separate nutrition info per variant
 \n**Action Buttons**:
 - 'Save' button (primary, neon gradient)
 - 'Save & Add Another' button (secondary)\n- 'Cancel' button (tertiary, outline style)
 \n**Real-Time Synchronization on Save**:
-- When owner saves new menu item, edits existing item, or deletes item:\n  - Backend emits WebSocket event: `menu:item:created`, `menu:item:updated`, or `menu:item:deleted`\n  - Event payload includes: restaurant_id, item_id, item_data (name, category, price, price_variants, image, availability, etc.)
+- When owner saves new menu item, edits existing item, or deletes item:\n  - Backend emits WebSocket event: `menu:item:created`, `menu:item:updated`, or `menu:item:deleted`\n  - Event payload includes: restaurant_id, item_id, item_data (name, category, full_portion_price, additional_variants: [{variant_name, variant_price, size_details}], image, availability, etc.)
   - All connected customer clients subscribed to this restaurant receive event instantly
   - Customer dashboards automatically update menu display without page refresh:\n    - New items appear in respective category with slide-in animation
     - Updated items refresh data (price, variants, image, description, availability) with smooth transition
@@ -240,23 +248,23 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 - **Layout**:
   - Full-screen overlay or dedicated page displaying menu in customer-facing format
   - Sticky category navigation bar at top (horizontal scrollable tabs for each category)
-  - Vertical scrolling layout with category sections
-  - Each category section displays:
+  - Vertical scrolling layout with category sections\n  - Each category section displays:
     - Category name as section header
     - Grid of menu item cards (2-3 columns on desktop, 1-2 on mobile)
   - Each menu item card shows:
     - High-quality item image
     - Item name (bold, prominent)
     - Item description (truncated with'Read more' if long)
-    - **Portion indicator badge**:'Single Size' or 'Price Variants Available'\n    - **Price display**:
-      - **If Single Size**: Single price (e.g., '$12')\n      - **If Price Variants**: Price range (e.g., '$8 - $12') with 'View Options' link
+    - **Portion indicator badge**:'Full Portion Only' or 'Additional Portions Available'\n    - **Price display**:
+      - **If Full Portion Only**: Single price (e.g., '$8.99')
+      - **If Additional Portions Available**: Price range (e.g., '$4.45 - $8.99') with 'View Options' link
     - Dietary tags (veg/non-veg icons, spicy level indicators)
     - Availability badge (if out of stock, greyed out with 'Currently Unavailable' label)
   - Smooth scroll-to-category when clicking category tabs
   - Close button (X icon) at top-right to exit menu view and return to management interface
 
 - **Interactive Features**:
-  - Click on item card to view full details in modal (larger image, complete description, nutritional info, allergen warnings, **full price variant selection UI**)
+  - Click on item card to view full details in modal (larger image, complete description, nutritional info, allergen warnings, **full portion selection UI with database-fetched additional variants**)
   - Real-time availability updates (if item goes out of stock, card updates immediately)
   - Responsive design optimized for all devices
 \n**D. Bulk Actions**\n
@@ -270,9 +278,9 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 - 'View Analytics' button in menu management page
 - Opens analytics panel showing:
   - Most ordered items (bar chart)
-  - **Most popular price variants** (pie chart showing Half vs Full vs other variant orders)
+  - **Most popular portions** (pie chart showing Full Portion vs additional variants orders)
   - Revenue by category (pie chart)
-  - **Revenue by price variant** (bar chart)
+  - **Revenue by portion type** (bar chart comparing Full Portion vs additional variants)
   - Items with low orders (table)
   - Average order value per item
   - Customer favorites (based on ratings)
@@ -317,8 +325,7 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
   - Supplier Name (text input or dropdown from saved suppliers)
   - Supplier Contact (phone/email)\n  - Cost per Unit (for cost tracking)
   - Notes (optional)
-
-**C. Stock Adjustment**
+\n**C. Stock Adjustment**
 
 - 'Adjust Stock' button for each item
 - Modal with options:
@@ -345,7 +352,8 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 - Add/edit/delete suppliers
 - Supplier details: Name, contact, email, address, items supplied
 - Quick reorder functionality (send order request to supplier)
-\n---
+
+---
 
 #### 3.1.4 Enhanced QR Code Management with Real-Time Table Synchronization
 
@@ -441,10 +449,13 @@ Generate, manage, and track QR codes for tables, takeaway, and delivery. Each QR
   - Table number (for dine-in) or 'Takeaway'/'Delivery' label
   - Contact number (if provided)
 \n- **Order Items List**:
-  - Each item displayed as: Quantity x Item Name (Price Variant if applicable)
-  - **Enhanced price variant display**: 'Half', 'Full', 'Small', 'Large', or specific variant name
-  - Example: '2x Margherita Pizza (Full)', '1x Caesar Salad (Half)', '3x Burger (Large)'
-\n- **Order Total**:
+  - Each item displayed as: Quantity x Item Name (Portion Name if not Full Portion)
+  - **Portion display logic**:
+    - If Full Portion ordered: '2x Crispy Spring Roll (Full Portion)' or simply '2x Crispy Spring Roll'
+    - If additional variant ordered: '1x Crispy Spring Roll (Half Crispy Spring Roll)' or '1x Crispy Spring Roll (Large)'
+  - Example: '2x Crispy Spring Roll (Full Portion) - $17.98', '1x Crispy Spring Roll (Half Crispy Spring Roll) - $4.45'
+
+- **Order Total**:
   - Subtotal, taxes, discounts (if applicable), grand total
   - Displayed in bold with currency symbol
 
@@ -480,7 +491,7 @@ Generate, manage, and track QR codes for tables, takeaway, and delivery. Each QR
 - Click'View Details' button to open full-screen modal
 - **Modal Sections**:
   1. **Order Summary**: Order ID, timestamp, status, customer info, table number
-  2. **Order Items**: Detailed list with item images, quantities, **price variants with visual indicators** (e.g., 'Half' badge, 'Full' badge), prices\n  3. **Order Timeline**: Visual timeline with steps and timestamps (auto-updates in real-time)
+  2. **Order Items**: Detailed list with item images, quantities, **portion names (Full Portion or additional variant names from database)**, prices\n  3. **Order Timeline**: Visual timeline with steps and timestamps (auto-updates in real-time)
   4. **Payment Information**: Payment method, payment status (Paid/Pending), transaction ID
   5. **Assigned Waiter**: Waiter details with option to reassign
   6. **Customer Communication**: Chat interface to message customer directly
@@ -500,7 +511,7 @@ Generate, manage, and track QR codes for tables, takeaway, and delivery. Each QR
   - Orders by status (pie chart)
   - Peak order times (bar chart)
   - Revenue by order type (dine-in/takeaway/delivery)
-  - **Revenue by price variant** (pie chart showing Half vs Full vs other variants)
+  - **Revenue by portion type** (pie chart showing Full Portion vs additional variants)
 \n---
 
 #### 3.1.6 Enhanced Payment Management for Restaurant Owners
@@ -609,8 +620,7 @@ Comprehensive payment tracking and management system with transaction history, p
 **E. Waiter Communication**
 
 - 'Message Waiter' button\n- Opens chat interface for direct communication
-- Send instructions, updates, or queries
-- Real-time message delivery\n\n---
+- Send instructions, updates, or queries\n- Real-time message delivery\n\n---
 
 #### 3.1.8 Real-Time Communication Hub
 
@@ -638,7 +648,8 @@ Comprehensive payment tracking and management system with transaction history, p
 - Modal to compose message
 - Select recipients: All Customers, All Waiters, Specific Group
 - Send promotional messages, announcements, alerts
-\n**D. Quick Replies**
+
+**D. Quick Replies**
 
 - Predefined message templates for common responses
 - Examples: 'Your order is being prepared', 'Table is ready', 'Thank you for your feedback'
@@ -664,13 +675,15 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
 \n- **Revenue Analytics**:
   - Line chart: Revenue over time (daily, weekly, monthly view)
   - Bar chart: Revenue by order type (dine-in, takeaway, delivery)
-  - Pie chart: Revenue by payment method\n  - **New: Revenue by price variant** (pie chart showing Half vs Full vs other variants)
+  - Pie chart: Revenue by payment method
+  - **New: Revenue by portion type** (pie chart showing Full Portion vs additional variants)
 
 - **Order Analytics**:\n  - Bar chart: Orders by hour (peak times)
   - Line chart: Orders trend over time
-  - Pie chart: Orders by status\n\n- **Menu Analytics**:
+  - Pie chart: Orders by status
+\n- **Menu Analytics**:
   - Bar chart: Top10 selling items
-  - **New: Most popular price variants** (bar chart showing Half vs Full vs other variant orders per item)
+  - **New: Most popular portions** (bar chart showing Full Portion vs additional variant orders per item)
   - Table: Items with low sales (recommendations to remove or promote)
   - Pie chart: Revenue by category
 
@@ -767,8 +780,7 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   - Modal form: Select staff, shift date, start time, end time, role
   - Save and notify staff via notification/SMS
 - **Shift Swap Requests**:
-  - Staff can request shift swaps
-  - Owner approves/rejects requests
+  - Staff can request shift swaps\n  - Owner approves/rejects requests
 \n**F. Performance Analytics**
 
 - 'Performance' tab
@@ -833,7 +845,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Discount Type: Percentage or Fixed Amount
   - Discount Value\n  - Minimum Order Value (optional)
   - Applicable Items: All Items or Select Specific Items/Categories
-  - **Applicable Price Variants**: All Variants or Specific Variants (e.g., discount only on Full portions)
+  - **Applicable Portions**: All Portions (Full + Additional Variants) or Specific Portions (e.g., discount only on Full Portions or specific additional variants)
   - Promo Code (auto-generated or custom)
 - **If Loyalty Program**:
   - Points per order
@@ -856,8 +868,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Generate unique code or custom code
 - **Bulk Code Generation**:
   - Generate multiple unique codes for distribution
-  - Export codes to CSV
-\n**D. Loyalty Program**
+  - Export codes to CSV\n\n**D. Loyalty Program**
 
 - 'Loyalty Program' tab
 - **Program Configuration**:
@@ -1061,7 +1072,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Save button applies changes\n
 ---
 
-### 3.2 Enhanced Customer Features with Real-Time Menu & Table Synchronization and Zomato-Style Portion Selection (Price Variants with Full Portion as Default)
+### 3.2 Enhanced Customer Features with Real-Time Menu & Table Synchronization and Database-Driven Portion Selection (Full Portion as Default with Additional Variants)
 
 #### 3.2.1 Customer Home Screen with Complete Sidebar Functionality and Real-Time Updates
 
@@ -1122,7 +1133,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Filter by cuisine type (Italian, Chinese, Indian, etc.)
   - **Filter by restaurant type (Veg, Non-Veg, Both)**
   - Filter by location/area
-  - Sort by: Recently Scanned, Name (A-Z), Rating\n\n- **Restaurant Cards Grid**:
+  - Sort by: Recently Scanned, Name (A-Z), Rating\n
+- **Restaurant Cards Grid**:
   - Responsive grid layout (3 columns on desktop, 2 on tablet, 1 on mobile)
   - Each restaurant card displays:\n    - Restaurant logo/cover image
     - Restaurant name (bold)
@@ -1156,10 +1168,10 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 ---
 
-#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display in Header, Zomato-Style Portion Selection with Price Variants, and Real-Time Menu Updates)
+#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display in Header, Database-Driven Portion Selection with Full Portion as Default, and Real-Time Menu Updates)
 
 **Overview**:
-Customers scan restaurant QR codes to access digital menu, browse items, and place orders. **QR code scanning functionality is exclusively available on mobile devices.** Restaurant type (Veg/Non-Veg/Both) is displayed in the menu page header next to the restaurant name. **Menu features enhanced Zomato-style portion selection UI with price variants (Half, Full, Small, Large, etc.) and Full Portion as default.** Menu updates from restaurant owner are reflected in real-time.
+Customers scan restaurant QR codes to access digital menu, browse items, and place orders. **QR code scanning functionality is exclusively available on mobile devices.** Restaurant type (Veg/Non-Veg/Both) is displayed in the menu page header next to the restaurant name. **Menu features database-driven portion selection UI with Full Portion as default (original item price) and additional price variants fetched from database.** Menu updates from restaurant owner are reflected in real-time.
 
 **Key Features**:
 
@@ -1174,7 +1186,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Redirected to restaurant's digital menu
 - **Error handling**: If user attempts to access QR scanner from desktop (via direct URL), display message: 'QR code scanning is only available on mobile devices. Please use a smartphone or tablet to scan QR codes.'
 
-**B. Digital Menu Display (with Restaurant Type in Header, Zomato-Style Portion Selection with Price Variants, and Real-Time Updates)**
+**B. Digital Menu Display (with Restaurant Type in Header, Database-Driven Portion Selection with Full Portion as Default, and Real-Time Updates)**
 
 - **Menu Header:**
   - Restaurant logo (left)\n  - Restaurant name (center, bold, large font)
@@ -1189,13 +1201,13 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Each item card shows:
     - Item image
     - Item name and description
-    - **Portion indicator badge**:'Single Size' or 'Price Variants Available'\n    - **Price display**:
-      - **If Single Size**: Single price (e.g., '$12')
-      - **If Price Variants**: Price range (e.g., '$8- $12') with 'View Options' link
+    - **Portion indicator badge**:'Full Portion Only' or 'Additional Portions Available'
+    - **Price display**:\n      - **If Full Portion Only**: Single price (e.g., '$8.99')
+      - **If Additional Portions Available**: Price range (e.g., '$4.45 - $8.99') with 'View Options' link
     - Dietary tags (veg/non-veg, spicy level)
-    - Availability status\n    - **'Add to Cart' button** (for single size items) or **'Customize' button** (for items with price variants)
-\n**Real-Time Menu Synchronization**:
-- When customer opens menu page:
+    - Availability status\n    - **'Add to Cart' button** (for full portion only items) or **'Customize' button** (for items with additional portions)
+
+**Real-Time Menu Synchronization**:\n- When customer opens menu page:
   - WebSocket connection subscribes to menu update events for this restaurant
   - Events: `menu:item:created`, `menu:item:updated`, `menu:item:deleted`, `menu:category:created`, `menu:category:updated`, `menu:category:deleted`
 - **When restaurant owner adds new menu item**:
@@ -1204,8 +1216,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Toast notification appears: 'New item added: [Item Name]' (optional, can be disabled in settings)
 - **When restaurant owner edits menu item**:
   - Backend emits `menu:item:updated` event
-  - Customer's menu page receives event\n  - Item card updates data (name, price, variants, image, description, availability) with smooth transition
-  - If price or variants changed, highlight card with pulsing glow for3 seconds
+  - Customer's menu page receives event\n  - Item card updates data (name, price, additional variants, image, description, availability) with smooth transition
+  - If price or additional variants changed, highlight card with pulsing glow for3 seconds
 - **When restaurant owner deletes menu item**:
   - Backend emits `menu:item:deleted` event
   - Customer's menu page receives event
@@ -1217,7 +1229,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Deleted categories fade out\n  - Edited categories update name/image with smooth transition
 - **No page refresh required** - all updates happen in real-time
 
-**C. Item Details Modal with Enhanced Zomato-Style Portion Selection (Price Variants with Full Portion as Default, No Special Instructions)**
+**C. Item Details Modal with Database-Driven Portion Selection (Full Portion as Default with Additional Variants from Database, No Special Instructions)**
 
 - Click on item card to view full details
 - Modal displays:
@@ -1226,40 +1238,40 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Complete description
   - Dietary tags and allergen warnings
   - Nutritional information (if available)
-  \n  **Portion Selection Section (Zomato-Style UI with Price Variants)**:\n  \n  **If Single Size**:
-  - Display single price prominently
+  \n  **Portion Selection Section (Database-Driven UI with Full Portion as Default)**:\n  \n  **If Full Portion Only**:
+  - Display full portion price prominently (e.g., '$8.99')
   - No portion selection needed
   - Quantity selector directly below price
-  \n  **If Price Variants Enabled**:
+  \n  **If Additional Portions Available**:
   - **Heading**: 'Choose Size' (bold, with portion icon)
-  - **Vertical list of price variant cards** (one per variant):
-    - Each card displays:
-      - **Variant name** (e.g., 'Half', 'Full', 'Small', 'Medium', 'Large') in bold
-      - **Portion size details** (if available, e.g., '250g', '6 inches', '500ml') in smaller font below variant name
-      - **Price** prominently displayed on the right side of card (e.g., '$8', '$12')
-      - **'Recommended' badge with star icon** if this is the default variant (Full Portion is default by default)
-      - **Selection state**: When selected, card has neon border glow and checkmark icon on left
-    - Radio button selection (only one variant can be selected)
-    - **Default variant (Full Portion) pre-selected on modal open**
+  - **Vertical list of portion cards** (Full Portion + additional variants fetched from database):\n    \n    **First Card: Full Portion (Always Default)**:\n    - **Portion name**: 'Full Portion' (bold)\n    - **Portion size details**: If available from database (e.g., '6 pieces', '500g'), displayed in smaller font below portion name
+    - **Price**: Full portion price from menu_items.price field (e.g., '$8.99') prominently displayed on the right side of card
+    - **'Recommended' badge with star icon** positioned at top-right corner of card (neon yellow background)
+    - **Pre-selected by default** on modal open (neon border glow and checkmark icon on left)
+    - Radio button selection\n    \n    **Subsequent Cards: Additional Variants (Fetched from Database)**:
+    - Each additional variant fetched from price_variants table
+    - **Variant name**: Custom name from database (e.g., 'Half Crispy Spring Roll', 'Large Crispy Spring Roll') in bold
+    - **Portion size details**: If available from database (e.g., '3 pieces', '150g'), displayed in smaller font below variant name
+    - **Price**: Variant price from database (e.g., '$4.45', '$12.99') prominently displayed on the right side of card
+    - **Selection state**: When selected, card has neon border glow and checkmark icon on left
+    - Radio button selection (only one portion can be selected)
     - Smooth transition animation on selection change (300ms ease-in-out)
   
   - **Visual Design (Zomato-Style)**:
-    - Each variant card has glassmorphism effect with semi-transparent background
+    - Each portion card has glassmorphism effect with semi-transparent background
     - Neon border (2px) that glows on selection (electric cyan for selected, light grey for unselected)
-    - Card layout: Variant name and size details on left, price on right, checkmark icon appears on left when selected
-    - 'Recommended' badge positioned at top-right corner of default variant card with neon yellow background
+    - Card layout: Portion name and size details on left, price on right, checkmark icon appears on left when selected
+    - 'Recommended' badge only on Full Portion card
     - Cards stack vertically with12px spacing between them
     - On mobile: Cards are full-width for easy thumb navigation
   
   **Quantity Selector**:
-  - Positioned below price variant selection
-  - Label: 'Quantity'\n  - '-' button, quantity number (default 1), '+' button
-  - Inline layout with large touch-friendly buttons
+  - Positioned below portion selection\n  - Label: 'Quantity'\n  - '-' button, quantity number (default 1), '+' button\n  - Inline layout with large touch-friendly buttons
   \n  **Price Summary**:
-  - Display selected variant price x quantity = total\n  - Example: 'Full: $12 x 2 = $24'
+  - Display selected portion price x quantity = total\n  - Example: 'Full Portion: $8.99 x 2 = $17.98' or 'Half Crispy Spring Roll: $4.45 x 1 = $4.45'
   - Bold, prominent display at bottom of modal
   \n  **Action Buttons**:
-  - **'Add to Cart' Button**: Primary button (neon gradient, full-width)\n    - On click: Add item with selected variant and quantity to cart
+  - **'Add to Cart' Button**: Primary button (neon gradient, full-width)\n    - On click: Add item with selected portion (Full Portion or additional variant name from database) and quantity to cart
     - Show success toast: 'Item added to cart'
 - Modal closes automatically\n  - **'Cancel' Button**: Secondary button (outline style)\n    - On click: Close modal without adding to cart
 \n**D. Cart Management**
@@ -1268,18 +1280,19 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 - Click to open cart sidebar
 - Cart displays:
   - List of added items with:\n    - Item name
-    - **Selected price variant** (e.g., 'Half', 'Full', 'Large')
-    - Quantity\n    - Price per item
+    - **Selected portion** (e.g., 'Full Portion', 'Half Crispy Spring Roll', 'Large Crispy Spring Roll')
+    - Quantity
+    - Price per item
     - Total price for that item
   - Subtotal, taxes, total
   - 'Proceed to Checkout' button
-  - Option to edit quantities, change variants, or remove items
-  - **Edit Variant**: Click on item to reopen modal with current selection, allow variant change
+  - Option to edit quantities, change portions, or remove items
+  - **Edit Portion**: Click on item to reopen modal with current selection, allow portion change
 \n---
 
-#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED) - Updated with Table Number Entry for Browse Orders, Real-Time Table Synchronization, and Price Variant Display
+#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED) - Updated with Table Number Entry for Browse Orders, Real-Time Table Synchronization, and Database-Driven Portion Display
 
-**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking. Updated to include mandatory table number entry for dine-in orders placed via Browse Restaurants (without QR code scan). Table list is synchronized in real-time when restaurant owner adds/edits/deletes tables. **Order summary displays selected price variants for each item.**
+**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking. Updated to include mandatory table number entry for dine-in orders placed via Browse Restaurants (without QR code scan). Table list is synchronized in real-time when restaurant owner adds/edits/deletes tables. **Order summary displays selected portions (Full Portion or additional variant names from database) for each item.**
 
 ---
 
@@ -1296,17 +1309,17 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 \n**Cart Items Section**:
 - **Each cart item displayed as a card**:
   - Item image (small thumbnail, left)
-  - Item name (bold)\n  - **Price variant**: Badge displaying selected variant (e.g., 'Half', 'Full', 'Large')
-    - Badge color-coded: Half portions in cyan, Full portions in magenta, other variants in blue
-  - Quantity selector: '-' button, quantity number, '+' button (inline)\n  - Item price (right): Unit price x quantity = total (e.g., '$12 x 2 = $24')\n  - **'Edit' icon** (pencil icon): Click to reopen item modal and change variant
+  - Item name (bold)\n  - **Portion**: Badge displaying selected portion (e.g., 'Full Portion', 'Half Crispy Spring Roll', 'Large Crispy Spring Roll')
+    - Badge color-coded: Full Portion in magenta, additional variants in cyan or blue
+  - Quantity selector: '-' button, quantity number, '+' button (inline)\n  - Item price (right): Unit price x quantity = total (e.g., '$8.99 x 2 = $17.98' or '$4.45 x 1 = $4.45')
+  - **'Edit' icon** (pencil icon): Click to reopen item modal and change portion
   - 'Remove' icon (trash icon, top-right of card)\n- **Empty Cart State**:
-  - If cart is empty: Display message 'Your cart is empty' with'Browse Menu' button
+  - If cart is empty: Display message 'Your cart is empty' with 'Browse Menu' button
 \n**Price Breakdown Section**:
 - **Subtotal**: Sum of all item prices (e.g., 'Subtotal: $48.00')
 - **Taxes**: Calculated based on restaurant settings (e.g., 'GST (5%): $2.40')
 - **Discount**: If promo code applied, show discount amount (e.g., 'Discount (SAVE10): -$5.00')
-- **Delivery Fee**: If delivery order, show fee (e.g., 'Delivery Fee: $3.00')
-- **Grand Total**: Final amount in bold, large font with currency symbol (e.g., 'Total: $48.40')
+- **Delivery Fee**: If delivery order, show fee (e.g., 'Delivery Fee: $3.00')\n- **Grand Total**: Final amount in bold, large font with currency symbol (e.g., 'Total: $48.40')
 
 **Action Buttons**:
 - **'Continue Shopping' Button**: Secondary button (outline style), returns to menu page
@@ -1315,9 +1328,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - On click: Smooth transition to checkout page (no full page reload)
 \n---
 
-**STEP 2: Checkout Page - Customer Information & Order Details (Updated with Table Number Entry Logic, Real-Time Table Synchronization, and Price Variant Display)**
-
-**A. Checkout Page Layout**
+**STEP 2: Checkout Page - Customer Information & Order Details (Updated with Table Number Entry Logic, Real-Time Table Synchronization, and Database-Driven Portion Display)**
+\n**A. Checkout Page Layout**
 
 - **Page Structure**: Two-column layout on desktop (left: form, right: order summary), single column on mobile (form on top, summary below)
 - **Progress Indicator**: Stepper at top showing: 1. Cart → **2. Checkout** → 3. Payment → 4. Confirmation (current step highlighted)
@@ -1389,9 +1401,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - Restaurant type badge (Veg/Non-Veg/Both)
   - Order type badge (Dine-In/Takeaway/Delivery)
 \n**Order Items List**:
-- Compact list of cart items:\n  - Each item: Quantity x Item Name **(Price Variant)** - Price\n  - **Price variant displayed in parentheses**:'Half', 'Full', 'Large', etc.
-  - Example: '2x Margherita Pizza (Full) - $24.00', '1x Caesar Salad (Half) - $8.00'
--'Edit Cart' link (navigates back to cart)
+- Compact list of cart items:\n  - Each item: Quantity x Item Name **(Portion Name)** - Price\n  - **Portion name displayed in parentheses**:'Full Portion', 'Half Crispy Spring Roll', 'Large Crispy Spring Roll', etc.
+  - Example: '2x Crispy Spring Roll (Full Portion) - $17.98', '1x Crispy Spring Roll (Half Crispy Spring Roll) - $4.45'\n-'Edit Cart' link (navigates back to cart)
 \n**Price Breakdown**:
 - Subtotal\n- Taxes (with percentage)
 - Discount (if promo code applied, with code name)\n- Delivery Fee (if delivery order)
@@ -1413,7 +1424,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 **A. Payment Page Layout**
 
 - **Progress Indicator**: Stepper showing: 1. Cart → 2. Checkout → **3. Payment** → 4. Confirmation
-- **Page Structure**: Single column layout with payment options\n\n**B. Payment Method Selection**
+- **Page Structure**: Single column layout with payment options
+\n**B. Payment Method Selection**
 
 - **Heading**: 'Select Payment Method' (bold, with credit card icon)
 - **Payment Options**: Large card-style radio buttons (one option selected at a time)
@@ -1439,8 +1451,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
     - Tooltip: 'Last 3 digits on back of card'
   - **Save Card for Future**: Checkbox (optional, if user is logged in)
   - **Security Badge**: Display'Secured by Stripe/Razorpay' logo and SSL lock icon
-
-**Option 3: UPI (Unified Payments Interface)**
+\n**Option 3: UPI (Unified Payments Interface)**
 - Icon: UPI icon
 - Label: 'UPI'\n- Sub-label: 'Pay using UPI apps like Google Pay, PhonePe, Paytm'
 - **If selected**: Display UPI ID input:\n  - **UPI ID**: Text input
@@ -1454,7 +1465,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 - **If selected**: Display wallet selection:\n  - Radio buttons or dropdown: Paytm, PhonePe, Amazon Pay, Google Pay\n  - On selection: Redirect to respective wallet app/website for payment authorization
 \n**C. Order Summary (Sticky Sidebar on Desktop)**
 
-- Same as checkout page: Restaurant info, order items **with price variants**, price breakdown, grand total
+- Same as checkout page: Restaurant info, order items **with portion names**, price breakdown, grand total
 \n**D. Action Buttons**
 
 - **'Back to Checkout' Button**: Secondary button (outline style), navigates back to checkout page
@@ -1465,12 +1476,10 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
       - Display loading spinner with message 'Processing payment...'
       - **If payment successful**: Place order and navigate to confirmation page
       - **If payment failed**: Display error message 'Payment failed. Please try again or choose another method' (red alert banner), allow user to retry or change payment method
-
-**E. Payment Processing Flow**
+\n**E. Payment Processing Flow**
 
 1. **User clicks 'Place Order & Pay'**:\n   - Frontend validates payment details (card number, UPI ID, etc.)
-   - If validation fails: Display error messages
-   - If validation passes: Send payment request to backend
+   - If validation fails: Display error messages\n   - If validation passes: Send payment request to backend
 \n2. **Backend processes payment**:
    - Integrate with payment gateway (Stripe, Razorpay, PayPal)\n   - Create payment intent/transaction
    - Return payment status to frontend
@@ -1510,8 +1519,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
   - **Order Timestamp**: Date and time order was placed
 \n**D. Order Summary**
 
-- **Order Items List**: Same as previous pages **with price variants displayed**
-  - Example: '2x Margherita Pizza (Full)', '1x Caesar Salad (Half)'
+- **Order Items List**: Same as previous pages **with portion names displayed**
+  - Example: '2x Crispy Spring Roll (Full Portion)', '1x Crispy Spring Roll (Half Crispy Spring Roll)'
 - **Price Breakdown**: Subtotal, taxes, discount, delivery fee, grand total
 - **Payment Method**: Display selected payment method (e.g., 'Paid via Credit Card ending in 1234')
 - **Payment Status**: Badge (Paid/Pending)\n\n**E. Action Buttons**
@@ -1538,7 +1547,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
    - Order appears in restaurant's order management dashboard
 
 3. **Update Database**:
-   - Create order record with all details (including table number whether from QR or manual selection, and selected price variants for each item)
+   - Create order record with all details (including table number whether from QR or manual selection, and selected portions for each item with portion names from database)
    - Update inventory (deduct items if linked)\n   - Log transaction in payment records
    - Add order to customer's order history
 
@@ -1585,7 +1594,7 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 **C. Order Modifications**
 
 - 'Edit Order' button on checkout page (navigates back to cart)
-- Allow quantity changes, variant changes, item removal
+- Allow quantity changes, portion changes, item removal
 - Recalculate totals in real-time
 \n**D. Accessibility & UX Enhancements**
 
@@ -1611,8 +1620,8 @@ Customers scan restaurant QR codes to access digital menu, browse items, and pla
 **Key Features**:\n\n**A. Order Tracking Page**
 
 - **Order Details Card**:
-  - Order ID, restaurant name, table number\n  - Order items list with quantities **and price variants**
-    - Example: '2x Margherita Pizza (Full)', '1x Caesar Salad (Half)'
+  - Order ID, restaurant name, table number\n  - Order items list with quantities **and portion names**
+    - Example: '2x Crispy Spring Roll (Full Portion)', '1x Crispy Spring Roll (Half Crispy Spring Roll)'
   - Order total\n\n- **Order Timeline**:
   - Visual timeline showing order progress:\n    - Order Placed ✓
     - Order Accepted ✓
@@ -1645,7 +1654,7 @@ View past orders with detailed information and quick reorder functionality.
   - Each order card shows:
     - Restaurant name and logo
     - Order ID and date
-    - Order items summary with price variants (e.g., '2x Burger (Full), 1x Fries (Half)')
+    - Order items summary with portion names (e.g., '2x Burger (Full Portion), 1x Fries (Half Crispy Spring Roll)')
     - Order total
     - Order status (Completed/Cancelled)
     - 'View Details' and 'Reorder' buttons
@@ -1656,15 +1665,15 @@ View past orders with detailed information and quick reorder functionality.
 \n**B. Order Details Modal**
 
 - Click'View Details' to open modal\n- Modal displays:
-  - Complete order information (items with price variants, quantities, prices)
+  - Complete order information (items with portion names, quantities, prices)
   - Order timeline\n  - Payment details
   - E-bill download option (PDF)
   - 'Rate Order' button (if not rated yet)
 
 **C. Reorder Functionality**
 
-- Click 'Reorder' button\n- All items from previous order (with same price variants) added to cart
-- Customer can modify quantities, change variants, or add/remove items
+- Click 'Reorder' button\n- All items from previous order (with same portion names from database) added to cart
+- Customer can modify quantities, change portions, or add/remove items
 - Proceed to checkout\n
 ---
 
@@ -1678,8 +1687,8 @@ View past orders with detailed information and quick reorder functionality.
 
 - **Tabs**: Favorite Items, Favorite Restaurants\n\n- **Favorite Items Tab**:
   - Grid of saved menu items
-  - Each item card shows: Image, name, restaurant name, **price variant options** (if applicable), price, 'Add to Cart' button
-  -'Remove from Favorites' icon
+  - Each item card shows: Image, name, restaurant name, **portion options** (if applicable), price,'Add to Cart' button
+  - 'Remove from Favorites' icon
 \n- **Favorite Restaurants Tab**:
   - Grid of saved restaurants
   - Each restaurant card shows: Logo, name, cuisine type, 'View Menu' button
@@ -1714,8 +1723,8 @@ View loyalty points, redeem rewards, and participate in referral program.
 - **Points History**:
   - Table showing points earned/redeemed with timestamps
   - Filter by date range
-\n**B. Referral Program**
 
+**B. Referral Program**\n
 - **Referral Code**:
   - Display unique referral code
   - 'Copy Code' button
@@ -1730,8 +1739,7 @@ View loyalty points, redeem rewards, and participate in referral program.
 
 #### 3.2.9 Profile & Settings
 
-**Overview**:
-Manage customer profile information and app preferences.
+**Overview**:\nManage customer profile information and app preferences.
 
 **Key Features**:
 
@@ -1804,7 +1812,7 @@ Access help resources and contact support.\n
   3. Pending Tasks (count)
   4. Orders Completed Today\n\n- **Assigned Orders Section**:
   - List of orders assigned to waiter
-  - Each order card shows: Order ID, table number, items **with price variants**, status, 'View Details' button
+  - Each order card shows: Order ID, table number, items **with portion names**, status, 'View Details' button
   - Real-time updates when new order assigned or status changes
 
 - **Active Tables Section**:
@@ -1813,7 +1821,7 @@ Access help resources and contact support.\n
 \n**B. Order Management**
 \n- **View Order Details**:
   - Click on order card to view full details
-  - Modal displays: Order items **with price variants**, customer info, order timeline\n\n- **Update Order Status**:
+  - Modal displays: Order items **with portion names**, customer info, order timeline\n\n- **Update Order Status**:
   - Buttons to update status: 'Mark as Preparing', 'Mark as Ready', 'Mark as Served'
   - Status update sent to owner and customer in real-time
 
@@ -1864,33 +1872,32 @@ Access help resources and contact support.\n
 ### 4.1 Restaurant Owner Flow
 
 1. **Sign Up/Login** → Owner Dashboard\n2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details (including restaurant type: Veg/Non-Veg/Both) → Save
-3. **Add Menu Items with Price Variants** → Menu Management → + Add Menu Item → Fill basic info → **Select Portion Type (Single/Price Variants)** → **If Price Variants: Add variants (e.g., Half, Full) with prices, set Full as default** → Save → Menu item instantly synced to all customer dashboards
-4. **Edit Menu Item Price Variants** → Menu Management → Select item → Edit → **Modify price variants or pricing** → Save → Changes instantly synced to all customer dashboards
+3. **Add Menu Items with Database-Driven Portions** → Menu Management → + Add Menu Item → Fill basic info → **Enter Full Portion Price (default)** → **Toggle'Enable Additional Portions' if needed** → **Add additional variants with custom names and prices (e.g., 'Half Crispy Spring Roll' - $4.45)** → Save → Menu item instantly synced to all customer dashboards
+4. **Edit Menu Item Portions** → Menu Management → Select item → Edit → **Modify full portion price or add/edit/delete additional variants** → Save → Changes instantly synced to all customer dashboards
 5. **Delete Menu Item** → Menu Management → Select item → Delete → Confirm → Item removed from all customer dashboards in real-time
 6. **Add Category** → Menu Management → + Add Category → Fill form → Save → New category instantly appears in customer menu navigation
 7. **Generate QR Codes** → QR Codes → + Generate QR Code → Configure → Download/Print → New table instantly available in customer checkout dropdown
 8. **Edit Table** → QR Codes → Select table → Edit → Save → Table info updated in customer checkout dropdown in real-time
 9. **Delete Table** → QR Codes → Select table → Delete → Confirm → Table removed from customer checkout dropdown with warning if selected
-10. **Receive Order** → Real-time notification → View order details **with price variants** → Accept/Reject\n11. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm\n12. **Track Order** → Order updates automatically in real-time\n13. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n14. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch\n15. **View Analytics** → Analytics → View reports and charts **including price variant analytics**
+10. **Receive Order** → Real-time notification → View order details **with portion names** → Accept/Reject\n11. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm\n12. **Track Order** → Order updates automatically in real-time\n13. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n14. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch\n15. **View Analytics** → Analytics → View reports and charts **including portion type analytics**
 16. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
 
-### 4.2 Customer Flow (Complete Checkout Flow with Table Number Entry, Mobile-Only QR Scanning, Zomato-Style Portion Selection with Price Variants, and Real-Time Menu/Table Synchronization)
+### 4.2 Customer Flow (Complete Checkout Flow with Table Number Entry, Mobile-Only QR Scanning, Database-Driven Portion Selection with Full Portion as Default, and Real-Time Menu/Table Synchronization)
 
 1. **Sign Up/Login** → Customer Home\n2. **Scan QR Code (Mobile-Only)** → **'Scan QR Code' button visible only on mobile devices** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header → Table number auto-detected → Menu items and categories sync in real-time if owner makes changes
-3. **Browse Menu** → View categories and items → Click item for details → **If owner adds new item, it appears instantly with animation** → If owner edits item, changes reflect immediately → If owner deletes item, it fades out
-4. **Select Item with Price Variant** → Click item card → **Item details modal opens with Zomato-style price variant selection UI** → **Choose price variant (Half/Full/Other)** → **Full Portion pre-selected as default** → Select quantity → Add to Cart\n5. **Review Cart** → Click cart icon → View cart items **with selected price variants** → Edit quantities, **change variants**, or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type:\n   - **If Dine-In via QR scan**: Table number auto-filled and displayed\n   - **If Dine-In via Browse Restaurants**: Select table number from dropdown (required) → Dropdown syncs in real-time if owner adds/edits/deletes tables → If selected table is deleted, show warning and reset selection
+3. **Browse Menu** → View categories and items → Click item for details → **If owner adds new item, it appears instantly with animation** → If owner edits item, changes reflect immediately → If owner deletes item, it fades out\n4. **Select Item with Database-Driven Portion** → Click item card → **Item details modal opens with portion selection UI** → **Full Portion pre-selected as default** → **Additional variants (if any) fetched from database and displayed below Full Portion** → **Choose portion (Full Portion or additional variant like'Half Crispy Spring Roll')** → Select quantity → Add to Cart\n5. **Review Cart** → Click cart icon → View cart items **with selected portion names** → Edit quantities, **change portions**, or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type:\n   - **If Dine-In via QR scan**: Table number auto-filled and displayed\n   - **If Dine-In via Browse Restaurants**: Select table number from dropdown (required) → Dropdown syncs in real-time if owner adds/edits/deletes tables → If selected table is deleted, show warning and reset selection
    - **If Takeaway**: No table number needed\n   - **If Delivery**: Enter delivery address
-   → Apply promo code (optional) → Review order summary **with price variants** → Click 'Proceed to Payment'
-7. **Payment Page** → Select payment method (Cash/Card/UPI/Wallet) → Enter payment details (if online payment) → Review order summary **with price variants** → Click 'Place Order & Pay'
+   → Apply promo code (optional) → Review order summary **with portion names** → Click 'Proceed to Payment'
+7. **Payment Page** → Select payment method (Cash/Card/UPI/Wallet) → Enter payment details (if online payment) → Review order summary **with portion names** → Click 'Place Order & Pay'
 8. **Payment Processing** → System processes payment → If successful: Order placed → If failed: Display error, allow retry
-9. **Order Confirmation** → View success message → View order details (Order ID, table number, estimated time, **items with price variants**) → Download receipt → Click 'Track Your Order'
-10. **Track Order** → Real-time order tracking page → View timeline and estimated time → **View order items with price variants** → Receive notifications on status updates
-11. **Receive Order** → Order status updates to 'Ready' → Notification received\n12. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
-13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu → Menu syncs in real-time if owner makes changes → **Select items with price variants** → Add items to cart → Proceed to checkout → Select table number from dropdown if choosing Dine-In → Dropdown syncs in real-time → Complete order
-14. **Reorder** → Order History → Select order → Reorder → **Previous price variants automatically selected** → Modify if needed → Checkout\n15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow\n
+9. **Order Confirmation** → View success message → View order details (Order ID, table number, estimated time, **items with portion names**) → Download receipt → Click 'Track Your Order'
+10. **Track Order** → Real-time order tracking page → View timeline and estimated time → **View order items with portion names** → Receive notifications on status updates
+11. **Receive Order** → Order status updates to'Ready' → Notification received\n12. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
+13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu → Menu syncs in real-time if owner makes changes → **Select items with database-driven portions** → Add items to cart → Proceed to checkout → Select table number from dropdown if choosing Dine-In → Dropdown syncs in real-time → Complete order
+14. **Reorder** → Order History → Select order → Reorder → **Previous portion names automatically selected** → Modify if needed → Checkout\n15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow\n
 1. **Login** → Waiter Dashboard
-2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list **with price variants**
-4. **View Order Details** → Click order card → View items **with price variants**
+2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list **with portion names**
+4. **View Order Details** → Click order card → View items **with portion names**
 5. **Update Order Status** → Mark as Preparing → Mark as Ready → Mark as Served
 6. **Communicate** → Chat with customer or owner for queries
 7. **Clock Out** → Attendance → Clock Out
@@ -1921,20 +1928,19 @@ Access help resources and contact support.\n
   - **Veg Badge**: Bright green (#39FF14) background with white text and leaf icon
   - **Non-Veg Badge**: Bright red (#FF073A) background with white text and meat icon
   - **Both Badge**: Bright orange (#FF8C00) background with white text and dual icon (leaf + meat)
-- **Price Variant Badges:**
-  - **Half Variant**: Electric cyan (#00F0FF) background with white text\n  - **Full Variant**: Vibrant magenta (#FF006E) background with white text
-  - **Other Variants**: Electric blue (#3A86FF) background with white text
+- **Portion Badges:**
+  - **Full Portion Badge**: Vibrant magenta (#FF006E) background with white text\n  - **Additional Variant Badges**: Electric cyan (#00F0FF) or electric blue (#3A86FF) background with white text
 
 ### 5.4 UI Components
 
 - **Cards**: Glassmorphism effect with frosted glass background, semi-transparent (rgba(255, 255, 255, 0.1)), backdrop blur (10px), neon gradient borders (2px), rounded corners (12-16px border radius), subtle shadows with neon glow (box-shadow: 0 8px 32px rgba(0, 240, 255, 0.3))
 - **Buttons**: Neon gradient backgrounds (linear-gradient from cyan to magenta), rounded corners (8px), bold text, hover effects (scale1.05, glow intensifies), active state (scale 0.95)
-- **Inputs**: Dark background with neon border on focus, rounded corners, placeholder text in light grey\n- **Badges**: Small circular or pill-shaped elements with neon background, white text, used for counts and status indicators. **Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side. Price variant badges are pill-shaped with rounded corners (16px border radius), medium text.**
-- **Icons**: Line-style icons with neon colors, consistent size (24px default)\n- **Price Variant Selection Cards (Zomato-Style)**:
+- **Inputs**: Dark background with neon border on focus, rounded corners, placeholder text in light grey\n- **Badges**: Small circular or pill-shaped elements with neon background, white text, used for counts and status indicators. **Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side. Portion badges are pill-shaped with rounded corners (16px border radius), medium text.**
+- **Icons**: Line-style icons with neon colors, consistent size (24px default)\n- **Portion Selection Cards (Database-Driven UI)**:
   - Large card-style radio buttons with glassmorphism effect
   - Neon border (2px) that glows on selection (electric cyan for selected, light grey for unselected)
-  - Variant name and size details on left, price on right
-  - 'Recommended' badge with star icon for default variants (neon yellow background)
+  - Portion name and size details on left, price on right
+  - 'Recommended' badge with star icon for Full Portion (neon yellow background)
   - Checkmark icon appears on left when selected
   - Smooth transition animations on selection (300ms ease-in-out)
   - Cards stack vertically with12px spacing
@@ -1949,7 +1955,7 @@ Access help resources and contact support.\n
 - **Loading Animations**: Neon spinners or skeleton screens with shimmer effect
 - **Page Transitions**: Smooth fade or slide transitions without full page reload (client-side routing)
 - **Real-Time Update Animations**: New menu items slide in, edited items highlight with pulsing glow, deleted items fade out, new tables appear with slide-in, deleted tables fade out
-- **Price Variant Selection Animations**: Selected variant card scales up slightly (1.02) and glows, unselected cards fade slightly, smooth transition on selection change
+- **Portion Selection Animations**: Selected portion card scales up slightly (1.02) and glows, unselected cards fade slightly, smooth transition on selection change
 
 ### 5.6 Responsive Design
 \n- **Mobile-First Approach**: Design optimized for mobile devices first, then scaled up\n- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
@@ -1957,14 +1963,13 @@ Access help resources and contact support.\n
 - **Adaptive Grids**: Grid layouts adjust column count based on screen size (3columns desktop, 2 tablet, 1 mobile)
 - **Touch-Friendly**: Buttons and interactive elements have minimum44px height for easy tapping
 - **Optimized Images**: Responsive images with appropriate sizes for different devices
-- **Price Variant Selection on Mobile**: Variant cards stack vertically on mobile for easy thumb navigation
+- **Portion Selection on Mobile**: Portion cards stack vertically on mobile for easy thumb navigation
 
-### 5.7 Accessibility
-
+### 5.7 Accessibility\n
 - **Keyboard Navigation**: All interactive elements accessible via keyboard
 - **Screen Reader Support**: Proper ARIA labels and semantic HTML\n- **Color Contrast**: Sufficient contrast between text and background for readability
 - **Focus Indicators**: Clear focus outlines on interactive elements
-- **Price Variant Selection Accessibility**: Variant cards have clear focus states, keyboard navigation support, and screen reader labels
+- **Portion Selection Accessibility**: Portion cards have clear focus states, keyboard navigation support, and screen reader labels
 \n---
 
 ## 6. Technical Considerations
@@ -1973,9 +1978,10 @@ Access help resources and contact support.\n
 
 - **Frontend**: React.js or Next.js for dynamic UI, Tailwind CSS for styling, Framer Motion for animations
 - **Backend**: Node.js with Express.js or Django for API, WebSocket (Socket.io) for real-time communication
-- **Database**: PostgreSQL or MongoDB for data storage (with restaurant_type field in restaurant schema: ENUM('Veg', 'Non-Veg', 'Both'), **price_variants_enabled field in menu_items schema: BOOLEAN, price_variants JSON field for storing variant details: [{name, price, size_details, is_default}]**), Redis for caching and session management
+- **Database**: PostgreSQL or MongoDB for data storage (with restaurant_type field in restaurant schema: ENUM('Veg', 'Non-Veg', 'Both'), **menu_items table with price field for Full Portion price, price_variants table with fields: variant_id, menu_item_id, variant_name, variant_price, size_details, display_order**), Redis for caching and session management
 - **Authentication**: JWT tokens, OAuth 2.0 for Google login (using OSS Google login method), OTP via Twilio or Firebase
-- **Payment Gateway**: Stripe, Razorpay, or PayPal integration\n- **Cloud Storage**: AWS S3 or Cloudinary for image uploads
+- **Payment Gateway**: Stripe, Razorpay, or PayPal integration
+- **Cloud Storage**: AWS S3 or Cloudinary for image uploads
 - **Hosting**: AWS, Google Cloud, or Vercel for deployment
 - **Device Detection**: User agent parsing or screen size detection for mobile-only QR scanning feature
 
@@ -1992,16 +1998,16 @@ Access help resources and contact support.\n
   - Customer clients on checkout page receive events instantly
   - Frontend updates table dropdown without page refresh (add/edit/delete tables with animations, show warnings if selected table deleted)
 - **Event Payload Structure**:
-  - `menu:item:created`: {restaurant_id, item_id, item_data: {name, category, price, image, description, availability, **price_variants_enabled, price_variants: [{name, price, size_details, is_default}]**, etc.}}
-  - `menu:item:updated`: {restaurant_id, item_id, updated_fields: {name, price, image, availability, **price_variants**, etc.}}
-  - `menu:item:deleted`: {restaurant_id, item_id}
-  - `menu:category:created`: {restaurant_id, category_id, category_data: {name, image, display_order}}
+  - `menu:item:created`: {restaurant_id, item_id, item_data: {name, category, full_portion_price, additional_variants: [{variant_name, variant_price, size_details}], image, description, availability, etc.}}
+  - `menu:item:updated`: {restaurant_id, item_id, updated_fields: {name, full_portion_price, additional_variants, image, availability, etc.}}
+  - `menu:item:deleted`: {restaurant_id, item_id}\n  - `menu:category:created`: {restaurant_id, category_id, category_data: {name, image, display_order}}
   - `menu:category:updated`: {restaurant_id, category_id, updated_fields: {name, image}}
   - `menu:category:deleted`: {restaurant_id, category_id}
   - `table:created`: {restaurant_id, table_id, table_data: {table_number, qr_code_url, status}}
   - `table:updated`: {restaurant_id, table_id, updated_fields: {table_number, status}}
   - `table:deleted`: {restaurant_id, table_id}
-\n### 6.3 Security\n
+
+### 6.3 Security\n
 - **Data Encryption**: HTTPS for all communications, encrypted storage for sensitive data
 - **Input Validation**: Server-side validation to prevent SQL injection, XSS attacks
 - **Rate Limiting**: Prevent abuse with rate limiting on API endpoints
@@ -2011,7 +2017,7 @@ Access help resources and contact support.\n
 - **Lazy Loading**: Load images and components on demand
 - **Code Splitting**: Split JavaScript bundles for faster initial load
 - **Caching**: Cache static assets and API responses
-- **Database Indexing**: Optimize database queries with proper indexing (including index on restaurant_type field for fast filtering, **index on price_variants_enabled field for analytics queries**)
+- **Database Indexing**: Optimize database queries with proper indexing (including index on restaurant_type field for fast filtering, **index on menu_item_id in price_variants table for fast variant fetching, index on variant_name for analytics queries**)
 - **CDN**: Use CDN for static assets to reduce latency
 - **WebSocket Connection Management**: Efficient connection pooling, automatic reconnection on disconnect, heartbeat mechanism to keep connections alive
 
@@ -2027,12 +2033,12 @@ Access help resources and contact support.\n
 
 ## 7. Future Enhancements
 
-- **AI-Powered Recommendations**: Machine learning algorithms to suggest menu items and price variants based on customer preferences and order history
-- **Voice Ordering**: Integration with voice assistants (Alexa, Google Assistant) for hands-free ordering with price variant selection
-- **Augmented Reality Menu**: AR feature to visualize menu items and portion sizes in3D before ordering
+- **AI-Powered Recommendations**: Machine learning algorithms to suggest menu items and portion types based on customer preferences and order history
+- **Voice Ordering**: Integration with voice assistants (Alexa, Google Assistant) for hands-free ordering with portion selection
+- **Augmented Reality Menu**: AR feature to visualize menu items and portion sizes in 3D before ordering
 - **Multi-Language Support**: Automatic translation of menu and interface to multiple languages
-- **Advanced Analytics**: Predictive analytics for sales forecasting, inventory demand prediction, customer behavior analysis, **price variant preference analysis**
-- **Integration with Delivery Platforms**: Sync orders with Uber Eats, DoorDash, Zomato, Swiggy\n- **Table Reservation System**: Allow customers to book tables in advance\n- **Kitchen Display System (KDS)**: Dedicated screen for kitchen staff to view and manage orders with price variant details
+- **Advanced Analytics**: Predictive analytics for sales forecasting, inventory demand prediction, customer behavior analysis, **portion type preference analysis**
+- **Integration with Delivery Platforms**: Sync orders with Uber Eats, DoorDash, Zomato, Swiggy\n- **Table Reservation System**: Allow customers to book tables in advance\n- **Kitchen Display System (KDS)**: Dedicated screen for kitchen staff to view and manage orders with portion details
 - **Customer Feedback Analysis**: Sentiment analysis of reviews to identify areas for improvement
 - **Gamification**: Reward customers with badges, achievements for frequent orders, reviews\n\n---
 
@@ -2050,14 +2056,15 @@ Access help resources and contact support.\n
 - Error: Neon red (#FF073A)
 - Text: White (#FFFFFF) or light grey (#E0E0E0)
 - Restaurant Type Badges:\n  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon\n  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
-  - Both Badge: Bright orange (#FF8C00) background with white text and dual icon\n- Price Variant Badges:\n  - Half Variant: Electric cyan (#00F0FF) background with white text
-  - Full Variant: Vibrant magenta (#FF006E) background with white text
-  - Other Variants: Electric blue (#3A86FF) background with white text
-\n**UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus. Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side. **Price variant badges are pill-shaped with rounded corners (16px border radius), medium text. Price variant selection cards feature large card-style radio buttons with glassmorphism effect, neon borders that glow on selection, variant names and size details on left, prices on right, 'Recommended' badges for defaults (neon yellow background), and checkmark icons on selected cards.**
+  - Both Badge: Bright orange (#FF8C00) background with white text and dual icon\n- Portion Badges:
+  - Full Portion Badge: Vibrant magenta (#FF006E) background with white text
+  - Additional Variant Badges: Electric cyan (#00F0FF) or electric blue (#3A86FF) background with white text
 
-**Animations**: Slide-in animations for new orders and menu items (500ms bounce), pulsing glow for notification badges and updated items, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading, real-time update animations (new items slide in, edited items highlight, deleted items fade out), **price variant selection animations (selected cards scale up and glow, smooth transitions on selection change)**.
+**UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus. Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side. **Portion badges are pill-shaped with rounded corners (16px border radius), medium text. Portion selection cards feature large card-style radio buttons with glassmorphism effect, neon borders that glow on selection, portion names and size details on left, prices on right, 'Recommended' badge for Full Portion (neon yellow background), and checkmark icons on selected cards.**
 
-**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile (hamburger menu), adaptive grid layouts (3 columns on desktop, 2 on tablet, 1 on mobile), touch-friendly buttons and inputs (minimum 44px height), optimized for all screen sizes. **QR code scanning feature exclusively available on mobile devices with automatic device detection. Price variant selection cards stack vertically on mobile for easy thumb navigation.**
+**Animations**: Slide-in animations for new orders and menu items (500ms bounce), pulsing glow for notification badges and updated items, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading, real-time update animations (new items slide in, edited items highlight, deleted items fade out), **portion selection animations (selected cards scale up and glow, smooth transitions on selection change)**.
+
+**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile (hamburger menu), adaptive grid layouts (3 columns on desktop, 2 on tablet, 1 on mobile), touch-friendly buttons and inputs (minimum 44px height), optimized for all screen sizes. **QR code scanning feature exclusively available on mobile devices with automatic device detection. Portion selection cards stack vertically on mobile for easy thumb navigation.**
 
 ---
 
