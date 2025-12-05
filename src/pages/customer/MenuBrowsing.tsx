@@ -61,6 +61,7 @@ export default function MenuBrowsing() {
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const [itemDetailDialogOpen, setItemDetailDialogOpen] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
+  const [selectedPortionSize, setSelectedPortionSize] = useState<'full' | 'half'>('full');
   const [customization, setCustomization] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'menu'>('grid');
   const [tableSelectionOpen, setTableSelectionOpen] = useState(false);
@@ -290,36 +291,42 @@ export default function MenuBrowsing() {
     return acc;
   }, {} as { [key: string]: { category: MenuCategory; items: MenuItem[] } });
 
-  const handleAddToCart = (item: MenuItem, variant?: MenuItemVariant) => {
-    if (item.variants && item.variants.length > 0 && !variant) {
+  const handleAddToCart = (item: MenuItem, variant?: MenuItemVariant, portionSize?: 'full' | 'half') => {
+    if ((item.variants && item.variants.length > 0 && !variant) || (item.has_portions && !portionSize)) {
       setSelectedItem(item);
-      setSelectedVariant(item.variants[0]);
+      if (item.variants && item.variants.length > 0) {
+        setSelectedVariant(item.variants[0]);
+      }
+      setSelectedPortionSize('full');
       setItemDialogOpen(true);
       return;
     }
 
+    const finalPortionSize = portionSize || 'full';
     const cartItem: ExtendedCartItem = {
-      id: `${item.id}-${variant?.name || 'default'}-${Date.now()}`,
+      id: `${item.id}-${variant?.name || 'default'}-${finalPortionSize}-${Date.now()}`,
       menu_item: item,
       quantity: 1,
       notes: customization || undefined,
       selectedVariant: variant,
+      portionSize: item.has_portions ? finalPortionSize : undefined,
     };
 
     setCart([...cart, cartItem]);
     setCustomization('');
     toast({
       title: 'Added to cart',
-      description: `${item.name} ${variant ? `(${variant.name})` : ''} added to cart`,
+      description: `${item.name} ${variant ? `(${variant.name})` : ''} ${item.has_portions ? `(${finalPortionSize === 'half' ? 'Half' : 'Full'})` : ''} added to cart`,
     });
   };
 
   const handleConfirmAddToCart = () => {
     if (!selectedItem) return;
-    handleAddToCart(selectedItem, selectedVariant || undefined);
+    handleAddToCart(selectedItem, selectedVariant || undefined, selectedPortionSize);
     setItemDialogOpen(false);
     setSelectedItem(null);
     setSelectedVariant(null);
+    setSelectedPortionSize('full');
   };
 
   const updateCartItemQuantity = (cartItemId: string, delta: number) => {
@@ -346,12 +353,16 @@ export default function MenuBrowsing() {
       .reduce((sum, item) => sum + item.quantity, 0);
   };
 
-  const getItemPrice = (item: MenuItem, variant?: MenuItemVariant) => {
-    return variant?.price || item.price;
+  const getItemPrice = (item: MenuItem, variant?: MenuItemVariant, portionSize?: string) => {
+    const basePrice = variant?.price || item.price;
+    if (item.has_portions && portionSize === 'half') {
+      return basePrice / 2;
+    }
+    return basePrice;
   };
 
   const cartTotal = cart.reduce((sum, item) => {
-    const price = getItemPrice(item.menu_item, item.selectedVariant);
+    const price = getItemPrice(item.menu_item, item.selectedVariant, item.portionSize);
     return sum + (price * item.quantity);
   }, 0);
   
@@ -1004,6 +1015,11 @@ export default function MenuBrowsing() {
                               {cartItem.selectedVariant && (
                                 <p className="text-xs text-muted-foreground">{cartItem.selectedVariant.name}</p>
                               )}
+                              {cartItem.portionSize && (
+                                <p className="text-xs text-muted-foreground">
+                                  {cartItem.portionSize === 'half' ? 'Half Portion' : 'Full Portion'}
+                                </p>
+                              )}
                             </div>
                             <Button
                               variant="ghost"
@@ -1047,7 +1063,7 @@ export default function MenuBrowsing() {
 
                             {/* Price */}
                             <p className="font-semibold text-sm xl:text-base">
-                              {formatCurrency(getItemPrice(cartItem.menu_item, cartItem.selectedVariant) * cartItem.quantity)}
+                              {formatCurrency(getItemPrice(cartItem.menu_item, cartItem.selectedVariant, cartItem.portionSize) * cartItem.quantity)}
                             </p>
                           </div>
                         </div>
@@ -1235,7 +1251,7 @@ export default function MenuBrowsing() {
         </DialogContent>
       </Dialog>
 
-      {/* Item Variant Dialog */}
+      {/* Item Variant/Portion Dialog */}
       <Dialog open={itemDialogOpen} onOpenChange={setItemDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -1243,32 +1259,71 @@ export default function MenuBrowsing() {
             <DialogDescription>{selectedItem?.description}</DialogDescription>
           </DialogHeader>
 
-          {selectedItem?.variants && selectedItem.variants.length > 0 && (
+          {selectedItem && (
             <div className="space-y-4">
-              <div>
-                <Label className="text-base font-semibold mb-3 block">Select Size</Label>
-                <RadioGroup
-                  value={selectedVariant?.name}
-                  onValueChange={(value) => {
-                    const variant = selectedItem.variants?.find(v => v.name === value);
-                    setSelectedVariant(variant || null);
-                  }}
-                  className="space-y-2"
-                >
-                  {selectedItem.variants.map((variant, idx) => (
-                    <div key={idx} className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
+              {/* Variant Selection */}
+              {selectedItem.variants && selectedItem.variants.length > 0 && (
+                <div>
+                  <Label className="text-base font-semibold mb-3 block">Select Size</Label>
+                  <RadioGroup
+                    value={selectedVariant?.name}
+                    onValueChange={(value) => {
+                      const variant = selectedItem.variants?.find(v => v.name === value);
+                      setSelectedVariant(variant || null);
+                    }}
+                    className="space-y-2"
+                  >
+                    {selectedItem.variants.map((variant, idx) => (
+                      <div key={idx} className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
+                        <div className="flex items-center gap-3">
+                          <RadioGroupItem value={variant.name} id={variant.name} />
+                          <Label htmlFor={variant.name} className="cursor-pointer font-medium">
+                            {variant.name}
+                          </Label>
+                        </div>
+                        <span className="font-semibold">{formatCurrency(variant.price)}</span>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              )}
+
+              {/* Portion Selection */}
+              {selectedItem.has_portions && (
+                <div>
+                  <Label className="text-base font-semibold mb-3 block">Select Portion</Label>
+                  <RadioGroup
+                    value={selectedPortionSize}
+                    onValueChange={(value) => setSelectedPortionSize(value as 'full' | 'half')}
+                    className="space-y-2"
+                  >
+                    <div className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
                       <div className="flex items-center gap-3">
-                        <RadioGroupItem value={variant.name} id={variant.name} />
-                        <Label htmlFor={variant.name} className="cursor-pointer font-medium">
-                          {variant.name}
+                        <RadioGroupItem value="full" id="portion-full" />
+                        <Label htmlFor="portion-full" className="cursor-pointer font-medium">
+                          Full
                         </Label>
                       </div>
-                      <span className="font-semibold">{formatCurrency(variant.price)}</span>
+                      <span className="font-semibold">
+                        {formatCurrency(selectedVariant?.price || selectedItem.price)}
+                      </span>
                     </div>
-                  ))}
-                </RadioGroup>
-              </div>
+                    <div className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value="half" id="portion-half" />
+                        <Label htmlFor="portion-half" className="cursor-pointer font-medium">
+                          Half
+                        </Label>
+                      </div>
+                      <span className="font-semibold">
+                        {formatCurrency((selectedVariant?.price || selectedItem.price) / 2)}
+                      </span>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
 
+              {/* Special Instructions */}
               <div>
                 <Label htmlFor="customization" className="text-base font-semibold mb-2 block">
                   Special Instructions (Optional)
@@ -1281,8 +1336,15 @@ export default function MenuBrowsing() {
                 />
               </div>
 
+              {/* Add to Cart Button */}
               <Button onClick={handleConfirmAddToCart} className="w-full" size="lg">
-                Add to Cart - {formatCurrency(selectedVariant?.price || selectedItem.price)}
+                Add to Cart - {formatCurrency(
+                  getItemPrice(
+                    selectedItem, 
+                    selectedVariant || undefined, 
+                    selectedItem.has_portions ? selectedPortionSize : undefined
+                  )
+                )}
               </Button>
             </div>
           )}

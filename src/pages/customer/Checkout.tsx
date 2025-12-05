@@ -50,7 +50,13 @@ export default function Checkout() {
 
   const getTotalAmount = () => {
     return cart.reduce((total: number, item: any) => {
-      const price = item.selectedVariant?.price || item.menuItem?.price || item.menu_item?.price || 0;
+      const menuItem = item.menuItem || item.menu_item;
+      let price = item.selectedVariant?.price || menuItem?.price || 0;
+      
+      if (menuItem?.has_portions && item.portionSize === 'half') {
+        price = price / 2;
+      }
+      
       return total + price * item.quantity;
     }, 0);
   };
@@ -84,7 +90,11 @@ export default function Checkout() {
 
         const orderItems = cart.map((item: any) => {
           const menuItem = item.menuItem || item.menu_item;
-          const price = item.selectedVariant?.price || menuItem.price;
+          let price = item.selectedVariant?.price || menuItem.price;
+          
+          if (menuItem?.has_portions && item.portionSize === 'half') {
+            price = price / 2;
+          }
           
           return {
             order_id: order.id,
@@ -108,7 +118,11 @@ export default function Checkout() {
       } else {
         const items = cart.map((item: any) => {
           const menuItem = item.menuItem || item.menu_item;
-          const price = item.selectedVariant?.price || menuItem.price;
+          let price = item.selectedVariant?.price || menuItem.price;
+          
+          if (menuItem?.has_portions && item.portionSize === 'half') {
+            price = price / 2;
+          }
           
           return {
             menu_item_id: menuItem.id,
@@ -181,7 +195,11 @@ export default function Checkout() {
                 <div className="space-y-4">
                   {cart.map((item: any, index: number) => {
                     const menuItem = item.menuItem || item.menu_item;
-                    const itemPrice = item.selectedVariant?.price || menuItem.price;
+                    let itemPrice = item.selectedVariant?.price || menuItem.price;
+                    
+                    if (menuItem?.has_portions && item.portionSize === 'half') {
+                      itemPrice = itemPrice / 2;
+                    }
                     
                     return (
                       <div key={`${menuItem.id}-${item.portionSize || 'default'}-${index}`} className="flex justify-between items-center pb-4 border-b last:border-0">
@@ -197,11 +215,13 @@ export default function Checkout() {
                             <h4 className="font-semibold">
                               {menuItem.name}
                               {item.portionSize && (
-                                <span className="ml-2 text-sm text-muted-foreground">({item.portionSize})</span>
+                                <span className="ml-2 text-sm text-muted-foreground">
+                                  ({item.portionSize === 'half' ? 'Half' : 'Full'})
+                                </span>
                               )}
                             </h4>
                             <p className="text-sm text-muted-foreground">
-                              ${formatCurrency(itemPrice)} × {item.quantity}
+                              {formatCurrency(itemPrice)} × {item.quantity}
                             </p>
                           </div>
                         </div>
