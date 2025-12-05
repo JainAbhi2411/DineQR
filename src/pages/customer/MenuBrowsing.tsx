@@ -428,11 +428,19 @@ export default function MenuBrowsing() {
     });
   };
 
-  const handleAddToExistingOrder = async () => {
+  const handleAddToExistingOrder = async (servingPreference?: string) => {
     if (!existingOrder || !user) return;
 
     try {
-      // Prepare order items
+      // Prepare order items with serving preference in notes
+      const servingNote = servingPreference === 'together' 
+        ? 'Serve together with existing order'
+        : servingPreference === 'asap'
+        ? 'Serve as soon as ready'
+        : servingPreference === 'after'
+        ? 'Serve after current order'
+        : null;
+
       const orderItems = cart.map(item => {
         const price = getItemPrice(item.menu_item, item.selectedVariant, item.portionSize);
         return {
@@ -443,7 +451,7 @@ export default function MenuBrowsing() {
           price,
           portion_size: item.portionSize?.toLowerCase() || null,
           variant_name: item.selectedVariant?.name || (item.portionSize ? item.portionSize : null),
-          notes: null,
+          notes: servingNote,
         };
       });
 
@@ -457,8 +465,8 @@ export default function MenuBrowsing() {
       await orderApi.addItemsToExistingOrder(existingOrder.id, orderItems, newTotal);
 
       toast({
-        title: 'Items Added',
-        description: 'Your items have been added to your existing order',
+        title: 'Items Added Successfully',
+        description: `${cart.length} item${cart.length > 1 ? 's' : ''} added to your order. ${servingNote || ''}`,
       });
 
       // Clear cart and close dialogs

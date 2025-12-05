@@ -394,6 +394,18 @@ export const orderApi = {
 
     const { data, error } = await query.maybeSingle();
     if (error) throw error;
+    
+    // Smart filtering: Only return orders created within the last hour
+    if (data) {
+      const orderAge = Date.now() - new Date(data.created_at).getTime();
+      const oneHourInMs = 60 * 60 * 1000;
+      
+      // If order is older than 1 hour, don't suggest adding to it
+      if (orderAge > oneHourInMs) {
+        return null;
+      }
+    }
+    
     return data;
   },
 
