@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { restaurantApi, orderApi, menuItemApi } from '@/db/api';
@@ -10,6 +10,8 @@ import { Clock, DollarSign, User, MapPin, Phone, Star, TrendingUp, Package } fro
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import OwnerLayout from '@/components/owner/OwnerLayout';
+import { supabase } from '@/db/supabase';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 
 export default function OwnerDashboard() {
   const { profile } = useAuth();
@@ -19,10 +21,99 @@ export default function OwnerDashboard() {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const { formatCurrency, formatDateTime, formatDate } = useFormatters();
+  const channelRef = useRef<RealtimeChannel | null>(null);
+  const ordersRef = useRef<OrderWithItems[]>([]);
+  const reloadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep ordersRef in sync with orders state
+  useEffect(() => {
+    ordersRef.current = orders;
+  }, [orders]);
 
   useEffect(() => {
     loadData();
   }, [profile]);
+
+  // Set up real-time subscriptions
+  useEffect(() => {
+    if (!restaurants.length || !restaurants[0]?.id) return;
+
+    const restaurantId = restaurants[0].id;
+    console.log('[OwnerDashboard] Setting up real-time subscriptions for restaurant:', restaurantId);
+
+    // Create a channel for real-time updates
+    const channel = supabase.channel(`dashboard-${restaurantId}`);
+
+    // Subscribe to orders changes
+    channel
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `restaurant_id=eq.${restaurantId}`,
+        },
+        (payload) => {
+          console.log('[OwnerDashboard] Received order change:', payload);
+          scheduleReload();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'order_items',
+        },
+        (payload) => {
+          console.log('[OwnerDashboard] Received order items change:', payload);
+          scheduleReload();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'order_status_history',
+        },
+        (payload) => {
+          console.log('[OwnerDashboard] Received status history change:', payload);
+          scheduleReload();
+        }
+      )
+      .subscribe((status) => {
+        console.log('[OwnerDashboard] Subscription status:', status);
+      });
+
+    channelRef.current = channel;
+
+    // Cleanup on unmount
+    return () => {
+      console.log('[OwnerDashboard] Cleaning up subscriptions');
+      if (reloadTimeoutRef.current) {
+        clearTimeout(reloadTimeoutRef.current);
+      }
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
+  }, [restaurants]);
+
+  const scheduleReload = useCallback(() => {
+    // Clear any existing timeout
+    if (reloadTimeoutRef.current) {
+      clearTimeout(reloadTimeoutRef.current);
+    }
+
+    // Schedule a reload after 300ms to debounce multiple rapid changes
+    reloadTimeoutRef.current = setTimeout(() => {
+      console.log('[OwnerDashboard] Reloading data due to real-time update');
+      loadOrdersData();
+    }, 300);
+  }, []);
 
   const loadData = async () => {
     if (!profile) return;
@@ -48,6 +139,38 @@ export default function OwnerDashboard() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadOrdersData = async () => {
+    if (!restaurants.length || !restaurants[0]?.id) return;
+
+    try {
+      const previousOrders = ordersRef.current;
+      const ordersData = await orderApi.getOrdersByRestaurant(restaurants[0].id);
+      
+      console.log('[OwnerDashboard] Loaded orders:', ordersData.length);
+      setOrders(ordersData);
+
+      // Check for new orders and show notification
+      if (previousOrders.length > 0 && ordersData.length > previousOrders.length) {
+        const newOrders = ordersData.filter(
+          newOrder => !previousOrders.some(oldOrder => oldOrder.id === newOrder.id)
+        );
+        
+        console.log('[OwnerDashboard] New orders detected:', newOrders.length);
+        
+        newOrders.forEach(order => {
+          const tableInfo = order.table ? `Table ${order.table.table_number}` : 'Walk-in / Takeaway';
+          toast({
+            title: '🔔 New Order Received!',
+            description: `${tableInfo} - Order #${order.id.slice(0, 8)}`,
+            duration: 5000,
+          });
+        });
+      }
+    } catch (error: any) {
+      console.error('[OwnerDashboard] Error loading orders:', error);
     }
   };
 

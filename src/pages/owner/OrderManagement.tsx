@@ -6,12 +6,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, Banknote } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle, ChefHat, UtensilsCrossed, Banknote, ChevronDown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/db/supabase';
 import OrderCard from '@/components/order/OrderCard';
 import PrintBill from '@/components/order/PrintBill';
 import OwnerLayout from '@/components/owner/OwnerLayout';
+
+const ORDERS_PER_PAGE = 10;
 
 export default function OrderManagement() {
   const { restaurantId } = useParams();
@@ -22,6 +24,13 @@ export default function OrderManagement() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const [displayCounts, setDisplayCounts] = useState({
+    all: ORDERS_PER_PAGE,
+    pending: ORDERS_PER_PAGE,
+    preparing: ORDERS_PER_PAGE,
+    served: ORDERS_PER_PAGE,
+    completed: ORDERS_PER_PAGE,
+  });
   const ordersRef = useRef<OrderWithItems[]>([]);
 
   // Keep ref in sync with state
@@ -181,6 +190,58 @@ export default function OrderManagement() {
     return orders.filter(order => order.status === status);
   };
 
+  const loadMore = (tab: string) => {
+    setDisplayCounts(prev => ({
+      ...prev,
+      [tab]: prev[tab as keyof typeof prev] + ORDERS_PER_PAGE,
+    }));
+  };
+
+  const renderOrderList = (ordersList: OrderWithItems[], tab: string, emptyIcon: React.ReactNode, emptyMessage: string) => {
+    const displayCount = displayCounts[tab as keyof typeof displayCounts];
+    const displayedOrders = ordersList.slice(0, displayCount);
+    const hasMore = ordersList.length > displayCount;
+
+    if (ordersList.length === 0) {
+      return (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center h-64">
+            {emptyIcon}
+            <p className="text-muted-foreground">{emptyMessage}</p>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <>
+        <div className="space-y-4">
+          {displayedOrders.map(order => (
+            <OrderCard
+              key={order.id}
+              order={order}
+              showCustomerInfo
+              onPrint={setPrintOrder}
+              actions={getOrderActions(order)}
+            />
+          ))}
+        </div>
+        {hasMore && (
+          <div className="flex justify-center mt-6">
+            <Button
+              variant="outline"
+              onClick={() => loadMore(tab)}
+              className="gap-2"
+            >
+              <ChevronDown className="w-4 h-4" />
+              Load More ({ordersList.length - displayCount} remaining)
+            </Button>
+          </div>
+        )}
+      </>
+    );
+  };
+
   const getOrderActions = (order: OrderWithItems) => {
     const actions = [];
 
@@ -310,108 +371,48 @@ export default function OrderManagement() {
           <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="space-y-4 mt-6">
-          {orders.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <Clock className="w-12 h-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No orders yet</p>
-              </CardContent>
-            </Card>
-          ) : (
-            orders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                showCustomerInfo
-                onPrint={setPrintOrder}
-                actions={getOrderActions(order)}
-              />
-            ))
+        <TabsContent value="all" className="mt-6">
+          {renderOrderList(
+            orders,
+            'all',
+            <Clock className="w-12 h-12 text-muted-foreground mb-4" />,
+            'No orders yet'
           )}
         </TabsContent>
 
-        <TabsContent value="pending" className="space-y-4 mt-6">
-          {pendingOrders.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <Clock className="w-12 h-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No pending orders</p>
-              </CardContent>
-            </Card>
-          ) : (
-            pendingOrders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                showCustomerInfo
-                onPrint={setPrintOrder}
-                actions={getOrderActions(order)}
-              />
-            ))
+        <TabsContent value="pending" className="mt-6">
+          {renderOrderList(
+            pendingOrders,
+            'pending',
+            <Clock className="w-12 h-12 text-muted-foreground mb-4" />,
+            'No pending orders'
           )}
         </TabsContent>
 
-        <TabsContent value="preparing" className="space-y-4 mt-6">
-          {preparingOrders.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <ChefHat className="w-12 h-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No orders being prepared</p>
-              </CardContent>
-            </Card>
-          ) : (
-            preparingOrders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                showCustomerInfo
-                onPrint={setPrintOrder}
-                actions={getOrderActions(order)}
-              />
-            ))
+        <TabsContent value="preparing" className="mt-6">
+          {renderOrderList(
+            preparingOrders,
+            'preparing',
+            <ChefHat className="w-12 h-12 text-muted-foreground mb-4" />,
+            'No orders being prepared'
           )}
         </TabsContent>
 
-        <TabsContent value="served" className="space-y-4 mt-6">
-          {servedOrders.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <UtensilsCrossed className="w-12 h-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No served orders</p>
-              </CardContent>
-            </Card>
-          ) : (
-            servedOrders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                showCustomerInfo
-                onPrint={setPrintOrder}
-                actions={getOrderActions(order)}
-              />
-            ))
+        <TabsContent value="served" className="mt-6">
+          {renderOrderList(
+            servedOrders,
+            'served',
+            <UtensilsCrossed className="w-12 h-12 text-muted-foreground mb-4" />,
+            'No served orders'
           )}
         </TabsContent>
 
-        <TabsContent value="completed" className="space-y-4 mt-6">
-          {completedOrders.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <CheckCircle className="w-12 h-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No completed orders</p>
-              </CardContent>
-            </Card>
-          ) : (
-            completedOrders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                showCustomerInfo
-                onPrint={setPrintOrder}
-                actions={getOrderActions(order)}
-              />
-            ))
+        <TabsContent value="completed" className="mt-6">
+          {renderOrderList(
+            completedOrders,
+            'completed',
+            <CheckCircle className="w-12 h-12 text-muted-foreground mb-4" />,
+            'No completed orders'
           )}
         </TabsContent>
       </Tabs>
