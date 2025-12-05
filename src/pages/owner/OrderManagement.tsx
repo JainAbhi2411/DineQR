@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { restaurantApi, orderApi } from '@/db/api';
 import { Restaurant, OrderWithItems, OrderStatus } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,12 +18,14 @@ const ORDERS_PER_PAGE = 10;
 export default function OrderManagement() {
   const { restaurantId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const [highlightedOrderId, setHighlightedOrderId] = useState<string | null>(null);
   const [displayCounts, setDisplayCounts] = useState({
     all: ORDERS_PER_PAGE,
     pending: ORDERS_PER_PAGE,
@@ -150,6 +152,48 @@ export default function OrderManagement() {
     };
   }, [restaurantId, loadData]);
 
+  // Handle orderId query parameter for highlighting specific order
+  useEffect(() => {
+    const orderId = searchParams.get('orderId');
+    if (orderId && orders.length > 0) {
+      console.log('[OrderManagement] Highlighting order:', orderId);
+      
+      // Find the order
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        // Set the appropriate tab based on order status
+        if (['pending', 'preparing', 'served', 'completed'].includes(order.status)) {
+          setActiveTab(order.status);
+        } else {
+          setActiveTab('all');
+        }
+        
+        // Highlight the order
+        setHighlightedOrderId(orderId);
+        
+        // Scroll to the order after a short delay to ensure DOM is ready
+        setTimeout(() => {
+          const element = document.getElementById(`order-${orderId}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 300);
+        
+        // Remove highlight after 3 seconds
+        setTimeout(() => {
+          setHighlightedOrderId(null);
+        }, 3000);
+      } else {
+        console.log('[OrderManagement] Order not found:', orderId);
+        toast({
+          title: 'Order Not Found',
+          description: 'The requested order could not be found.',
+          variant: 'destructive',
+        });
+      }
+    }
+  }, [searchParams, orders, toast]);
+
   const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       await orderApi.updateOrderStatus(orderId, status);
@@ -217,13 +261,22 @@ export default function OrderManagement() {
       <>
         <div className="space-y-4">
           {displayedOrders.map(order => (
-            <OrderCard
+            <div
               key={order.id}
-              order={order}
-              showCustomerInfo
-              onPrint={setPrintOrder}
-              actions={getOrderActions(order)}
-            />
+              id={`order-${order.id}`}
+              className={`transition-all duration-500 ${
+                highlightedOrderId === order.id
+                  ? 'ring-4 ring-primary ring-offset-2 ring-offset-background rounded-lg'
+                  : ''
+              }`}
+            >
+              <OrderCard
+                order={order}
+                showCustomerInfo
+                onPrint={setPrintOrder}
+                actions={getOrderActions(order)}
+              />
+            </div>
           ))}
         </div>
         {hasMore && (

@@ -344,7 +344,7 @@ export default function OwnerDashboard() {
                       </div>
 
                       <Button asChild className="w-full morph-button hover-glow-orange">
-                        <Link to={`/owner/orders/${order.id}`}>View Details</Link>
+                        <Link to={`/owner/orders/${restaurants[0].id}?orderId=${order.id}`}>View Details</Link>
                       </Button>
                     </div>
                   </CardContent>
