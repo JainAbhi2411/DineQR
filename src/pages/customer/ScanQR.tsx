@@ -15,6 +15,7 @@ export default function ScanQR() {
   const [loading, setLoading] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { profile } = useAuth();
@@ -36,6 +37,12 @@ export default function ScanQR() {
   }, []);
 
   const processQRCode = async (code: string) => {
+    // Prevent duplicate processing
+    if (isProcessing) {
+      console.log('[ScanQR] Already processing, skipping...');
+      return;
+    }
+
     if (!profile) {
       toast({
         title: 'Error',
@@ -45,6 +52,7 @@ export default function ScanQR() {
       return;
     }
 
+    setIsProcessing(true);
     setLoading(true);
     try {
       const table = await tableApi.getTableByQRCode(code);
@@ -55,20 +63,24 @@ export default function ScanQR() {
           description: 'This QR code is not valid. Please try scanning again.',
           variant: 'destructive',
         });
+        setIsProcessing(false);
         return;
       }
 
       // Save visited restaurant
       await visitedRestaurantApi.upsertVisitedRestaurant(profile.id, table.restaurant_id);
 
-      // Show success message
+      // Show success message (only once)
       toast({
-        title: 'Success!',
+        title: '✅ Success!',
         description: `Opening menu for Table ${table.table_number}`,
+        duration: 2000,
       });
 
-      // Navigate to menu
-      navigate(`/customer/menu/${table.restaurant_id}?table=${table.id}`);
+      // Navigate after a short delay to show the toast
+      setTimeout(() => {
+        navigate(`/customer/menu/${table.restaurant_id}?table=${table.id}`);
+      }, 500);
     } catch (error: any) {
       console.error('[ScanQR] Error processing QR code:', error);
       toast({
@@ -76,6 +88,7 @@ export default function ScanQR() {
         description: error.message || 'Failed to process QR code',
         variant: 'destructive',
       });
+      setIsProcessing(false);
     } finally {
       setLoading(false);
     }
@@ -150,17 +163,43 @@ export default function ScanQR() {
           <div className="space-y-6">
             {/* Camera Scan Button - Show on mobile */}
             {isMobile ? (
-              <Button
-                onClick={handleOpenScanner}
-                className="w-full h-32 text-lg"
-                size="lg"
-                disabled={loading}
-              >
-                <div className="flex flex-col items-center gap-3">
-                  <Camera className="w-12 h-12" />
-                  <span>Open Camera to Scan</span>
-                </div>
-              </Button>
+              <div className="relative group">
+                {/* Animated background glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary via-orange-500 to-primary rounded-2xl blur-lg opacity-75 group-hover:opacity-100 animate-pulse transition duration-1000"></div>
+                
+                {/* Main button */}
+                <Button
+                  onClick={handleOpenScanner}
+                  className="relative w-full h-40 text-lg bg-gradient-to-br from-primary to-orange-600 hover:from-orange-600 hover:to-primary shadow-2xl transform transition-all duration-300 hover:scale-105 active:scale-95 rounded-xl overflow-hidden"
+                  size="lg"
+                  disabled={loading || isProcessing}
+                >
+                  {/* Animated shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  
+                  {/* Button content */}
+                  <div className="relative flex flex-col items-center gap-4">
+                    {/* Camera icon with animation */}
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-white/20 rounded-full blur-xl animate-ping"></div>
+                      <Camera className="relative w-16 h-16 drop-shadow-2xl" />
+                    </div>
+                    
+                    {/* Text */}
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="font-bold text-xl drop-shadow-lg">Scan QR Code</span>
+                      <span className="text-sm opacity-90 font-medium">Tap to open camera</span>
+                    </div>
+                    
+                    {/* Decorative elements */}
+                    <div className="flex gap-2 mt-2">
+                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    </div>
+                  </div>
+                </Button>
+              </div>
             ) : (
               <div className="bg-muted rounded-lg p-8 flex flex-col items-center justify-center border-2 border-dashed">
                 <Smartphone className="w-16 h-16 text-muted-foreground mb-4" />

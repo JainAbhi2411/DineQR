@@ -14,6 +14,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
   const [error, setError] = useState<string>('');
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isInitializedRef = useRef(false);
+  const hasScannedRef = useRef(false);
 
   useEffect(() => {
     // Prevent double initialization
@@ -53,7 +54,13 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
             aspectRatio: 1.0,
           },
           (decodedText) => {
-            // Success callback
+            // Success callback - only process once
+            if (hasScannedRef.current) {
+              console.log('[QRScanner] Already scanned, ignoring duplicate');
+              return;
+            }
+            
+            hasScannedRef.current = true;
             console.log('[QRScanner] Scanned:', decodedText);
             onScanSuccess(decodedText);
             stopScanner();
