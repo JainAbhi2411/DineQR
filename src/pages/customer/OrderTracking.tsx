@@ -22,6 +22,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/db/supabase';
 
 export default function OrderTracking() {
   const { orderId } = useParams();
@@ -35,10 +36,81 @@ export default function OrderTracking() {
   useEffect(() => {
     if (orderId) {
       loadOrder();
-      const interval = setInterval(loadOrder, 10000);
-      return () => clearInterval(interval);
     }
   }, [orderId]);
+
+  // Real-time subscription for order updates
+  useEffect(() => {
+    if (!orderId) return;
+
+    console.log('[OrderTracking] Setting up real-time subscription for order:', orderId);
+
+    // Subscribe to order changes
+    const orderChannel = supabase
+      .channel(`order_${orderId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'orders',
+          filter: `id=eq.${orderId}`
+        },
+        async (payload) => {
+          console.log('[OrderTracking] Order updated:', payload);
+          
+          // Reload full order data to get related items
+          await loadOrder();
+          
+          const updatedOrder = payload.new as any;
+          const oldOrder = payload.old as any;
+          
+          // Show notification if status changed
+          if (updatedOrder.status !== oldOrder.status) {
+            const statusMessages = {
+              pending: '⏳ Order Received',
+              preparing: '👨‍🍳 Your order is being prepared!',
+              served: '🍽️ Your order has been served!',
+              completed: '✅ Order completed!',
+              cancelled: '❌ Order cancelled'
+            };
+            
+            toast({
+              title: 'Order Status Updated',
+              description: statusMessages[updatedOrder.status as OrderStatus] || 'Order status changed',
+              duration: 5000,
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    // Subscribe to order status history changes
+    const statusHistoryChannel = supabase
+      .channel(`order_status_history_${orderId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'order_status_history',
+          filter: `order_id=eq.${orderId}`
+        },
+        async () => {
+          console.log('[OrderTracking] Order status history updated');
+          // Reload order to get updated status history
+          await loadOrder();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions
+    return () => {
+      console.log('[OrderTracking] Cleaning up real-time subscriptions');
+      supabase.removeChannel(orderChannel);
+      supabase.removeChannel(statusHistoryChannel);
+    };
+  }, [orderId, toast]);
 
   const loadOrder = async () => {
     try {

@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - QR Code Scanning Mobile-Only Feature)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Real-Time Menu & Table Synchronization)
 
 ## 1. Application Overview
 
@@ -6,23 +6,23 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, **QR code scanning functionality exclusively available on mobile devices**, and fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. **All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, and campaign analytics. Currency and timezone settings are automatically applied system-wide upon changes.**
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced schema support (including half/full portion options), AI-powered recommendations, real-time chat system, waiter assignment automation, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, **and real-time synchronization of menu updates (new items, category changes, item modifications, deletions) and table updates to customer dashboards without page refresh** - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. **All data displayed across the platform is real-time and dynamically calculated from the live database, including revenue, sales analytics, order statistics, inventory levels, staff performance metrics, campaign analytics, menu items, categories, and table information. Currency and timezone settings are automatically applied system-wide upon changes.**
 
 ## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
 
 **User Roles**:
-- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings
-- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, chat with restaurant, payment, order history, browse previously scanned restaurants
+- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings\n- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, chat with restaurant, payment, order history, browse previously scanned restaurants
 
 **Authentication Flow**:
 1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
 2. **Sign Up Options**:
-   - Email/Password registration with role selection (Owner/Waiter/Customer)\n   - Google OAuth integration\n   - Phone number OTP verification
+   - Email/Password registration with role selection (Owner/Waiter/Customer)\n   - Google OAuth integration (using OSS Google login method)
+   - Phone number OTP verification
 3. **Sign In Options**:
    - Email/Password login
-   - Google OAuth login
+   - Google OAuth login (using OSS Google login method)
    - Phone number OTP login
 4. **Role-Based Conditional Rendering**:
    - After successful authentication, system identifies user role from database
@@ -62,8 +62,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
 - **Marketing** (megaphone icon) - Complete marketing and promotions system
 - **Payments** (credit-card icon) - Payment management and transaction history
 - **Chat** (message icon) - Real-time communication hub with customers and staff
-- **Settings** (gear icon) - Complete settings module with auto-application
-
+- **Settings** (gear icon) - Complete settings module with auto-application\n
 **C. Main Dashboard Content Area**
 \n**Top Metrics Cards Row** (4 cards in a row, responsive grid):
 1. **Today's Revenue Card**
@@ -98,7 +97,8 @@ The Owner Home Screen serves as the central command center, displaying real-time
   1. '+ Add Menu Item' - Opens menu item creation modal
   2. 'Generate QR Code' - Opens QR code generation modal
   3. 'Add Staff Member' - Opens staff registration form
-  4. 'Create Promotion' - Opens promotion creation modal\n  5. 'View Inventory' - Navigates to inventory page
+  4. 'Create Promotion' - Opens promotion creation modal
+  5. 'View Inventory' - Navigates to inventory page
   6. 'Download Reports' - Opens report generation modal
 - Each button styled with glassmorphism, neon gradient border, hover glow effect
 
@@ -137,10 +137,11 @@ The Owner Home Screen serves as the central command center, displaying real-time
 
 ---
 
-#### 3.1.2 Advanced Menu Management System
+#### 3.1.2 Advanced Menu Management System with Real-Time Customer Synchronization
 
 **Overview**:
-Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, pricing options (half/full portions), inventory linking, availability scheduling, and real-time preview.\n
+Comprehensive menu management interface allowing restaurant owners to create, edit, organize, and manage menu items with advanced categorization, pricing options (half/full portions), inventory linking, availability scheduling, and real-time preview. **All menu changes (new items, category additions, item modifications, deletions) are instantly synchronized to customer dashboards without page refresh via WebSocket.**
+
 **Key Features**:
 \n**A. Menu Item Management Interface**
 \n- **Action Buttons Section**:
@@ -165,7 +166,8 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 
 **Modal Layout**:
 - Full-screen overlay with glassmorphism panel sliding in from right
-- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:\n\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
+- Close button (X icon) at top-right\n- Form sections organized in tabs or accordion:
+\n**1. Basic Information Tab**:\n- **Item Name**: Text input (required)
 - **Category**: Dropdown select from existing categories or '+ Create New Category' option (required)
 - **Description**: Textarea (optional, max 500 characters)
 - **Item Image**: Image upload with drag-and-drop or file browser, preview thumbnail,'Remove Image' option
@@ -190,7 +192,15 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 - **Nutritional Information**: Optional fields (Calories, Protein, Carbs, Fat)\n\n**Action Buttons**:
 - 'Save' button (primary, neon gradient)
 - 'Save & Add Another' button (secondary)\n- 'Cancel' button (tertiary, outline style)
-\n**C. Zomato-Style Menu View**
+\n**Real-Time Synchronization on Save**:
+- When owner saves new menu item, edits existing item, or deletes item:\n  - Backend emits WebSocket event: `menu:item:created`, `menu:item:updated`, or `menu:item:deleted`\n  - Event payload includes: restaurant_id, item_id, item_data (name, category, price, image, availability, etc.)
+  - All connected customer clients subscribed to this restaurant receive event instantly
+  - Customer dashboards automatically update menu display without page refresh:\n    - New items appear in respective category with slide-in animation
+    - Updated items refresh data (price, image, description, availability) with smooth transition
+    - Deleted items fade out and remove from display
+  - If customer is currently viewing menu page or has restaurant in'Browse Restaurants' list, changes reflect immediately
+
+**C. Zomato-Style Menu View**
 
 - **Layout**:
   - Full-screen overlay or dedicated page displaying menu in customer-facing format
@@ -226,18 +236,26 @@ Comprehensive menu management interface allowing restaurant owners to create, ed
 - Opens analytics panel showing:
   - Most ordered items (bar chart)
   - Revenue by category (pie chart)
-  - Items with low orders (table)
-  - Average order value per item
+  - Items with low orders (table)\n  - Average order value per item
   - Customer favorites (based on ratings)
-\n---
+\n**F. Category Management with Real-Time Synchronization**\n
+- **Add New Category**:
+  - '+ Add Category' button opens modal\n  - Form fields: Category Name (required), Category Image (optional), Display Order (number)
+  - On save: Backend emits `menu:category:created` event
+  - Customer dashboards instantly display new category in menu navigation
 
-#### 3.1.3 Advanced Inventory Management
+- **Edit/Delete Category**:
+  - Edit icon opens modal with pre-filled data
+  - Delete icon triggers confirmation dialog
+  - On save/delete: Backend emits `menu:category:updated` or `menu:category:deleted` event
+  - Customer dashboards update category name/image or remove category with smooth animation
 
+---
+
+#### 3.1.3 Advanced Inventory Management\n
 **Overview**:
-Complete inventory tracking system with real-time stock monitoring, low stock alerts, automatic deductions on order placement, supplier management, and inventory reports.
-
-**Key Features**:
-
+Complete inventory tracking system with real-time stock monitoring, low stock alerts, automatic deductions on order placement, supplier management, and inventory reports.\n
+**Key Features**:\n
 **A. Inventory Dashboard**
 
 - **Top Metrics Cards**:
@@ -277,8 +295,7 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 - Option to send email/SMS to owner
 \n**E. Inventory Reports**
 
-- 'Generate Report' button\n- Report types:
-  - Stock Valuation Report (total inventory value)
+- 'Generate Report' button\n- Report types:\n  - Stock Valuation Report (total inventory value)
   - Stock Movement Report (additions/deductions over time)
   - Low Stock Report\n  - Supplier-wise Inventory Report
 - Export to PDF/CSV\n
@@ -291,9 +308,10 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 
 ---
 
-#### 3.1.4 Enhanced QR Code Management
+#### 3.1.4 Enhanced QR Code Management with Real-Time Table Synchronization
 
-**Overview**:\nGenerate, manage, and track QR codes for tables, takeaway, and delivery. Each QR code links to the restaurant's digital menu and enables customers to place orders directly. **QR code scanning is exclusively available on mobile devices.**
+**Overview**:
+Generate, manage, and track QR codes for tables, takeaway, and delivery. Each QR code links to the restaurant's digital menu and enables customers to place orders directly. **QR code scanning is exclusively available on mobile devices. Table additions, modifications, and deletions are instantly synchronized to customer dashboards.**
 
 **Key Features**:
 
@@ -314,20 +332,32 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 - '+ Generate QR Code' button\n- Modal form:\n  - QR Code Type: Radio buttons (Dine-in Table, Takeaway, Delivery)
   - Table Number/Name (ifdine-in)
   - Custom URL (optional, defaults to restaurant menu page)
-  - Design Options: QR code color, logo overlay (restaurant logo in center)\n- Generate button creates QR code\n- Preview QR code in modal
-- Download options: PNG, SVG, PDF
-- Print option (opens print dialog)
+  - Design Options: QR code color, logo overlay (restaurant logo in center)
+- Generate button creates QR code\n- Preview QR code in modal
+- Download options: PNG, SVG, PDF\n- Print option (opens print dialog)
 
-**C. QR Code Actions**
+**Real-Time Synchronization on Table Creation**:
+- When owner generates new QR code for dine-in table:
+  - Backend emits WebSocket event: `table:created`
+  - Event payload includes: restaurant_id, table_id, table_number, qr_code_url, status
+  - All connected customer clients subscribed to this restaurant receive event\n  - If customer is viewing order placement page or checkout page, new table number appears in table selection dropdown instantly
+\n**C. QR Code Actions**
 
 - **View**: Opens modal showing QR code image, scan count, recent scans
-- **Edit**: Modify table number, status\n- **Download**: Download QR code image
+- **Edit**: Modify table number, status\n  - On save: Backend emits `table:updated` event
+  - Customer dashboards update table information in real-time
+- **Download**: Download QR code image
 - **Print**: Print QR code with table number label
 - **Deactivate/Activate**: Toggle QR code status
+- On status change: Backend emits `table:updated` event
+  - Customer dashboards reflect table availability status instantly
 - **Delete**: Remove QR code (with confirmation)
+  - On delete: Backend emits `table:deleted` event
+  - Customer dashboards remove table from selection options with fade-out animation
 
 **D. QR Code Analytics**
-\n- 'View Analytics' button\n- Analytics panel showing:
+
+- 'View Analytics' button\n- Analytics panel showing:
   - Scans over time (line chart)
   - Orders per QR code (bar chart)
   - Peak scan times (heatmap)
@@ -341,10 +371,11 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
   - QR code type\n- Generates multiple QR codes at once
 - Download all as ZIP file
 - Print all option (generates PDF with all QR codes)
+- On bulk creation: Backend emits multiple `table:created` events
+- Customer dashboards receive all new tables instantly
 
 ---
-
-#### 3.1.5 Advanced Order Management Dashboard with Enhanced Order Cards and Real-Time Auto-Refresh
+\n#### 3.1.5 Advanced Order Management Dashboard with Enhanced Order Cards and Real-Time Auto-Refresh
 
 **Overview**:\nCentralized order management interface displaying all orders with real-time status updates, detailed order information, timeline tracking, waiter assignment, and instant notifications without page refresh.
 
@@ -397,7 +428,7 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
   - When new order placed: Toast notification appears at top-right with sound alert
   - Notification bell badge count increments
   - New order card slides into grid from top with animation
-  - Order card has pulsing glow effect for5 seconds
+  - Order card has pulsing glow effect for 5 seconds
 
 - **Order Status Update**:
   - When order status changes (by owner or waiter): Card updates instantly
@@ -431,9 +462,7 @@ Complete inventory tracking system with real-time stock monitoring, low stock al
 
 **F. Order Analytics**
 
-- 'View Analytics' button
-- Analytics panel:
-  - Average order preparation time
+- 'View Analytics' button\n- Analytics panel:\n  - Average order preparation time
   - Orders by status (pie chart)
   - Peak order times (bar chart)
   - Revenue by order type (dine-in/takeaway/delivery)
@@ -468,8 +497,7 @@ Comprehensive payment tracking and management system with transaction history, p
   - Payment method, amount, taxes, discounts
   - Payment timestamp\n  - Payment gateway response (if online payment)
   - Receipt download option (PDF)
-
-**C. Refund Processing**
+\n**C. Refund Processing**
 
 - 'Process Refund' button for completed payments
 - Modal form:
@@ -506,11 +534,9 @@ Comprehensive payment tracking and management system with transaction history, p
 - Receipt customization (restaurant logo, footer text)
 
 ---
+\n#### 3.1.7Waiter/Agent Assignment System
 
-#### 3.1.7 Waiter/Agent Assignment System
-
-**Overview**:
-Automatic and manual waiter assignment to orders and tables with workload balancing, performance tracking, and real-time communication.
+**Overview**:\nAutomatic and manual waiter assignment to orders and tables with workload balancing, performance tracking, and real-time communication.
 
 **Key Features**:
 
@@ -524,9 +550,7 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
     - Performance rating (based on order completion time, customer feedback)
 \n**B. Automatic Assignment**
 
-- Toggle switch: 'Enable Auto-Assignment'
-- When enabled:
-  - New orders automatically assigned to available waiter with least workload
+- Toggle switch: 'Enable Auto-Assignment'\n- When enabled:\n  - New orders automatically assigned to available waiter with least workload
   - Assignment algorithm considers: Current orders, table proximity, waiter rating
 - Notification sent to assigned waiter instantly
 
@@ -534,7 +558,8 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
 
 - 'Assign Waiter' button on order card
 - Modal with dropdown list of available waiters
-- Shows each waiter's current workload\n- Select waiter and confirm assignment
+- Shows each waiter's current workload
+- Select waiter and confirm assignment
 - Notification sent to waiter
 
 **D. Waiter Performance Tracking**
@@ -564,7 +589,8 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
 
 - **Main Chat Area**:
   - Selected conversation displayed\n  - Message history with timestamps
-  - Text input box at bottom\n  - Send button, emoji picker, attachment option
+  - Text input box at bottom
+  - Send button, emoji picker, attachment option
 
 **B. Real-Time Messaging**
 \n- WebSocket-based instant message delivery
@@ -581,7 +607,8 @@ Automatic and manual waiter assignment to orders and tables with workload balanc
 **D. Quick Replies**
 
 - Predefined message templates for common responses
-- Examples: 'Your order is being prepared', 'Table is ready', 'Thank you for your feedback'\n- One-click send\n
+- Examples: 'Your order is being prepared', 'Table is ready', 'Thank you for your feedback'
+- One-click send\n
 **E. Notification Settings**
 
 - Configure notification preferences\n- Enable/disable sound alerts, desktop notifications
@@ -705,8 +732,7 @@ Comprehensive analytics dashboard with real-time data visualization, customizabl
   - Modal form: Select staff, shift date, start time, end time, role
   - Save and notify staff via notification/SMS
 - **Shift Swap Requests**:
-  - Staff can request shift swaps
-  - Owner approves/rejects requests
+  - Staff can request shift swaps\n  - Owner approves/rejects requests
 \n**F. Performance Analytics**
 
 - 'Performance' tab
@@ -763,8 +789,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Modal form with tabs:
 \n**1. Campaign Details Tab**:
 - Campaign Name (required)
-- Campaign Type (dropdown: Discount Offer, Loyalty Program, Referral Program, Flash Sale, Happy Hours)\n- Description
-- Start Date & Time
+- Campaign Type (dropdown: Discount Offer, Loyalty Program, Referral Program, Flash Sale, Happy Hours)\n- Description\n- Start Date & Time
 - End Date & Time\n- Campaign Image/Banner Upload
 \n**2. Offer Configuration Tab**:
 - **If Discount Offer**:
@@ -793,7 +818,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Generate unique code or custom code
 - **Bulk Code Generation**:
   - Generate multiple unique codes for distribution
-  - Export codes to CSV\n\n**D. Loyalty Program**
+  - Export codes to CSV
+\n**D. Loyalty Program**
 
 - 'Loyalty Program' tab
 - **Program Configuration**:
@@ -810,8 +836,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Program Configuration**:
   - Enable/disable referral program
   - Set referrer reward (discount/points)
-  - Set referee reward
-- **Referral Tracking**:
+  - Set referee reward\n- **Referral Tracking**:
   - Table showing referrals: Referrer Name, Referee Name, Referral Date, Status (Pending/Completed), Reward Given
 \n**F. Campaign Analytics**
 
@@ -998,11 +1023,12 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Save button applies changes\n
 ---
 
-### 3.2 Enhanced Customer Features
+### 3.2 Enhanced Customer Features with Real-Time Menu & Table Synchronization
 
-#### 3.2.1 Customer Home Screen with Complete Sidebar Functionality
+#### 3.2.1 Customer Home Screen with Complete Sidebar Functionality and Real-Time Updates
 
-**Overview**:\nCustomer-facing home screen providing access to all customer features including browsing previously scanned restaurants, viewing order history, tracking active orders, accessing profile settings, and more.
+**Overview**:
+Customer-facing home screen providing access to all customer features including browsing previously scanned restaurants, viewing order history, tracking active orders, accessing profile settings, and more. **All menu and table data is synchronized in real-time via WebSocket.**
 
 **Layout Structure**:
 \n**A. Top Navigation Bar**
@@ -1026,7 +1052,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Display current active orders (if any)
 - Each order card shows: Restaurant name, order ID, status, estimated time, 'Track Order' button
 - Real-time status updates without page refresh
-\n**Recently Scanned Restaurants Section**:
+
+**Recently Scanned Restaurants Section**:
 - Horizontal scrollable cards showing last 5 scanned restaurants
 - Each card displays: Restaurant logo, name, cuisine type, 'View Menu' button
 - Click to open restaurant menu
@@ -1039,13 +1066,18 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Banner cards with offer details
 - 'Claim Offer' button
 
+**Real-Time WebSocket Connection**:
+- Customer dashboard establishes persistent WebSocket connection on page load
+- Subscribes to events for all restaurants in'Browse Restaurants' list
+- Listens for: `menu:item:created`, `menu:item:updated`, `menu:item:deleted`, `menu:category:created`, `menu:category:updated`, `menu:category:deleted`, `table:created`, `table:updated`, `table:deleted`
+- When events received, dashboard updates relevant data instantly without page refresh
+
 ---
 
-#### 3.2.2 Browse Restaurants (Complete Functionality with Restaurant Type Display)
+#### 3.2.2 Browse Restaurants (Complete Functionality with Restaurant Type Display and Real-Time Menu Updates)
 
-**Overview**:\nDedicated page displaying all restaurants previously scanned by the customer with search and filter functionality for easy access. **Restaurant type (Veg/Non-Veg/Both) is prominently displayed on each restaurant card.**
-
-**Key Features**:
+**Overview**:\nDedicated page displaying all restaurants previously scanned by the customer with search and filter functionality for easy access. **Restaurant type (Veg/Non-Veg/Both) is prominently displayed on each restaurant card. Menu changes from restaurant owner are reflected in real-time.**
+\n**Key Features**:
 
 **A. Restaurant List Layout**
 \n- **Search Bar**:
@@ -1079,11 +1111,21 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 \n**C. Empty State**
 
 - If no restaurants scanned yet:\n  - Display message: 'You haven't scanned any restaurants yet'\n  - **'Scan QR Code' button (visible only on mobile devices) to scan first restaurant**
-\n---
+\n**D. Real-Time Menu Synchronization**
 
-#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display in Header)
+- When customer opens'Browse Restaurants' page:
+  - WebSocket connection subscribes to menu update events for all listed restaurants
+  - Events: `menu:item:created`, `menu:item:updated`, `menu:item:deleted`, `menu:category:created`, `menu:category:updated`, `menu:category:deleted`
+- When restaurant owner adds/edits/deletes menu items or categories:
+  - Customer's'Browse Restaurants' page receives event instantly
+  - If customer clicks 'View Menu' for that restaurant, menu displays latest data
+  - No page refresh required
 
-**Overview**:\nCustomers scan restaurant QR codes to access digital menu, browse items, and place orders. **QR code scanning functionality is exclusively available on mobile devices.** **Restaurant type (Veg/Non-Veg/Both) is displayed in the menu page header next to the restaurant name.**
+---
+
+#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display in Header and Real-Time Menu Updates)
+\n**Overview**:
+Customers scan restaurant QR codes to access digital menu, browse items, and place orders. **QR code scanning functionality is exclusively available on mobile devices.** **Restaurant type (Veg/Non-Veg/Both) is displayed in the menu page header next to the restaurant name. Menu updates from restaurant owner are reflected in real-time.**
 
 **Key Features**:
 
@@ -1098,7 +1140,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Redirected to restaurant's digital menu
 - **Error handling**: If user attempts to access QR scanner from desktop (via direct URL), display message: 'QR code scanning is only available on mobile devices. Please use a smartphone or tablet to scan QR codes.'
 
-**B. Digital Menu Display (with Restaurant Type in Header)**
+**B. Digital Menu Display (with Restaurant Type in Header and Real-Time Updates)**
 
 - **Menu Header:**
   - Restaurant logo (left)
@@ -1112,12 +1154,33 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Zomato-style layout with sticky category navigation
   - Display all menu categories and items
   - Each item card shows:
-    - Item image
-    - Item name and description
+    - Item image\n    - Item name and description
     - Price (half/full portions if applicable)
     - Dietary tags (veg/non-veg, spicy level)
     - Availability status\n    - 'Add to Cart' button
-\n**C. Item Details Modal**
+\n**Real-Time Menu Synchronization**:\n- When customer opens menu page:
+  - WebSocket connection subscribes to menu update events for this restaurant
+  - Events: `menu:item:created`, `menu:item:updated`, `menu:item:deleted`, `menu:category:created`, `menu:category:updated`, `menu:category:deleted`
+- **When restaurant owner adds new menu item**:
+  - Backend emits `menu:item:created` event\n  - Customer's menu page receives event instantly
+  - New item card slides into respective category with smooth animation
+  - Toast notification appears: 'New item added: [Item Name]' (optional, can be disabled in settings)
+- **When restaurant owner edits menu item**:
+  - Backend emits `menu:item:updated` event
+  - Customer's menu page receives event\n  - Item card updates data (name, price, image, description, availability) with smooth transition
+  - If price changed, highlight price with pulsing glow for 3 seconds
+- **When restaurant owner deletes menu item**:
+  - Backend emits `menu:item:deleted` event
+  - Customer's menu page receives event
+  - Item card fades out and removes from display with animation
+- **When restaurant owner adds/edits/deletes category**:
+  - Backend emits `menu:category:created`, `menu:category:updated`, or `menu:category:deleted` event
+  - Customer's menu page updates category navigation bar instantly
+  - New categories appear with slide-in animation
+  - Deleted categories fade out\n  - Edited categories update name/image with smooth transition
+- **No page refresh required** - all updates happen in real-time
+
+**C. Item Details Modal**
 
 - Click on item card to view full details
 - Modal displays:
@@ -1129,9 +1192,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Quantity selector
   - Special instructions text area
   - 'Add to Cart' button
-
-**D. Cart Management**
-\n- Floating cart icon with item count badge
+\n**D. Cart Management**\n
+- Floating cart icon with item count badge
 - Click to open cart sidebar
 - Cart displays:
   - List of added items with quantities and prices
@@ -1140,9 +1202,10 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - Option to edit quantities or remove items
 \n---
 
-#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED) - Updated with Table Number Entry for Browse Orders
+#### 3.2.4 Complete Order Placement & Checkout Flow (FULLY DETAILED) - Updated with Table Number Entry for Browse Orders and Real-Time Table Synchronization
 
-**Overview**:\nStreamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking. **Updated to include mandatory table number entry for dine-in orders placed via Browse Restaurants (without QR code scan).**
+**Overview**:
+Streamlined, multi-step checkout process for placing orders with customer information collection, promo code application, multiple payment options, order confirmation, and seamless transition to order tracking. **Updated to include mandatory table number entry for dine-in orders placed via Browse Restaurants (without QR code scan). Table list is synchronized in real-time when restaurant owner adds/edits/deletes tables.**
 
 ---
 
@@ -1158,13 +1221,13 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - Close button (X icon) for sidebar view
 \n**Cart Items Section**:
 - **Each cart item displayed as a card**:\n  - Item image (small thumbnail, left)
-  - Item name (bold)\n  - Portion type (if applicable):'Half' or 'Full' badge
+  - Item name (bold)\n  - Portion type (if applicable): 'Half' or 'Full' badge
   - Special instructions (if added): Displayed below item name in italics
   - Quantity selector: '-' button, quantity number, '+' button (inline)
   - Item price (right): Unit price x quantity = total (e.g., '$12x 2 = $24')
   - 'Remove' icon (trash icon, top-right of card)
 - **Empty Cart State**:
-  - If cart is empty: Display message 'Your cart is empty' with 'Browse Menu' button
+  - If cart is empty: Display message 'Your cart is empty' with'Browse Menu' button
 \n**Price Breakdown Section**:
 - **Subtotal**: Sum of all item prices (e.g., 'Subtotal: $48.00')
 - **Taxes**: Calculated based on restaurant settings (e.g., 'GST (5%): $2.40')
@@ -1177,10 +1240,9 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **'Proceed to Checkout' Button**: Primary button (neon gradient, prominent), navigates to checkout page
   - Button disabled if cart is empty
   - On click: Smooth transition to checkout page (no full page reload)
+\n---
 
----
-
-**STEP 2: Checkout Page - Customer Information & Order Details (Updated with Table Number Entry Logic)**
+**STEP 2: Checkout Page - Customer Information & Order Details (Updated with Table Number Entry Logic and Real-Time Table Synchronization)**
 
 **A. Checkout Page Layout**
 
@@ -1203,10 +1265,11 @@ Advanced marketing module for creating, managing, and tracking promotional campa
      - Email input\n     - Pre-filled if user is logged in
      - Placeholder: 'your.email@example.com'
      - Validation: Valid email format if provided
-\n**Section 2: Order Type & Delivery Details (Updated with Table Number Entry Logic)**
+\n**Section 2: Order Type & Delivery Details (Updated with Table Number Entry Logic and Real-Time Table Synchronization)**
 
 - **Heading**: 'Order Type' (bold, with location icon)
-- **Order Type Selection**: Radio buttons (large, card-style)\n  1. **Dine-In** (default if QR code scanned from table):
+- **Order Type Selection**: Radio buttons (large, card-style)
+  1. **Dine-In** (default if QR code scanned from table):
      - Icon: Table icon
      - Label: 'Dine-In'
      - Sub-label: 'Enjoy your meal at the restaurant'
@@ -1214,9 +1277,16 @@ Advanced marketing module for creating, managing, and tracking promotional campa
        - **Case A: Order placed via QR code scan (table number auto-detected)**:\n         - Display table number as badge below radio button (e.g., 'Table 5')
          - Table number is read-only and auto-filled from QR code data
        - **Case B: Order placed via Browse Restaurants (no QR code scan)**:
-         - Display input field: 'Enter Table Number' (required)
-         - Text input with placeholder: 'e.g., Table 5 or 5'\n         - Validation: Cannot be empty, must be alphanumeric
-         - Error message if left empty: 'Please enter your table number for dine-in orders'
+         - Display dropdown: 'Select Table Number' (required)
+         - Dropdown populated with active tables from restaurant's QR code system
+         - Options format: 'Table 1', 'Table 2', 'Table 3', etc.
+         - Validation: Cannot be empty, must select a table
+         - Error message if not selected: 'Please select your table number for dine-in orders'
+         - **Real-Time Table Synchronization**:
+           - When checkout page loads, WebSocket subscribes to `table:created`, `table:updated`, `table:deleted` events for this restaurant
+           - **If restaurant owner adds new table**: Backend emits `table:created` event → Dropdown instantly adds new table option with slide-in animation
+           - **If restaurant owner edits table**: Backend emits `table:updated` event → Dropdown updates table name/number instantly
+           - **If restaurant owner deletes table**: Backend emits `table:deleted` event → Dropdown removes table option with fade-out animation. If customer had selected deleted table, show warning: 'Selected table is no longer available. Please choose another table.' and reset selection.\n           - **If restaurant owner deactivates table**: Backend emits `table:updated` event with status 'inactive' → Dropdown disables that table option and shows '(Unavailable)' label. If customer had selected deactivated table, show warning and reset selection.
   2. **Takeaway**:
      - Icon: Bag icon
      - Label: 'Takeaway'
@@ -1246,10 +1316,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **Promo Code Input**:
   - Text input with'Apply' button inline (right side)
   - Placeholder: 'Enter promo code'
-  - On click 'Apply': Validate promo code via API
-    - **If valid**: Display success message 'Promo code applied! You saved $X' (green text with checkmark icon), update order summary with discount
-    - **If invalid**: Display error message 'Invalid or expired promo code' (red text with X icon)
-  - If promo code already applied: Show applied code with 'Remove' button (e.g., 'SAVE10 applied | Remove')
+  - On click 'Apply': Validate promo code via API\n    - **If valid**: Display success message 'Promo code applied! You saved $X' (green text with checkmark icon), update order summary with discount\n    - **If invalid**: Display error message 'Invalid or expired promo code' (red text with X icon)\n  - If promo code already applied: Show applied code with 'Remove' button (e.g., 'SAVE10 applied | Remove')
 
 **C. Right Column: Order Summary (Sticky on Desktop)**
 
@@ -1260,8 +1327,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 \n**Order Items List**:
 - Compact list of cart items:\n  - Each item: Quantity x Item Name (Portion) - Price\n  - Example: '2x Margherita Pizza (Full) - $24.00'
 - Special instructions (if any) displayed below item in smaller font
-- 'Edit Cart' link (navigates back to cart)
-
+- 'Edit Cart' link (navigates back to cart)\n
 **Price Breakdown**:
 - Subtotal\n- Taxes (with percentage)
 - Discount (if promo code applied, with code name)\n- Delivery Fee (if delivery order)
@@ -1273,7 +1339,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - **'Proceed to Payment' Button**: Primary button (neon gradient, full-width)\n  - On click: Validate all required fields
     - **If validation fails**: Scroll to first error field, display error messages below respective fields (red text)\n    - **Validation includes**:
       - Customer name and contact number must be filled
-      - **If Dine-In selected and order placed via Browse Restaurants (no QR scan)**: Table number must be entered\n      - If Delivery selected: All delivery address fields must be filled
+      - **If Dine-In selected and order placed via Browse Restaurants (no QR scan)**: Table number must be selected from dropdown
+      - If Delivery selected: All delivery address fields must be filled
     - **If validation passes**: Smooth transition to payment page
 
 ---
@@ -1313,10 +1380,8 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 **Option 3: UPI (Unified Payments Interface)**
 - Icon: UPI icon
-- Label: 'UPI'\n- Sub-label: 'Pay using UPI apps like Google Pay, PhonePe, Paytm'
-- **If selected**: Display UPI ID input:\n  - **UPI ID**: Text input
-    - Placeholder: 'yourname@upi'
-    - Validation: Valid UPI ID format (e.g., name@bank)\n  - **OR**: Display QR code for UPI payment
+- Label: 'UPI'\n- Sub-label: 'Pay using UPI apps like Google Pay, PhonePe, Paytm'\n- **If selected**: Display UPI ID input:\n  - **UPI ID**: Text input
+    - Placeholder: 'yourname@upi'\n    - Validation: Valid UPI ID format (e.g., name@bank)\n  - **OR**: Display QR code for UPI payment
     - 'Scan QR Code with your UPI app' instruction
     - QR code image (generated with payment details)
 \n**Option 4: Digital Wallets**
@@ -1355,11 +1420,13 @@ Advanced marketing module for creating, managing, and tracking promotional campa
    - Once payment confirmed: Proceed to order placement
 
 5. **For Wallet Redirect**:
-   - Redirect user to wallet app/website\n   - After payment, wallet redirects back to app with payment status
+   - Redirect user to wallet app/website
+   - After payment, wallet redirects back to app with payment status
    - Handle redirect and proceed accordingly
 
 ---
-\n**STEP 4: Order Confirmation Page**
+
+**STEP 4: Order Confirmation Page**
 
 **A. Confirmation Page Layout**
 
@@ -1375,7 +1442,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
   - **Order ID**: Large, bold (e.g., '#ORD-1234')
   - **Restaurant Name**: With logo and restaurant type badge
   - **Order Type**: Badge (Dine-In/Takeaway/Delivery)
-  - **Table Number** (if dine-in): Displayed prominently (whether auto-detected from QR or manually entered)
+  - **Table Number** (if dine-in): Displayed prominently (whether auto-detected from QR or manually selected from dropdown)
   - **Estimated Time**: 'Your order will be ready in approximately 25 minutes' (dynamic based on order type)
   - **Order Timestamp**: Date and time order was placed
 \n**D. Order Summary**
@@ -1407,7 +1474,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
    - Order appears in restaurant's order management dashboard
 
 3. **Update Database**:
-   - Create order record with all details (including table number whether from QR or manual entry)
+   - Create order record with all details (including table number whether from QR or manual selection)
    - Update inventory (deduct items if linked)\n   - Log transaction in payment records
    - Add order to customer's order history
 
@@ -1426,7 +1493,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 
 **B. Order Tracking Page**
 
-- Detailed order tracking interface (as described in section3.2.5)
+- Detailed order tracking interface (as described in section 3.2.5)
 - Real-time status updates\n- Order timeline with progress indicators
 - Estimated time remaining
 - Chat with restaurant option
@@ -1456,8 +1523,7 @@ Advanced marketing module for creating, managing, and tracking promotional campa
 - 'Edit Order' button on checkout page (navigates back to cart)
 - Allow quantity changes, item removal, special instructions update
 - Recalculate totals in real-time
-
-**D. Accessibility & UX Enhancements**
+\n**D. Accessibility & UX Enhancements**
 
 - **Loading States**: Display skeleton screens or spinners during data fetching
 - **Error Handling**: Clear error messages with suggestions (e.g., 'Payment failed. Please check your card details or try another method')
@@ -1632,7 +1698,8 @@ Manage customer profile information and app preferences.
 - **Privacy Settings**:
   - Manage data sharing preferences
 
----\n
+---
+
 #### 3.2.10 Help & Support
 
 **Overview**:
@@ -1670,7 +1737,8 @@ Access help resources and contact support.\n
 **A. Dashboard Layout**
 
 - **Top Metrics Cards**:
-  1. Assigned Orders (count)\n  2. Active Tables (count)
+  1. Assigned Orders (count)
+  2. Active Tables (count)
   3. Pending Tasks (count)
   4. Orders Completed Today\n\n- **Assigned Orders Section**:
   - List of orders assigned to waiter
@@ -1734,33 +1802,33 @@ Access help resources and contact support.\n
 ### 4.1 Restaurant Owner Flow
 
 1. **Sign Up/Login** → Owner Dashboard\n2. **Setup Restaurant Profile** → Settings → Restaurant Profile → Enter details (including restaurant type: Veg/Non-Veg/Both) → Save
-3. **Add Menu Items** → Menu Management → + Add Menu Item → Fill form → Save
-4. **Generate QR Codes** → QR Codes → + Generate QR Code → Configure → Download/Print
-5. **Receive Order** → Real-time notification → View order details → Accept/Reject
-6. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm
-7. **Track Order** → Order updates automatically in real-time
-8. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n9. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch
-10. **View Analytics** → Analytics → View reports and charts\n11. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
+3. **Add Menu Items** → Menu Management → + Add Menu Item → Fill form → Save → **Menu item instantly synced to all customer dashboards viewing this restaurant**
+4. **Edit Menu Item** → Menu Management → Select item → Edit → Save → **Changes instantly synced to all customer dashboards**
+5. **Delete Menu Item** → Menu Management → Select item → Delete → Confirm → **Item removed from all customer dashboards in real-time**
+6. **Add Category** → Menu Management → + Add Category → Fill form → Save → **New category instantly appears in customer menu navigation**
+7. **Generate QR Codes** → QR Codes → + Generate QR Code → Configure → Download/Print → **New table instantly available in customer checkout dropdown**
+8. **Edit Table** → QR Codes → Select table → Edit → Save → **Table info updated in customer checkout dropdown in real-time**
+9. **Delete Table** → QR Codes → Select table → Delete → Confirm → **Table removed from customer checkout dropdown with warning if selected**
+10. **Receive Order** → Real-time notification → View order details → Accept/Reject\n11. **Assign Waiter** → Order card → Assign Waiter → Select waiter → Confirm\n12. **Track Order** → Order updates automatically in real-time\n13. **Manage Staff** → Staff → + Add Staff → Fill form → Save\n14. **Create Promotion** → Marketing → + Create Campaign → Configure → Launch\n15. **View Analytics** → Analytics → View reports and charts\n16. **Configure Settings** → Settings → Update currency/timezone → Save → Changes applied system-wide automatically
 
-### 4.2 Customer Flow (Complete Checkout Flow with Table Number Entry and Mobile-Only QR Scanning)
+### 4.2 Customer Flow (Complete Checkout Flow with Table Number Entry, Mobile-Only QR Scanning, and Real-Time Menu/Table Synchronization)
 
-1. **Sign Up/Login** → Customer Home
-2. **Scan QR Code (Mobile-Only)** → **'Scan QR Code' button visible only on mobile devices** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header → Table number auto-detected\n3. **Browse Menu** → View categories and items → Click item for details\n4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart
-5. **Review Cart** → Click cart icon → View cart items → Edit quantities or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type:\n   - **If Dine-In via QR scan**: Table number auto-filled and displayed
-   - **If Dine-In via Browse Restaurants**: Enter table number manually (required)\n   - **If Takeaway**: No table number needed
-   - **If Delivery**: Enter delivery address
-   → Add special instructions → Apply promo code (optional) → Review order summary → Click 'Proceed to Payment'
+1. **Sign Up/Login** → Customer Home\n2. **Scan QR Code (Mobile-Only)** → **'Scan QR Code' button visible only on mobile devices** → Camera opens → Scan → Restaurant menu displayed with restaurant type badge in header → Table number auto-detected → **Menu items and categories sync in real-time if owner makes changes**
+3. **Browse Menu** → View categories and items → Click item for details → **If owner adds new item, it appears instantly with animation** → **If owner edits item, changes reflect immediately** → **If owner deletes item, it fades out**
+4. **Add to Cart** → Select portion/quantity → Add special instructions → Add to Cart\n5. **Review Cart** → Click cart icon → View cart items → Edit quantities or remove items → Click 'Proceed to Checkout'\n6. **Checkout Page** → Enter customer details (name, contact) → Select order type:\n   - **If Dine-In via QR scan**: Table number auto-filled and displayed
+   - **If Dine-In via Browse Restaurants**: Select table number from dropdown (required) → **Dropdown syncs in real-time if owner adds/edits/deletes tables** → **If selected table is deleted, show warning and reset selection**
+   - **If Takeaway**: No table number needed\n   - **If Delivery**: Enter delivery address\n   → Add special instructions → Apply promo code (optional) → Review order summary → Click 'Proceed to Payment'
 7. **Payment Page** → Select payment method (Cash/Card/UPI/Wallet) → Enter payment details (if online payment) → Review order summary → Click 'Place Order & Pay'
 8. **Payment Processing** → System processes payment → If successful: Order placed → If failed: Display error, allow retry
 9. **Order Confirmation** → View success message → View order details (Order ID, table number, estimated time) → Download receipt → Click 'Track Your Order'
 10. **Track Order** → Real-time order tracking page → View timeline and estimated time → Receive notifications on status updates
 11. **Receive Order** → Order status updates to'Ready' → Notification received\n12. **Rate Order** → Order History → View Details → Rate Order → Submit feedback
-13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu → Add items to cart → Proceed to checkout → **Enter table number manually if selecting Dine-In** → Complete order
-14. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout\n15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow\n
+13. **Browse Restaurants** → Sidebar → Browse Restaurants → Search/filter (including by restaurant type) → View previously scanned restaurants with restaurant type badges → Select restaurant → View menu → **Menu syncs in real-time if owner makes changes** → Add items to cart → Proceed to checkout → **Select table number from dropdown if choosing Dine-In** → **Dropdown syncs in real-time** → Complete order\n14. **Reorder** → Order History → Select order → Reorder → Modify if needed → Checkout
+15. **View Loyalty Points** → Loyalty & Rewards → View points balance → Redeem rewards\n\n### 4.3 Waiter Flow\n
 1. **Login** → Waiter Dashboard
-2. **Clock In** → Attendance → Clock In\n3. **View Assigned Orders** → Dashboard → Assigned Orders list
-4. **View Order Details** → Click order card → View items and instructions
-5. **Update Order Status** → Mark as Preparing → Mark as Ready → Mark as Served
+2. **Clock In** → Attendance → Clock In
+3. **View Assigned Orders** → Dashboard → Assigned Orders list
+4. **View Order Details** → Click order card → View items and instructions\n5. **Update Order Status** → Mark as Preparing → Mark as Ready → Mark as Served
 6. **Communicate** → Chat with customer or owner for queries
 7. **Clock Out** → Attendance → Clock Out
 \n---
@@ -1798,15 +1866,17 @@ Access help resources and contact support.\n
 - **Inputs**: Dark background with neon border on focus, rounded corners, placeholder text in light grey\n- **Badges**: Small circular or pill-shaped elements with neon background, white text, used for counts and status indicators. **Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side.**
 - **Icons**: Line-style icons with neon colors, consistent size (24px default)\n\n### 5.5 Animations
 
-- **Slide-in**: New order cards slide in from top with500ms bounce animation
+- **Slide-in**: New order cards and menu items slide in from top with500ms bounce animation
 - **Pulsing Glow**: Notification badges and active elements have pulsing glow effect (keyframes animation)
 - **Shake**: Notification bell shakes when new notification arrives (500ms rotation keyframes)
 - **Ripple Effect**: Button clicks trigger ripple effect from click point\n- **Smooth Transitions**: All state changes use300ms ease-in-out transitions
 - **Loading Animations**: Neon spinners or skeleton screens with shimmer effect
 - **Page Transitions**: Smooth fade or slide transitions without full page reload (client-side routing)
+- **Real-Time Update Animations**: New menu items slide in, edited items highlight with pulsing glow, deleted items fade out, new tables appear with slide-in, deleted tables fade out
 
 ### 5.6 Responsive Design
-\n- **Mobile-First Approach**: Design optimized for mobile devices first, then scaled up\n- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
+
+- **Mobile-First Approach**: Design optimized for mobile devices first, then scaled up\n- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
 - **Collapsible Sidebar**: Sidebar collapses to hamburger menu on mobile
 - **Adaptive Grids**: Grid layouts adjust column count based on screen size (3columns desktop, 2 tablet, 1 mobile)
 - **Touch-Friendly**: Buttons and interactive elements have minimum44px height for easy tapping
@@ -1826,16 +1896,33 @@ Access help resources and contact support.\n
 - **Frontend**: React.js or Next.js for dynamic UI, Tailwind CSS for styling, Framer Motion for animations
 - **Backend**: Node.js with Express.js or Django for API, WebSocket (Socket.io) for real-time communication
 - **Database**: PostgreSQL or MongoDB for data storage (with restaurant_type field in restaurant schema: ENUM('Veg', 'Non-Veg', 'Both')), Redis for caching and session management
-- **Authentication**: JWT tokens, OAuth 2.0 for Google login, OTP via Twilio or Firebase\n- **Payment Gateway**: Stripe, Razorpay, or PayPal integration
+- **Authentication**: JWT tokens, OAuth 2.0 for Google login (using OSS Google login method), OTP via Twilio or Firebase\n- **Payment Gateway**: Stripe, Razorpay, or PayPal integration
 - **Cloud Storage**: AWS S3 or Cloudinary for image uploads
 - **Hosting**: AWS, Google Cloud, or Vercel for deployment
 - **Device Detection**: User agent parsing or screen size detection for mobile-only QR scanning feature
 
-### 6.2 Real-Time Features
+### 6.2 Real-Time Features with WebSocket Implementation
 
-- **WebSocket Connection**: Persistent connection for instant data updates (orders, notifications, chat)
-- **Event-Driven Architecture**: Backend emits events on data changes, frontend listens and updates UI
-- **Optimistic UI Updates**: UI updates immediately on user action, syncs with backend in background
+- **WebSocket Connection**: Persistent connection for instant data updates (orders, notifications, chat, menu items, categories, tables)
+- **Event-Driven Architecture**: Backend emits events on data changes, frontend listens and updates UI\n- **Optimistic UI Updates**: UI updates immediately on user action, syncs with backend in background
+- **Real-Time Menu Synchronization**:
+  - Backend emits events: `menu:item:created`, `menu:item:updated`, `menu:item:deleted`, `menu:category:created`, `menu:category:updated`, `menu:category:deleted`
+  - Customer clients subscribed to restaurant receive events instantly
+  - Frontend updates menu display without page refresh (add/edit/delete items and categories with animations)
+- **Real-Time Table Synchronization**:
+  - Backend emits events: `table:created`, `table:updated`, `table:deleted`
+  - Customer clients on checkout page receive events instantly
+  - Frontend updates table dropdown without page refresh (add/edit/delete tables with animations, show warnings if selected table deleted)
+- **Event Payload Structure**:
+  - `menu:item:created`: {restaurant_id, item_id, item_data: {name, category, price, image, description, availability, portions, etc.}}
+  - `menu:item:updated`: {restaurant_id, item_id, updated_fields: {name, price, image, availability, etc.}}
+  - `menu:item:deleted`: {restaurant_id, item_id}
+  - `menu:category:created`: {restaurant_id, category_id, category_data: {name, image, display_order}}
+  - `menu:category:updated`: {restaurant_id, category_id, updated_fields: {name, image}}
+  - `menu:category:deleted`: {restaurant_id, category_id}
+  - `table:created`: {restaurant_id, table_id, table_data: {table_number, qr_code_url, status}}
+  - `table:updated`: {restaurant_id, table_id, updated_fields: {table_number, status}}
+  - `table:deleted`: {restaurant_id, table_id}
 \n### 6.3 Security\n
 - **Data Encryption**: HTTPS for all communications, encrypted storage for sensitive data
 - **Input Validation**: Server-side validation to prevent SQL injection, XSS attacks
@@ -1848,13 +1935,15 @@ Access help resources and contact support.\n
 - **Caching**: Cache static assets and API responses
 - **Database Indexing**: Optimize database queries with proper indexing (including index on restaurant_type field for fast filtering)
 - **CDN**: Use CDN for static assets to reduce latency
+- **WebSocket Connection Management**: Efficient connection pooling, automatic reconnection on disconnect, heartbeat mechanism to keep connections alive
 
 ### 6.5 Scalability
 
-- **Microservices Architecture**: Separate services for orders, payments, notifications for independent scaling
+- **Microservices Architecture**: Separate services for orders, payments, notifications, menu management for independent scaling
 - **Load Balancing**: Distribute traffic across multiple servers
 - **Database Sharding**: Partition database for horizontal scaling
 - **Auto-Scaling**: Automatically scale server resources based on traffic
+- **WebSocket Scaling**: Use Redis pub/sub for broadcasting events across multiple WebSocket server instances
 
 ---
 
@@ -1882,12 +1971,11 @@ Access help resources and contact support.\n
 - Warning: Neon yellow (#FFFF00)
 - Error: Neon red (#FF073A)
 - Text: White (#FFFFFF) or light grey (#E0E0E0)
-- Restaurant Type Badges:
-  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon
-  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
+- Restaurant Type Badges:\n  - Veg Badge: Bright green (#39FF14) background with white text and leaf icon\n  - Non-Veg Badge: Bright red (#FF073A) background with white text and meat icon
   - Both Badge: Bright orange (#FF8C00) background with white text and dual icon\n
 **UI Components**: Glassmorphism cards with frosted glass effect, neon gradient borders, rounded corners (12-16px border radius), subtle shadows with neon glow, futuristic buttons with neon gradients and hover effects (scale and glow), animated counters for real-time data updates, smooth transitions (300ms ease-in-out), interactive elements with neon borders and glow on hover/focus. Restaurant type badges are pill-shaped with rounded corners (20px border radius), bold text, and icon on left side.\n
-**Animations**: Slide-in animations for new orders (500ms bounce), pulsing glow for notification badges, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading.\n
+**Animations**: Slide-in animations for new orders and menu items (500ms bounce), pulsing glow for notification badges and updated items, shake animation for notification bell (500ms rotation keyframes), ripple effect for button clicks, smooth page transitions without full reload (client-side routing), loading animations with neon spinners, skeleton screens for data loading, real-time update animations (new items slide in, edited items highlight, deleted items fade out).
+
 **Responsive Design**: Mobile-first approach, collapsible sidebar on mobile (hamburger menu), adaptive grid layouts (3 columns on desktop, 2 on tablet, 1 on mobile), touch-friendly buttons and inputs (minimum 44px height), optimized for all screen sizes. **QR code scanning feature exclusively available on mobile devices with automatic device detection.**
 
 ---

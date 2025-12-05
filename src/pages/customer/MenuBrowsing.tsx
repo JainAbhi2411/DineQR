@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, menuCategoryApi, menuItemApi, tableApi } from '@/db/api';
 import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem } from '@/types/types';
@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
+import { supabase } from '@/db/supabase';
 
 interface ExtendedCartItem extends CartItem {
   id: string;
@@ -69,6 +70,104 @@ export default function MenuBrowsing() {
   useEffect(() => {
     loadData();
   }, [restaurantId]);
+
+  // Real-time subscriptions for menu updates
+  useEffect(() => {
+    if (!restaurantId) return;
+
+    console.log('[MenuBrowsing] Setting up real-time subscriptions for restaurant:', restaurantId);
+
+    // Subscribe to menu items changes
+    const menuItemsChannel = supabase
+      .channel(`menu_items_${restaurantId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items',
+          filter: `restaurant_id=eq.${restaurantId}`
+        },
+        (payload) => {
+          console.log('[MenuBrowsing] Menu item change:', payload);
+          
+          if (payload.eventType === 'INSERT') {
+            const newItem = payload.new as MenuItem;
+            setMenuItems(prev => [...prev, newItem]);
+            toast({
+              title: '🎉 New Item Added!',
+              description: `${newItem.name} is now available`,
+              duration: 3000,
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            const updatedItem = payload.new as MenuItem;
+            setMenuItems(prev => prev.map(item => 
+              item.id === updatedItem.id ? updatedItem : item
+            ));
+            toast({
+              title: '✏️ Menu Updated',
+              description: `${updatedItem.name} has been updated`,
+              duration: 2000,
+            });
+          } else if (payload.eventType === 'DELETE') {
+            const deletedItem = payload.old as MenuItem;
+            setMenuItems(prev => prev.filter(item => item.id !== deletedItem.id));
+            toast({
+              title: '🗑️ Item Removed',
+              description: 'A menu item has been removed',
+              duration: 2000,
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    // Subscribe to categories changes
+    const categoriesChannel = supabase
+      .channel(`categories_${restaurantId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_categories',
+          filter: `restaurant_id=eq.${restaurantId}`
+        },
+        (payload) => {
+          console.log('[MenuBrowsing] Category change:', payload);
+          
+          if (payload.eventType === 'INSERT') {
+            const newCategory = payload.new as MenuCategory;
+            setCategories(prev => [...prev, newCategory]);
+            toast({
+              title: '📂 New Category Added!',
+              description: newCategory.name,
+              duration: 3000,
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            const updatedCategory = payload.new as MenuCategory;
+            setCategories(prev => prev.map(cat => 
+              cat.id === updatedCategory.id ? updatedCategory : cat
+            ));
+          } else if (payload.eventType === 'DELETE') {
+            const deletedCategory = payload.old as MenuCategory;
+            setCategories(prev => prev.filter(cat => cat.id !== deletedCategory.id));
+            // Reset selected category if it was deleted
+            if (selectedCategory === deletedCategory.id) {
+              setSelectedCategory('all');
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions
+    return () => {
+      console.log('[MenuBrowsing] Cleaning up real-time subscriptions');
+      supabase.removeChannel(menuItemsChannel);
+      supabase.removeChannel(categoriesChannel);
+    };
+  }, [restaurantId, toast, selectedCategory]);
 
   // Load table number when tableId is present
   useEffect(() => {
