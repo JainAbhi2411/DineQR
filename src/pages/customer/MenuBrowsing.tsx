@@ -62,7 +62,6 @@ export default function MenuBrowsing() {
   const [itemDetailDialogOpen, setItemDetailDialogOpen] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<MenuItemVariant | null>(null);
   const [selectedPortionSize, setSelectedPortionSize] = useState<'full' | 'half'>('full');
-  const [customization, setCustomization] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'menu'>('grid');
   const [tableSelectionOpen, setTableSelectionOpen] = useState(false);
   const [selectedTableNumber, setSelectedTableNumber] = useState<string>('');
@@ -292,6 +291,7 @@ export default function MenuBrowsing() {
   }, {} as { [key: string]: { category: MenuCategory; items: MenuItem[] } });
 
   const handleAddToCart = (item: MenuItem, variant?: MenuItemVariant, portionSize?: 'full' | 'half') => {
+    // Show dialog if item has variants or portions and none selected
     if ((item.variants && item.variants.length > 0 && !variant) || (item.has_portions && !portionSize)) {
       setSelectedItem(item);
       if (item.variants && item.variants.length > 0) {
@@ -307,13 +307,11 @@ export default function MenuBrowsing() {
       id: `${item.id}-${variant?.name || 'default'}-${finalPortionSize}-${Date.now()}`,
       menu_item: item,
       quantity: 1,
-      notes: customization || undefined,
       selectedVariant: variant,
       portionSize: item.has_portions ? finalPortionSize : undefined,
     };
 
     setCart([...cart, cartItem]);
-    setCustomization('');
     toast({
       title: 'Added to cart',
       description: `${item.name} ${variant ? `(${variant.name})` : ''} ${item.has_portions ? `(${finalPortionSize === 'half' ? 'Half' : 'Full'})` : ''} added to cart`,
@@ -1255,33 +1253,47 @@ export default function MenuBrowsing() {
       <Dialog open={itemDialogOpen} onOpenChange={setItemDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{selectedItem?.name}</DialogTitle>
-            <DialogDescription>{selectedItem?.description}</DialogDescription>
+            <DialogTitle className="text-xl">{selectedItem?.name}</DialogTitle>
+            <DialogDescription className="text-sm">
+              {selectedItem?.description}
+            </DialogDescription>
           </DialogHeader>
 
           {selectedItem && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Variant Selection */}
               {selectedItem.variants && selectedItem.variants.length > 0 && (
                 <div>
-                  <Label className="text-base font-semibold mb-3 block">Select Size</Label>
+                  <Label className="text-base font-semibold mb-3 block">Choose Size</Label>
                   <RadioGroup
                     value={selectedVariant?.name}
                     onValueChange={(value) => {
                       const variant = selectedItem.variants?.find(v => v.name === value);
                       setSelectedVariant(variant || null);
                     }}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
                     {selectedItem.variants.map((variant, idx) => (
-                      <div key={idx} className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
-                        <div className="flex items-center gap-3">
-                          <RadioGroupItem value={variant.name} id={variant.name} />
-                          <Label htmlFor={variant.name} className="cursor-pointer font-medium">
-                            {variant.name}
-                          </Label>
+                      <div 
+                        key={idx} 
+                        className={cn(
+                          "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                          selectedVariant?.name === variant.name ? "border-primary bg-primary/5" : "border-border"
+                        )}
+                        onClick={() => setSelectedVariant(variant)}
+                      >
+                        <div className="flex items-center gap-3 flex-1">
+                          <RadioGroupItem value={variant.name} id={`variant-${idx}`} />
+                          <div className="flex-1">
+                            <Label htmlFor={`variant-${idx}`} className="cursor-pointer font-semibold text-base">
+                              {variant.name}
+                            </Label>
+                            {variant.description && (
+                              <p className="text-xs text-muted-foreground mt-0.5">{variant.description}</p>
+                            )}
+                          </div>
                         </div>
-                        <span className="font-semibold">{formatCurrency(variant.price)}</span>
+                        <span className="font-bold text-primary text-lg ml-3">{formatCurrency(variant.price)}</span>
                       </div>
                     ))}
                   </RadioGroup>
@@ -1291,31 +1303,43 @@ export default function MenuBrowsing() {
               {/* Portion Selection */}
               {selectedItem.has_portions && (
                 <div>
-                  <Label className="text-base font-semibold mb-3 block">Select Portion</Label>
+                  <Label className="text-base font-semibold mb-3 block">Choose Portion</Label>
                   <RadioGroup
                     value={selectedPortionSize}
                     onValueChange={(value) => setSelectedPortionSize(value as 'full' | 'half')}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
-                    <div className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
-                      <div className="flex items-center gap-3">
+                    <div 
+                      className={cn(
+                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                        selectedPortionSize === 'full' ? "border-primary bg-primary/5" : "border-border"
+                      )}
+                      onClick={() => setSelectedPortionSize('full')}
+                    >
+                      <div className="flex items-center gap-3 flex-1">
                         <RadioGroupItem value="full" id="portion-full" />
-                        <Label htmlFor="portion-full" className="cursor-pointer font-medium">
+                        <Label htmlFor="portion-full" className="cursor-pointer font-semibold text-base">
                           Full
                         </Label>
                       </div>
-                      <span className="font-semibold">
+                      <span className="font-bold text-primary text-lg ml-3">
                         {formatCurrency(selectedVariant?.price || selectedItem.price)}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border rounded-lg p-3 hover:border-primary transition-colors">
-                      <div className="flex items-center gap-3">
+                    <div 
+                      className={cn(
+                        "flex items-center justify-between border-2 rounded-lg p-4 hover:border-primary transition-all cursor-pointer",
+                        selectedPortionSize === 'half' ? "border-primary bg-primary/5" : "border-border"
+                      )}
+                      onClick={() => setSelectedPortionSize('half')}
+                    >
+                      <div className="flex items-center gap-3 flex-1">
                         <RadioGroupItem value="half" id="portion-half" />
-                        <Label htmlFor="portion-half" className="cursor-pointer font-medium">
+                        <Label htmlFor="portion-half" className="cursor-pointer font-semibold text-base">
                           Half
                         </Label>
                       </div>
-                      <span className="font-semibold">
+                      <span className="font-bold text-primary text-lg ml-3">
                         {formatCurrency((selectedVariant?.price || selectedItem.price) / 2)}
                       </span>
                     </div>
@@ -1323,22 +1347,9 @@ export default function MenuBrowsing() {
                 </div>
               )}
 
-              {/* Special Instructions */}
-              <div>
-                <Label htmlFor="customization" className="text-base font-semibold mb-2 block">
-                  Special Instructions (Optional)
-                </Label>
-                <Input
-                  id="customization"
-                  placeholder="e.g., Less spicy, no onions"
-                  value={customization}
-                  onChange={(e) => setCustomization(e.target.value)}
-                />
-              </div>
-
               {/* Add to Cart Button */}
               <Button onClick={handleConfirmAddToCart} className="w-full" size="lg">
-                Add to Cart - {formatCurrency(
+                Add Item - {formatCurrency(
                   getItemPrice(
                     selectedItem, 
                     selectedVariant || undefined, 
