@@ -764,16 +764,29 @@ export const promotionApi = {
   },
 
   async getActivePromotionsForCustomer(restaurantId: string): Promise<Promotion[]> {
+    const now = new Date().toISOString();
+    console.log('[promotionApi] Fetching active promotions for restaurant:', restaurantId);
+    console.log('[promotionApi] Current time:', now);
+    
     const { data, error } = await supabase
       .from('promotions')
       .select('*')
       .eq('restaurant_id', restaurantId)
       .eq('is_active', true)
-      .lte('start_date', new Date().toISOString())
-      .gte('end_date', new Date().toISOString())
+      .lte('start_date', now)
+      .gte('end_date', now)
       .order('created_at', { ascending: false });
-    if (error) throw error;
-    return Array.isArray(data) ? data : [];
+    
+    console.log('[promotionApi] Query result:', { data, error });
+    
+    if (error) {
+      console.error('[promotionApi] Error fetching promotions:', error);
+      throw error;
+    }
+    
+    const promotions = Array.isArray(data) ? data : [];
+    console.log('[promotionApi] Returning promotions:', promotions.length);
+    return promotions;
   },
 
   async createPromotion(promotion: CreatePromotionInput): Promise<Promotion> {

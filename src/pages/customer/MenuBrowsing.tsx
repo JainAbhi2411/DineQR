@@ -83,6 +83,21 @@ export default function MenuBrowsing() {
     loadData();
   }, [restaurantId]);
 
+  // Debug: Log promotions state changes
+  useEffect(() => {
+    console.log('[MenuBrowsing] Promotions state updated:', {
+      count: promotions.length,
+      promotions: promotions.map(p => ({
+        id: p.id,
+        code: p.code,
+        title: p.title,
+        is_active: p.is_active,
+        start_date: p.start_date,
+        end_date: p.end_date
+      }))
+    });
+  }, [promotions]);
+
   // Real-time subscriptions for menu updates
   useEffect(() => {
     if (!restaurantId) return;
@@ -341,6 +356,8 @@ export default function MenuBrowsing() {
 
     try {
       setLoading(true);
+      console.log('[MenuBrowsing] Loading data for restaurant:', restaurantId);
+      
       const [restaurantData, categoriesData, itemsData, promotionsData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         menuCategoryApi.getCategoriesByRestaurant(restaurantId),
@@ -348,11 +365,14 @@ export default function MenuBrowsing() {
         promotionApi.getActivePromotionsForCustomer(restaurantId)
       ]);
 
+      console.log('[MenuBrowsing] Loaded promotions:', promotionsData);
+      
       setRestaurant(restaurantData);
       setCategories(categoriesData);
       setMenuItems(itemsData);
       setPromotions(promotionsData);
     } catch (error: any) {
+      console.error('[MenuBrowsing] Error loading data:', error);
       toast({
         title: 'Error',
         description: error.message || 'Failed to load menu',
