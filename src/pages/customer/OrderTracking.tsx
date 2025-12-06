@@ -19,7 +19,8 @@ import {
   CreditCard,
   Banknote,
   FileText,
-  Loader2
+  Loader2,
+  UserCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/db/supabase';
@@ -288,6 +289,13 @@ export default function OrderTracking() {
                     <span className="font-medium">Table:</span>
                     <span>{order.table ? order.table.table_number : 'Walk-in / Takeaway'}</span>
                   </div>
+                  {order.waiter && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <UserCheck className="w-4 h-4 text-muted-foreground" />
+                      <span className="font-medium">Waiter:</span>
+                      <span>{order.waiter.name}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">

@@ -6,7 +6,7 @@ import { OrderWithItems } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { QrCode, Clock, ChefHat, CheckCircle, AlertCircle, Scan, Hash } from 'lucide-react';
+import { QrCode, Clock, ChefHat, CheckCircle, AlertCircle, Scan, Hash, UserCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import { supabase } from '@/db/supabase';
@@ -241,7 +241,9 @@ export default function CustomerDashboard() {
                             {order.restaurant?.name || 'Restaurant'}
                           </CardTitle>
                           <CardDescription className="text-xs xl:text-sm">
-                            {order.table?.table_number ? `Table ${order.table.table_number} • ` : ''}{formatDateTime(order.created_at)}
+                            {order.table?.table_number ? `Table ${order.table.table_number}` : 'Walk-in'}
+                            {order.waiter && ` • Waiter: ${order.waiter.name}`}
+                            {' • '}{formatDateTime(order.created_at)}
                           </CardDescription>
                         </div>
                         <Badge className={cn('text-xs flex items-center gap-1', getStatusColor(order.status))}>
