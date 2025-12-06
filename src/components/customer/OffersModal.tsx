@@ -20,18 +20,28 @@ interface OffersModalProps {
   onOpenChange: (open: boolean) => void;
   restaurantId: string;
   onApplyPromo?: (code: string) => void;
+  promotions?: Promotion[];
 }
 
-export default function OffersModal({ open, onOpenChange, restaurantId, onApplyPromo }: OffersModalProps) {
+export default function OffersModal({ 
+  open, 
+  onOpenChange, 
+  restaurantId, 
+  onApplyPromo,
+  promotions: externalPromotions 
+}: OffersModalProps) {
   const { toast } = useToast();
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [promotions, setPromotions] = useState<Promotion[]>(externalPromotions || []);
+  const [loading, setLoading] = useState(!externalPromotions);
 
   useEffect(() => {
-    if (open && restaurantId) {
+    if (externalPromotions) {
+      setPromotions(externalPromotions);
+      setLoading(false);
+    } else if (open && restaurantId) {
       loadPromotions();
     }
-  }, [open, restaurantId]);
+  }, [open, restaurantId, externalPromotions]);
 
   const loadPromotions = async () => {
     try {

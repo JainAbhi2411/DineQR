@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { restaurantApi, menuCategoryApi, menuItemApi, tableApi, orderApi, promotionApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem, OrderWithItems, PromotionValidation } from '@/types/types';
+import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem, OrderWithItems, PromotionValidation, Promotion } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,7 @@ import { cn } from '@/lib/utils';
 import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
 import AddToExistingOrderDialog from '@/components/customer/AddToExistingOrderDialog';
 import OffersModal from '@/components/customer/OffersModal';
+import OffersBanner from '@/components/customer/OffersBanner';
 import PromoCodeInput from '@/components/customer/PromoCodeInput';
 import { supabase } from '@/db/supabase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -57,6 +58,7 @@ export default function MenuBrowsing() {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -227,11 +229,90 @@ export default function MenuBrowsing() {
         }
       });
 
+    // Subscribe to promotions changes
+    const promotionsChannel = supabase
+      .channel(`promotions_${restaurantId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'promotions',
+          filter: `restaurant_id=eq.${restaurantId}`
+        },
+        (payload) => {
+          console.log('[MenuBrowsing] Promotion change detected:', {
+            eventType: payload.eventType,
+            table: payload.table,
+            timestamp: new Date().toISOString()
+          });
+          
+          if (payload.eventType === 'INSERT') {
+            const newPromotion = payload.new as Promotion;
+            // Only add if it's active and valid
+            if (newPromotion.is_active && 
+                new Date(newPromotion.start_date) <= new Date() && 
+                new Date(newPromotion.end_date) >= new Date()) {
+              setPromotions(prev => [...prev, newPromotion]);
+              toast({
+                title: '🎉 New Offer Available!',
+                description: `${newPromotion.title} - Use code ${newPromotion.code}`,
+                duration: 5000,
+              });
+            }
+          } else if (payload.eventType === 'UPDATE') {
+            const updatedPromotion = payload.new as Promotion;
+            const isActive = updatedPromotion.is_active && 
+                           new Date(updatedPromotion.start_date) <= new Date() && 
+                           new Date(updatedPromotion.end_date) >= new Date();
+            
+            setPromotions(prev => {
+              if (isActive) {
+                // Update or add if now active
+                const exists = prev.some(p => p.id === updatedPromotion.id);
+                if (exists) {
+                  return prev.map(p => p.id === updatedPromotion.id ? updatedPromotion : p);
+                }
+                return [...prev, updatedPromotion];
+              } else {
+                // Remove if no longer active
+                return prev.filter(p => p.id !== updatedPromotion.id);
+              }
+            });
+            
+            if (isActive) {
+              toast({
+                title: '✏️ Offer Updated',
+                description: `${updatedPromotion.title} has been updated`,
+                duration: 3000,
+              });
+            }
+          } else if (payload.eventType === 'DELETE') {
+            const deletedPromotion = payload.old as Promotion;
+            setPromotions(prev => prev.filter(p => p.id !== deletedPromotion.id));
+            toast({
+              title: '🗑️ Offer Removed',
+              description: 'An offer is no longer available',
+              duration: 2000,
+            });
+          }
+        }
+      )
+      .subscribe((status) => {
+        console.log('[MenuBrowsing] Promotions subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('[MenuBrowsing] ✅ Successfully subscribed to promotions changes');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('[MenuBrowsing] ❌ Error subscribing to promotions');
+        }
+      });
+
     // Cleanup subscriptions
     return () => {
       console.log('[MenuBrowsing] Cleaning up real-time subscriptions');
       supabase.removeChannel(menuItemsChannel);
       supabase.removeChannel(categoriesChannel);
+      supabase.removeChannel(promotionsChannel);
     };
   }, [restaurantId, toast, selectedCategory]);
 
@@ -260,15 +341,17 @@ export default function MenuBrowsing() {
 
     try {
       setLoading(true);
-      const [restaurantData, categoriesData, itemsData] = await Promise.all([
+      const [restaurantData, categoriesData, itemsData, promotionsData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         menuCategoryApi.getCategoriesByRestaurant(restaurantId),
-        menuItemApi.getItemsByRestaurant(restaurantId)
+        menuItemApi.getItemsByRestaurant(restaurantId),
+        promotionApi.getActivePromotionsForCustomer(restaurantId)
       ]);
 
       setRestaurant(restaurantData);
       setCategories(categoriesData);
       setMenuItems(itemsData);
+      setPromotions(promotionsData);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -755,17 +838,31 @@ export default function MenuBrowsing() {
             )}
           </div>
 
-          {/* Offers Button */}
-          <div className="mb-3">
-            <Button
-              variant="outline"
-              onClick={() => setOffersModalOpen(true)}
-              className="w-full h-10 text-sm font-semibold border-primary/50 hover:bg-primary/10"
-            >
-              <Tag className="w-4 h-4 mr-2" />
-              View Available Offers & Deals
-            </Button>
-          </div>
+          {/* Offers Banner */}
+          {promotions.length > 0 && restaurantId && (
+            <div className="mb-3">
+              <OffersBanner
+                restaurantId={restaurantId}
+                promotions={promotions}
+                onOfferClick={handleApplyPromoFromModal}
+                onViewAllClick={() => setOffersModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* View All Offers Button (shown when no offers or as fallback) */}
+          {promotions.length === 0 && (
+            <div className="mb-3">
+              <Button
+                variant="outline"
+                onClick={() => setOffersModalOpen(true)}
+                className="w-full h-10 text-sm font-semibold border-primary/50 hover:bg-primary/10"
+              >
+                <Tag className="w-4 h-4 mr-2" />
+                View Available Offers & Deals
+              </Button>
+            </div>
+          )}
 
           {/* Type Filter */}
           <div className="flex items-center gap-2 mb-3">
@@ -1633,6 +1730,7 @@ export default function MenuBrowsing() {
           onOpenChange={setOffersModalOpen}
           restaurantId={restaurantId}
           onApplyPromo={handleApplyPromoFromModal}
+          promotions={promotions}
         />
       )}
     </div>

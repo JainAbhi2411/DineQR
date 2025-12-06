@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Promotions & Offers Flow with Customer Application)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Promotions & Offers Flow with Swiggy-Style Real-Time Customer Display)
 
 ## 1. Application Overview
 
@@ -6,19 +6,20 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), **advanced marketing and promotions system with Zomato-style customer-facing offers display, real-time offer synchronization, automatic discount application, and promo code redemption**, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates and table updates to customer dashboards without page refresh, and Add-On Order feature allowing customers to add items to their active order without creating a new order or bill - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. All data displayed across the platform is real-time and dynamically calculated from the live database.\n
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), **advanced marketing and promotions system with Swiggy-style real-time customer-facing offers display featuring prominent banner placement, horizontal scrollable offer cards, automatic real-time synchronization via WebSocket, automatic discount application, and promo code redemption**, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates, table updates, and promotions to customer dashboards without page refresh, and Add-On Order feature allowing customers to add items to their active order without creating a new order or bill - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface with Swiggy-inspired offer presentation. All data displayed across the platform is real-time and dynamically calculated from the live database.\n
 ## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
 
 **User Roles**:
 - **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings, mandatory waiter assignment for all orders with free waiter visibility, **promotions and offers management**
-- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, real-time waiter assignment information display, chat with restaurant, payment, order history, browse previously scanned restaurants, **view and apply promotions and offers**
+- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, real-time waiter assignment information display, chat with restaurant, payment, order history, browse previously scanned restaurants, **real-time view and apply promotions and offers with Swiggy-style UI**
 
 **Authentication Flow**:
 1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
 2. **Sign Up Options**:
-   - Email/Password registration with role selection (Owner/Waiter/Customer)\n   - Google OAuth integration (using OSS Google login method)
+   - Email/Password registration with role selection (Owner/Waiter/Customer)
+   - Google OAuth integration (using OSS Google login method)
    - Phone number OTP verification
 3. **Sign In Options**:
    - Email/Password login
@@ -27,7 +28,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 4. **Role-Based Conditional Rendering**:
    - After successful authentication, system identifies user role from database
    - **Owner**: Redirected to Owner Dashboard\n   - **Waiter**: Redirected to Waiter Dashboard
-   - **Customer**: Redirected to Customer Home
+   - **Customer**: Redirected to Customer Home with real-time promotions display
 5. **Session Management**: JWT token-based authentication, automatic token refresh, secure logout
 
 ### 2.2 Password Recovery & Account Security
@@ -62,7 +63,8 @@ The Owner Home Screen serves as the central command center, displaying real-time
 - **Chat** (message icon)
 - **Settings** (gear icon)
 \n**C. Main Dashboard Content Area**
-\n**Top Metrics Cards Row**:\n1. Today's Revenue Card
+\n**Top Metrics Cards Row**:
+1. Today's Revenue Card
 2. Active Orders Card
 3. Total Orders Today Card
 4. Customer Satisfaction Card
@@ -116,14 +118,16 @@ Comprehensive menu management interface with database-driven portion selection f
 - **Items with highest promotion redemption**
 
 **F. Category Management with Real-Time Synchronization**
-- Add/edit/delete categories with instant sync\n\n---
+- Add/edit/delete categories with instant sync
+\n---
 
 #### 3.1.3 Advanced Inventory Management\n
 **Overview**:
 Complete inventory tracking system with real-time stock monitoring and alerts.
 
 **Key Features**:
-- Inventory Dashboard\n- Add/Edit Inventory Item
+- Inventory Dashboard
+- Add/Edit Inventory Item
 - Stock Adjustment\n- Low Stock Alerts
 - Inventory Reports
 - Supplier Management
@@ -164,7 +168,7 @@ Generate and manage QR codes for tables with real-time synchronization.\n
   - **If Promotion Applied**:
     - Heading: 'Applied Promotion' (neon cyan color)
     - Display: Promotion name, discount type, discount amount, promo code (if used)\n    - Discount breakdown: Original total, discount amount, final total
-- **If No Promotion Applied**:
+  - **If No Promotion Applied**:
     - Display: 'No promotion applied to this order'
 - **Waiter Assignment Section**:\n  - **If Unassigned**:
     - Heading: 'Assign Waiter' (neon magenta color)
@@ -197,7 +201,8 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 
 **F. Waiter Assignment Confirmation and Real-Time Customer Dashboard Update**
 \n- **After Assignment**:
-  - Success toast notification: 'Waiter [Name] assigned to Order #ORD-1234'\n  - Order card updates to show assigned waiter info
+  - Success toast notification: 'Waiter [Name] assigned to Order #ORD-1234'
+  - Order card updates to show assigned waiter info
   - Order details modal updates waiter assignment section
   - Timeline adds new entry: 'Waiter Assigned: [Name]' with timestamp
   - Waiter status automatically updates from 'Free' to 'Busy' in Staff Management
@@ -375,9 +380,10 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 
 ---
 
-#### 3.1.11 Complete Marketing & Promotions System with Zomato-Style Customer Integration
+#### 3.1.11 Complete Marketing & Promotions System with Swiggy-Style Customer Integration and Real-Time Synchronization
 
-**Overview**:\nAdvanced marketing module for creating, managing, and distributing promotions and offers to customers with real-time synchronization and automatic discount application.
+**Overview**:
+Advanced marketing module for creating, managing, and distributing promotions and offers to customers with real-time WebSocket synchronization and automatic discount application. Customer-facing UI follows Swiggy-style design with prominent banner placement, horizontal scrollable offer cards, and instant real-time updates.
 
 **Key Features**:
 \n**A. Marketing Dashboard**
@@ -395,8 +401,7 @@ Comprehensive staff management module with waiter assignment tracking and real-t
     - Action buttons: 'Edit', 'Deactivate', 'View Analytics', 'Duplicate'
   - Filter options: 'All Promotions', 'Active', 'Scheduled', 'Expired', 'Deactivated'
   - Search bar: 'Search promotions by name or code'
-- **Create Promotion Button**: 'Create Promotion' (primary, neon gradient) - opens Create Promotion Modal
-- **Scheduled Promotions Section**:
+- **Create Promotion Button**: 'Create Promotion' (primary, neon gradient) - opens Create Promotion Modal\n- **Scheduled Promotions Section**:
   - Display promotions scheduled for future activation
   - Each card shows: Promotion name, scheduled start date, discount details\n- **Expired Promotions Section**:
   - Display past promotions with performance summary
@@ -406,8 +411,7 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 - Multi-step form with tabs: Basic Info, Discount Details, Eligibility, Validity, Preview\n\n**Step 1: Basic Information**
 - **Promotion Name**: Text input (required) - e.g., 'Summer Sale', 'Weekend Special'
 - **Promotion Description**: Textarea (optional) - Brief description for internal reference
-- **Promotion Type**: Dropdown (required) - Options:\n  - Percentage Discount (e.g., 20% OFF)
-  - Flat Discount (e.g., ₹100 OFF)
+- **Promotion Type**: Dropdown (required) - Options:\n  - Percentage Discount (e.g., 20% OFF)\n  - Flat Discount (e.g., ₹100 OFF)
   - Buy X Get Y (e.g., Buy 1 Get 1 Free)
   - Free Item (e.g., Free Dessert with Main Course)
   - Minimum Order Discount (e.g., ₹50 OFF on orders above ₹500)
@@ -454,7 +458,7 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 \n**Step 5: Preview & Confirmation**
 - **Promotion Summary Card** (glassmorphism effect with neon gradient border):
   - Display all entered details in a visually appealing card format
-  - Show how promotion will appear to customers (preview of promotion badge and discount text)
+  - Show how promotion will appear to customers (preview of Swiggy-style promotion card with banner and offer details)
   - Estimated discount impact:'Estimated total discount: ₹X (based on average order value)'
 - **Action Buttons**:
   - 'Back' (secondary, outline) - Go back to edit details
@@ -463,9 +467,11 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 \n**After Creation**:
 - Success toast notification: 'Promotion [Name] created successfully!'
 - Promotion card appears in Active Promotions section (if activated) or Scheduled Promotions section (if scheduled)
-- **Real-time WebSocket event'promotion_created' sent to all customers**:\n  - Payload: { promotion_id, promotion_name, discount_type, discount_value, promo_code, validity_period, applicable_items}
-  - Customer dashboards automatically update to display new promotion in'Offers' section
-
+- **Real-time WebSocket event'promotion_created' sent to all customers**:\n  - Payload: { promotion_id, promotion_name, promotion_type, discount_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria}
+  - **Customer dashboards automatically update without page refresh**:\n    - New promotion card slides into'Exclusive Offers' banner on Customer Home with smooth animation
+    - Promotion card appears in dedicated Offers & Promotions page
+    - In-app notification displays: 'New Offer Available: [Promotion Name] - [Discount Details]'
+    - Notification bell badge increments\n
 **C. Edit Promotion**
 - **Triggered by**: Clicking 'Edit' button on promotion card
 - **Edit Modal**: Similar to Create Promotion Modal, pre-filled with existing promotion details
@@ -474,16 +480,19 @@ Comprehensive staff management module with waiter assignment tracking and real-t
   - Success toast: 'Promotion [Name] updated successfully!'
   - Promotion card updates in dashboard
   - **Real-time WebSocket event 'promotion_updated' sent to customers**:
-    - Customer dashboards automatically update to reflect changes
-
-**D. Deactivate/Reactivate Promotion**\n- **Deactivate**:
+    - Payload: { promotion_id, updated_fields, timestamp }
+    - **Customer dashboards automatically update without page refresh**:
+      - Existing promotion card updates with fade animation to reflect new details
+      - Updated promotion highlighted with brief neon glow animation
+\n**D. Deactivate/Reactivate Promotion**\n- **Deactivate**:
   - Triggered by: Clicking 'Deactivate' button on promotion card
   - Confirmation modal: 'Are you sure you want to deactivate this promotion? Customers will no longer be able to apply it.'
   - After deactivation:
     - Success toast: 'Promotion [Name] deactivated'\n    - Promotion status changes to 'Deactivated' (grey badge)
-    - Promotion card moves to 'Deactivated' section
-    - **Real-time WebSocket event 'promotion_deactivated' sent to customers**:
-      - Promotion removed from customer'Offers' section
+    - Promotion card moves to 'Deactivated' section\n    - **Real-time WebSocket event 'promotion_deactivated' sent to customers**:
+      - Payload: { promotion_id, timestamp }
+      - **Customer dashboards automatically update without page refresh**:\n        - Promotion card fades out and is removed from 'Exclusive Offers' banner and Offers page
+        - If promotion was applied to items in cart, system displays notification: 'Offer [Name] is no longer available and has been removed from your cart'
 - **Reactivate**:
   - Triggered by: Clicking 'Reactivate' button on deactivated promotion card
   - After reactivation:
@@ -491,9 +500,10 @@ Comprehensive staff management module with waiter assignment tracking and real-t
     - Promotion status changes to 'Active' (neon green badge)
     - Promotion card moves back to 'Active Promotions' section
     - **Real-time WebSocket event 'promotion_activated' sent to customers**:
-      - Promotion reappears in customer 'Offers' section
-
-**E. Duplicate Promotion**
+      - Payload: { promotion_id, promotion_name, promotion_type, discount_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria }
+      - **Customer dashboards automatically update without page refresh**:\n        - Promotion card slides into 'Exclusive Offers' banner and Offers page with animation
+        - In-app notification displays: 'Offer [Name] is now available again!'
+\n**E. Duplicate Promotion**
 - **Triggered by**: Clicking 'Duplicate' button on promotion card
 - **Action**: Opens Create Promotion Modal pre-filled with details from selected promotion
 - **Note**: Promotion code is cleared (new code must be generated or entered)
@@ -539,8 +549,7 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 Comprehensive settings module for restaurant configuration, including waiter assignment settings and availability threshold configuration, **and promotion system settings**.
 
 **Key Features**:
-- Settings Dashboard
-- Restaurant Profile (including restaurant type: Veg/Non-Veg/Both)
+- Settings Dashboard\n- Restaurant Profile (including restaurant type: Veg/Non-Veg/Both)
 - Operational Settings\n- **Waiter Assignment Settings**:
   - Toggle: 'Enable Automatic Waiter Assignment' (on/off)
   - Input: 'Workload Threshold for Busy Status' (default: 5 active orders) - determines when waiter status changes from 'Free' to 'Busy'
@@ -562,20 +571,19 @@ Comprehensive settings module for restaurant configuration, including waiter ass
   - Input: 'Maximum Promotions Per Order' (default: 1)
 \n---
 
-### 3.2 Enhanced Customer Features with Real-Time Waiter Assignment Display, Synchronization, and Zomato-Style Promotions & Offers
+### 3.2 Enhanced Customer Features with Real-Time Waiter Assignment Display, Synchronization, and Swiggy-Style Real-Time Promotions & Offers
 
-#### 3.2.1 Customer Home Screen with Complete Sidebar Functionality, Real-Time Updates, and Promotions Display
+#### 3.2.1 Customer Home Screen with Complete Sidebar Functionality, Real-Time Updates, and Swiggy-Style Promotions Display
 
-**Overview**:\nCustomer-facing home screen with access to all features, real-time waiter assignment information display, **and prominent promotions and offers section**.
+**Overview**:\nCustomer-facing home screen with access to all features, real-time waiter assignment information display, **and prominent Swiggy-style promotions and offers section with real-time WebSocket synchronization**.
 
 **Layout Structure**:
 \n**A. Top Navigation Bar**
 - DineQR logo
-- Search bar\n- Notification bell
-- User profile icon
+- Search bar\n- Notification bell\n- User profile icon
 \n**B. Sidebar Navigation (Fully Functional)**
 - Home\n- Browse Restaurants
-- **Offers & Promotions** (new menu item with megaphone icon)
+- **Offers & Promotions** (menu item with megaphone icon)
 - Active Orders
 - Order History
 - Favorites
@@ -585,69 +593,153 @@ Comprehensive settings module for restaurant configuration, including waiter ass
 - Help & Support
 
 **C. Main Dashboard Content Area**
-- Welcome banner\n- **Promotions & Offers Section** (prominent display at top):
-  - Heading: 'Exclusive Offers for You' (neon cyan color)
-  - Horizontal scrollable carousel of promotion cards (Zomato-style)
-  - Each promotion card displays:
-    - Promotion badge with discount type icon (percentage, flat, BOGO, etc.)
-    - Promotion name (bold, large white text)
-    - Discount details (e.g., '20% OFF', 'Flat ₹100 OFF', 'Buy 1 Get 1 Free') (medium text, neon cyan color)
-    - Promo code (if applicable): 'Use Code: SUMMER20' (small text, light grey, with copy icon)
-    - Validity period: 'Valid till [Date]' (small text, light grey)
-    - 'View Details' button (secondary, outline)
-    - Glassmorphism effect with neon gradient border
-  - 'View All Offers' button (primary, neon gradient) - navigates to dedicated Offers page
-  - **Real-time updates**: New promotions slide in with animation when created by owner
-- **Active orders section with assigned waiter information**:
+\n**Welcome Banner**
+- Personalized greeting:'Welcome back, [Customer Name]!'
+- Quick stats: Active orders count, loyalty points balance\n\n**Swiggy-Style Promotions & Offers Section** (Prominent Display at Top)
+- **Section Heading**: 'Exclusive Offers for You' (large bold text, neon cyan color with subtle glow)
+- **Horizontal Scrollable Carousel** (Swiggy-style):
+  - Smooth horizontal scroll with snap points
+  - Navigation arrows on desktop (left/right)
+  - Touch/swipe enabled on mobile
+  - Auto-scroll every 5 seconds (optional, configurable)
+  - **Promotion Cards** (Swiggy-inspired design):
+    - **Card Layout**:
+      - Large rectangular card with rounded corners (16px border-radius)
+      - Glassmorphism effect with semi-transparent dark background (rgba(26, 26, 26, 0.7))
+      - Neon gradient border (color based on promotion type):
+        - Percentage Discount: Electric cyan (#00F0FF)
+        - Flat Discount: Vibrant magenta (#FF006E)
+        - Buy X Get Y: Electric blue (#3A86FF)
+        - Free Item: Neon green (#39FF14)
+        - Minimum Order: Neon yellow (#FFFF00)
+        - First Order: Neon red (#FF073A)
+        - Loyalty: Neon purple (#BF40BF)
+      - Subtle box shadow with neon glow (04px 20px rgba(0, 240, 255, 0.3))
+      - Hover effect: Card scales up (1.05) and glow intensifies\n    - **Card Content**:
+      - **Top Section**:
+        - Promotion type badge (top-left corner, pill-shaped, neon background, white text, icon)
+        - Example: 'FLAT DEAL' badge with discount icon
+      - **Middle Section**:
+        - Promotion name (extra-large bold text, white color,24px font size)
+        - Example: 'Summer Sale'\n        - Discount details (large text, neon cyan color, 20px font size, bold)
+        - Example: '20% OFF on all orders' or 'Flat ₹100 OFF'
+      - **Bottom Section**:
+        - Promo code section (if applicable):
+          - Label: 'Use Code:' (small text, light grey, 12px)\n          - Promo code (medium bold text, white color, dashed border, 14px)\n          - Example: 'SUMMER20'\n          - Copy icon (clickable, neon cyan color)
+          - Clicking copy icon copies code to clipboard and displays success toast: 'Code copied!'
+        - Validity period (small text, light grey, 12px)
+        - Example: 'Valid till31 Dec 2025'
+      - **Action Buttons**:
+        - 'Apply Offer' button (primary, neon gradient background, white text, bold, rounded corners)
+        - 'View Details' button (secondary, outline style, neon cyan border, neon cyan text)
+    - **Card Dimensions**:
+      - Desktop: Width 320px, Height 180px
+      - Mobile: Width 280px, Height 160px
+- **Spacing**: 16px gap between cards
+  - **Real-Time Updates via WebSocket**:
+    - **New Promotion Created**: New promotion card slides into carousel from right with smooth animation (slide-in + fade-in, duration 0.5s)
+    - **Promotion Updated**: Existing card updates with fade animation (fade-out, update content, fade-in, duration 0.3s)
+    - **Promotion Deactivated**: Card fades out and slides out to left (fade-out + slide-out, duration 0.5s)
+    - **Promotion Reactivated**: Card slides into carousel from right with animation\n    - **In-App Notification**: When new promotion created, notification bell shakes and badge increments, notification displays: 'New Offer Available: [Promotion Name] - [Discount Details]'
+- **'View All Offers' Button**:
+  - Positioned below carousel (center-aligned)
+  - Primary button style (neon gradient background, white text, bold, rounded corners)
+  - Navigates to dedicated Offers & Promotions page\n\n**Active Orders Section with Assigned Waiter Information**
+- **Section Heading**: 'Your Active Orders' (medium bold text, white color)\n- **Order Cards Grid** (2 columns on desktop, 1 column on mobile):
   - Each active order card displays:
-    - Order ID, table number, order status
-    - Order items summary\n    - **Applied promotion badge** (if promotion applied): 'Offer Applied: [Promotion Name]' (neon cyan badge)
-    - **Assigned waiter section**:
-      - **If waiter assigned**: Waiter avatar (circular, neon border), waiter name (bold, white text),'Your Waiter' label (small text, light grey), 'Chat with Waiter' button (secondary, outline)
-      - **If waiter not yet assigned**: 'Waiter assignment pending' badge (neon yellow), 'Your order is being assigned to a waiter' message (small text, light grey)
-    - Order total (with discount breakdown if promotion applied), estimated time\n    - 'Track Order' button\n- Recently scanned restaurants\n- Recommended items (with promotion badges if applicable)
-- Promotions & offers (duplicate section for emphasis)
-
-**D. Real-Time WebSocket Connection**
-- Persistent connection for instant updates
-- Listens for 'waiter_assigned' and 'waiter_reassigned' events
-- **Listens for 'promotion_created', 'promotion_updated', 'promotion_deactivated', 'promotion_activated' events**
-- Automatically updates active order cards and order tracking page when waiter is assigned or reassigned
-- **Automatically updates Promotions & Offers section when new promotions are created or existing promotions are modified**
-- Displays in-app notification when waiter is assigned: 'Your order has been assigned to [Waiter Name]. They will assist you shortly.'
-- **Displays in-app notification when new promotion is available**: 'New Offer Available: [Promotion Name] - [Discount Details]'
+    - Order ID and table number (top-left)
+    - Order status badge (top-right, neon color based on status)
+    - Order items summary (list of items with quantities)
+    - **Applied Promotion Badge** (if promotion applied):
+      - Badge: 'Offer Applied: [Promotion Name]' (neon cyan background, white text, pill-shaped)\n      - Positioned below order items
+    - **Assigned Waiter Section**:
+      - **If waiter assigned**:
+        - Waiter avatar (circular,48px diameter, neon border)\n        - Waiter name (bold, white text, 14px)
+        - 'Your Waiter' label (small text, light grey, 12px)
+        - 'Chat with Waiter' button (secondary, outline, neon cyan border)
+      - **If waiter not yet assigned**:
+        - 'Waiter assignment pending' badge (neon yellow background, white text, pulsing glow animation)
+        - Message: 'Your order is being assigned to a waiter' (small text, light grey)\n    - Order total (with discount breakdown if promotion applied)
+    - Estimated time (countdown timer)
+    - 'Track Order' button (primary, neon gradient)
+  - **Real-Time Updates**:
+    - When waiter assigned: Waiter section transitions from 'pending' to 'assigned' with fade-in animation
+    - When promotion applied: Promotion badge slides in with animation
+\n**Recently Scanned Restaurants Section**
+- Display last 5 scanned restaurants with thumbnail, name, and 'View Menu' button
+\n**Recommended Items Section** (with promotion badges if applicable)
+- Display personalized item recommendations based on order history
+- If item is eligible for promotion, display promotion badge on item card
+\n**D. Real-Time WebSocket Connection**
+- **Persistent WebSocket connection for instant updates**
+- **Event Listeners**:
+  - **'promotion_created'**: New promotion card slides into carousel\n  - **'promotion_updated'**: Existing promotion card updates with fade animation
+  - **'promotion_deactivated'**: Promotion card fades out and is removed
+  - **'promotion_activated'**: Promotion card slides into carousel (for reactivated promotions)
+  - **'waiter_assigned'**: Active order card updates to display waiter info
+  - **'waiter_reassigned'**: Waiter info section updates with new waiter details
+  - **'order_status_update'**: Order status badge and timeline update
+  - **'promotion_applied'**: Order card displays promotion badge and discount breakdown
+- **Automatic UI Updates**: All updates occur without page refresh
+- **In-App Notifications**: Notification bell displays badge count and shakes on new notifications
 
 ---
 
 #### 3.2.2 Browse Restaurants with Restaurant Type Display and Real-Time Menu Updates
 
 **Overview**:\nDedicated page displaying previously scanned restaurants with search and filter functionality.\n
-**Key Features**:
-- Restaurant list layout with search bar, filter options (including restaurant type), restaurant cards grid
-- Restaurant details\n- Empty state\n- Real-time menu synchronization
-\n---
+**Key Features**:\n- Restaurant list layout with search bar, filter options (including restaurant type), restaurant cards grid
+- Restaurant details\n- Empty state\n- Real-time menu synchronization\n\n---
 
-#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display, Database-Driven Portion Selection, and Promotion Badges)
+#### 3.2.3 QR Code Scanning & Menu Access (Mobile-Only Feature with Restaurant Type Display, Database-Driven Portion Selection, and Swiggy-Style Promotion Banners)
 
-**Overview**:\nCustomers scan QR codes to access digital menu. QR scanning is mobile-only.\n
+**Overview**:
+Customers scan QR codes to access digital menu. QR scanning is mobile-only.\n
 **Key Features**:\n\n**A. QR Code Scanner (Mobile-Only)**
 - 'Scan QR Code' button visible only on mobile devices
 - Camera interface for scanning\n- Error handling for desktop access
 \n**B. Digital Menu Display**
-- Menu header with restaurant name and type badge
-- **Promotions Banner** (if active promotions available):
-  - Horizontal scrollable carousel of applicable promotions
-  - Each promotion card shows: Discount details, promo code, 'Apply' button
-  - Clicking 'Apply' button adds promotion to cart (if eligible)
-- Menu layout with categories and items
-- **Promotion Badges on Menu Items**:
-  - If promotion applies to specific menu items, display promotion badge on item card
-  - Badge shows discount details (e.g., '20% OFF', 'Buy 1 Get 1')
-  - Badge has neon cyan background with white text, positioned at top-right corner of item card
-- Real-time menu synchronization\n\n**C. Item Details Modal with Database-Driven Portion Selection**\n- Large item image
-- Item details\n- **Applicable Promotions Section** (if item is eligible for any promotions):
+- **Menu Header**:
+  - Restaurant name (large bold text)
+  - Restaurant type badge (Veg/Non-Veg/Both)
+- **Swiggy-Style Promotions Banner** (if active promotions available):
+  - **Banner Layout**:
+    - Positioned directly below menu header
+    - Full-width horizontal scrollable carousel
+    - Smooth horizontal scroll with snap points
+    - Touch/swipe enabled\n  - **Promotion Cards** (Swiggy-inspired compact design):
+    - Compact rectangular cards (width 240px, height 100px on mobile)
+    - Glassmorphism effect with neon gradient border
+    - Card content:
+      - Promotion type icon (top-left, small)\n      - Discount details (large bold text, neon cyan color)
+      - Example: '20% OFF' or 'Buy 1 Get 1'\n      - Promo code (if applicable, small text,dashed border)
+      - 'Apply' button (small, neon gradient, positioned at bottom-right)
+    - Clicking 'Apply' button:\n      - If cart is empty: Display message 'Add items to cart to apply this offer'
+      - If cart has items: System validates eligibility and applies promotion to cart
+      - Success toast: 'Offer applied! You saved ₹X'\n  - **Real-Time Updates**:
+    - New promotions slide into banner with animation
+    - Deactivated promotions fade out and are removed
+- **Menu Layout**:
+  - Category navigation (horizontal tabs)
+  - Menu items grid/list view
+  - **Promotion Badges on Menu Items**:
+    - If promotion applies to specific menu items, display promotion badge on item card
+    - Badge positioned at top-right corner of item card
+    - Badge design: Small pill-shaped badge, neon cyan background, white text, discount details (e.g., '20% OFF', 'Buy 1 Get 1')
+    - Pulsing glow animation to attract attention
+- **Real-Time Menu Synchronization**:
+  - Menu items and categories update automatically when owner makes changes
+  - Promotion badges update in real-time when promotions are created, updated, or deactivated
+\n**C. Item Details Modal with Database-Driven Portion Selection**\n- Large item image\n- Item details\n- **Applicable Promotions Section** (if item is eligible for any promotions):
   - Heading: 'Available Offers' (neon cyan color)
-  - List of applicable promotions with discount details\n  - 'Apply Offer' button for each promotion
+  - List of applicable promotions with discount details
+  - Each promotion displays:
+    - Promotion name and discount details
+    - Promo code (if applicable)
+    - 'Apply Offer' button (primary, neon gradient)
+  - Clicking 'Apply Offer' button:
+    - System validates eligibility\n    - If eligible: Promotion applied to cart, success toast displays
+    - If not eligible: Error toast displays with reason
 - Portion selection section (Full Portion as default, additional variants from database)
 - Quantity selector
 - Price summary (with discount breakdown if promotion applied)
@@ -656,40 +748,54 @@ Comprehensive settings module for restaurant configuration, including waiter ass
 - Cart sidebar with item list (showing selected portions and applied promotions)
 - **Applied Promotions Section**:
   - Display all applied promotions with discount breakdown
-  - 'Remove' button for each promotion
-- **Available Offers Section** (if eligible promotions not yet applied):
+  - Each promotion displays:
+    - Promotion name and discount details
+    - Discount amount:'You saved ₹X' (neon green color)
+    - 'Remove' button (secondary, outline)\n- **Available Offers Section** (if eligible promotions not yet applied):
   - Display applicable promotions with 'Apply' button
-- Subtotal, discount amount, taxes, total
-- Proceed to checkout button
+  - Clicking 'Apply' button validates and applies promotion
+- Subtotal, discount amount, taxes, total\n- Proceed to checkout button
 
 ---
 
-#### 3.2.4 Complete Order Placement & Checkout Flow with Table Number Entry, Database-Driven Portion Display, and Promotion Application
+#### 3.2.4 Complete Order Placement & Checkout Flow with Table Number Entry, Database-Driven Portion Display, and Swiggy-Style Promotion Application
 
-**Overview**:\nStreamlined checkout process with customer information collection, promo codes, payment options, and order confirmation.
+**Overview**:\nStreamlined checkout process with customer information collection, Swiggy-style promo codes, payment options, and order confirmation.
 
 **STEP 1: Cart Review & Proceed to Checkout**
 - Cart sidebar/page with item list (showing portion names and applied promotions), price breakdown (subtotal, discount, taxes, total), action buttons
-\n**STEP 2: Checkout Page - Customer Information, Order Details, and Promotion Application**
+\n**STEP 2: Checkout Page - Customer Information, Order Details, and Swiggy-Style Promotion Application**
 - Customer information section
 - Order type & delivery details (with table number entry logic and real-time table synchronization)
-- **Promo Code Section** (Zomato-style):
-  - Heading: 'Apply Promo Code' (neon cyan color)
-  - **Available Offers Display**:
-    - Expandable section: 'View Available Offers' (collapsed by default)
-    - When expanded, display list of all applicable promotions in card format:\n      - Each card shows: Promotion name, discount details, promo code (if applicable), validity period, 'Apply' button
-      - Clicking 'Apply' button automatically applies promotion to order
-    - Cards have glassmorphism effect with neon gradient border
-  - **Promo Code Input**:
-    - Text input: 'Enter promo code' (placeholder text)\n    - 'Apply' button (primary, neon gradient)
+- **Swiggy-Style Promo Code Section**:
+  - **Section Heading**: 'Apply Promo Code' (medium bold text, neon cyan color)
+  - **Available Offers Display** (Swiggy-inspired expandable section):
+    - **Collapsed State**:
+      - Button: 'View Available Offers' (secondary, outline, neon cyan border, icon: chevron-down)
+      - Positioned at top of promo code section
+    - **Expanded State** (when button clicked):
+      - Button icon changes to chevron-up
+      - Promotion cards slide down with smooth animation (slide-down + fade-in, duration 0.3s)
+      - **Promotion Cards Grid** (2 columns on desktop, 1 column on mobile):
+        - Each card displays:
+          - Glassmorphism effect with neon gradient border
+          - Promotion type badge (top-left, pill-shaped, neon background)\n          - Promotion name (bold, large white text)\n          - Discount details (medium text, neon cyan color)
+          - Promo code (if applicable, dashed border, copy icon)
+          - Validity period (small text, light grey)\n          - 'Apply' button (primary, neon gradient, full-width)
+        - Clicking 'Apply' button:
+          - System validates promotion eligibility
+          - If eligible: Promotion applied to order, success toast displays, order summary updates with discount breakdown
+          - If not eligible: Error toast displays with reason (e.g., 'Minimum order value not met', 'Offer valid for new customers only')
+  - **Promo Code Input** (Swiggy-style):
+    - Text input field: 'Enter promo code' (placeholder text, dark background, neon border on focus)
+    - 'Apply' button (primary, neon gradient, positioned to right of input)
     - After entering code and clicking 'Apply':
       - System validates code (checks eligibility, validity, usage limits)
-      - **If valid**: Success message: 'Promo code [CODE] applied! You saved ₹X' (neon green color), discount amount updates in order summary
-      - **If invalid**: Error message: 'Invalid or expired promo code' (neon red color)
-  - **Applied Promotions Display**:
-    - If promotion applied, display promotion card with:
+      - **If valid**: Success message: 'Promo code [CODE] applied! You saved ₹X' (neon green color, bold), discount amount updates in order summary
+      - **If invalid**: Error message: 'Invalid or expired promo code' (neon red color)\n  - **Applied Promotions Display**:
+    - If promotion applied, display promotion card with:\n      - Glassmorphism effect with neon cyan border
       - Promotion name and discount details
-      - 'You saved ₹X' (neon green color)
+      - 'You saved ₹X' (neon green color, bold, large text)
       - 'Remove' button (secondary, outline) - removes promotion from order
 - Order summary (sticky on desktop, showing portion names, applied promotions, and discount breakdown)
 - 'Proceed to Payment' button
@@ -698,8 +804,7 @@ Comprehensive settings module for restaurant configuration, including waiter ass
 - Payment method selection (Cash, Card, UPI, Wallet)
 - Order summary (with applied promotions and discount breakdown)
 - Action buttons
-- Payment processing flow
-
+- Payment processing flow\n
 **STEP 4: Order Confirmation Page**
 - Success message\n- Order details card (including table number, portion names, applied promotions, discount amount, waiter assignment status: 'Your order is being assigned to a waiter')
 - Order summary (with discount breakdown)
@@ -720,10 +825,10 @@ Comprehensive settings module for restaurant configuration, including waiter ass
 **A. Order Tracking Page Layout**
 - Page header with order ID and status badge
 - **Applied Promotion Section** (if promotion applied):
-  - Section heading: 'Offer Applied' (neon cyan color)
-  - Promotion card with glassmorphism effect:\n    - Promotion name (bold, large white text)
+  - Section heading: 'Offer Applied' (neon cyan color)\n  - Promotion card with glassmorphism effect:\n    - Promotion name (bold, large white text)
     - Discount details (medium text, neon cyan color)
-    - Promo code (if applicable): 'Code: SUMMER20' (small text, light grey)\n    - Discount amount: 'You saved ₹X' (neon green color, bold)
+    - Promo code (if applicable): 'Code: SUMMER20' (small text, light grey)
+    - Discount amount: 'You saved ₹X' (neon green color, bold)
   - Note: 'This offer has been applied to your order.' (small text, light grey)
 - **Assigned Waiter Information Section** (prominent display):
   - **If waiter assigned**:
@@ -732,9 +837,9 @@ Comprehensive settings module for restaurant configuration, including waiter ass
       - Waiter name (bold, large white text)
       - Waiter contact info (if enabled in settings): Phone number or extension (medium text, light grey)
       - Status indicator: 'Handling Your Order' (neon green badge)
-      - 'Chat with Waiter' button (primary, neon gradient)
-    - Note: '[Waiter Name] is handling your order and will assist you shortly.' (small text, light grey)
-  - **If waiter not yet assigned**:\n    - Section heading: 'Waiter Assignment' (neon yellow color)
+      - 'Chat with Waiter' button (primary, neon gradient)\n    - Note: '[Waiter Name] is handling your order and will assist you shortly.' (small text, light grey)
+  - **If waiter not yet assigned**:
+    - Section heading: 'Waiter Assignment' (neon yellow color)
     - Placeholder card with glassmorphism effect:
       - Icon: Waiter silhouette or loading spinner
       - Message: 'Your order is being assigned to a waiter' (medium text, white)
@@ -759,8 +864,7 @@ Comprehensive settings module for restaurant configuration, including waiter ass
 - Event Payload: Contains order_id, new_waiter_name, new_waiter_avatar, new_waiter_contact\n- Automatic UI Update:
   - Waiter card updates with fade-out/fade-in animation
   - New waiter avatar, name, and contact info replace old waiter info
-  - Timeline adds new step: 'Waiter Reassigned: [Old Name] → [New Name]' with timestamp
-  - In-app notification displays: 'Your order has been reassigned to [New Waiter Name]'\n\n**D. Order Timeline with Waiter Assignment and Promotion Application Steps**
+  - Timeline adds new step: 'Waiter Reassigned: [Old Name] → [New Name]' with timestamp\n  - In-app notification displays: 'Your order has been reassigned to [New Waiter Name]'\n\n**D. Order Timeline with Waiter Assignment and Promotion Application Steps**
 - Timeline displays all order status steps:\n  1. Order Placed (timestamp)
   2. **Promotion Applied: [Promotion Name] (timestamp)** - highlighted with neon cyan icon (if promotion applied)
   3. **Waiter Assigned: [Waiter Name] (timestamp)** - highlighted with neon green icon\n  4. Order Accepted (timestamp)
@@ -808,51 +912,78 @@ View loyalty points and redeem rewards.
 - Loyalty dashboard with points balance, rewards catalog, points history
 - Referral program\n\n---
 
-#### 3.2.9 Offers & Promotions Page (Dedicated Page - Zomato-Style)
-\n**Overview**:
-Dedicated page displaying all available promotions and offers with detailed information and application functionality.
+#### 3.2.9 Offers & Promotions Page (Dedicated Page - Swiggy-Style with Real-Time Updates)
+
+**Overview**:
+Dedicated page displaying all available promotions and offers with detailed information, Swiggy-style UI, and real-time WebSocket synchronization.
 
 **Page Layout**:
 \n**A. Page Header**
-- Heading: 'Exclusive Offers & Promotions' (neon cyan color, large bold text)
-- Subheading: 'Save more on your orders with these amazing deals!' (medium text, light grey)
-- Search bar: 'Search offers by name or code' (with search icon)
+- Heading: 'Exclusive Offers & Promotions' (neon cyan color, large bold text,32px)
+- Subheading: 'Save more on your orders with these amazing deals!' (medium text, light grey, 16px)
+- Search bar: 'Search offers by name or code' (with search icon, dark background, neon border on focus)
 \n**B. Filter & Sort Options**
-- **Filter Options** (horizontal pill buttons):
+- **Filter Options** (horizontal pill buttons, Swiggy-style):
   - 'All Offers' (default, neon gradient background when selected)
   - 'Percentage Discounts'\n  - 'Flat Discounts'
-  - 'Buy X Get Y'\n  - 'Free Items'
+  - 'Buy X Get Y'
+  - 'Free Items'
   - 'First Order Offers'
   - 'Loyalty Offers'
-- **Sort Options** (dropdown):
+  - Horizontal scroll on mobile
+- **Sort Options** (dropdown, positioned to right of filters):
   - 'Highest Discount First'
   - 'Expiring Soon'
   - 'Newest First'
-\n**C. Promotions Grid**
-- Grid layout of promotion cards (2-3 columns on desktop, 1 column on mobile)
-- Each promotion card displays:
-  - **Card Header**:
-    - Promotion type badge (top-left corner) with icon (Percentage, Flat, BOGO, Free Item, etc.) and neon color coding
-    - Promotion name (bold, large white text)
-  - **Card Body**:
-    - Discount details (e.g., '20% OFF on all orders', 'Flat ₹100 OFF on orders above ₹500') (medium text, neon cyan color)
-    - Promo code section (if applicable):
-      - 'Use Code:' label (small text, light grey)
-      - Promo code (bold, white text, withdashed border)
-      - Copy icon (clicking copies code to clipboard with success toast: 'Code copied!')
-    - Validity period: 'Valid till [Date]' (small text, light grey)
-    - Terms & conditions: 'View T&C' (link, small text, neon cyan color) - opens modal with full terms
-  - **Card Footer**:
-    - 'Apply Offer' button (primary, neon gradient)
-    - 'View Details' button (secondary, outline)
-  - Glassmorphism effect with neon gradient border
-  - Hover effect: Card scales up slightly and glow intensifies
-
-**D. Promotion Details Modal**
+\n**C. Promotions Grid (Swiggy-Style with Real-Time Updates)**
+- **Grid Layout**: 3 columns on desktop, 2 columns on tablet, 1 column on mobile\n- **Promotion Cards** (Swiggy-inspired design):
+  - **Card Layout**:
+    - Large rectangular card with rounded corners (16px border-radius)
+    - Glassmorphism effect with semi-transparent dark background (rgba(26, 26, 26, 0.7))
+    - Neon gradient border (color based on promotion type)
+    - Subtle box shadow with neon glow (0 4px 20px rgba(0, 240, 255, 0.3))
+    - Hover effect: Card scales up (1.05) and glow intensifies\n  - **Card Content**:
+    - **Card Header**:
+      - Promotion type badge (top-left corner, pill-shaped, neon background, white text, icon)\n      - Example: 'FLAT DEAL' badge with discount icon
+    - **Card Body**:
+      - Promotion name (bold, large white text, 20px)
+      - Discount details (medium text, neon cyan color, 16px)
+      - Example: '20% OFF on all orders', 'Flat₹100 OFF on orders above ₹500'
+- Promo code section (if applicable):
+        - 'Use Code:' label (small text, light grey, 12px)
+        - Promo code (bold, white text, dashed border, 14px)
+        - Copy icon (clickable, neon cyan color)
+- Clicking copy icon copies code to clipboard and displays success toast: 'Code copied!'
+      - Validity period: 'Valid till [Date]' (small text, light grey, 12px)
+- Terms & conditions: 'View T&C' (link, small text, neon cyan color) - opens modal with full terms
+    - **Card Footer**:
+      - 'Apply Offer' button (primary, neon gradient, full-width, bold)
+      - 'View Details' button (secondary, outline, neon cyan border, full-width)
+  - **Card Dimensions**:
+    - Desktop: Width 100% (responsive), Height auto (min200px)
+    - Mobile: Width 100%, Height auto (min 180px)
+  - **Spacing**: 20px gap between cards
+- **Real-Time Updates via WebSocket**:
+  - **New Promotion Created**:
+    - WebSocket event'promotion_created' received
+    - New promotion card slides into grid from top with smooth animation (slide-down + fade-in, duration 0.5s)
+    - Card positioned based on sort order (e.g., if sorted by 'Newest First', card appears at top)
+    - In-app notification displays: 'New Offer Available: [Promotion Name] - [Discount Details]'
+    - Notification bell shakes and badge increments
+  - **Promotion Updated**:
+    - WebSocket event 'promotion_updated' received\n    - Existing promotion card updates with fade animation (fade-out, update content, fade-in, duration 0.3s)
+    - Updated card briefly highlights with neon glow animation (duration 1s)
+  - **Promotion Deactivated**:
+    - WebSocket event 'promotion_deactivated' received
+    - Promotion card fades out and slides out to top (fade-out + slide-up, duration 0.5s)\n    - Card removed from grid
+    - If promotion was applied to items in cart, system displays notification: 'Offer [Name] is no longer available and has been removed from your cart'
+- **Promotion Reactivated**:
+    - WebSocket event 'promotion_activated' received
+    - Promotion card slides into grid from top with animation (slide-down + fade-in, duration 0.5s)\n    - In-app notification displays: 'Offer [Name] is now available again!'
+\n**D. Promotion Details Modal**
 - **Triggered by**: Clicking 'View Details' button on promotion card
 - **Modal Layout**:
-  - Heading: Promotion name (neon cyan color)
-  - Promotion type badge\n  - **Discount Details Section**:
+  - Heading: Promotion name (neon cyan color)\n  - Promotion type badge\n  - **Discount Details Section**:
     - Large text displaying discount (e.g., '20% OFF', 'Flat ₹100 OFF')
     - Description of discount and conditions
   - **Promo Code Section** (if applicable):
@@ -863,14 +994,11 @@ Dedicated page displaying all available promotions and offers with detailed info
     - 'Applicable on:' (heading)
     - List of menu items or categories
   - **Validity Section**:
-    - Start date and end date
-    - Countdown timer: 'Expires in X days Y hours' (if expiring soon, display in neon yellow color)
+    - Start date and end date\n    - Countdown timer: 'Expires in X days Y hours' (if expiring soon, display in neon yellow color)
   - **Terms & Conditions Section**:
     - Full terms and conditions text
   - **Action Buttons**:
-    - 'Apply Offer' (primary, neon gradient)
-    - 'Close' (secondary, outline)
-\n**E. Apply Offer Functionality**
+    - 'Apply Offer' (primary, neon gradient)\n    - 'Close' (secondary, outline)\n\n**E. Apply Offer Functionality**
 - **Triggered by**: Clicking 'Apply Offer' button on promotion card or in promotion details modal
 - **Action Flow**:
   1. System checks if customer has items in cart
@@ -883,14 +1011,14 @@ Dedicated page displaying all available promotions and offers with detailed info
        - Check if minimum order value is met (if applicable)
        - Check if promotion usage limits are not exceeded
      - **If eligible**:
-       - Promotion automatically applied to cart
-       - Success toast notification: 'Offer applied! You saved ₹X'\n       - Cart updates to show applied promotion and discount breakdown
+       - Promotion automatically applied to cart\n       - Success toast notification: 'Offer applied! You saved ₹X'\n       - Cart updates to show applied promotion and discount breakdown
        - Navigate to cart/checkout page
      - **If not eligible**:
        - Error toast notification with reason: 'This offer is not applicable. [Reason]' (e.g., 'Minimum order value not met', 'Offer valid for new customers only')
        - Display suggestion: 'Add ₹X more to your cart to apply this offer' (if minimum order value not met)
 \n**F. Real-Time Updates**
 - **WebSocket Integration**:
+  - Persistent WebSocket connection for instant updates
   - Listen for 'promotion_created' event → New promotion card slides into grid with animation
   - Listen for 'promotion_updated' event → Existing promotion card updates with fade animation
   - Listen for 'promotion_deactivated' event → Promotion card fades out and is removed from grid
@@ -919,7 +1047,7 @@ Manage customer profile and app preferences.
 Access help resources and contact support.
 
 **Key Features**:
-- Help center with FAQs (including FAQ section for promotions: 'Howdo I apply a promo code?', 'Can I use multiple offers on one order?', etc.), contact support, live chat
+- Help center with FAQs (including FAQ section for promotions: 'How do I apply a promo code?', 'Can I use multiple offers on one order?', etc.), contact support, live chat
 - Feedback\n
 ---
 
@@ -954,12 +1082,13 @@ Access help resources and contact support.
 - Waiter notification: 'Add-on items added to Order #ORD-1234 (your assigned order)'
 \n**F. Order Timeline Update**
 - New timeline step: 'Add-On Items Added' with timestamp
-- If promotion applied to add-on items, timeline includes: 'Promotion Applied to Add-On Items: [Promotion Name]'\n
-**G. Kitchen Display System (KDS) Integration**
+- If promotion applied to add-on items, timeline includes: 'Promotion Applied to Add-On Items: [Promotion Name]'
+\n**G. Kitchen Display System (KDS) Integration**
 - Add-on items appear in KDS with 'ADD-ON' label
 \n**H. E-Bill Generation**
 - Combined e-bill with original and add-on items sections (including promotion details and discount breakdown)
-\n**I. Add-On Order Restrictions**
+
+**I. Add-On Order Restrictions**
 - Available only for active orders (Pending, Accepted, Preparing)\n- Maximum add-on limit: 3 times per order (configurable)
 
 **J. Add-On Order Analytics**
@@ -982,12 +1111,11 @@ Access help resources and contact support.
 - Dashboard layout with metrics (including'Orders Assigned to You Today', **'Orders with Promotions Applied'**), assigned orders section (displays only orders assigned to this waiter), active tables\n- **Assigned Orders Section**:
   - Heading: 'Your Assigned Orders'\n  - Order cards grid showing orders assigned to this waiter
   - Each card displays: Order ID, table number, customer name, order items, **promotion badge (if applied)**, order total (with discount breakdown if promotion applied), status badge, timestamp
-  - Action buttons: 'View Details', 'Update Status', 'Chat with Customer'
-  - Real-time updates when new orders assigned or reassigned
+  - Action buttons: 'View Details', 'Update Status', 'Chat with Customer'\n  - Real-time updates when new orders assigned or reassigned
 - **New Order Notification**:
   - When owner assigns order to waiter, waiter receives notification: 'You have been assigned to Order #ORD-1234 (Table X)'
   - **If promotion applied**: Notification includes: 'Promotion [Name] applied - Discount: ₹X'\n  - Notification bell badge increments
-  - Order card slides into'Assigned Orders' section with animation
+  - Order card slides into 'Assigned Orders' section with animation
 - Order management (view details including promotion information, update status)\n- Communication (chat with owner and customer)\n- Notifications (including assignment and reassignment notifications, and promotion application notifications)
 
 ---
@@ -1014,7 +1142,9 @@ Access help resources and contact support.
    - Navigate to Marketing → Click 'Create Promotion'
    - Fill in promotion details (name, type, discount, eligibility, validity)
    - Preview and create promotion
-   - Promotion activates and syncs to customer dashboards in real-time
+   - Promotion activates and syncs to customer dashboards in real-time via WebSocket
+   - Customer Home displays new promotion in Swiggy-style carousel with slide-in animation
+   - Offers & Promotions page displays new promotion card with slide-in animation
 9. **Manage Promotions**:
    - View active, scheduled, and expired promotions
    - Edit, deactivate, reactivate, or duplicate promotions
@@ -1026,36 +1156,38 @@ Access help resources and contact support.
     - Confirm assignment
     - Waiter status automatically updates from 'Free' to 'Busy' in Staff Management
     - System updates order status to 'Pending - Waiter Assigned'
-    - Real-time WebSocket event'waiter_assigned' sent to customer
+    - Real-time WebSocket event 'waiter_assigned' sent to customer
     - Customer dashboard automatically updates to display assigned waiter name, avatar, and contact info
     - Waiter receives notification\n12. **Receive Notification: 'Promotion [Name] applied to Order #ORD-1234'** (if customer applied promotion)
-13. Track Order (including promotion details)
-14. Manage Staff (including waiter assignment tracking and free waiter visibility)
+13. Track Order (including promotion details)\n14. Manage Staff (including waiter assignment tracking and free waiter visibility)
 15. View Analytics (including waiter performance metrics, availability rate, and promotion performance analytics)
 16. Configure Settings (including waiter assignment settings, workload threshold, and promotion settings)
+\n### 4.2 Customer Flow (Complete Checkout Flow with Add-On Order Feature, Waiter Assignment Display, and Swiggy-Style Promotion Application)
 
-### 4.2 Customer Flow (Complete Checkout Flow with Add-On Order Feature, Waiter Assignment Display, and Promotion Application)
-
-1. Sign Up/Login → Customer Home
-2. **View Promotions & Offers**:
-   - Customer Home displays'Exclusive Offers for You' section with promotion carousel
-   - Click 'View All Offers' → Navigate to dedicated Offers & Promotions page
-   - Browse available promotions, view details, copy promo codes
-3. Scan QR Code (Mobile-Only) → Menu displayed with restaurant type badge and promotions banner → Table number auto-detected
-4. Browse Menu → Real-time menu updates → **View promotion badges on eligible menu items**
+1. Sign Up/Login → Customer Home with Swiggy-style promotions carousel
+2. **View Promotions & Offers (Real-Time)**:
+   - Customer Home displays 'Exclusive Offers for You' section with horizontal scrollable Swiggy-style promotion carousel
+   - Promotions update in real-time via WebSocket:\n     - New promotions slide into carousel with animation
+     - Updated promotions refresh with fade animation
+     - Deactivated promotions fade out and are removed\n   - Click 'View All Offers' → Navigate to dedicated Offers & Promotions page
+   - Browse available promotions with Swiggy-style cards, view details, copy promo codes
+   - Promotions page updates in real-time:\n     - New promotions slide into grid from top\n     - Updated promotions highlight with glow animation
+     - Deactivated promotions fade out and slide out
+3. Scan QR Code (Mobile-Only) → Menu displayed with restaurant type badge and Swiggy-style promotions banner → Table number auto-detected
+4. Browse Menu → Real-time menu updates → **View Swiggy-style promotion banner with horizontal scrollable offer cards** → **View promotion badges on eligible menu items**
 5. Select Item with Database-Driven Portion → Choose portion → **View applicable promotions** → Add to Cart
-6. Review Cart → Edit quantities/portions → **Apply Promotion**:\n   - View available offers in cart
-   - Click 'Apply' on promotion card or enter promo code
-   - System validates and applies promotion
-   - Cart updates with discount breakdown
-7. Proceed to Checkout\n8. Checkout Page → Enter customer details → Select order type → **Apply/Review Promo Code** → Review order summary (with discount breakdown) → Proceed to Payment
+6. Review Cart → Edit quantities/portions → **Apply Promotion (Swiggy-Style)**:\n   - View available offers in cart (expandable section with Swiggy-style promotion cards)
+   - Click 'Apply' on promotion card or enter promo code in input field
+   - System validates and applies promotion\n   - Cart updates with discount breakdown
+7. Proceed to Checkout\n8. Checkout Page → Enter customer details → Select order type → **Apply/Review Promo Code (Swiggy-Style)** → Review order summary (with discount breakdown) → Proceed to Payment
 9. Payment Page → Select payment method → Enter payment details → Place Order & Pay
 10. Order Confirmation → View order details (including applied promotion and discount amount) → **Waiter assignment status: 'Your order is being assigned to a waiter'** → Download receipt → Track Order
 11. **Order Tracking Page**:
     - **Applied Promotion Section displays promotion details and discount amount**
     - **Waiter assignment section displays'Assignment Pending' status with pulsing neon yellow badge**
     - Customer waits for waiter assignment
-12. **Owner Assigns Waiter (from free waiters list)**:\n    - **Real-time WebSocket event 'waiter_assigned' received by customer dashboard**
+12. **Owner Assigns Waiter (from free waiters list)**:
+    - **Real-time WebSocket event 'waiter_assigned' received by customer dashboard**
     - **Waiter assignment section automatically updates without page refresh**:\n      - 'Assignment Pending' transitions to 'Your Waiter' with fade-in animation
       - Waiter card slides in displaying waiter avatar, name, and contact info
       - Status badge changes to 'Handling Your Order' (neon green)
@@ -1074,9 +1206,10 @@ Access help resources and contact support.
     - Customer reviews and confirms add-on\n    - System adds items to existing order
     - Assigned waiter receives notification about add-on items
     - Order tracking page updates\n15. Track Order → Real-time updates → **View assigned waiter info and applied promotion details**
-16. Receive Order → Rate Order (including waiter rating)\n17. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu (with promotion badges) → Add items → **Apply promotions** → Complete order
+16. Receive Order → Rate Order (including waiter rating)\n17. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu (with Swiggy-style promotion banner and badges) → Add items → **Apply promotions** → Complete order
 18. Reorder → Previous portion names and promotions auto-selected (if still valid)
-19. View Loyalty Points\n20. **Browse Offers & Promotions Page** → View all available offers → Apply offers to cart\n\n### 4.3 Waiter Flow (Updated with Promotion Information)\n
+19. View Loyalty Points\n20. **Browse Offers & Promotions Page (Real-Time)** → View all available offers with Swiggy-style cards → Real-time updates via WebSocket → Apply offers to cart
+\n### 4.3 Waiter Flow (Updated with Promotion Information)\n
 1. Login → Waiter Dashboard
 2. **Clock In → Waiter status changes to 'Free' (appears in Free Waiters section in Staff Management)**
 3. **Receive Notification: 'You have been assigned to Order #ORD-1234 (Table X)'**
@@ -1084,7 +1217,7 @@ Access help resources and contact support.
 6. View Order Details (with portion names, applied promotions, discount breakdown, and add-on items highlighted)
 7. Update Order Status (Accept → Preparing → Ready → Completed)
 8. **Receive Notification: 'Add-on items added to Order #ORD-1234 (your assigned order)'**
-   - If promotion applied to add-on items, notification includes promotion details
+- If promotion applied to add-on items, notification includes promotion details
 9. Communicate with customer or owner
 10. **Complete Order → If no other active orders, waiter status changes back to 'Free' (reappears in Free Waiters section)**
 11. Clock Out → **Waiter status changes to 'Offline'**
@@ -1104,7 +1237,8 @@ Access help resources and contact support.
 ### 5.3 Color Palette
 
 - **Background**: Deep charcoal grey (#1A1A1A) or dark blue (#0D1B2A)
-- **Primary Accent**: Electric cyan (#00F0FF)\n- **Secondary Accent**: Vibrant magenta (#FF006E)
+- **Primary Accent**: Electric cyan (#00F0FF)
+- **Secondary Accent**: Vibrant magenta (#FF006E)
 - **Tertiary Accent**: Electric blue (#3A86FF)
 - **Success**: Neon green (#39FF14)
 - **Warning**: Neon yellow (#FFFF00)
@@ -1114,8 +1248,7 @@ Access help resources and contact support.
 - **Portion Badges**: Full Portion (vibrant magenta #FF006E), Additional Variants (electric cyan #00F0FF or electric blue #3A86FF)\n- **Add-On Indicator**: Neon yellow (#FFFF00) badge with'ADD-ON' text
 - **Waiter Assignment Status**: Unassigned (neon yellow #FFFF00), Assigned (neon green #39FF14)\n- **Waiter Availability Status**: Free (neon green #39FF14), Busy (neon yellow #FFFF00), Offline (grey #808080)
 - **Promotion Badges**: Percentage Discount (electric cyan #00F0FF), Flat Discount (vibrant magenta #FF006E), Buy X Get Y (electric blue #3A86FF), Free Item (neon green #39FF14), Minimum Order Discount (neon yellow #FFFF00), First Order Discount (neon red #FF073A), Loyalty Discount (neon purple #BF40BF)
-
-### 5.4 UI Components
+\n### 5.4 UI Components
 
 - **Cards**: Glassmorphism effect with neon gradient borders, rounded corners, subtle shadows with neon glow
 - **Buttons**: Neon gradient backgrounds, rounded corners, bold text, hover effects
@@ -1126,14 +1259,27 @@ Access help resources and contact support.
 - **Waiter Assignment Modal**: Glassmorphism card with neon gradient border, waiter cards display only active and free waiters with avatar, name, workload,'Free' status badge (neon green)\n- **Free Waiters Section (Staff Management)**: Dedicated section at top with neon green heading, card grid displaying free waiters with avatar, name, 'Free' badge, current workload, 'Assign to Order' button
 - **Waiter Status Badges**: Pill-shaped badges with rounded corners, bold text, icon (Free: neon green with checkmark icon, Busy: neon yellow with clock icon, Offline: grey with offline icon)
 - **Waiter Info Section (Customer Dashboard)**: Large glassmorphism card with neon gradient border, waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green),'Chat with Waiter' button (primary, neon gradient)
-- **Waiter Assignment Pending Section**: Glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), message text (medium, white)\n- **Promotion Cards (Customer-Facing)**:
-  - Glassmorphism effect with neon gradient border (color based on promotion type)
-  - Promotion type badge at top-left corner with icon and neon color
-  - Promotion name (bold, large white text)
-  - Discount details (medium text, neon cyan color)
-  - Promo code section (if applicable): Code displayed withdashed border, copy icon\n  - Validity period (small text, light grey)
-  - 'Apply Offer' button (primary, neon gradient)
-  - 'View Details' button (secondary, outline)\n  - Hover effect: Card scales up and glow intensifies
+- **Waiter Assignment Pending Section**: Glassmorphism card with waiter silhouette icon or loading spinner, 'Assignment Pending' badge (neon yellow, pulsing glow animation), message text (medium, white)\n- **Swiggy-Style Promotion Cards (Customer-Facing)**:
+  - **Carousel Cards (Customer Home)**:
+    - Large rectangular cards (320px x 180px on desktop, 280px x 160px on mobile)
+    - Glassmorphism effect with semi-transparent dark background (rgba(26, 26, 26, 0.7))
+    - Neon gradient border (color based on promotion type)
+    - Subtle box shadow with neon glow (0 4px 20px rgba(0, 240, 255, 0.3))
+    - Promotion type badge (top-left, pill-shaped, neon background, white text, icon)
+    - Promotion name (extra-large bold text, white,24px)
+    - Discount details (large text, neon cyan, 20px, bold)
+    - Promo code section (if applicable): Label, code (dashed border), copy icon
+    - Validity period (small text, light grey, 12px)
+    - 'Apply Offer' button (primary, neon gradient, white text, bold)
+    - 'View Details' button (secondary, outline, neon cyan border)\n    - Hover effect: Card scales up (1.05) and glow intensifies\n  - **Grid Cards (Offers & Promotions Page)**:
+    - Similar to carousel cards but responsive width (100% on mobile, 3columns on desktop)
+    - Height auto (min200px on desktop, min 180px on mobile)
+    - 20px gap between cards
+  - **Compact Banner Cards (Menu Page)**:
+    - Compact rectangular cards (240px x 100px on mobile)\n    - Glassmorphism effect with neon gradient border
+    - Promotion type icon (top-left, small)\n    - Discount details (large bold text, neon cyan)
+    - Promo code (if applicable, small text, dashed border)
+    - 'Apply' button (small, neon gradient, bottom-right)
 - **Promotion Cards (Owner Dashboard)**:
   - Similar to customer-facing cards\n  - Additional elements: Usage statistics, status indicator (Active/Scheduled/Expired/Deactivated), action buttons (Edit, Deactivate, View Analytics, Duplicate)
 - **Promotion Badges on Menu Items**:
@@ -1144,26 +1290,29 @@ Access help resources and contact support.
   - Glassmorphism card with neon cyan border
   - Promotion name (bold, large white text)
   - Discount details (medium text, neon cyan color)
-  - Discount amount:'You saved ₹X' (neon green color, bold)
+  - Discount amount: 'You saved ₹X' (neon green color, bold)
 - **Promo Code Input (Checkout)**:
   - Dark background text input with neon border on focus
   - 'Apply' button (primary, neon gradient)\n  - Success/error messages with neon green/red color
 - **Available Offers Section (Checkout)**:
   - Expandable section with glassmorphism effect
-  - Promotion cards in grid layout
+  - Promotion cards in grid layout (2 columns on desktop, 1 column on mobile)
   - 'Apply' button on each card
 \n### 5.5 Animations
 
 - **Slide-in**: New order cards, menu items, add-on items, assigned orders, waiter info card, free waiter cards, **promotion cards** slide in with bounce animation
 - **Pulsing Glow**: Notification badges, updated items, add-on indicators, unassigned order badges, waiter assignment pending badge, 'Free' status badges, **promotion badges on menu items** have pulsing glow\n- **Shake**: Notification bell shakes on new notification (including waiter assignment notifications and promotion notifications)
 - **Ripple Effect**: Button clicks trigger ripple effect\n- **Smooth Transitions**: All state changes use ease-in-out transitions
-- **Loading Animations**: Neon spinners or skeleton screens\n- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition (Free↔ Busy ↔ Offline), **promotion cards slide in when new promotions created, promotion cards fade out when deactivated**
+- **Loading Animations**: Neon spinners or skeleton screens\n- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition (Free↔ Busy ↔ Offline), **promotion cards slide in when new promotions created (slide-down + fade-in, duration 0.5s), promotion cards fade out when deactivated (fade-out + slide-up, duration 0.5s), updated promotion cards highlight with neon glow animation (duration 1s)**
 - **Portion Selection Animations**: Selected cards scale up and glow\n- **Waiter Assignment Animations**: Selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy\n- **Promotion Application Animations**:
-  - When promotion applied: Success checkmark animation, discount amount highlights with neon green glow\n  - When promotion removed: Fade-out animation\n  - Promo code copy: Copy icon animates with scale and rotation, success toast appears\n- **Promotion Card Hover**: Card scales up slightly, neon glow intensifies, subtle rotation effect
+  - When promotion applied: Success checkmark animation, discount amount highlights with neon green glow\n  - When promotion removed: Fade-out animation\n  - Promo code copy: Copy icon animates with scale and rotation, success toast appears\n- **Promotion Card Hover**: Card scales up slightly (1.05), neon glow intensifies, subtle rotation effect
+- **Swiggy-Style Carousel Animations**:
+  - Horizontal scroll with smooth snap points
+  - Auto-scroll every 5 seconds (optional)
+  - Navigation arrows fade in on hover (desktop)\n  - Touch/swipe gestures on mobile
 \n### 5.6 Responsive Design
 
-- **Mobile-First Approach**: Optimized for mobile devices first
-- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
+- **Mobile-First Approach**: Optimized for mobile devices first\n- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
 - **Collapsible Sidebar**: Sidebar collapses to hamburger menu on mobile
 - **Adaptive Grids**: Grid layouts adjust column count based on screen size
 - **Touch-Friendly**: Buttons and interactive elements have minimum44px height
@@ -1172,16 +1321,13 @@ Access help resources and contact support.
 - **Add-On Order UI on Mobile**: Banner and cart sections optimized for mobile view
 - **Waiter Assignment Modal on Mobile**: Waiter cards stack vertically, full-screen modal\n- **Free Waiters Section on Mobile**: Cards stack vertically, full-width display
 - **Waiter Info Section on Mobile**: Card displays full-width, waiter avatar and info stack vertically,'Chat with Waiter' button full-width
-- **Promotion Cards on Mobile**:
-  - Cards stack vertically in single column
-  - Promotion carousel on Customer Home uses horizontal scroll with snap points
+- **Swiggy-Style Promotion Cards on Mobile**:
+  - **Carousel (Customer Home)**: Horizontal scroll with snap points, cards280px x 160px, touch/swipe enabled
+  - **Grid (Offers & Promotions Page)**: Cards stack vertically in single column, full-width, height auto (min 180px)
+  - **Banner (Menu Page)**: Horizontal scroll with snap points, compact cards 240px x 100px\n  - Filter options display as horizontal scrollable pills
   - Promo code section displays full-width with large copy button
-  - 'Apply Offer' and 'View Details' buttons stack vertically
-- **Offers & Promotions Page on Mobile**:
-  - Filter options display as horizontal scrollable pills
-  - Promotion cards display in single column
-  - Promotion details modal displays full-screen
-\n### 5.7 Accessibility
+  - 'Apply Offer' and 'View Details' buttons stack vertically or display full-width
+  - Promotion details modal displays full-screen\n\n### 5.7 Accessibility
 
 - **Keyboard Navigation**: All interactive elements accessible via keyboard
 - **Screen Reader Support**: Proper ARIA labels and semantic HTML
@@ -1201,6 +1347,10 @@ Access help resources and contact support.
   - Input field has clear label: 'Enter promo code'
   - Success/error messages announced by screen reader
   - Keyboard shortcut: Enter key applies promo code
+- **Carousel Accessibility**:
+  - Keyboard navigation: Arrow keys to navigate between cards
+  - Screen reader announces current card position (e.g., 'Card 1 of 5')
+  - Auto-scroll pauses on hover or focus
 \n---
 
 ## 6. Technical Considerations
@@ -1233,27 +1383,27 @@ Access help resources and contact support.
     - Payload: { waiter_id, old_status, new_status, current_workload, timestamp }
     - Recipients: Restaurant Owner, Staff Management Dashboard
   - **'promotion_created'**: Emitted when owner creates new promotion
-    - Payload: { promotion_id, promotion_name, promotion_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria, timestamp }
-    - Recipients: All Customers (broadcast)\n  - **'promotion_updated'**: Emitted when owner edits promotion
+    - Payload: { promotion_id, promotion_name, promotion_type, discount_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria, timestamp }
+    - Recipients: All Customers (broadcast)\n    - **Customer Dashboard Action**: New promotion card slides into carousel on Customer Home (slide-in + fade-in animation, duration 0.5s), promotion card slides into grid on Offers & Promotions page (slide-down + fade-in animation, duration 0.5s), in-app notification displays, notification bell shakes and badge increments\n  - **'promotion_updated'**: Emitted when owner edits promotion
     - Payload: { promotion_id, updated_fields, timestamp }
     - Recipients: All Customers (broadcast)
-  - **'promotion_activated'**: Emitted when owner activates or reactivates promotion
-    - Payload: { promotion_id, promotion_name, promotion_type, discount_value, promo_code, validity_period, timestamp }
+    - **Customer Dashboard Action**: Existing promotion card updates with fade animation (fade-out, update content, fade-in, duration 0.3s), updated card highlights with neon glow animation (duration 1s)\n  - **'promotion_activated'**: Emitted when owner activates or reactivates promotion
+    - Payload: { promotion_id, promotion_name, promotion_type, discount_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria, timestamp }
     - Recipients: All Customers (broadcast)
-  - **'promotion_deactivated'**: Emitted when owner deactivates promotion
+    - **Customer Dashboard Action**: Promotion card slides into carousel and grid (slide-in + fade-in animation, duration 0.5s), in-app notification displays: 'Offer [Name] is now available again!'\n  - **'promotion_deactivated'**: Emitted when owner deactivates promotion
     - Payload: { promotion_id, timestamp }
     - Recipients: All Customers (broadcast)
-  - **'promotion_applied'**: Emitted when customer applies promotion to order
+    - **Customer Dashboard Action**: Promotion card fades out and slides out (fade-out + slide-up animation, duration 0.5s), card removed from carousel and grid, if promotion was applied to cart, notification displays: 'Offer [Name] is no longer available and has been removed from your cart'\n  - **'promotion_applied'**: Emitted when customer applies promotion to order
     - Payload: { order_id, promotion_id, promotion_name, discount_amount, timestamp }
     - Recipients: Restaurant Owner, Assigned Waiter (if assigned)\n- **Event Payload Structure**: Includes restaurant_id, item_id, order_id, add_on_items, assigned_waiter_id, waiter_availability_status, promotion_id, etc.
 - **Customer Dashboard WebSocket Listeners**:
   - Listen for 'waiter_assigned' event → Update active order card and order tracking page with waiter info
   - Listen for 'waiter_reassigned' event → Update waiter info section with new waiter details
   - Listen for 'order_status_update' event → Update order timeline and status badge
-  - **Listen for 'promotion_created' event → Add new promotion card to Offers section and Customer Home carousel**
-  - **Listen for 'promotion_updated' event → Update existing promotion card with new details**
-  - **Listen for 'promotion_activated' event → Add promotion card to Offers section (for reactivated promotions)**
-  - **Listen for 'promotion_deactivated' event → Remove promotion card from Offers section**
+  - **Listen for 'promotion_created' event → Add new promotion card to Customer Home carousel and Offers & Promotions page with slide-in animation**
+  - **Listen for 'promotion_updated' event → Update existing promotion card with fade animation and highlight with glow**
+  - **Listen for 'promotion_activated' event → Add promotion card to carousel and grid with slide-in animation (for reactivated promotions)**
+  - **Listen for 'promotion_deactivated' event → Remove promotion card from carousel and grid with fade-out and slide-out animation**
 - **Owner Dashboard WebSocket Listeners**:
   - Listen for 'waiter_status_changed' event → Update Free Waiters section and Staff Management dashboard\n  - Listen for 'new_order' event → Display notification and update order list
   - **Listen for 'promotion_applied' event → Display notification and update order card with promotion badge**
@@ -1301,10 +1451,10 @@ Access help resources and contact support.
 
 **Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. Restaurant type badges: Veg (bright green), Non-Veg (bright red), Both (bright orange). Portion badges: Full Portion (vibrant magenta), Additional Variants (electric cyan or electric blue). Add-On indicator: Neon yellow badge. Waiter assignment status: Unassigned (neon yellow), Assigned (neon green). Waiter availability status: Free (neon green), Busy (neon yellow), Offline (grey). Promotion badges: Percentage Discount (electric cyan), Flat Discount (vibrant magenta), Buy X Get Y (electric blue), Free Item (neon green), Minimum Order Discount (neon yellow), First Order Discount (neon red), Loyalty Discount (neon purple).
 
-**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying only active and free waiters with avatar, name, workload, and 'Free' status badge (neon green). Free Waiters section (Staff Management) displays dedicated section at top with neon green heading, card grid showing free waiters with avatar, name, 'Free' badge, current workload, and 'Assign to Order' button. Waiter status badges are pill-shaped with rounded corners, bold text, and icon (Free: neon green with checkmark, Busy: neon yellow with clock, Offline: grey with offline icon). Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white). Promotion cards (customer-facing) feature glassmorphism effect with neon gradient border (color based on promotion type), promotion type badge at top-left corner with icon and neon color, promotion name (bold, large white text), discount details (medium text, neon cyan color), promo code section (if applicable) with code displayed withdashed border and copy icon, validity period (small text, light grey), 'Apply Offer' button (primary, neon gradient), 'View Details' button (secondary, outline), and hover effect (card scales up and glow intensifies). Promotion cards (owner dashboard) similar to customer-facing cards with additional elements: usage statistics, status indicator (Active/Scheduled/Expired/Deactivated), action buttons (Edit, Deactivate, View Analytics, Duplicate). Promotion badges on menu items are small pill-shaped badges positioned at top-right corner of menu item card with neon cyan background, white text, discount details, and pulsing glow animation. Applied promotion section (order tracking) displays glassmorphism card with neon cyan border, promotion name (bold, large white text), discount details (medium text, neon cyan color), and discount amount: 'You saved ₹X' (neon green color, bold). Promo code input (checkout) features dark background text input with neon border on focus, 'Apply' button (primary, neon gradient), and success/error messages with neon green/red color. Available offers section (checkout) displays expandable section with glassmorphism effect, promotion cards in grid layout, and 'Apply' button on each card.\n
-**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, waiter info card, free waiter cards, and promotion cards, pulsing glow for notification badges, updated items, unassigned order badges, waiter assignment pending badge, 'Free' status badges, and promotion badges on menu items, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition, promotion cards slide in when new promotions created, promotion cards fade out when deactivated), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy), promotion application animations (when promotion applied: success checkmark animation, discount amount highlights with neon green glow; when promotion removed: fade-out animation; promo code copy: copy icon animates with scale and rotation, success toast appears), and promotion card hover (card scales up slightly, neon glow intensifies, subtle rotation effect).
+**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying only active and free waiters with avatar, name, workload, and 'Free' status badge (neon green). Free Waiters section (Staff Management) displays dedicated section at top with neon green heading, card grid showing free waiters with avatar, name, 'Free' badge, current workload, and 'Assign to Order' button. Waiter status badges are pill-shaped with rounded corners, bold text, and icon (Free: neon green with checkmark, Busy: neon yellow with clock, Offline: grey with offline icon). Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white). Swiggy-style promotion cards (customer-facing) feature glassmorphism effect with neon gradient border (color based on promotion type), promotion type badge at top-left corner with icon and neon color, promotion name (bold, large white text), discount details (medium text, neon cyan color), promo code section (if applicable) with code displayed withdashed border and copy icon, validity period (small text, light grey), 'Apply Offer' button (primary, neon gradient), 'View Details' button (secondary, outline), and hover effect (card scales up and glow intensifies). Promotion cards (owner dashboard) similar to customer-facing cards with additional elements: usage statistics, status indicator (Active/Scheduled/Expired/Deactivated), action buttons (Edit, Deactivate, View Analytics, Duplicate). Promotion badges on menu items are small pill-shaped badges positioned at top-right corner of menu item card with neon cyan background, white text, discount details, and pulsing glow animation. Applied promotion section (order tracking) displays glassmorphism card with neon cyan border, promotion name (bold, large white text), discount details (medium text, neon cyan color), and discount amount: 'You saved ₹X' (neon green color, bold). Promo code input (checkout) features dark background text input with neon border on focus, 'Apply' button (primary, neon gradient), and success/error messages with neon green/red color. Available offers section (checkout) displays expandable section with glassmorphism effect, promotion cards in grid layout, and 'Apply' button on each card.\n
+**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, waiter info card, free waiter cards, and promotion cards, pulsing glow for notification badges, updated items, unassigned order badges, waiter assignment pending badge, 'Free' status badges, and promotion badges on menu items, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition, promotion cards slide in when new promotions created with slide-down + fade-in animation (duration 0.5s), promotion cards fade out when deactivated with fade-out + slide-up animation (duration 0.5s), updated promotion cards highlight with neon glow animation (duration 1s)), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy), promotion application animations (when promotion applied: success checkmark animation, discount amount highlights with neon green glow; when promotion removed: fade-out animation; promo code copy: copy icon animates with scale and rotation, success toast appears), promotion card hover (card scales up slightly to1.05, neon glow intensifies, subtle rotation effect), and Swiggy-style carousel animations (horizontal scroll with smooth snap points, auto-scroll every 5 seconds optional, navigation arrows fade in on hover on desktop, touch/swipe gestures on mobile).
 
-**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Free Waiters section on mobile displays cards stacked vertically with full-width layout. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button. Promotion cards on mobile stack vertically in single column, promotion carousel on Customer Home uses horizontal scroll with snap points, promo code section displays full-width with large copy button, 'Apply Offer' and 'View Details' buttons stack vertically. Offers & Promotions page on mobile displays filter options as horizontal scrollable pills, promotion cards in single column, and promotion details modal full-screen.\n
+**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Free Waiters section on mobile displays cards stacked vertically with full-width layout. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button. Swiggy-style promotion cards on mobile: Carousel (Customer Home) uses horizontal scroll with snap points, cards280px x 160px, touch/swipe enabled; Grid (Offers & Promotions Page) displays cards stacked vertically in single column, full-width, height auto (min180px); Banner (Menu Page) uses horizontal scroll with snap points, compact cards240px x 100px. Filter options display as horizontal scrollable pills. Promo code section displays full-width with large copy button.'Apply Offer' and 'View Details' buttons stack vertically or display full-width. Promotion details modal displays full-screen.\n
 ---
 
 **End of Requirements Document**
