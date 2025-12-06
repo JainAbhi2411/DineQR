@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import {
@@ -20,10 +21,12 @@ import {
   Banknote,
   FileText,
   Loader2,
-  UserCheck
+  UserCheck,
+  Receipt
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/db/supabase';
+import PrintBill from '@/components/order/PrintBill';
 
 export default function OrderTracking() {
   const { orderId } = useParams();
@@ -33,6 +36,7 @@ export default function OrderTracking() {
   
   const [order, setOrder] = useState<OrderWithItems | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showBill, setShowBill] = useState(false);
 
   useEffect(() => {
     if (orderId) {
@@ -378,10 +382,32 @@ export default function OrderTracking() {
                   <span className="text-primary">{formatCurrency(order.total_amount)}</span>
                 </div>
               </div>
+
+              {/* View Bill Button */}
+              <div className="mt-6 pt-4 border-t">
+                <Button
+                  onClick={() => setShowBill(true)}
+                  className="w-full gap-2"
+                  size="lg"
+                >
+                  <Receipt className="w-5 h-5" />
+                  View Detailed Bill
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {/* Bill Dialog */}
+      <Dialog open={showBill} onOpenChange={setShowBill}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Order Bill</DialogTitle>
+          </DialogHeader>
+          {order && <PrintBill order={order} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
