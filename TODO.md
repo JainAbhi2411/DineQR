@@ -1,6 +1,36 @@
-# Task: Add Real-time Offers Display with Swiggy-like UI ✅ COMPLETE
+# Task: Add NLP Chatbot for Natural Language Order Processing
 
 ## Plan
+
+### Phase 1: LLM Service Setup ✅
+- [x] Create LLM service utility for API integration
+- [x] Implement streaming response handling with EventSource
+- [x] Add proper error handling and response parsing
+
+### Phase 2: ChatBot UI Component ✅
+- [x] Design floating chatbot button
+- [x] Create chat interface with message history
+- [x] Add input field for natural language orders
+- [x] Display streaming responses from LLM
+- [x] Add loading states and animations
+
+### Phase 3: Order Parsing & Cart Integration ✅
+- [x] Parse LLM responses to extract menu items and quantities
+- [x] Match parsed items with actual menu items from database
+- [x] Automatically add items to cart
+- [x] Handle edge cases (item not found, ambiguous items, etc.)
+- [x] Show confirmation messages
+
+### Phase 4: Integration & Testing ✅
+- [x] Add chatbot to MenuBrowsing page
+- [x] Test with various natural language inputs
+- [x] Verify cart updates correctly
+- [x] Check error handling
+- [x] Run linting (passed with 0 errors)
+
+---
+
+## Previous Task: Add Real-time Offers Display with Swiggy-like UI ✅ COMPLETE
 
 ### Phase 1: Real-time Subscriptions ✅
 - [x] Add real-time subscription for promotions in MenuBrowsing page

@@ -39,6 +39,7 @@ import AddToExistingOrderDialog from '@/components/customer/AddToExistingOrderDi
 import OffersModal from '@/components/customer/OffersModal';
 import OffersBanner from '@/components/customer/OffersBanner';
 import PromoCodeInput from '@/components/customer/PromoCodeInput';
+import OrderChatBot from '@/components/customer/OrderChatBot';
 import { supabase } from '@/db/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -545,6 +546,18 @@ export default function MenuBrowsing() {
           variant: 'destructive',
         });
       });
+  };
+
+  const handleChatBotAddToCart = (itemId: string, quantity: number) => {
+    const item = menuItems.find(mi => mi.id === itemId);
+    if (!item) {
+      console.error('Item not found:', itemId);
+      return;
+    }
+
+    for (let i = 0; i < quantity; i++) {
+      handleAddToCart(item);
+    }
   };
 
   const handleCheckout = async () => {
@@ -1753,6 +1766,12 @@ export default function MenuBrowsing() {
           promotions={promotions}
         />
       )}
+
+      {/* Order ChatBot */}
+      <OrderChatBot
+        menuItems={menuItems}
+        onAddToCart={handleChatBotAddToCart}
+      />
     </div>
   );
 }
