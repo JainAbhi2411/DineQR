@@ -19,6 +19,10 @@ import type {
   Review,
   ReviewWithCustomer,
   Promotion,
+  PromotionUsage,
+  PromotionValidation,
+  CreatePromotionInput,
+  UpdatePromotionInput,
   PromotionWithMenuItems,
   RestaurantSettings,
   AnalyticsData,
@@ -759,38 +763,39 @@ export const promotionApi = {
     return Array.isArray(data) ? data : [];
   },
 
-  async getActivePromotions(restaurantId: string): Promise<Promotion[]> {
-    const today = new Date().toISOString().split('T')[0];
+  async getActivePromotionsForCustomer(restaurantId: string): Promise<Promotion[]> {
     const { data, error } = await supabase
       .from('promotions')
       .select('*')
       .eq('restaurant_id', restaurantId)
-      .eq('status', 'active')
-      .lte('start_date', today)
-      .gte('end_date', today)
+      .eq('is_active', true)
+      .lte('start_date', new Date().toISOString())
+      .gte('end_date', new Date().toISOString())
       .order('created_at', { ascending: false });
     if (error) throw error;
     return Array.isArray(data) ? data : [];
   },
 
-  async createPromotion(promotion: Omit<Promotion, 'id' | 'created_at' | 'usage_count'>): Promise<Promotion> {
+  async createPromotion(promotion: CreatePromotionInput): Promise<Promotion> {
     const { data, error } = await supabase
       .from('promotions')
       .insert(promotion)
       .select()
-      .single();
+      .maybeSingle();
     if (error) throw error;
+    if (!data) throw new Error('Failed to create promotion');
     return data;
   },
 
-  async updatePromotion(id: string, updates: Partial<Promotion>): Promise<Promotion> {
+  async updatePromotion(id: string, updates: UpdatePromotionInput): Promise<Promotion> {
     const { data, error } = await supabase
       .from('promotions')
       .update(updates)
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
     if (error) throw error;
+    if (!data) throw new Error('Promotion not found');
     return data;
   },
 
@@ -802,86 +807,81 @@ export const promotionApi = {
     if (error) throw error;
   },
 
-  async incrementUsageCount(id: string): Promise<void> {
-    const { error } = await supabase.rpc('increment_promotion_usage', {
-      promotion_id: id,
+  async validatePromoCode(
+    code: string,
+    restaurantId: string,
+    customerId: string,
+    orderAmount: number
+  ): Promise<PromotionValidation> {
+    const { data, error } = await supabase.rpc('validate_promotion_code', {
+      p_code: code,
+      p_restaurant_id: restaurantId,
+      p_customer_id: customerId,
+      p_order_amount: orderAmount,
     });
     if (error) throw error;
+    if (!Array.isArray(data) || data.length === 0) {
+      return {
+        valid: false,
+        promotion_id: null,
+        discount_amount: 0,
+        error_message: 'Failed to validate promotion code',
+      };
+    }
+    return data[0];
   },
 
-  async getPromotionMenuItems(promotionId: string): Promise<string[]> {
+  async recordPromotionUsage(
+    promotionId: string,
+    customerId: string,
+    orderId: string,
+    discountAmount: number
+  ): Promise<PromotionUsage> {
     const { data, error } = await supabase
-      .from('promotion_menu_items')
-      .select('menu_item_id')
+      .from('promotion_usage')
+      .insert({
+        promotion_id: promotionId,
+        customer_id: customerId,
+        order_id: orderId,
+        discount_amount: discountAmount,
+      })
+      .select()
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) throw new Error('Failed to record promotion usage');
+    return data;
+  },
+
+  async getPromotionUsageStats(promotionId: string): Promise<{
+    total_uses: number;
+    total_discount: number;
+    unique_customers: number;
+  }> {
+    const { data, error } = await supabase
+      .from('promotion_usage')
+      .select('discount_amount, customer_id')
       .eq('promotion_id', promotionId);
     if (error) throw error;
-    return Array.isArray(data) ? data.map(item => item.menu_item_id) : [];
+    if (!Array.isArray(data)) {
+      return { total_uses: 0, total_discount: 0, unique_customers: 0 };
+    }
+    const uniqueCustomers = new Set(data.map(u => u.customer_id)).size;
+    const totalDiscount = data.reduce((sum, u) => sum + Number(u.discount_amount), 0);
+    return {
+      total_uses: data.length,
+      total_discount: totalDiscount,
+      unique_customers: uniqueCustomers,
+    };
   },
 
-  async setPromotionMenuItems(promotionId: string, menuItemIds: string[]): Promise<void> {
-    // First, delete existing associations
-    const { error: deleteError } = await supabase
-      .from('promotion_menu_items')
-      .delete()
+  async getCustomerPromotionUsage(customerId: string, promotionId: string): Promise<number> {
+    const { data, error } = await supabase
+      .from('promotion_usage')
+      .select('id')
+      .eq('customer_id', customerId)
       .eq('promotion_id', promotionId);
-    if (deleteError) throw deleteError;
-
-    // Then, insert new associations if any
-    if (menuItemIds.length > 0) {
-      const { error: insertError } = await supabase
-        .from('promotion_menu_items')
-        .insert(
-          menuItemIds.map(menuItemId => ({
-            promotion_id: promotionId,
-            menu_item_id: menuItemId,
-          }))
-        );
-      if (insertError) throw insertError;
-    }
-  },
-
-  async getPromotionsForMenuItem(menuItemId: string): Promise<Promotion[]> {
-    const today = new Date().toISOString().split('T')[0];
-    
-    // Get promotions that are linked to this menu item OR have no specific menu items (restaurant-wide)
-    const { data: linkedPromotions, error: linkedError } = await supabase
-      .from('promotion_menu_items')
-      .select('promotion_id')
-      .eq('menu_item_id', menuItemId);
-    if (linkedError) throw linkedError;
-
-    const linkedPromotionIds = Array.isArray(linkedPromotions) 
-      ? linkedPromotions.map(p => p.promotion_id) 
-      : [];
-
-    // Get all active promotions
-    const { data: allPromotions, error: allError } = await supabase
-      .from('promotions')
-      .select('*')
-      .eq('status', 'active')
-      .lte('start_date', today)
-      .gte('end_date', today);
-    if (allError) throw allError;
-
-    if (!Array.isArray(allPromotions)) return [];
-
-    // Filter promotions: include if it's linked to this item OR if it has no linked items (restaurant-wide)
-    const result = [];
-    for (const promo of allPromotions) {
-      const { data: promoItems } = await supabase
-        .from('promotion_menu_items')
-        .select('id')
-        .eq('promotion_id', promo.id)
-        .limit(1);
-      
-      const hasLinkedItems = Array.isArray(promoItems) && promoItems.length > 0;
-      
-      if (!hasLinkedItems || linkedPromotionIds.includes(promo.id)) {
-        result.push(promo);
-      }
-    }
-
-    return result;
+    if (error) throw error;
+    return Array.isArray(data) ? data.length : 0;
   },
 };
 

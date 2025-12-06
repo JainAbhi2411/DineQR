@@ -256,31 +256,8 @@ export interface ReviewWithCustomer extends Review {
   order?: Order;
 }
 
-export type DiscountType = 'percentage' | 'fixed' | 'bogo';
-
-export interface Promotion {
-  id: string;
-  restaurant_id: string;
-  title: string;
-  description: string | null;
-  discount_type: DiscountType;
-  discount_value: number;
-  start_date: string;
-  end_date: string;
-  status: string;
-  usage_count: number;
-  created_at: string;
-}
-
-export interface PromotionWithMenuItems extends Promotion {
+export interface PromotionWithMenuItems {
   menu_item_ids?: string[];
-}
-
-export interface PromotionMenuItem {
-  id: string;
-  promotion_id: string;
-  menu_item_id: string;
-  created_at: string;
 }
 
 export interface RestaurantSettings {
@@ -318,4 +295,75 @@ export interface AnalyticsData {
     revenue: number;
     order_count: number;
   }[];
+}
+
+export type DiscountType = 'PERCENTAGE' | 'FIXED_AMOUNT';
+
+export interface Promotion {
+  id: string;
+  restaurant_id: string;
+  code: string;
+  title: string;
+  description: string | null;
+  discount_type: DiscountType;
+  discount_value: number;
+  min_order_amount: number;
+  max_discount: number | null;
+  start_date: string;
+  end_date: string;
+  usage_limit_per_customer: number | null;
+  total_usage_limit: number | null;
+  used_count: number;
+  is_active: boolean;
+  terms: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PromotionUsage {
+  id: string;
+  promotion_id: string;
+  customer_id: string;
+  order_id: string;
+  discount_amount: number;
+  used_at: string;
+}
+
+export interface PromotionValidation {
+  valid: boolean;
+  promotion_id: string | null;
+  discount_amount: number;
+  error_message: string | null;
+}
+
+export interface CreatePromotionInput {
+  restaurant_id: string;
+  code: string;
+  title: string;
+  description?: string;
+  discount_type: DiscountType;
+  discount_value: number;
+  min_order_amount?: number;
+  max_discount?: number;
+  start_date: string;
+  end_date: string;
+  usage_limit_per_customer?: number;
+  total_usage_limit?: number;
+  terms?: string;
+}
+
+export interface UpdatePromotionInput {
+  code?: string;
+  title?: string;
+  description?: string;
+  discount_type?: DiscountType;
+  discount_value?: number;
+  min_order_amount?: number;
+  max_discount?: number;
+  start_date?: string;
+  end_date?: string;
+  usage_limit_per_customer?: number;
+  total_usage_limit?: number;
+  is_active?: boolean;
+  terms?: string;
 }
