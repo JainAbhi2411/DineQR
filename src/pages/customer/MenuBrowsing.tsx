@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { restaurantApi, menuCategoryApi, menuItemApi, tableApi, orderApi } from '@/db/api';
-import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem, OrderWithItems } from '@/types/types';
+import { restaurantApi, menuCategoryApi, menuItemApi, tableApi, orderApi, promotionApi } from '@/db/api';
+import { Restaurant, MenuCategory, MenuItem, ItemType, RestaurantType, MenuItemVariant, CartItem, OrderWithItems, PromotionValidation } from '@/types/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,11 +30,14 @@ import {
   Info,
   LayoutGrid,
   List,
-  AlertCircle
+  AlertCircle,
+  Tag
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TableSelectionDialog from '@/components/customer/TableSelectionDialog';
 import AddToExistingOrderDialog from '@/components/customer/AddToExistingOrderDialog';
+import OffersModal from '@/components/customer/OffersModal';
+import PromoCodeInput from '@/components/customer/PromoCodeInput';
 import { supabase } from '@/db/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -70,6 +73,8 @@ export default function MenuBrowsing() {
   const [selectedTableNumber, setSelectedTableNumber] = useState<string>('');
   const [existingOrder, setExistingOrder] = useState<OrderWithItems | null>(null);
   const [addToExistingDialogOpen, setAddToExistingDialogOpen] = useState(false);
+  const [offersModalOpen, setOffersModalOpen] = useState(false);
+  const [appliedPromo, setAppliedPromo] = useState<PromotionValidation | null>(null);
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
@@ -394,12 +399,50 @@ export default function MenuBrowsing() {
     return variant?.price || item.price;
   };
 
-  const cartTotal = cart.reduce((sum, item) => {
+  const cartSubtotal = cart.reduce((sum, item) => {
     const price = getItemPrice(item.menu_item, item.selectedVariant, item.portionSize);
     return sum + (price * item.quantity);
   }, 0);
+
+  const discountAmount = appliedPromo?.valid ? appliedPromo.discount_amount : 0;
+  const cartTotal = Math.max(0, cartSubtotal - discountAmount);
   
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handlePromoApplied = (validation: PromotionValidation) => {
+    setAppliedPromo(validation);
+  };
+
+  const handlePromoRemoved = () => {
+    setAppliedPromo(null);
+  };
+
+  const handleApplyPromoFromModal = (code: string) => {
+    if (!user?.id || !restaurantId) return;
+    promotionApi.validatePromoCode(code, restaurantId, user.id, cartSubtotal)
+      .then((validation) => {
+        if (validation.valid) {
+          setAppliedPromo(validation);
+          toast({
+            title: 'Success!',
+            description: `Promo code applied! You saved $${validation.discount_amount.toFixed(2)}`,
+          });
+        } else {
+          toast({
+            title: 'Invalid Promo Code',
+            description: validation.error_message || 'This promo code cannot be applied',
+            variant: 'destructive',
+          });
+        }
+      })
+      .catch((error: any) => {
+        toast({
+          title: 'Error',
+          description: error.message || 'Failed to apply promo code',
+          variant: 'destructive',
+        });
+      });
+  };
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
@@ -461,7 +504,8 @@ export default function MenuBrowsing() {
       state: {
         cart,
         restaurant,
-        tableId
+        tableId,
+        appliedPromo: appliedPromo?.valid ? appliedPromo : null,
       }
     });
   };
@@ -709,6 +753,18 @@ export default function MenuBrowsing() {
                 <X className="w-4 h-4" />
               </Button>
             )}
+          </div>
+
+          {/* Offers Button */}
+          <div className="mb-3">
+            <Button
+              variant="outline"
+              onClick={() => setOffersModalOpen(true)}
+              className="w-full h-10 text-sm font-semibold border-primary/50 hover:bg-primary/10"
+            >
+              <Tag className="w-4 h-4 mr-2" />
+              View Available Offers & Deals
+            </Button>
           </div>
 
           {/* Type Filter */}
@@ -1241,11 +1297,37 @@ export default function MenuBrowsing() {
 
           {/* Cart Footer */}
           {cart.length > 0 && (
-            <div className="border-t p-4 xl:p-6 bg-background">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-2xl font-bold text-primary">{formatCurrency(cartTotal)}</span>
+            <div className="border-t p-4 xl:p-6 bg-background space-y-4">
+              {/* Promo Code Input */}
+              {user?.id && restaurantId && (
+                <PromoCodeInput
+                  restaurantId={restaurantId}
+                  customerId={user.id}
+                  orderAmount={cartSubtotal}
+                  onPromoApplied={handlePromoApplied}
+                  onPromoRemoved={handlePromoRemoved}
+                  appliedPromo={appliedPromo}
+                />
+              )}
+
+              {/* Price Breakdown */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="font-medium">{formatCurrency(cartSubtotal)}</span>
+                </div>
+                {appliedPromo?.valid && (
+                  <div className="flex items-center justify-between text-sm text-green-600 dark:text-green-400">
+                    <span className="font-medium">Discount</span>
+                    <span className="font-semibold">-{formatCurrency(discountAmount)}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between pt-2 border-t">
+                  <span className="text-lg font-semibold">Total</span>
+                  <span className="text-2xl font-bold text-primary">{formatCurrency(cartTotal)}</span>
+                </div>
               </div>
+
               <Button onClick={handleCheckout} size="lg" className="w-full text-base font-bold">
                 Proceed to Checkout
                 <ChevronRight className="w-5 h-5 ml-2" />
@@ -1541,6 +1623,16 @@ export default function MenuBrowsing() {
           newItems={cart}
           onAddToExisting={handleAddToExistingOrder}
           onCreateNew={handleCreateNewOrder}
+        />
+      )}
+
+      {/* Offers Modal */}
+      {restaurantId && (
+        <OffersModal
+          open={offersModalOpen}
+          onOpenChange={setOffersModalOpen}
+          restaurantId={restaurantId}
+          onApplyPromo={handleApplyPromoFromModal}
         />
       )}
     </div>

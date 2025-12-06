@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { orderApi } from '@/db/api';
+import { orderApi, promotionApi } from '@/db/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
-import { ArrowLeft, CreditCard, ShoppingBag, Wallet, Banknote } from 'lucide-react';
+import { ArrowLeft, CreditCard, ShoppingBag, Wallet, Banknote, Tag } from 'lucide-react';
 import { supabase } from '@/db/supabase';
 
 export default function Checkout() {
@@ -22,7 +22,7 @@ export default function Checkout() {
   const { formatCurrency, formatDateTime, formatDate } = useFormatters();
   
   const tableIdFromUrl = searchParams.get('table');
-  const { cart, restaurant, tableId: tableIdFromState } = location.state || {};
+  const { cart, restaurant, tableId: tableIdFromState, appliedPromo } = location.state || {};
   const tableId = tableIdFromUrl || tableIdFromState;
   
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -49,6 +49,22 @@ export default function Checkout() {
   }
 
   const getTotalAmount = () => {
+    const subtotal = cart.reduce((total: number, item: any) => {
+      const menuItem = item.menuItem || item.menu_item;
+      let price = item.selectedVariant?.price || menuItem?.price || 0;
+      
+      if (menuItem?.has_portions && item.portionSize === 'half') {
+        price = price / 2;
+      }
+      
+      return total + price * item.quantity;
+    }, 0);
+
+    const discountAmount = appliedPromo?.valid ? appliedPromo.discount_amount : 0;
+    return Math.max(0, subtotal - discountAmount);
+  };
+
+  const getSubtotal = () => {
     return cart.reduce((total: number, item: any) => {
       const menuItem = item.menuItem || item.menu_item;
       let price = item.selectedVariant?.price || menuItem?.price || 0;
@@ -110,6 +126,21 @@ export default function Checkout() {
         });
 
         await orderApi.createOrderItems(orderItems);
+
+        // Record promotion usage if a promo was applied
+        if (appliedPromo?.valid && appliedPromo.promotion_id && profile?.id) {
+          try {
+            await promotionApi.recordPromotionUsage(
+              appliedPromo.promotion_id,
+              profile.id,
+              order.id,
+              appliedPromo.discount_amount
+            );
+          } catch (error) {
+            console.error('Failed to record promotion usage:', error);
+            // Don't fail the order if promotion recording fails
+          }
+        }
 
         toast({
           title: 'Order Placed Successfully!',
@@ -293,8 +324,17 @@ export default function Checkout() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${formatCurrency(getTotalAmount())}</span>
+                    <span>{formatCurrency(getSubtotal())}</span>
                   </div>
+                  {appliedPromo?.valid && (
+                    <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                      <span className="flex items-center gap-1">
+                        <Tag className="w-3 h-3" />
+                        Discount ({appliedPromo.code})
+                      </span>
+                      <span className="font-semibold">-{formatCurrency(appliedPromo.discount_amount)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Tax (10%)</span>
                     <span>{formatCurrency((getTotalAmount() * 0.1))}</span>
