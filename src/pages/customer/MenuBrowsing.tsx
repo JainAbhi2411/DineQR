@@ -1771,6 +1771,7 @@ export default function MenuBrowsing() {
       <OrderChatBot
         menuItems={menuItems}
         onAddToCart={handleChatBotAddToCart}
+        onCreateOrder={handleCheckout}
       />
     </div>
   );

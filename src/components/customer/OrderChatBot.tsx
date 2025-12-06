@@ -23,15 +23,17 @@ interface ChatMessage {
 interface OrderChatBotProps {
   menuItems: MenuItem[];
   onAddToCart: (itemId: string, quantity: number) => void;
+  onCreateOrder?: () => void;
   className?: string;
 }
 
-export default function OrderChatBot({ menuItems, onAddToCart, className }: OrderChatBotProps) {
+export default function OrderChatBot({ menuItems, onAddToCart, onCreateOrder, className }: OrderChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [conversationHistory, setConversationHistory] = useState<LLMMessage[]>([]);
+  const [itemsAddedToCart, setItemsAddedToCart] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -46,7 +48,7 @@ export default function OrderChatBot({ menuItems, onAddToCart, className }: Orde
       const welcomeMessage: ChatMessage = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: "👋 Hi! I'm your ordering assistant. You can tell me what you'd like to order in natural language!\n\nFor example, try:\n- \"I want 2 Margherita Pizza and 1 Daal Tadka\"\n- \"Get me 4 rotis and 1 paneer tikka\"\n- \"Order 1 large pizza with extra cheese\"",
+        content: "👋 Hi! I'm your AI ordering assistant. Just tell me what you'd like to order in natural language!\n\n**How it works:**\n1. Tell me your order (e.g., \"I want 2 pizzas and 1 daal tadka\")\n2. I'll parse your order and show you what I understood\n3. Click \"Add to Cart\" to add items\n4. Click \"Proceed to Checkout\" when ready\n\n**Try saying:**\n- \"I want 2 Margherita Pizza and 1 Daal Tadka\"\n- \"Get me 4 rotis and 1 paneer tikka\"\n- \"Order 1 large pizza\"",
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
@@ -168,9 +170,10 @@ export default function OrderChatBot({ menuItems, onAddToCart, className }: Orde
     });
 
     if (addedCount > 0) {
+      setItemsAddedToCart(true);
       toast({
         title: '✅ Added to cart!',
-        description: `${addedCount} item(s) added to your cart.`,
+        description: `${addedCount} item(s) added to your cart. Click "Proceed to Checkout" when ready!`,
       });
     }
 
@@ -289,6 +292,25 @@ export default function OrderChatBot({ menuItems, onAddToCart, className }: Orde
         </ScrollArea>
 
         <div className="p-4 border-t bg-background">
+          {itemsAddedToCart && onCreateOrder && (
+            <div className="mb-3">
+              <Button
+                onClick={() => {
+                  onCreateOrder();
+                  setItemsAddedToCart(false);
+                  toast({
+                    title: '🎉 Proceeding to checkout',
+                    description: 'Taking you to checkout page...',
+                  });
+                }}
+                className="w-full"
+                size="lg"
+              >
+                <Check className="h-4 w-4 mr-2" />
+                Proceed to Checkout
+              </Button>
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
               value={inputValue}
