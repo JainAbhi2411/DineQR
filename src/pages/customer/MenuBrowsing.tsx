@@ -555,8 +555,43 @@ export default function MenuBrowsing() {
       return;
     }
 
-    for (let i = 0; i < quantity; i++) {
-      handleAddToCart(item);
+    // Check if item already exists in cart (without variants/portions for chatbot orders)
+    const existingItemIndex = cart.findIndex(cartItem => 
+      cartItem.menu_item.id === item.id &&
+      !cartItem.selectedVariant &&
+      !cartItem.portionSize
+    );
+
+    if (existingItemIndex !== -1) {
+      // Item exists, increment quantity by the specified amount
+      setCart(prevCart => {
+        const newCart = [...prevCart];
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + quantity
+        };
+        return newCart;
+      });
+      
+      toast({
+        title: 'Quantity Updated',
+        description: `${item.name} quantity increased by ${quantity}`,
+      });
+    } else {
+      // Item doesn't exist, add new entry with specified quantity
+      const cartItem: ExtendedCartItem = {
+        id: `${item.id}-chatbot-${Date.now()}`,
+        menu_item: item,
+        quantity: quantity,
+        selectedVariant: undefined,
+        portionSize: undefined,
+      };
+
+      setCart([...cart, cartItem]);
+      toast({
+        title: 'Added to Cart',
+        description: `${quantity}x ${item.name} added to cart`,
+      });
     }
   };
 
