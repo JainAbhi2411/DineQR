@@ -306,7 +306,6 @@ export const orderApi = {
         *,
         order_items(*, menu_item:menu_items(*)),
         table:tables(*),
-        staff(*),
         waiter:staff!waiter_id(*),
         customer:profiles!customer_id(*),
         status_history:order_status_history(*)
@@ -327,7 +326,6 @@ export const orderApi = {
         table:tables(*),
         restaurant:restaurants(*),
         customer:profiles!customer_id(*),
-        staff(*),
         waiter:staff!waiter_id(*),
         status_history:order_status_history(*)
       `)
@@ -386,6 +384,7 @@ export const orderApi = {
         order_items(*, menu_item:menu_items(*)),
         table:tables(*),
         restaurant:restaurants(*),
+        waiter:staff!waiter_id(*),
         status_history:order_status_history(*)
       `)
       .eq('customer_id', customerId)
