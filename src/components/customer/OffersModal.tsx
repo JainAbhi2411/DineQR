@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tag, Copy, Calendar, DollarSign, Percent, Info } from 'lucide-react';
+import { Tag, Copy, Calendar, DollarSign, Percent, Info, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -76,21 +75,11 @@ export default function OffersModal({
     }
   };
 
-  const getDiscountDisplay = (promotion: Promotion) => {
+  const getDiscountText = (promotion: Promotion) => {
     if (promotion.discount_type === 'PERCENTAGE') {
-      return (
-        <div className="flex items-center gap-1 text-primary font-bold text-2xl">
-          <Percent className="w-6 h-6" />
-          {promotion.discount_value}% OFF
-        </div>
-      );
+      return `${promotion.discount_value}% OFF`;
     }
-    return (
-      <div className="flex items-center gap-1 text-primary font-bold text-2xl">
-        <DollarSign className="w-6 h-6" />
-        ${promotion.discount_value} OFF
-      </div>
-    );
+    return `$${promotion.discount_value} OFF`;
   };
 
   const isExpiringSoon = (endDate: string) => {
@@ -109,10 +98,10 @@ export default function OffersModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-2xl">
-            <Tag className="w-6 h-6 text-primary" />
+          <DialogTitle className="flex items-center gap-2">
+            <Tag className="w-5 h-5 text-primary" />
             Available Offers
           </DialogTitle>
           <DialogDescription>
@@ -133,106 +122,102 @@ export default function OffersModal({
             </p>
           </div>
         ) : (
-          <div className="space-y-4 py-4">
-            {promotions.map((promotion) => (
-              <Card
-                key={promotion.id}
-                className={cn(
-                  "relative overflow-hidden border-2 transition-all hover:shadow-lg",
-                  isExpiringSoon(promotion.end_date) && "border-orange-500"
-                )}
-              >
-                {isExpiringSoon(promotion.end_date) && (
-                  <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs px-3 py-1 rounded-bl-lg font-semibold">
-                    Expiring Soon!
+          <div className="space-y-3 py-4">
+            {promotions.map((promotion) => {
+              const expiringSoon = isExpiringSoon(promotion.end_date);
+              const daysLeft = getDaysLeft(promotion.end_date);
+
+              return (
+                <div
+                  key={promotion.id}
+                  className={cn(
+                    "relative flex items-start gap-4 p-4 rounded-lg border-2 transition-all hover:shadow-md",
+                    "bg-gradient-to-r from-primary/5 to-primary/10",
+                    expiringSoon ? "border-orange-500" : "border-primary/30"
+                  )}
+                >
+                  {expiringSoon && (
+                    <Badge variant="destructive" className="absolute top-2 right-2 text-xs">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {daysLeft}d left
+                    </Badge>
+                  )}
+
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 shrink-0">
+                    {promotion.discount_type === 'PERCENTAGE' ? (
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-primary">{promotion.discount_value}%</div>
+                        <div className="text-[10px] text-primary/70">OFF</div>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-primary">${promotion.discount_value}</div>
+                        <div className="text-[10px] text-primary/70">OFF</div>
+                      </div>
+                    )}
                   </div>
-                )}
-                <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    <div className="flex-shrink-0 flex items-center justify-center bg-primary/10 rounded-lg p-6 md:w-48">
-                      {getDiscountDisplay(promotion)}
+
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <div>
+                      <h3 className="font-bold text-base mb-1">{promotion.title}</h3>
+                      {promotion.description && (
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {promotion.description}
+                        </p>
+                      )}
                     </div>
 
-                    <div className="flex-1 space-y-3">
-                      <div>
-                        <h3 className="text-xl font-bold mb-1">{promotion.title}</h3>
-                        {promotion.description && (
-                          <p className="text-muted-foreground text-sm">
-                            {promotion.description}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                        <Tag className="w-4 h-4 text-primary" />
-                        <span className="font-mono font-bold text-lg">{promotion.code}</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyPromoCode(promotion.code)}
-                          className="ml-auto"
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3 text-sm">
-                        {promotion.min_order_amount > 0 && (
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <DollarSign className="w-4 h-4" />
-                            <span>Min. order: ${promotion.min_order_amount}</span>
-                          </div>
-                        )}
-                        {promotion.max_discount && (
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Info className="w-4 h-4" />
-                            <span>Max. discount: ${promotion.max_discount}</span>
-                          </div>
-                        )}
-                        <div className="flex items-center gap-2 text-muted-foreground col-span-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>
-                            Valid till {new Date(promotion.end_date).toLocaleDateString()}
-                            {getDaysLeft(promotion.end_date) > 0 && (
-                              <span className="ml-1 text-primary font-medium">
-                                ({getDaysLeft(promotion.end_date)} days left)
-                              </span>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-
-                      {promotion.terms && (
-                        <div className="text-xs text-muted-foreground pt-2 border-t">
-                          <span className="font-semibold">Terms:</span> {promotion.terms}
-                        </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
+                      {promotion.min_order_amount > 0 && (
+                        <span className="flex items-center gap-1">
+                          <DollarSign className="w-3 h-3" />
+                          Min. ${promotion.min_order_amount}
+                        </span>
                       )}
-
-                      {promotion.usage_limit_per_customer && (
-                        <div className="text-xs text-muted-foreground">
-                          Limited to {promotion.usage_limit_per_customer} use(s) per customer
-                        </div>
+                      {promotion.max_discount && (
+                        <span className="flex items-center gap-1">
+                          <Info className="w-3 h-3" />
+                          Max. ${promotion.max_discount}
+                        </span>
                       )}
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        Valid till {new Date(promotion.end_date).toLocaleDateString()}
+                      </span>
+                    </div>
 
-                      {promotion.total_usage_limit && (
-                        <div className="flex items-center gap-2 text-xs">
-                          <Badge variant="secondary">
-                            {promotion.total_usage_limit - promotion.used_count} left
-                          </Badge>
-                        </div>
-                      )}
-
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-background rounded border border-border">
+                        <Tag className="w-3 h-3 text-primary" />
+                        <span className="font-mono font-bold text-sm">{promotion.code}</span>
+                      </div>
                       <Button
-                        className="w-full mt-4"
-                        onClick={() => handleApplyPromo(promotion.code)}
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyPromoCode(promotion.code)}
+                        className="h-8"
                       >
-                        {onApplyPromo ? 'Apply Offer' : 'Copy Code'}
+                        <Copy className="w-3 h-3 mr-1" />
+                        Copy
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleApplyPromo(promotion.code)}
+                        className="h-8 ml-auto"
+                      >
+                        {onApplyPromo ? 'Apply' : 'Copy Code'}
                       </Button>
                     </div>
+
+                    {promotion.terms && (
+                      <p className="text-[10px] text-muted-foreground pt-1 border-t">
+                        {promotion.terms}
+                      </p>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </DialogContent>

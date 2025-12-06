@@ -6,6 +6,17 @@
 |-------|--------|-----------------|
 | Ambiguous column error when applying promo code | ✅ **FIXED** | None - ready to test |
 | Promotions not showing in "Available Offers" | ⚠️ **Needs Debug** | Check browser console |
+| Offers display style | ✅ **UPDATED** | Zomato-style compact cards |
+
+## ✅ Recent Updates
+
+### UI/UX Improvements
+**Changed offers display to Zomato-style compact cards**:
+- ✅ Replaced large gradient cards with compact horizontal scrollable cards
+- ✅ Simplified design with icon + discount text + summary
+- ✅ More offers visible at once (up to 10 instead of 5)
+- ✅ Cleaner, more modern look similar to Zomato
+- ✅ Updated modal to show compact offer cards instead of large cards
 
 ## ✅ Issues Fixed
 
