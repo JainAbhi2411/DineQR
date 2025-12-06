@@ -4,7 +4,6 @@ export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 
 export type RestaurantType = 'veg' | 'non_veg' | 'both';
 export type ItemType = 'veg' | 'non_veg' | 'vegan' | 'egg';
 export type SpiceLevel = 'none' | 'mild' | 'medium' | 'hot' | 'extra_hot';
-export type WaiterStatus = 'active' | 'inactive';
 
 export interface Profile {
   id: string;
@@ -148,13 +147,8 @@ export interface Staff {
   updated_at: string;
 }
 
-export interface Waiter {
-  id: string;
-  restaurant_id: string;
-  name: string;
-  phone: string | null;
-  status: WaiterStatus;
-  created_at: string;
+export interface StaffWithAvailability extends Staff {
+  is_busy: boolean;
 }
 
 export interface Message {
@@ -198,7 +192,7 @@ export interface OrderWithItems extends Order {
   restaurant?: Restaurant;
   customer?: Profile;
   staff?: Staff;
-  waiter?: Waiter;
+  waiter?: Staff;
   status_history?: OrderStatusHistory[];
 }
 

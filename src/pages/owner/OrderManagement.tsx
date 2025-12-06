@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { restaurantApi, orderApi, waiterApi } from '@/db/api';
-import { Restaurant, OrderWithItems, OrderStatus, Waiter } from '@/types/types';
+import { restaurantApi, orderApi, staffApi } from '@/db/api';
+import { Restaurant, OrderWithItems, OrderStatus, Staff } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -34,7 +34,7 @@ export default function OrderManagement() {
     served: ORDERS_PER_PAGE,
     completed: ORDERS_PER_PAGE,
   });
-  const [waiters, setWaiters] = useState<Waiter[]>([]);
+  const [waiters, setWaiters] = useState<Staff[]>([]);
   const ordersRef = useRef<OrderWithItems[]>([]);
 
   // Keep ref in sync with state
@@ -53,7 +53,7 @@ export default function OrderManagement() {
       const [restaurantData, ordersData, waitersData] = await Promise.all([
         restaurantApi.getRestaurantById(restaurantId),
         orderApi.getOrdersByRestaurant(restaurantId),
-        waiterApi.getActiveWaitersByRestaurant(restaurantId),
+        staffApi.getFreeWaiters(restaurantId),
       ]);
       
       console.log('[OrderManagement] Loaded orders:', ordersData.length);
@@ -236,7 +236,7 @@ export default function OrderManagement() {
 
   const assignWaiter = async (orderId: string, waiterId: string | null) => {
     try {
-      await orderApi.assignWaiterToOrder(orderId, waiterId);
+      await staffApi.assignWaiterToOrder(orderId, waiterId);
       toast({
         title: 'Success',
         description: waiterId ? 'Waiter assigned successfully' : 'Waiter assignment removed',

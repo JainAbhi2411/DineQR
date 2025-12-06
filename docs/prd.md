@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Waiter Assignment Implementation with Customer Dashboard Integration)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete Waiter Assignment Implementation with Free Waiter Filtering)
 
 ## 1. Application Overview
 
@@ -6,13 +6,13 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, AI-powered recommendations, real-time chat system, **mandatory waiter assignment for every order by restaurant owner with real-time synchronization to customer dashboard displaying assigned waiter name and information**, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking and performance analytics, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates and table updates to customer dashboards without page refresh, and Add-On Order feature allowing customers to add items to their active order without creating a new order or bill - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. All data displayed across the platform is real-time and dynamically calculated from the live database.
-
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, AI-powered recommendations, real-time chat system, **mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information**, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, e-bill generation, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and **real-time waiter availability status (Free/Busy/Offline)**, advanced marketing and promotions system with campaign management, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates and table updates to customer dashboards without page refresh, and Add-On Order feature allowing customers to add items to their active order without creating a new order or bill - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface. All data displayed across the platform is real-time and dynamically calculated from the live database.\n
 ## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
 
-**User Roles**:\n- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings, **mandatory waiter assignment for all orders**
+**User Roles**:
+- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings, **mandatory waiter assignment for all orders with free waiter visibility**
 - **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management\n- **Customer**: Access to menu browsing, ordering, order tracking, **real-time waiter assignment information display**, chat with restaurant, payment, order history, browse previously scanned restaurants
 
 **Authentication Flow**:
@@ -24,8 +24,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
    - Email/Password login
    - Google OAuth login (using OSS Google login method)
    - Phone number OTP login
-4. **Role-Based Conditional Rendering**:
-   - After successful authentication, system identifies user role from database
+4. **Role-Based Conditional Rendering**:\n   - After successful authentication, system identifies user role from database
    - **Owner**: Redirected to Owner Dashboard\n   - **Waiter**: Redirected to Waiter Dashboard
    - **Customer**: Redirected to Customer Home
 5. **Session Management**: JWT token-based authentication, automatic token refresh, secure logout
@@ -46,8 +45,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-ed
 **Overview**:
 The Owner Home Screen serves as the central command center, displaying real-time business metrics, order status, revenue analytics, and quick access to all management functions.\n
 **Layout Structure**:
-\n**A. Top Navigation Bar**
-- Restaurant logo and name (left)\n- Search bar (center)
+\n**A. Top Navigation Bar**\n- Restaurant logo and name (left)\n- Search bar (center)
 - Notification bell icon with real-time badge count (right)
 - User profile dropdown (right)
 
@@ -70,7 +68,8 @@ The Owner Home Screen serves as the central command center, displaying real-time
 \n**Recent Orders Section**:
 - Display last 5 orders with real-time updates
 - **Each order card displays assigned waiter name and avatar**
-- Quick action buttons\n\n**Quick Actions Section**:
+- Quick action buttons\n
+**Quick Actions Section**:
 - Grid of 6 quick action buttons
 \n**Sales Analytics Chart**:
 - Interactive chart showing revenue trends\n\n**Popular Menu Items Section**:
@@ -134,7 +133,7 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 
 #### 3.1.5 Advanced Order Management Dashboard with Mandatory Waiter Assignment and Real-Time Auto-Refresh
 
-**Overview**:\nCentralized order management interface with real-time updates, detailed order information, and **mandatory waiter assignment for every order with instant synchronization to customer dashboard**.
+**Overview**:\nCentralized order management interface with real-time updates, detailed order information, and **mandatory waiter assignment for every order with intelligent free waiter filtering and instant synchronization to customer dashboard**.
 
 **Key Features**:
 
@@ -157,38 +156,40 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 - **Waiter Assignment Section**:
   - **If Unassigned**:
     - Heading: 'Assign Waiter' (neon magenta color)
-    - Dropdown: List of available waiters with name, avatar, current workload (number of active orders)\n    - Button: 'Assign' (primary, neon gradient)
-    - Note: 'Please assign a waiter to this order to proceed.'
+    - Dropdown: List of **active and free waiters only** with name, avatar, current workload (number of active orders)\n    - Button: 'Assign' (primary, neon gradient)
+- Note: 'Please assign a waiter to this order to proceed.'
   - **If Assigned**:
     - Heading: 'Assigned Waiter'\n    - Display: Waiter name, avatar, contact info\n    - Button: 'Reassign Waiter' (secondary, outline)
     - Timeline entry: 'Waiter Assigned' with timestamp and waiter name
-\n**E. Waiter Assignment Modal**
+\n**E. Waiter Assignment Modal with Free Waiter Filtering**
 \n- **Triggered by**: Clicking 'Assign Waiter' button on order card or in order details modal
 - **Modal Layout**:
   - Heading: 'Assign Waiter to Order #ORD-1234'
-  - Subheading: 'Select a waiter to handle this order'
-  - **Waiter Selection List**:
-    - Display all active waiters in card format
+  - Subheading: 'Select a free waiter to handle this order'
+  - **Waiter Selection List (Active and Free Waiters Only)**:\n    - **Filtering Logic**: Display only waiters with status 'Active' AND availability 'Free' (workload below threshold)
+    - Display filtered waiters in card format
     - Each card shows:\n      - Waiter avatar (circular, neon border)
       - Waiter name (bold, white text)
-      - Current workload: 'X Active Orders' (small text, light grey)
-      - Status indicator: 'Available' (neon green) or 'Busy' (neon yellow) based on workload threshold
+      - Current workload:'X Active Orders' (small text, light grey)
+      - Status indicator: 'Free' (neon green badge)
       - Radio button for selection
     - Cards arranged in grid (2-3 columns on desktop, 1 column on mobile)
     - Selected card highlights with neon gradient border and scale animation
   - **Search & Filter**:
-    - Search bar: 'Search waiter by name'\n    - Filter dropdown: 'All Waiters', 'Available', 'Busy'
+    - Search bar:'Search waiter by name'\n    - **Note**: Filter automatically applied to show only active and free waiters
   - **Action Buttons**:
     - 'Cancel' (secondary, outline)
     - 'Assign Waiter' (primary, neon gradient, disabled until waiter selected)
-  - **Empty State**: If no waiters available, display message: 'No waiters available. Please add staff members in Staff Management.'
+  - **Empty State**: If no free waiters available, display message: 'No free waiters available at the moment. All waiters are currently busy. Please wait or check Staff Management to add more waiters.'
 
 **F. Waiter Assignment Confirmation and Real-Time Customer Dashboard Update**
-\n- **After Assignment**:
+
+- **After Assignment**:
   - Success toast notification: 'Waiter [Name] assigned to Order #ORD-1234'
   - Order card updates to show assigned waiter info
   - Order details modal updates waiter assignment section
   - Timeline adds new entry: 'Waiter Assigned: [Name]' with timestamp
+  - **Waiter status automatically updates from 'Free' to 'Busy' in Staff Management**
   - **Real-time notification sent to assigned waiter**: 'You have been assigned to Order #ORD-1234 (Table X)'
   - **Real-time WebSocket event sent to customer**: Event type'waiter_assigned' with payload containing order_id, waiter_name, waiter_avatar, waiter_contact\n  - **Customer dashboard automatically updates without page refresh**:\n    - Active order card displays assigned waiter information (name, avatar)\n    - Order tracking page updates to show waiter info section
     - Timeline adds'Waiter Assigned: [Name]' entry with timestamp
@@ -199,18 +200,19 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 - **Triggered by**: Clicking 'Reassign Waiter' button in order details modal
 - **Reassignment Modal**:
   - Similar to assignment modal\n  - Heading: 'Reassign Waiter for Order #ORD-1234'
-  - Display current waiter info at top with label 'Currently Assigned'\n  - Waiter selection list excludes current waiter
+  - Display current waiter info at top with label'Currently Assigned'\n  - **Waiter selection list shows only active and free waiters (excludes current waiter)**
   - Confirmation prompt: 'Are you sure you want to reassign this order? The current waiter will be notified.'
 - **After Reassignment**:
   - Success toast: 'Order #ORD-1234 reassigned to [New Waiter Name]'
   - Timeline adds entry: 'Waiter Reassigned: [Old Name] → [New Name]' with timestamp
+  - **Old waiter status updates to 'Free' if no other active orders**
+  - **New waiter status updates to 'Busy'**
   - **Notification to old waiter**: 'Order #ORD-1234 has been reassigned to [New Waiter Name]'
   - **Notification to new waiter**: 'You have been assigned to Order #ORD-1234 (Table X)'
   - **Real-time WebSocket event sent to customer**: Event type 'waiter_reassigned' with payload containing order_id, new_waiter_name, new_waiter_avatar, new_waiter_contact
   - **Customer dashboard automatically updates**:
     - Waiter info section updates to show new waiter details
-    - Timeline adds 'Waiter Reassigned' entry\n    - Customer receives notification: 'Your order has been reassigned to [New Waiter Name]'
-
+    - Timeline adds 'Waiter Reassigned' entry\n    - Customer receives notification: 'Your order has been reassigned to [New Waiter Name]'\n
 **H. Bulk Order Actions**
 - Select multiple orders for bulk operations
 \n**I. Order Analytics**
@@ -230,49 +232,80 @@ Comprehensive payment tracking and management system.\n
 - Payment Settings
 
 ---
-\n#### 3.1.7Waiter/Agent Assignment System (Complete Implementation)
-
-**Overview**:\n**Mandatory waiter assignment for every order** with performance tracking, workload management, and **real-time synchronization to customer dashboard**.
+\n#### 3.1.7Waiter/Agent Assignment System (Complete Implementation with Free Waiter Filtering)
+\n**Overview**:
+**Mandatory waiter assignment for every order** with performance tracking, workload management, **real-time availability status tracking (Free/Busy/Offline)**, and **real-time synchronization to customer dashboard**.
 
 **Key Features**:
 
-**A. Waiter Management Dashboard**
-- List of all waiters with status (Available/Busy/Offline)
-- Current workload for each waiter (number of active orders)
-- Performance metrics (orders completed today, average handling time, customer ratings)
-- Action buttons: 'Add Waiter', 'View Details', 'Edit', 'Deactivate'\n
-**B. Mandatory Assignment for Every Order with Customer Dashboard Integration**
+**A. Waiter Management Dashboard (Integrated with Staff Management)**
+- **Located in Staff Management module**
+- List of all waiters with real-time status indicators:\n  - **Free** (neon green badge): Waiter is active and has workload below threshold (available for assignment)
+  - **Busy** (neon yellow badge): Waiter is active but has workload at or above threshold (not available for assignment)\n  - **Offline** (grey badge): Waiter is not clocked in or inactive (not available for assignment)
+- **Waiter Card Display**:
+  - Waiter avatar (circular, neon border)
+  - Waiter name (bold, white text)
+  - Status badge (Free/Busy/Offline)
+  - Current workload: 'X Active Orders' (small text, light grey)
+  - Performance metrics: Orders completed today, average handling time, customer ratings
+  - Action buttons: 'View Details', 'Edit', 'Deactivate'\n- **Free Waiters Section**:
+  - Dedicated section at top of Staff Management page
+  - Heading: 'Free Waiters' (neon green color)
+  - Displays all waiters with 'Free' status in card grid\n  - Quick view of available waiters for immediate assignment
+  - Real-time updates as waiter status changes
+- **Filter Options**:
+  - 'All Waiters', 'Free', 'Busy', 'Offline'
+  - Search bar: 'Search waiter by name'\n- **Add Waiter Button**:'Add Waiter' (primary, neon gradient) - opens Add Staff Member modal with role pre-selected as 'Waiter'
+\n**B. Mandatory Assignment for Every Order with Customer Dashboard Integration**
 - **System Rule**: Every new order must be assigned a waiter before it can proceed to'Accepted' status
 - **Owner Workflow**:
   1. New order arrives → Order status: 'Pending - Awaiting Waiter Assignment'
   2. Owner receives notification: 'New Order #ORD-1234 - Assign Waiter'\n  3. Owner opens order details or clicks 'Assign Waiter' on order card
-  4. Owner selects waiter from assignment modal
-  5. System assigns waiter → Order status changes to 'Pending - Waiter Assigned'
-  6. **Real-time WebSocket event 'waiter_assigned' sent to customer with waiter details**
-  7. **Customer dashboard automatically updates to display assigned waiter name, avatar, and contact info**
-8. Waiter receives notification and can accept order
+  4. **System displays only active and free waiters in assignment modal**
+  5. Owner selects waiter from filtered list
+  6. System assigns waiter → Order status changes to 'Pending - Waiter Assigned'
+  7. **Waiter status automatically updates from 'Free' to 'Busy' in Staff Management**
+  8. **Real-time WebSocket event 'waiter_assigned' sent to customer with waiter details**
+  9. **Customer dashboard automatically updates to display assigned waiter name, avatar, and contact info**
+10. Waiter receives notification and can accept order
 - **Unassigned Order Restrictions**:
   - Orders without waiter assignment cannot be marked as 'Accepted' or 'Preparing'
   - Order card displays 'Unassigned' badge in neon yellow
   - Owner dashboard highlights unassigned orders count in metrics card
   - **Customer dashboard displays 'Waiter assignment pending' status until waiter is assigned**
-
-**C. Automatic Assignment (Optional Feature)**
+\n**C. Automatic Assignment (Optional Feature)**
 - **Toggle in Settings**: 'Enable Automatic Waiter Assignment' (on/off)
 - **Assignment Logic**:
-  - System automatically assigns waiter based on:\n    1. Current workload (assigns to waiter with fewest active orders)
-    2. Table proximity (if table location data available)
-    3. Waiter availability status\n  - Owner can override automatic assignment and reassign manually
+  - System automatically assigns waiter based on:\n    1. **Availability status: Only'Free' waiters are considered**
+    2. Current workload (assigns to free waiter with fewest active orders)
+    3. Table proximity (if table location data available)
+  - Owner can override automatic assignment and reassign manually
+  - **Waiter status automatically updates from 'Free' to 'Busy' after assignment**
   - **Customer dashboard automatically updates with assigned waiter info**
 - **Notification**: Owner receives notification: 'Order #ORD-1234 automatically assigned to [Waiter Name]'
-\n**D. Waiter Performance Tracking**
-- Orders handled per shift
-- Average order handling time
+\n**D. Waiter Availability Status Logic**
+- **Free Status**:
+  - Waiter is clocked in (Active)\n  - Current workload (active orders) is below threshold (default: 5orders, configurable in Settings)
+  - Available for new order assignments
+- **Busy Status**:
+  - Waiter is clocked in (Active)\n  - Current workload is at or above threshold\n  - Not available for new order assignments (hidden from assignment modal)
+- **Offline Status**:
+  - Waiter is not clocked in or account is inactive
+  - Not available for any assignments
+- **Real-Time Status Updates**:
+  - Status automatically updates when:\n    - Waiter is assigned a new order (Free → Busy if threshold reached)
+    - Waiter completes an order (Busy → Free if workload drops below threshold)
+    - Waiter clocks in/out (Offline ↔ Free/Busy)
+  - WebSocket events broadcast status changes to Owner Dashboard and Staff Management
+
+**E. Waiter Performance Tracking**
+- Orders handled per shift\n- Average order handling time
 - Customer ratings for assigned orders
 - Order completion rate
 - Tips received (if applicable)
+- **Availability rate**: Percentage of time waiter was'Free' vs 'Busy' during shift
 
-**E. Waiter Communication**
+**F. Waiter Communication**
 - Direct chat between owner and waiter
 - Broadcast messages to all waiters
 - Order-specific communication thread
@@ -292,56 +325,75 @@ Centralized messaging system for communication between owner, waiters, and custo
 ---
 \n#### 3.1.9 Advanced Analytics & Reports with Real-Time Data\n
 **Overview**:
-Comprehensive analytics dashboard with real-time data visualization, **including waiter performance analytics**.
+Comprehensive analytics dashboard with real-time data visualization, **including waiter performance analytics and availability metrics**.
 
 **Key Features**:
-- Analytics Dashboard (revenue, orders, menu, customer, **staff analytics with waiter performance metrics**)
+- Analytics Dashboard (revenue, orders, menu, customer, **staff analytics with waiter performance metrics and availability tracking**)
 - Custom Reports
 - Predictive Analytics
-- **Waiter Performance Reports**: Orders per waiter, average handling time, customer ratings, tips earned
-\n---
-
-#### 3.1.10 Complete Staff Management System
-
-**Overview**:
-Comprehensive staff management module with **waiter assignment tracking**.
-
-**Key Features**:
-- Staff Dashboard (including waiter assignment status and workload)
-- Add/Edit Staff Member
-- Attendance Tracking
-- Leave Management
-- Shift Scheduling
-- Performance Analytics (including waiter assignment metrics)
-- Payroll Management
-- Staff Communication
+- **Waiter Performance Reports**: Orders per waiter, average handling time, customer ratings, tips earned, **availability rate (Free vs Busy time)**
 
 ---
-\n#### 3.1.11 Complete Marketing & Promotions System
+
+#### 3.1.10 Complete Staff Management System with Waiter Availability Tracking
+
+**Overview**:
+Comprehensive staff management module with **waiter assignment tracking and real-time availability status (Free/Busy/Offline)**.
+
+**Key Features**:
+- **Staff Dashboard**:
+  - **Free Waiters Section** (dedicated section at top):
+    - Heading: 'Free Waiters' (neon green color)
+    - Card grid displaying all waiters with 'Free' status
+    - Each card shows: Avatar, name, 'Free' badge (neon green), current workload,'Assign to Order' quick action button
+    - Real-time updates as status changes
+  - **All Staff Section**:
+    - List/grid view of all staff members (including waiters)
+    - Filter options: 'All Staff', 'Waiters', 'Kitchen Staff', 'Managers', etc.
+    - **Waiter Status Filter**: 'All Waiters', 'Free', 'Busy', 'Offline'
+    - Each waiter card displays: Avatar, name, role, status badge (Free/Busy/Offline), current workload, performance metrics
+    - Action buttons: 'View Details', 'Edit', 'Deactivate'
+- **Add/Edit Staff Member**:
+  - Form fields: Name, role (dropdown with 'Waiter' option), contact info, employment details
+  - **For Waiters**: Additional field for'Workload Threshold' (default: 5 active orders)
+  - 'Add Waiter' button in Free Waiters section opens this form with role pre-selected as 'Waiter'
+- **Attendance Tracking**:
+  - Clock in/out functionality
+  - **Waiter status automatically changes to 'Free' on clock in (if workload below threshold) or 'Offline' on clock out**
+- **Leave Management**\n- **Shift Scheduling**
+- **Performance Analytics** (including waiter assignment metrics and availability rate)
+- **Payroll Management**
+- **Staff Communication**
+
+---
+
+#### 3.1.11 Complete Marketing & Promotions System
 \n**Overview**:
 Advanced marketing module for campaigns and promotions.
 
 **Key Features**:
-- Marketing Dashboard\n- Create Promotion Campaign
+- Marketing Dashboard
+- Create Promotion Campaign
 - Discount Code Management
-- Loyalty Program\n- Referral Program
-- Campaign Analytics
+- Loyalty Program
+- Referral Program\n- Campaign Analytics
 - Customer Engagement
 
 ---
 \n#### 3.1.12 Complete Settings Module with Auto-Application
 
-**Overview**:\nComprehensive settings module for restaurant configuration, **including waiter assignment settings**.
+**Overview**:\nComprehensive settings module for restaurant configuration, **including waiter assignment settings and availability threshold configuration**.
 
 **Key Features**:
 - Settings Dashboard
 - Restaurant Profile (including restaurant type: Veg/Non-Veg/Both)
 - Operational Settings\n- **Waiter Assignment Settings**:
   - Toggle: 'Enable Automatic Waiter Assignment' (on/off)
-  - Input: 'Workload Threshold for Busy Status' (default: 5active orders)
+  - **Input:'Workload Threshold for Busy Status' (default: 5 active orders)** - determines when waiter status changes from 'Free' to 'Busy'
   - Toggle: 'Allow Customer to View Assigned Waiter' (on/off, default: on)
   - Toggle: 'Require Waiter Assignment Before Order Acceptance' (on/off, default: on)
   - Toggle: 'Display Waiter Contact Info to Customer' (on/off, default: on)
+  - **Toggle: 'Show Only Free Waiters in Assignment Modal' (on/off, default: on)** - when enabled, assignment modal displays only active and free waiters
 - Payment Settings
 - Notification Settings\n- User Preferences
 - Currency & Timezone (with auto-application system-wide)
@@ -372,13 +424,13 @@ Advanced marketing module for campaigns and promotions.
 
 **C. Main Dashboard Content Area**
 - Welcome banner
-- **Active orders section with assigned waiter information**:\n  - Each active order card displays:
-    - Order ID, table number, order status
+- **Active orders section with assigned waiter information**:\n  - Each active order card displays:\n    - Order ID, table number, order status
     - Order items summary
     - **Assigned waiter section**:
-      - **If waiter assigned**: Waiter avatar (circular, neon border), waiter name (bold, white text), 'Your Waiter' label (small text, light grey), 'Chat with Waiter' button (secondary, outline)
+      - **If waiter assigned**: Waiter avatar (circular, neon border), waiter name (bold, white text), 'Your Waiter' label (small text, light grey),'Chat with Waiter' button (secondary, outline)
       - **If waiter not yet assigned**: 'Waiter assignment pending' badge (neon yellow), 'Your order is being assigned to a waiter' message (small text, light grey)
-    - Order total, estimated time\n    - 'Track Order' button\n- Recently scanned restaurants
+    - Order total, estimated time\n    - 'Track Order' button
+- Recently scanned restaurants
 - Recommended items
 - Promotions & offers
 \n**D. Real-Time WebSocket Connection**
@@ -440,12 +492,14 @@ Dedicated page displaying previously scanned restaurants with search and filter 
 
 **STEP 4: Order Confirmation Page**
 - Success message
-- Order details card (including table number and portion names, **waiter assignment status:'Your order is being assigned to a waiter'**)
+- Order details card (including table number and portion names, **waiter assignment status: 'Your order is being assigned to a waiter'**)
 - Order summary
 - Action buttons
-- Additional information\n- Post-order actions\n
+- Additional information\n- Post-order actions
+
 **STEP 5: Transition to Order Tracking**
-- Automatic redirect or manual navigation\n- Order tracking page\n\n**Additional Checkout Features**:\n- Guest checkout\n- Saved addresses & payment methods
+- Automatic redirect or manual navigation\n- Order tracking page\n\n**Additional Checkout Features**:
+- Guest checkout\n- Saved addresses & payment methods
 - Order modifications
 - Accessibility & UX enhancements
 - Security measures
@@ -454,8 +508,10 @@ Dedicated page displaying previously scanned restaurants with search and filter 
 \n#### 3.2.5 Real-Time Order Tracking with Assigned Waiter Information Display
 
 **Overview**:\nCustomers track orders in real-time with automatic status updates and **assigned waiter information with real-time synchronization**.
-\n**Key Features**:
-\n**A. Order Tracking Page Layout**
+
+**Key Features**:
+
+**A. Order Tracking Page Layout**
 - Page header with order ID and status badge
 - **Assigned Waiter Information Section** (prominent display at top of page):
   - **If waiter assigned**:
@@ -583,7 +639,8 @@ Access help resources and contact support.
 \n**D. Add-On Order Confirmation**
 - Success message with updated order summary
 - Action buttons to track order or return to menu
-\n**E. Real-Time Notifications**
+
+**E. Real-Time Notifications**
 - Customer, owner, and **assigned waiter** receive notifications about add-on items
 - **Waiter notification**: 'Add-on items added to Order #ORD-1234 (your assigned order)'
 \n**F. Order Timeline Update**
@@ -602,10 +659,11 @@ Access help resources and contact support.
 - Toggle: 'Enable Add-On Orders'\n- Input: 'Maximum Add-Ons Per Order'\n- Toggle: 'Allow Add-Ons After Payment'
 \n---
 
-### 3.3 Enhanced Waiter/Agent Features\n
-#### 3.3.1 Waiter Dashboard with Assigned Orders\n
-**Overview**:
-Waiter-facing dashboard with **assigned orders**, tables, and tasks.
+### 3.3 Enhanced Waiter/Agent Features
+
+#### 3.3.1 Waiter Dashboard with Assigned Orders
+
+**Overview**:\nWaiter-facing dashboard with **assigned orders**, tables, and tasks.
 
 **Key Features**:
 - Dashboard layout with metrics (including'Orders Assigned to You Today'), **assigned orders section (displays only orders assigned to this waiter)**, active tables\n- **Assigned Orders Section**:
@@ -626,46 +684,51 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 **Overview**:\nWaiter profile, clock in/out, and attendance history, **including assignment performance metrics**.
 
 **Key Features**:
-- Profile page (includes performance metrics: orders handled, average handling time, customer ratings)
+- Profile page (includes performance metrics: orders handled, average handling time, customer ratings, **availability rate**)
 - Attendance (clock in/out, history)
-- Leave requests
-\n---
+- **Clock In/Out Logic**:
+  - On clock in: Waiter status changes to 'Free' (if workload below threshold) or 'Busy' (if workload at/above threshold)
+  - On clock out: Waiter status changes to 'Offline'\n- Leave requests\n\n---
 
 ## 4. Complete User Flows
 
-### 4.1 Restaurant Owner Flow (Updated)
+### 4.1 Restaurant Owner Flow (Updated with Free Waiter Filtering)
 
 1. Sign Up/Login → Owner Dashboard\n2. Setup Restaurant Profile (including restaurant type)\n3. Add Menu Items with Database-Driven Portions
 4. Edit/Delete Menu Items (real-time sync to customers)
 5. Add/Edit/Delete Categories (real-time sync)\n6. Generate/Edit/Delete QR Codes (real-time table sync)
-7. **Receive Order → Order status: 'Pending - Awaiting Waiter Assignment'**
-8. **Assign Waiter (Mandatory)**:\n   - Open order details or click 'Assign Waiter' on order card
-   - Select waiter from assignment modal
-   - Confirm assignment\n   - System updates order status to 'Pending - Waiter Assigned'
+7. **Add Waiters in Staff Management** → Waiters appear in 'Free Waiters' section when clocked in and available
+8. **Receive Order → Order status: 'Pending - Awaiting Waiter Assignment'**
+9. **Assign Waiter (Mandatory)**:\n   - Open order details or click 'Assign Waiter' on order card
+   - **Assignment modal displays only active and free waiters**
+   - Select waiter from filtered list
+   - Confirm assignment
+   - **Waiter status automatically updates from 'Free' to 'Busy' in Staff Management**
+   - System updates order status to 'Pending - Waiter Assigned'
    - **Real-time WebSocket event'waiter_assigned' sent to customer**
    - **Customer dashboard automatically updates to display assigned waiter name, avatar, and contact info**
-   - Waiter receives notification\n9. Track Order\n10. Manage Staff (including waiter assignment tracking)
-11. Create Promotion\n12. View Analytics (including waiter performance metrics)
-13. Configure Settings (including waiter assignment settings)
+- Waiter receives notification\n10. Track Order\n11. Manage Staff (including waiter assignment tracking and free waiter visibility)
+12. Create Promotion\n13. View Analytics (including waiter performance metrics and availability rate)
+14. Configure Settings (including waiter assignment settings and workload threshold)
 \n### 4.2 Customer Flow (Complete Checkout Flow with Add-On Order Feature and Waiter Assignment Display)
 
 1. Sign Up/Login → Customer Home
 2. Scan QR Code (Mobile-Only) → Menu displayed with restaurant type badge → Table number auto-detected
 3. Browse Menu → Real-time menu updates\n4. Select Item with Database-Driven Portion → Choose portion → Add to Cart
 5. Review Cart → Edit quantities/portions → Proceed to Checkout
-6. Checkout Page → Enter customer details → Select order type → Apply promo code → Review order summary → Proceed to Payment
-7. Payment Page → Select payment method → Enter payment details → Place Order & Pay
+6. Checkout Page → Enter customer details → Select order type → Apply promo code → Review order summary → Proceed to Payment\n7. Payment Page → Select payment method → Enter payment details → Place Order & Pay
 8. Order Confirmation → View order details → **Waiter assignment status: 'Your order is being assigned to a waiter'** → Download receipt → Track Order
-9. **Order Tracking Page**:\n   - **Waiter assignment section displays'Assignment Pending' status with pulsing neon yellow badge**
+9. **Order Tracking Page**:
+   - **Waiter assignment section displays'Assignment Pending' status with pulsing neon yellow badge**
    - Customer waits for waiter assignment
-10. **Owner Assigns Waiter**:
-    - **Real-time WebSocket event 'waiter_assigned' received by customer dashboard**
+10. **Owner Assigns Waiter (from free waiters list)**:\n    - **Real-time WebSocket event 'waiter_assigned' received by customer dashboard**
     - **Waiter assignment section automatically updates without page refresh**:\n      - 'Assignment Pending' transitions to 'Your Waiter' with fade-in animation
       - Waiter card slides in displaying waiter avatar, name, and contact info
       - Status badge changes to 'Handling Your Order' (neon green)
       - Timeline adds 'Waiter Assigned: [Waiter Name]' step with timestamp
     - **In-app notification displays**: 'Your order has been assigned to [Waiter Name]. They will assist you shortly.'
-    - **Notification bell badge increments**\n11. **Customer Views Assigned Waiter Info**:
+    - **Notification bell badge increments**
+11. **Customer Views Assigned Waiter Info**:
     - Waiter name, avatar, and contact info displayed prominently
     - 'Chat with Waiter' button available for direct communication
 12. **Add-On Order Flow**:
@@ -676,24 +739,25 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
     - Customer reviews and confirms add-on\n    - System adds items to existing order
     - **Assigned waiter receives notification about add-on items**
     - Order tracking page updates\n13. Track Order → Real-time updates → **View assigned waiter info**
-14. Receive Order → Rate Order (including waiter rating)
-15. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu → Add items → Complete order
+14. Receive Order → Rate Order (including waiter rating)\n15. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu → Add items → Complete order
 16. Reorder → Previous portion names auto-selected
-17. View Loyalty Points\n\n### 4.3 Waiter Flow (Updated)
-
+17. View Loyalty Points\n\n### 4.3 Waiter Flow (Updated)\n
 1. Login → Waiter Dashboard
-2. Clock In\n3. **Receive Notification: 'You have been assigned to Order #ORD-1234 (Table X)'**
-4. **View Assigned Orders (only orders assigned to this waiter)**
-5. View Order Details (with portion names and add-on items highlighted)
-6. Update Order Status (Accept → Preparing → Ready → Completed)
-7. **Receive Notification: 'Add-on items added to Order #ORD-1234 (your assigned order)'**
-8. Communicate with customer or owner
-9. Clock Out
+2. **Clock In → Waiter status changes to 'Free' (appears in Free Waiters section in Staff Management)**
+3. **Receive Notification: 'You have been assigned to Order #ORD-1234 (Table X)'**
+4. **Waiter status automatically updates to 'Busy' (removed from Free Waiters section)**\n5. **View Assigned Orders (only orders assigned to this waiter)**
+6. View Order Details (with portion names and add-on items highlighted)
+7. Update Order Status (Accept → Preparing → Ready → Completed)
+8. **Receive Notification: 'Add-on items added to Order #ORD-1234 (your assigned order)'**
+9. Communicate with customer or owner
+10. **Complete Order → If no other active orders, waiter status changes back to 'Free' (reappears in Free Waiters section)**
+11. Clock Out → **Waiter status changes to 'Offline'**
 \n---
 
 ## 5. Advanced Design System with Futuristic UI Specifications
 
-### 5.1 Overall Aesthetic\n
+### 5.1 Overall Aesthetic
+
 - **Theme**: Dark-themed futuristic interface with neon accents
 - **Color Scheme**: Deep charcoal grey or dark blue backgrounds with electric cyan, vibrant magenta, and electric blue accents
 - **Visual Effects**: Glassmorphism, smooth gradients, multi-layered UI, subtle shadows with neon glow,3D effects
@@ -714,7 +778,9 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 - **Text**: White (#FFFFFF) or light grey (#E0E0E0)
 - **Restaurant Type Badges**: Veg (bright green #39FF14), Non-Veg (bright red #FF073A), Both (bright orange #FF8C00)
 - **Portion Badges**: Full Portion (vibrant magenta #FF006E), Additional Variants (electric cyan #00F0FF or electric blue #3A86FF)\n- **Add-On Indicator**: Neon yellow (#FFFF00) badge with'ADD-ON' text
-- **Waiter Assignment Status**: Unassigned (neon yellow #FFFF00), Assigned (neon green #39FF14)\n\n### 5.4 UI Components
+- **Waiter Assignment Status**: Unassigned (neon yellow #FFFF00), Assigned (neon green #39FF14)\n- **Waiter Availability Status**: Free (neon green #39FF14), Busy (neon yellow #FFFF00), Offline (grey #808080)
+
+### 5.4 UI Components
 
 - **Cards**: Glassmorphism effect with neon gradient borders, rounded corners, subtle shadows with neon glow
 - **Buttons**: Neon gradient backgrounds, rounded corners, bold text, hover effects
@@ -722,18 +788,19 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 - **Portion Selection Cards**: Large card-style radio buttons with glassmorphism, neon borders, checkmark icons
 - **Add-On Order Banner**: Neon cyan background with white text, prominent display at top of menu page
 - **Add-On Items Section**: Highlighted with neon magenta border and 'ADD-ON' label in cart and order details
-- **Waiter Assignment Modal**: Glassmorphism card with neon gradient border, waiter cards with avatar, name, workload, status indicator
+- **Waiter Assignment Modal**: Glassmorphism card with neon gradient border, **waiter cards display only active and free waiters** with avatar, name, workload,'Free' status badge (neon green)\n- **Free Waiters Section (Staff Management)**: Dedicated section at top with neon green heading, card grid displaying free waiters with avatar, name, 'Free' badge, current workload, 'Assign to Order' button
+- **Waiter Status Badges**: Pill-shaped badges with rounded corners, bold text, icon (Free: neon green with checkmark icon, Busy: neon yellow with clock icon, Offline: grey with offline icon)
 - **Waiter Info Section (Customer Dashboard)**: Large glassmorphism card with neon gradient border, waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green),'Chat with Waiter' button (primary, neon gradient)
 - **Waiter Assignment Pending Section**: Glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), message text (medium, white)\n\n### 5.5 Animations
 
-- **Slide-in**: New order cards, menu items, add-on items, **assigned orders**, **waiter info card** slide in with bounce animation
-- **Pulsing Glow**: Notification badges, updated items, add-on indicators, **unassigned order badges**, **waiter assignment pending badge** have pulsing glow\n- **Shake**: Notification bell shakes on new notification (including waiter assignment notifications)
+- **Slide-in**: New order cards, menu items, add-on items, **assigned orders**, **waiter info card**, **free waiter cards** slide in with bounce animation
+- **Pulsing Glow**: Notification badges, updated items, add-on indicators, **unassigned order badges**, **waiter assignment pending badge**, **'Free' status badges** have pulsing glow\n- **Shake**: Notification bell shakes on new notification (including waiter assignment notifications)
 - **Ripple Effect**: Button clicks trigger ripple effect\n- **Smooth Transitions**: All state changes use ease-in-out transitions
 - **Loading Animations**: Neon spinners or skeleton screens
-- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, **assigned orders slide into waiter dashboard**, **waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation**
-- **Portion Selection Animations**: Selected cards scale up and glow\n- **Waiter Assignment Animations**: Selected waiter card scales up and glows, assignment confirmation with checkmark animation, **waiter card slides into customer dashboard with bounce animation**
+- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, **assigned orders slide into waiter dashboard**, **waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation**, **waiter status badges change color with fade transition (Free↔ Busy ↔ Offline)**
+- **Portion Selection Animations**: Selected cards scale up and glow\n- **Waiter Assignment Animations**: Selected waiter card scales up and glows, assignment confirmation with checkmark animation, **waiter card slides into customer dashboard with bounce animation**, **waiter card slides out of Free Waiters section when status changes to Busy**
+\n### 5.6 Responsive Design
 
-### 5.6 Responsive Design\n
 - **Mobile-First Approach**: Optimized for mobile devices first
 - **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
 - **Collapsible Sidebar**: Sidebar collapses to hamburger menu on mobile
@@ -742,7 +809,8 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 - **Optimized Images**: Responsive images with appropriate sizes
 - **Portion Selection on Mobile**: Portion cards stack vertically for easy thumb navigation
 - **Add-On Order UI on Mobile**: Banner and cart sections optimized for mobile view
-- **Waiter Assignment Modal on Mobile**: Waiter cards stack vertically, full-screen modal\n- **Waiter Info Section on Mobile**: Card displays full-width, waiter avatar and info stack vertically,'Chat with Waiter' button full-width
+- **Waiter Assignment Modal on Mobile**: Waiter cards stack vertically, full-screen modal\n- **Free Waiters Section on Mobile**: Cards stack vertically, full-width display
+- **Waiter Info Section on Mobile**: Card displays full-width, waiter avatar and info stack vertically,'Chat with Waiter' button full-width
 
 ### 5.7 Accessibility
 
@@ -753,6 +821,7 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 - **Portion Selection Accessibility**: Clear focus states, keyboard navigation, screen reader labels
 - **Add-On Order Accessibility**: Banner and sections have clear labels for screen readers
 - **Waiter Assignment Accessibility**: Modal and waiter cards have clear labels, keyboard navigation support
+- **Waiter Status Accessibility**: Status badges have ARIA labels ('Free', 'Busy', 'Offline') for screen readers
 - **Waiter Info Section Accessibility**: Clear ARIA labels for waiter name, contact info, status badge, and chat button
 
 ---
@@ -763,44 +832,52 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 
 - **Frontend**: React.js or Next.js, Tailwind CSS, Framer Motion
 - **Backend**: Node.js with Express.js or Django, WebSocket (Socket.io)
-- **Database**: PostgreSQL or MongoDB (with restaurant_type field, menu_items table with price field, price_variants table, **orders table with assigned_waiter_id field and add_on_items field**, **waiters table with current_workload field**)
+- **Database**: PostgreSQL or MongoDB (with restaurant_type field, menu_items table with price field, price_variants table, **orders table with assigned_waiter_id field and add_on_items field**, **waiters table with current_workload field, availability_status field (Free/Busy/Offline), and workload_threshold field**)
 - **Authentication**: JWT tokens, OAuth 2.0 (OSS Google login), OTP via Twilio or Firebase
 - **Payment Gateway**: Stripe, Razorpay, or PayPal\n- **Cloud Storage**: AWS S3 or Cloudinary\n- **Hosting**: AWS, Google Cloud, or Vercel
 - **Device Detection**: User agent parsing or screen size detection
 
 ### 6.2 Real-Time Features with WebSocket Implementation
 
-- **WebSocket Connection**: Persistent connection for instant updates (orders, notifications, chat, menu, categories, tables, add-on orders, **waiter assignments**)
+- **WebSocket Connection**: Persistent connection for instant updates (orders, notifications, chat, menu, categories, tables, add-on orders, **waiter assignments**, **waiter availability status**)
 - **Event-Driven Architecture**: Backend emits events, frontend listens and updates UI
 - **Optimistic UI Updates**: UI updates immediately, syncs with backend in background
 - **Real-Time Menu Synchronization**: Events for item and category changes
 - **Real-Time Table Synchronization**: Events for table changes
 - **Real-Time Add-On Order Updates**: Events for add-on items added to orders
 - **Real-Time Waiter Assignment Updates**: Events for waiter assignment and reassignment
+- **Real-Time Waiter Availability Updates**: Events for waiter status changes (Free ↔ Busy ↔ Offline)
 - **Event Types**:
   - **'waiter_assigned'**: Emitted when owner assigns waiter to order
     - Payload: { order_id, waiter_id, waiter_name, waiter_avatar, waiter_contact, timestamp }
     - Recipients: Customer (order owner), Assigned Waiter, Restaurant Owner
   - **'waiter_reassigned'**: Emitted when owner reassigns waiter\n    - Payload: { order_id, old_waiter_id, new_waiter_id, new_waiter_name, new_waiter_avatar, new_waiter_contact, timestamp }
     - Recipients: Customer (order owner), Old Waiter, New Waiter, Restaurant Owner
-- **Event Payload Structure**: Includes restaurant_id, item_id, order_id, add_on_items, assigned_waiter_id, etc.
+  - **'waiter_status_changed'**: Emitted when waiter availability status changes
+    - Payload: { waiter_id, old_status, new_status, current_workload, timestamp }
+    - Recipients: Restaurant Owner, Staff Management Dashboard
+- **Event Payload Structure**: Includes restaurant_id, item_id, order_id, add_on_items, assigned_waiter_id, waiter_availability_status, etc.
 - **Customer Dashboard WebSocket Listeners**:
   - Listen for 'waiter_assigned' event → Update active order card and order tracking page with waiter info
   - Listen for 'waiter_reassigned' event → Update waiter info section with new waiter details
   - Listen for 'order_status_update' event → Update order timeline and status badge
+- **Owner Dashboard WebSocket Listeners**:
+  - Listen for 'waiter_status_changed' event → Update Free Waiters section and Staff Management dashboard
+  - Listen for 'new_order' event → Display notification and update order list
 \n### 6.3 Security\n
 - **Data Encryption**: HTTPS, encrypted storage\n- **Input Validation**: Server-side validation\n- **Rate Limiting**: Prevent abuse
 - **Secure Authentication**: Password hashing, secure token storage
 \n### 6.4 Performance Optimization
 
 - **Lazy Loading**: Load images and components on demand
-- **Code Splitting**: Split JavaScript bundles\n- **Caching**: Cache static assets and API responses
-- **Database Indexing**: Optimize queries with proper indexing (including index on assigned_waiter_id and add_on_items fields)
+- **Code Splitting**: Split JavaScript bundles
+- **Caching**: Cache static assets and API responses
+- **Database Indexing**: Optimize queries with proper indexing (including index on assigned_waiter_id, add_on_items, availability_status, and current_workload fields)
 - **CDN**: Use CDN for static assets
 - **WebSocket Connection Management**: Efficient connection pooling, automatic reconnection, heartbeat mechanism
 
 ### 6.5 Scalability
-\n- **Microservices Architecture**: Separate services for orders, payments, notifications, menu management, **waiter assignment**
+\n- **Microservices Architecture**: Separate services for orders, payments, notifications, menu management, **waiter assignment**, **waiter availability tracking**
 - **Load Balancing**: Distribute traffic across servers
 - **Database Sharding**: Partition database for horizontal scaling
 - **Auto-Scaling**: Automatically scale resources\n- **WebSocket Scaling**: Use Redis pub/sub for broadcasting events
@@ -809,27 +886,27 @@ Waiter-facing dashboard with **assigned orders**, tables, and tasks.
 
 ## 7. Future Enhancements
 
-- AI-Powered Recommendations (including portion type recommendations)
-- Voice Ordering with portion selection
+- AI-Powered Recommendations (including portion type recommendations)\n- Voice Ordering with portion selection
 - Augmented Reality Menu with portion size visualization
 - Multi-Language Support
-- Advanced Analytics (including add-on order analytics and waiter performance analytics)
+- Advanced Analytics (including add-on order analytics, waiter performance analytics, and availability rate trends)
 - Integration with Delivery Platforms\n- Table Reservation System
 - Kitchen Display System (KDS) with add-on item indicators and waiter assignment info
-- Customer Feedback Analysis (including waiter ratings)\n- Gamification\n- **AI-Powered Waiter Assignment**: Machine learning algorithm to optimize waiter assignment based on historical performance, customer preferences, and real-time workload\n
----
+- Customer Feedback Analysis (including waiter ratings)\n- Gamification\n- **AI-Powered Waiter Assignment**: Machine learning algorithm to optimize waiter assignment based on historical performance, customer preferences, real-time workload, and availability patterns
+- **Predictive Waiter Availability**: AI predicts when waiters will become free based on order preparation times and historical data
+\n---
 
 ## 8. Design Style\n
-**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects.
-
+**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects.\n
 **Typography**: Orbitron Bold/Exo 2 Bold for headings, Poppins Regular/Inter Regular for body text, Orbitron Medium for buttons. Font colors: White or light grey on dark backgrounds, neon colors for emphasis.
 
-**Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. Restaurant type badges: Veg (bright green), Non-Veg (bright red), Both (bright orange). Portion badges: Full Portion (vibrant magenta), Additional Variants (electric cyan or electric blue). Add-On indicator: Neon yellow badge. Waiter assignment status: Unassigned (neon yellow), Assigned (neon green).
+**Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. Restaurant type badges: Veg (bright green), Non-Veg (bright red), Both (bright orange). Portion badges: Full Portion (vibrant magenta), Additional Variants (electric cyan or electric blue). Add-On indicator: Neon yellow badge. Waiter assignment status: Unassigned (neon yellow), Assigned (neon green). Waiter availability status: Free (neon green), Busy (neon yellow), Offline (grey).
 
-**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying avatar, name, workload, and status indicator. Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner, 'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white).\n
-**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, and waiter info card, pulsing glow for notification badges, updated items, unassigned order badges, and waiter assignment pending badge, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from 'Assignment Pending' to 'Your Waiter' with fade-in animation), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation).
+**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying only active and free waiters with avatar, name, workload, and 'Free' status badge (neon green). Free Waiters section (Staff Management) displays dedicated section at top with neon green heading, card grid showing free waiters with avatar, name, 'Free' badge, current workload, and 'Assign to Order' button. Waiter status badges are pill-shaped with rounded corners, bold text, and icon (Free: neon green with checkmark, Busy: neon yellow with clock, Offline: grey with offline icon). Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner, 'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white).
 
-**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button.\n
+**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, waiter info card, and free waiter cards, pulsing glow for notification badges, updated items, unassigned order badges, waiter assignment pending badge, and 'Free' status badges, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from 'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy).
+
+**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Free Waiters section on mobile displays cards stacked vertically with full-width layout. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button.\n
 ---
 
 **End of Requirements Document**

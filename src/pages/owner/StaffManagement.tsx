@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Users, UserPlus, Mail, Phone, Shield, Edit, Trash2 } from 'lucide-react';
 import { staffApi } from '@/db/api';
-import type { Staff } from '@/types/types';
+import type { Staff, StaffWithAvailability } from '@/types/types';
 import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,
@@ -29,7 +29,7 @@ import {
 export default function StaffManagement() {
   const { restaurantId } = useParams();
   const { toast } = useToast();
-  const [staff, setStaff] = useState<Staff[]>([]);
+  const [staff, setStaff] = useState<StaffWithAvailability[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -55,8 +55,21 @@ export default function StaffManagement() {
   const loadStaff = async () => {
     try {
       setLoading(true);
-      const data = await staffApi.getStaffByRestaurant(restaurantId!);
-      setStaff(data);
+      const [allStaff, waitersWithAvailability] = await Promise.all([
+        staffApi.getStaffByRestaurant(restaurantId!),
+        staffApi.getWaitersWithAvailability(restaurantId!),
+      ]);
+      
+      // Merge the data: use availability info for waiters, regular data for others
+      const staffWithAvailability = allStaff.map(member => {
+        if (member.role === 'waiter') {
+          const waiterInfo = waitersWithAvailability.find(w => w.id === member.id);
+          return waiterInfo || { ...member, is_busy: false };
+        }
+        return { ...member, is_busy: false };
+      });
+      
+      setStaff(staffWithAvailability);
     } catch (error) {
       console.error('Failed to load staff:', error);
       toast({
@@ -301,6 +314,11 @@ export default function StaffManagement() {
                       <Badge variant={member.is_active ? 'default' : 'secondary'}>
                         {member.is_active ? 'Active' : 'Inactive'}
                       </Badge>
+                      {member.role === 'waiter' && member.is_active && (
+                        <Badge variant={member.is_busy ? 'destructive' : 'default'} className="bg-gradient-to-r from-primary to-secondary">
+                          {member.is_busy ? 'Busy' : 'Free'}
+                        </Badge>
+                      )}
                       <Button variant="outline" size="sm" className="morph-button" onClick={() => openEditDialog(member)}>
                         <Edit className="w-4 h-4" />
                       </Button>
