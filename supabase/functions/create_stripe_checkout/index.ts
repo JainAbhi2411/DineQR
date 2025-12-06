@@ -30,6 +30,9 @@ interface CheckoutRequest {
   items: OrderItem[];
   special_instructions?: string;
   currency?: string;
+  promotion_id?: string;
+  discount_amount?: number;
+  promo_code?: string;
 }
 
 function ok(data: any): Response {
@@ -72,6 +75,15 @@ function validateCheckoutRequest(request: CheckoutRequest): void {
   }
 }
 
+async function createStripeCoupon(stripe: Stripe, discountAmount: number, currency: string): Promise<string> {
+  const coupon = await stripe.coupons.create({
+    amount_off: Math.round(discountAmount * 100),
+    currency: currency,
+    duration: 'once',
+  });
+  return coupon.id;
+}
+
 async function createCheckoutSession(
   stripe: Stripe,
   userId: string | null,
@@ -96,6 +108,9 @@ async function createCheckoutSession(
       payment_status: "pending",
       payment_method: "online",
       special_instructions: request.special_instructions || null,
+      promotion_id: request.promotion_id || null,
+      discount_amount: request.discount_amount || 0,
+      promo_code: request.promo_code || null,
     })
     .select()
     .single();
@@ -119,6 +134,26 @@ async function createCheckoutSession(
 
   if (itemsError) throw new Error(`Failed to create order items: ${itemsError.message}`);
 
+  // Record promotion usage if a promo was applied
+  if (request.promotion_id && userId && request.discount_amount) {
+    const { error: promoError } = await supabase
+      .from("promotion_usage")
+      .insert({
+        promotion_id: request.promotion_id,
+        customer_id: userId,
+        order_id: order.id,
+        discount_amount: request.discount_amount,
+      });
+    
+    if (promoError) {
+      console.error("Failed to record promotion usage:", promoError);
+      // Don't fail the order if promotion recording fails
+    }
+  }
+
+  // Calculate discounted total for Stripe
+  const discountedTotal = Math.max(0, totalAmount - (request.discount_amount || 0));
+
   const session = await stripe.checkout.sessions.create({
     line_items: request.items.map(item => ({
       price_data: {
@@ -140,7 +175,14 @@ async function createCheckoutSession(
       user_id: userId || "",
       restaurant_id: request.restaurant_id,
       table_id: request.table_id || "",
+      promotion_id: request.promotion_id || "",
+      promo_code: request.promo_code || "",
     },
+    ...(request.discount_amount && request.discount_amount > 0 ? {
+      discounts: [{
+        coupon: await createStripeCoupon(stripe, request.discount_amount, currency),
+      }],
+    } : {}),
   });
 
   await supabase

@@ -101,6 +101,9 @@ export default function Checkout() {
           special_instructions: specialInstructions || null,
           assigned_to: null,
           waiter_id: null,
+          promotion_id: appliedPromo?.valid ? appliedPromo.promotion_id : null,
+          discount_amount: appliedPromo?.valid ? appliedPromo.discount_amount : 0,
+          promo_code: appliedPromo?.valid ? appliedPromo.code : null,
         };
 
         const order = await orderApi.createOrder(orderData);
@@ -176,6 +179,9 @@ export default function Checkout() {
             items: items,
             special_instructions: specialInstructions || null,
             currency: 'usd',
+            promotion_id: appliedPromo?.valid ? appliedPromo.promotion_id : null,
+            discount_amount: appliedPromo?.valid ? appliedPromo.discount_amount : 0,
+            promo_code: appliedPromo?.valid ? appliedPromo.code : null,
           },
         });
 

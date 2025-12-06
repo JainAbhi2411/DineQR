@@ -130,6 +130,9 @@ export interface Order {
   customer_name: string | null;
   special_instructions: string | null;
   completed_at: string | null;
+  promotion_id: string | null;
+  discount_amount: number;
+  promo_code: string | null;
   created_at: string;
   updated_at: string;
 }
