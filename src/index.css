@@ -539,4 +539,20 @@ Futuristic theme with neon colors, glassmorphism, and modern typography
       opacity: 1;
     }
   }
+
+  /* Update Notification Animation */
+  .animate-slide-up {
+    animation: slideUpNotification 0.4s ease-out;
+  }
+
+  @keyframes slideUpNotification {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 }

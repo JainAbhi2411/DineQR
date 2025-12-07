@@ -8,6 +8,7 @@ import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
 import InstallPWA from './components/common/InstallPWA';
 import OfflineIndicator from './components/common/OfflineIndicator';
+import UpdateNotification from './components/common/UpdateNotification';
 import SplashScreen from './components/common/SplashScreen';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import routes from './routes';
@@ -56,6 +57,7 @@ function AppContent() {
       <Chatbot />
       <InstallPWA />
       <OfflineIndicator />
+      <UpdateNotification />
     </div>
   );
 }
