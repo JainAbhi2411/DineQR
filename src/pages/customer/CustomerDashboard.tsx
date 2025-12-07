@@ -143,7 +143,7 @@ export default function CustomerDashboard() {
         {/* Welcome Section */}
         <div className="mb-6 xl:mb-8 animate-fade-in-up">
           <h2 className="text-2xl xl:text-3xl font-bold mb-2 gradient-text-secondary">
-            Welcome back, {profile?.full_name || 'Guest'}!
+            Welcome back to DineQR, {profile?.full_name || 'Guest'}!
           </h2>
           <p className="text-muted-foreground text-sm xl:text-base">Scan a QR code to start ordering</p>
         </div>
