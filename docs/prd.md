@@ -10,15 +10,25 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 
 ---
 
-## 2. Progressive Web App (PWA) Architecture
-
+## 2. Progressive Web App (PWA) Architecture\n
 ### 2.1 PWA Core Features
 
 #### 2.1.1 Installability
 - **Add to Home Screen**: Users can install DineQR PWA to their device home screen (iOS, Android, desktop) with a single tap
 - **App-Like Experience**: Once installed, PWA launches in standalone mode without browser UI (no address bar, no browser tabs)
 - **Custom App Icon**: DineQR branded app icon appears on home screen alongside native apps
-- **Splash Screen**: Custom splash screen with DineQR logo and futuristic animation during app launch
+  - **Icon Design**: Modern futuristic icon featuring a stylized QR code pattern integrated with a fork and knife silhouette, set against a gradient background transitioning from electric cyan (#00d9ff) to vibrant magenta (#ff006e)\n  - **Icon Variations**: Multiple icon sizes optimized for different devices and contexts
+  - **Maskable Icon**: Adaptive icon with safe zone for Android maskable icon support, ensuring icon looks great on all Android launchers
+- **Flash Screen (Splash Screen)**: Custom animated flash screen displayed during app launch
+  - **Duration**: 2-3 seconds animated splash screen\n  - **Animation**: Futuristic loading animation featuring:\n    + DineQR logo with neon glow effect pulsing from center
+    + Animated QR code pattern particles floating and assembling into logo
+    + Electric cyan and magenta gradient waves flowing across background
+    + Smooth fade-in of logo followed by fade-out transition to main app
+    + Loading progress indicator (circular neon ring) at bottom
+  - **Background**: Deep charcoal grey (#1a1a2e) with subtle animated gradient overlay
+  - **Logo**: High-resolution DineQR logo (SVG format) with neon outline effect
+  - **Tagline**: 'Smart Dining Experience' appears below logo with fade-in animation
+  - **Responsive Design**: Splash screen adapts to different screen sizes and orientations
 - **Installation Prompt**: Smart installation banner appears after user engagement (e.g., after browsing menu, placing order)\n- **Cross-Platform**: Single PWA works on iOS (Safari), Android (Chrome), Windows (Edge), macOS (Safari/Chrome), Linux (Chrome/Firefox)
 
 #### 2.1.2 Offline Functionality
@@ -93,14 +103,22 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 #### 2.2.2 Manifest Configuration
 - **Web App Manifest**: Comprehensive manifest.json with app metadata\n- **App Name**: 'DineQR - Smart Restaurant Manager' (for owners/waiters), 'DineQR - Order & Dine' (for customers)
 - **Short Name**: 'DineQR'\n- **Description**: 'Enterprise-grade smart restaurant management and customer engagement platform'
-- **Icons**: Multiple icon sizes (72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512) in PNG format
+- **Icons**: Multiple icon sizes with custom DineQR branding
+  - **Icon Sizes**: 72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512 (PNG format)
+  - **Icon Design**: Futuristic icon with QR code pattern, fork and knife silhouette, electric cyan to magenta gradient background
+  - **Maskable Icon**: 192x192 and 512x512 maskable icons with safe zone for Android adaptive icons
+  - **Purpose**: 'any maskable' for adaptive icon support
 - **Start URL**: '/' with query parameter to track PWA installs
 - **Display Mode**: 'standalone' (app-like experience without browser UI)
-- **Orientation**: 'portrait-primary' (default), support 'landscape' for tablets
+- **Orientation**: 'portrait-primary' (default), support'landscape' for tablets
 - **Theme Color**: Deep charcoal grey (#1a1a2e) to match futuristic dark theme
-- **Background Color**: Deep charcoal grey (#1a1a2e) for splash screen
+- **Background Color**: Deep charcoal grey (#1a1a2e) for splash screen background
+- **Splash Screen Configuration**:
+  - **Background Color**: #1a1a2e (deep charcoal grey)
+  - **Icon**:512x512 icon displayed at center of splash screen
+  - **Custom Splash Screen**: Implement custom animated splash screen using HTML/CSS/JS for enhanced visual experience (overrides default browser splash screen)
 - **Scope**: '/' to define navigation scope\n- **Categories**: ['food', 'business', 'productivity']
-\n#### 2.2.3Offline Data Storage
+\n#### 2.2.3 Offline Data Storage
 - **IndexedDB**: Store large datasets (menu items, order history, e-bills, images) for offline access
 - **LocalStorage**: Store small data (user preferences, settings, auth tokens)
 - **Cache API**: Store static assets and API responses via service worker
@@ -120,14 +138,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 #### 2.3.1 Installation Flow
 1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)\n2. **Browse & Engage**: User browses menu, places order, or views promotions
 3. **Installation Prompt**: After engagement, browser shows'Add to Home Screen' prompt (or custom in-app prompt)
-4. **Install**: User taps 'Add' → PWA installed to home screen
+4. **Install**: User taps 'Add' → PWA installed to home screen with custom DineQR icon
 5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode (no browser UI)
-6. **Splash Screen**: Custom splash screen with DineQR logo appears during launch
-7. **App Experience**: User experiences native app-like interface with offline capabilities and push notifications
+6. **Flash Screen**: Custom animated flash screen appears with:\n   - DineQR logo with neon glow pulsing animation
+   - Animated QR code particles assembling into logo
+   - Electric cyan and magenta gradient waves\n   - Loading progress indicator\n   - 'Smart Dining Experience' tagline fade-in
+   - Duration: 2-3 seconds\n7. **App Experience**: User experiences native app-like interface with offline capabilities and push notifications
 
 #### 2.3.2 Offline Experience
-1. **Connection Lost**: User loses internet connection (airplane mode, poor network)
-2. **Offline Indicator**: Banner appears at top: 'You are offline. Some features may be limited.'
+1. **Connection Lost**: User loses internet connection (airplane mode, poor network)\n2. **Offline Indicator**: Banner appears at top: 'You are offline. Some features may be limited.'
 3. **Cached Content**: User can still browse cached menu, view order history, access e-bills
 4. **Offline Actions**: User favorites an item → Action queued for background sync
 5. **Connection Restored**: Banner updates: 'You are back online!' → Queued actions sync automatically
@@ -155,14 +174,15 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Install Prompt** (if not installed): 'Install DineQR for faster access and offline features' with 'Install' button
 
 **QR Code Scanning** (Mobile PWA):
-1. Tap 'Scan QR Code' button (floating action button)
+1. Tap'Scan QR Code' button (floating action button)
 2. PWA requests camera permission → User grants permission
 3. Camera opens with QR code scanner overlay (using getUserMedia API and QR code library)
 4. Scan restaurant table QR code → Table number auto-detected
 5. Navigate to restaurant menu page
 \n**Menu Browsing**:
 - **Menu Header**: Restaurant name, restaurant type badge, NLP chatbot floating button
-- **Swiggy-Style Promotions Banner**: Horizontal scrollable offer cards\n- **Category Navigation**: Horizontal tabs for menu categories
+- **Swiggy-Style Promotions Banner**: Horizontal scrollable offer cards
+- **Category Navigation**: Horizontal tabs for menu categories
 - **Menu Items Grid**: Item cards with primary image (lazy loaded), name, price, portion options, promotion badges
 - **Item Details**: Tap item card → Full-screen modal with image carousel, description, portion selection, quantity selector, 'Add to Cart' button
 - **NLP Ordering**: Tap NLP chatbot button → Full-screen chatbot modal, type order in natural language, chatbot processes and displays order summary, tap 'Add to Cart'\n\n**Cart & Checkout**:
@@ -174,7 +194,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Order Tracking Page**: Order ID, order source badge, applied promotion section, assigned waiter info section (with real-time updates via WebSocket), order details, order timeline, e-bill download section
 - **Real-Time Updates**: Push notifications (if enabled) or in-app notifications for status changes, waiter assignments, e-bill ready\n- **Chat with Waiter**: Tap 'Chat with Waiter' button → Real-time chat interface (WebSocket)\n\n**Order History & E-Bills**:
 - **Order History**: List of past orders with search/filter options (cached for offline access)
-- **Order Details**: Tap order → View full order details, waiter info, promotion details, order source\n- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device (stored in IndexedDB for offline access), view in app, print, share via Share API, email\n\n**Offers & Promotions**:
+- **Order Details**: Tap order → View full order details, waiter info, promotion details, order source
+- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device (stored in IndexedDB for offline access), view in app, print, share via Share API, email\n\n**Offers & Promotions**:
 - **Offers Page**: Grid of promotion cards with real-time updates (WebSocket), search/filter options
 - **Promotion Details**: Tap card → Full-screen modal with discount details, promo code, eligibility, validity, terms & conditions
 - **Apply Offer**: Tap 'Apply Offer' → System validates and applies to cart\n\n**Profile & Settings**:
@@ -200,7 +221,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Image Preview**: Show preview before upload, crop/resize options
 - **Real-Time Sync**: Menu changes sync to customer PWAs instantly via WebSocket
 \n**Order Management**:
-- **Order Dashboard**: Order cards grid with filters (Unassigned, Orders with Promotions, NLP Orders)\n- **Order Details**: Full-screen modal with order summary, items, timeline, payment info, waiter assignment section, promotion details, order source,'Download E-Bill' button\n- **Assign Waiter**: Tap 'Assign Waiter' → Modal displays only free waiters, select waiter, confirm assignment
+- **Order Dashboard**: Order cards grid with filters (Unassigned, Orders with Promotions, NLP Orders)\n- **Order Details**: Full-screen modal with order summary, items, timeline, payment info, waiter assignment section, promotion details, order source,'Download E-Bill' button
+- **Assign Waiter**: Tap 'Assign Waiter' → Modal displays only free waiters, select waiter, confirm assignment
 - **Real-Time Updates**: Push notifications (if enabled) or in-app notifications for new orders, promotion applications, NLP orders, e-bill generation
 
 **Promotions Management**:
@@ -216,8 +238,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Analytics Dashboard**: Revenue trends, order analytics, menu performance, customer analytics, staff analytics, promotion analytics, NLP analytics, e-bill analytics
 - **Custom Reports**: Generate and export reports as PDF/CSV
 \n**Settings**:
-- **Restaurant Profile**: Edit restaurant info, restaurant type, currency, timezone
-- **Operational Settings**: Configure order settings, payment settings, notification settings
+- **Restaurant Profile**: Edit restaurant info, restaurant type, currency, timezone\n- **Operational Settings**: Configure order settings, payment settings, notification settings
 - **Waiter Assignment Settings**: Enable auto-assignment, set workload threshold\n- **Promotion Settings**: Enable promotions, configure stacking, auto-apply\n- **NLP Settings**: Enable NLP ordering, configure recognition threshold, customize messages
 - **E-Bill Settings**: Configure branding, layout, content, download format\n- **Image Upload Settings**: Configure max file size, compression, cloud drive integrations
 
@@ -249,7 +270,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Installation Success**: Show success message: 'DineQR installed! You can now access it from your home screen.'
 
 #### 4.1.2 Onboarding (First Launch)
-1. **Splash Screen**: Custom splash screen with DineQR logo and futuristic animation (2-3 seconds)
+1. **Flash Screen**: Custom animated flash screen (2-3 seconds) featuring:
+   - DineQR logo with neon glow pulsing animation
+   - Animated QR code particles assembling into logo
+   - Electric cyan and magenta gradient waves flowing across deep charcoal grey background
+   - Circular neon loading progress indicator at bottom
+   - 'Smart Dining Experience' tagline fade-in below logo
+   - Smooth fade-out transition to welcome screen
 2. **Welcome Screen**: 'Welcome to DineQR!' with brief description and 'Get Started' button
 3. **Feature Highlights**: Swipeable carousel highlighting key features (QR Scanning, NLP Ordering, Promotions, E-Bills, Offline Access)
 4. **Permission Requests**: \n   - **Notifications**: 'Enable notifications to get real-time order updates' with 'Enable' and 'Skip' buttons
@@ -313,8 +340,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 #### 4.4.2 Share API
 - **Share Menu Items**: Tap 'Share' button on item details page → Native share sheet opens → Share item name, image, link via SMS, email, WhatsApp, etc.
 - **Share Promotions**: Tap 'Share' button on promotion card → Share promotion details and promo code
-- **Share E-Bills**: Tap 'Share E-Bill' button → Share e-bill PDF or link
-- **Share Restaurant**: Tap 'Share' button on restaurant page → Share restaurant name, menu link\n
+- **Share E-Bills**: Tap 'Share E-Bill' button → Share e-bill PDF or link\n- **Share Restaurant**: Tap 'Share' button on restaurant page → Share restaurant name, menu link\n
 #### 4.4.3 Payment Request API
 - **Streamlined Checkout**: Use Payment Request API for fast checkout with saved payment methods
 - **Supported Methods**: Google Pay, Apple Pay (on iOS), saved credit/debit cards\n- **Autofill**: Automatically fill shipping/billing address, contact info from browser autofill
@@ -344,7 +370,9 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **PDF Generation**: jsPDF or PDFKit for e-bill generation
 - **Cloud Drive Integration**: Google Drive Picker API, Dropbox Chooser API
 - **NLP Integration**: Axios for API calls to NLP backend
-\n### 5.2 Backend Technologies
+- **Animation Library**: Framer Motion for flash screen animations, GSAP for advanced animations
+
+### 5.2 Backend Technologies
 - **Server**: Node.js with Express.js or Django\n- **Database**: PostgreSQL or MongoDB
 - **Authentication**: JWT tokens with refresh token mechanism, OAuth 2.0 (Google, Apple)
 - **WebSocket**: Socket.io server for real-time updates
@@ -366,13 +394,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 ### 6.1 PWA Checklist
 -✅ **HTTPS**: Serve app over HTTPS (required for service workers and PWA features)
 - ✅ **Service Worker**: Register service worker for offline functionality and caching
-- ✅ **Web App Manifest**: Include manifest.json with app metadata, icons, theme colors
+- ✅ **Web App Manifest**: Include manifest.json with app metadata, custom icons, splash screen configuration
 - ✅ **Installable**: App meets installability criteria (HTTPS, manifest, service worker, engagement heuristics)
 - ✅ **Responsive Design**: App works on all screen sizes (mobile, tablet, desktop)
 - ✅ **Fast Loading**: Initial load < 3 seconds on3G networks
 - ✅ **Offline Functionality**: Core features work offline (menu browsing, order history, e-bills)
 - ✅ **Push Notifications**: Implement Web Push API for real-time notifications
-- ✅ **App-Like Experience**: Standalone display mode, no browser UI
+- ✅ **App-Like Experience**: Standalone display mode, no browser UI, custom flash screen
 - ✅ **Accessibility**: WCAG 2.1 AA compliance, keyboard navigation, screen reader support\n- ✅ **SEO**: Meta tags, structured data, sitemap, robots.txt
 - ✅ **Performance**: Lighthouse score90+ on Performance, Accessibility, Best Practices, SEO
 
@@ -404,17 +432,23 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 \n1. **First Visit**: User visits https://dineqr.com via mobile browser
 2. **Browse**: User browses menu, views promotions\n3. **Installation Prompt**: After engagement, custom banner appears: 'Install DineQR for faster access and offline features'
 4. **Install**: User taps 'Install' → Browser shows'Add to Home Screen' prompt → User confirms
-5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode
-6. **Onboarding**: Welcome screen, feature highlights, permission requests (notifications, camera)\n7. **Sign Up/Login**: User creates account or logs in
-8. **QR Scanning**: User taps 'Scan QR Code' → Camera opens → Scans table QR code → Navigates to menu
-9. **Menu Browsing**: User browses menu, views items, portions, promotions
-10. **NLP Ordering** (optional): User taps NLP chatbot → Types order in natural language → Chatbot processes and adds to cart
-11. **Checkout**: User reviews cart, applies promotions, enters details, selects payment method (Payment Request API for Google Pay/Apple Pay)
-12. **Order Confirmation**: User views order details, waiter assignment status
-13. **Order Tracking**: User receives push notifications for status updates, views order timeline, chats with waiter
-14. **E-Bill Download**: When order completed, user taps 'Download E-Bill' → E-bill downloaded to device (stored in IndexedDB)
-15. **Offline Access**: User goes offline → Can still view cached menu, order history, downloaded e-bills
-16. **Reorder**: User views order history → Taps 'Reorder' → Items added to cart
+5. **Launch**: User taps DineQR icon (custom futuristic icon with QR code pattern and gradient) on home screen → PWA launches in standalone mode
+6. **Flash Screen**: Animated flash screen displays (2-3 seconds):
+   - DineQR logo with neon glow pulsing from center
+   - QR code particles floating and assembling into logo
+   - Electric cyan and magenta gradient waves
+   - Circular neon loading indicator
+   - 'Smart Dining Experience' tagline fade-in
+7. **Onboarding**: Welcome screen, feature highlights, permission requests (notifications, camera)\n8. **Sign Up/Login**: User creates account or logs in
+9. **QR Scanning**: User taps 'Scan QR Code' → Camera opens → Scans table QR code → Navigates to menu
+10. **Menu Browsing**: User browses menu, views items, portions, promotions
+11. **NLP Ordering** (optional): User taps NLP chatbot → Types order in natural language → Chatbot processes and adds to cart
+12. **Checkout**: User reviews cart, applies promotions, enters details, selects payment method (Payment Request API for Google Pay/Apple Pay)
+13. **Order Confirmation**: User views order details, waiter assignment status
+14. **Order Tracking**: User receives push notifications for status updates, views order timeline, chats with waiter
+15. **E-Bill Download**: When order completed, user taps 'Download E-Bill' → E-bill downloaded to device (stored in IndexedDB)
+16. **Offline Access**: User goes offline → Can still view cached menu, order history, downloaded e-bills
+17. **Reorder**: User views order history → Taps 'Reorder' → Items added to cart
 \n### 7.2 Owner Flow
 
 1. **Login**: Owner visits https://dineqr.com/owner via browser or installed PWA
@@ -441,10 +475,33 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 
 **Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan #00d9ff, vibrant magenta #ff006e, electric blue #3a86ff, neon purple #8338ec), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects. **PWA design is optimized for touch interactions, responsive layouts, and fast loading.**
 
+**App Icon Design**:
+- **Icon Concept**: Modern futuristic icon featuring a stylized QR code pattern integrated with a fork and knife silhouette
+- **Background**: Gradient transitioning from electric cyan (#00d9ff) at top to vibrant magenta (#ff006e) at bottom
+- **QR Code Pattern**: Simplified QR code squares arranged in geometric pattern, with neon glow effect
+- **Fork & Knife**: Minimalist fork and knife silhouette overlaid on QR pattern, outlined in white with subtle neon glow
+- **Border**: Thin neon outline (2px) in electric cyan\n- **Style**: Flat design with subtle depth, optimized for visibility at all sizes (72px to 512px)
+- **Maskable Icon**: Safe zone version with centered elements for Android adaptive icons
+
+**Flash Screen Design**:
+- **Background**: Deep charcoal grey (#1a1a2e) with animated gradient overlay (electric cyan to magenta waves)
+- **Logo**: High-resolution DineQR logo (SVG) at center with neon outline effect
+- **Animation Sequence**:
+  1. Background gradient waves flow from left to right (0-0.5s)
+  2. QR code particles fade in and float toward center (0.5-1.5s)
+  3. Particles assemble into DineQR logo with neon glow pulsing effect (1.5-2s)
+  4. Logo scales up slightly with glow intensifying (2-2.5s)
+  5.'Smart Dining Experience' tagline fades in below logo (2.5-2.8s)
+  6. Circular neon loading indicator appears at bottom (throughout)\n  7. Entire screen fades out to main app (2.8-3s)
+- **Loading Indicator**: Circular neon ring at bottom center, rotating with gradient (cyan to magenta)
+- **Tagline**: 'Smart Dining Experience' in Orbitron font, white color with subtle cyan glow
+- **Responsive**: Adapts to portrait and landscape orientations, scales for different screen sizes
+
 **Typography**: \n- **Headings**: Orbitron Bold or Exo 2 Bold (futuristic, tech-inspired)
 - **Body Text**: Poppins Regular or Inter Regular (clean, readable)
 - **Font Loading**: Use font-display: swap for faster initial render, preload critical fonts
-\n**Color Palette**: 
+
+**Color Palette**: 
 - **Background**: Deep charcoal grey (#1a1a2e) or dark blue (#0f0f1e)
 - **Accents**: Electric cyan (#00d9ff), vibrant magenta (#ff006e), electric blue (#3a86ff), neon purple (#8338ec)
 - **Status Colors**: Neon green (#39ff14) for success, neon yellow (#ffea00) for warning, neon red (#ff073a) for error
@@ -460,6 +517,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Loading**: Pulsing glow animation for loading states, skeleton screens for content loading
 - **Interactions**: Ripple effect on button press, shake animation for errors, scale animation on hover
 - **Real-Time Updates**: Smooth fade-in animation for new orders, promotions, notifications
+- **Flash Screen**: Complex multi-stage animation with particles, glow effects, gradient waves
 
 **Responsive Design**: 
 - **Mobile-First**: Design for mobile (320px+) first, scale up to tablet (768px+) and desktop (1024px+)
@@ -492,6 +550,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Advanced E-Bill Features**: Multiple templates, multi-language e-bills, digital signatures
 - **Advanced Image Upload Features**: AI-powered image tagging, quality analysis, background removal
 - **Progressive Enhancement**: Gradually enhance PWA with new Web APIs as they become available (Web Bluetooth, WebXR, Web NFC, etc.)
+- **Animated Icon**: Explore animated app icon for supported platforms (Android)\n- **Dynamic Flash Screen**: Personalized flash screen based on user role (customer/owner/waiter)
+\n---
 
----\n
 **End of Requirements Document**

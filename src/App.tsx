@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RestaurantProvider } from './contexts/RestaurantContext';
 import { SettingsProvider } from './contexts/SettingsContext';
@@ -7,11 +8,27 @@ import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
 import InstallPWA from './components/common/InstallPWA';
 import OfflineIndicator from './components/common/OfflineIndicator';
+import SplashScreen from './components/common/SplashScreen';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import routes from './routes';
 
 function AppContent() {
   const { loading } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Hide splash screen after 2 seconds
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show splash screen on first load
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   if (loading) {
     return (

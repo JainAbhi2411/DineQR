@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad192" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#FF8C5A;stop-opacity:1" />
+    <!-- Dark gradient background -->
+    <linearGradient id="darkGrad192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B2A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1A1A1A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D1B2A;stop-opacity:1" />
     </linearGradient>
+    
+    <!-- Neon cyan glow -->
+    <filter id="neonGlow192">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Stronger glow for emphasis -->
+    <filter id="strongGlow192">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="192" height="192" rx="28.799999999999997" fill="url(#grad192)"/>
-  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="96" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">D</text>
+  
+  <!-- Background with rounded corners -->
+  <rect width="192" height="192" rx="34.56" fill="url(#darkGrad192)"/>
+  
+  <!-- Outer neon border glow -->
+  <rect x="9.600000000000001" y="9.600000000000001" width="172.8" height="172.8" 
+        rx="28.799999999999997" fill="none" stroke="#00F0FF" stroke-width="1.536" 
+        opacity="0.6" filter="url(#neonGlow192)"/>
+  
+  <!-- QR Code stylized element (top-left) -->
+  <g transform="translate(28.799999999999997, 28.799999999999997)">
+    <rect width="23.04" height="23.04" fill="#00F0FF" filter="url(#neonGlow192)"/>
+    <rect x="7.68" y="7.68" width="7.68" height="7.68" fill="#0D1B2A"/>
+  </g>
+  
+  <!-- QR Code stylized element (top-right) -->
+  <g transform="translate(140.16, 28.799999999999997)">
+    <rect width="23.04" height="23.04" fill="#00F0FF" filter="url(#neonGlow192)"/>
+    <rect x="7.68" y="7.68" width="7.68" height="7.68" fill="#0D1B2A"/>
+  </g>
+  
+  <!-- QR Code stylized element (bottom-left) -->
+  <g transform="translate(28.799999999999997, 140.16)">
+    <rect width="23.04" height="23.04" fill="#00F0FF" filter="url(#neonGlow192)"/>
+    <rect x="7.68" y="7.68" width="7.68" height="7.68" fill="#0D1B2A"/>
+  </g>
+  
+  <!-- Central dining element: Fork and Knife -->
+  <g transform="translate(96, 96)" filter="url(#strongGlow192)">
+    <!-- Plate circle -->
+    <circle cx="0" cy="0" r="34.56" fill="none" stroke="#FF006E" stroke-width="2.88" opacity="0.8"/>
+    
+    <!-- Fork (left) -->
+    <g transform="translate(-15.36, 0)">
+      <rect x="-2.88" y="-23.04" width="5.76" height="46.08" rx="1.92" fill="#00F0FF"/>
+      <rect x="-4.800000000000001" y="-23.04" width="2.88" height="15.36" fill="#00F0FF"/>
+      <rect x="1.92" y="-23.04" width="2.88" height="15.36" fill="#00F0FF"/>
+    </g>
+    
+    <!-- Knife (right) -->
+    <g transform="translate(15.36, 0)">
+      <rect x="-2.88" y="-23.04" width="5.76" height="46.08" rx="1.92" fill="#00F0FF"/>
+      <path d="M -2.88 -23.04 L 2.88 -23.04 L 0 -28.799999999999997 Z" fill="#00F0FF"/>
+    </g>
+  </g>
+  
+  <!-- DQ monogram at bottom -->
+  <text x="50%" y="168.96" font-family="Arial, sans-serif" font-size="28.799999999999997" 
+        font-weight="bold" fill="#00F0FF" text-anchor="middle" filter="url(#neonGlow192)">DQ</text>
 </svg>
