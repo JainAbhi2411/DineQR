@@ -17,6 +17,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
   const [error, setError] = useState<string>('');
   const [permissionState, setPermissionState] = useState<PermissionState>('checking');
   const [showPermissionHelp, setShowPermissionHelp] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isInitializedRef = useRef(false);
   const hasScannedRef = useRef(false);
@@ -164,6 +165,79 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
     }
   };
 
+  const handleRetry = async () => {
+    setIsRetrying(true);
+    setError('');
+    setShowPermissionHelp(false);
+    setPermissionState('checking');
+    
+    try {
+      // Try to request camera permission again
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      
+      // Permission granted, stop the test stream
+      stream.getTracks().forEach(track => track.stop());
+      
+      // Reset and reinitialize
+      isInitializedRef.current = false;
+      setPermissionState('granted');
+      
+      // Reinitialize scanner
+      const scanner = new Html5Qrcode('qr-reader');
+      scannerRef.current = scanner;
+
+      const devices = await Html5Qrcode.getCameras();
+      
+      if (!devices || devices.length === 0) {
+        setError('No camera found on this device');
+        setPermissionState('denied');
+        setIsRetrying(false);
+        return;
+      }
+
+      const backCamera = devices.find(device => 
+        device.label.toLowerCase().includes('back') || 
+        device.label.toLowerCase().includes('rear')
+      );
+      const cameraId = backCamera?.id || devices[0].id;
+
+      await scanner.start(
+        cameraId,
+        {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          aspectRatio: 1.0,
+        },
+        (decodedText) => {
+          if (hasScannedRef.current) return;
+          hasScannedRef.current = true;
+          onScanSuccess(decodedText);
+          stopScanner();
+        },
+        (errorMessage) => {
+          if (errorMessage.includes('NotFoundException') === false) {
+            console.warn('[QRScanner] Scan error:', errorMessage);
+          }
+        }
+      );
+
+      setIsScanning(true);
+      setIsRetrying(false);
+    } catch (err: any) {
+      console.error('[QRScanner] Retry failed:', err);
+      
+      if (err.name === 'NotAllowedError' || err.message?.includes('Permission denied')) {
+        setPermissionState('denied');
+        setError('Camera permission is still denied. Please enable it in your browser settings.');
+        setShowPermissionHelp(true);
+      } else {
+        setError(err.message || 'Failed to start camera');
+      }
+      
+      setIsRetrying(false);
+    }
+  };
+
   const handleClose = async () => {
     await stopScanner();
     onClose?.();
@@ -279,6 +353,11 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
                   <AlertCircle className="w-8 h-8 text-destructive" />
                 </div>
                 
+                <h3 className="text-white font-bold text-lg mb-2">Camera Permission Required</h3>
+                <p className="text-white/80 text-sm mb-4">
+                  To scan QR codes, we need access to your camera. Please allow camera permission.
+                </p>
+                
                 <Alert className="mb-4 text-left">
                   <Settings className="h-4 w-4" />
                   <AlertTitle>{getPermissionInstructions().title}</AlertTitle>
@@ -292,6 +371,23 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
                 </Alert>
 
                 <div className="space-y-2">
+                  <Button 
+                    onClick={handleRetry}
+                    className="w-full"
+                    disabled={isRetrying}
+                  >
+                    {isRetrying ? (
+                      <>
+                        <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Requesting Permission...
+                      </>
+                    ) : (
+                      <>
+                        <Camera className="w-4 h-4 mr-2" />
+                        Try Again
+                      </>
+                    )}
+                  </Button>
                   <Button 
                     onClick={openBrowserSettings} 
                     variant="secondary"
