@@ -349,14 +349,31 @@ export const orderApi = {
   },
 
   async updatePaymentStatus(orderId: string, paymentStatus: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded'): Promise<void> {
+    // Validate payment_status
+    const validPaymentStatuses = ['pending', 'processing', 'completed', 'failed', 'refunded'];
+    if (!validPaymentStatuses.includes(paymentStatus)) {
+      console.error('[updatePaymentStatus] Invalid payment_status:', paymentStatus);
+      throw new Error(`Invalid payment_status: ${paymentStatus}. Must be one of: ${validPaymentStatuses.join(', ')}`);
+    }
+
     const { error } = await supabase
       .from('orders')
       .update({ payment_status: paymentStatus })
       .eq('id', orderId);
-    if (error) throw error;
+    if (error) {
+      console.error('[updatePaymentStatus] Database error:', error);
+      throw error;
+    }
   },
 
   async createOrder(order: Omit<Order, 'id' | 'created_at' | 'updated_at' | 'currency' | 'stripe_session_id' | 'stripe_payment_intent_id' | 'customer_email' | 'customer_name' | 'completed_at'>): Promise<Order> {
+    // Validate payment_status
+    const validPaymentStatuses = ['pending', 'processing', 'completed', 'failed', 'refunded'];
+    if (!validPaymentStatuses.includes(order.payment_status)) {
+      console.error('[createOrder] Invalid payment_status:', order.payment_status);
+      throw new Error(`Invalid payment_status: ${order.payment_status}. Must be one of: ${validPaymentStatuses.join(', ')}`);
+    }
+
     const { data, error } = await supabase
       .from('orders')
       .insert({
@@ -365,7 +382,10 @@ export const orderApi = {
       })
       .select()
       .single();
-    if (error) throw error;
+    if (error) {
+      console.error('[createOrder] Database error:', error);
+      throw error;
+    }
     return data;
   },
 
