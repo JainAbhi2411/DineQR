@@ -26,6 +26,7 @@ export default function UpdateNotification() {
         if (registration.waiting) {
           setWaitingWorker(registration.waiting);
           setShowUpdate(true);
+          console.log('🎉 Update available! Waiting service worker found.');
         }
 
         // Listen for new service worker installing
@@ -36,36 +37,42 @@ export default function UpdateNotification() {
             return;
           }
 
+          console.log('📦 New service worker installing...');
+
           newWorker.addEventListener('statechange', () => {
+            console.log('🔄 Service worker state changed:', newWorker.state);
+            
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New service worker is installed and waiting
               setWaitingWorker(newWorker);
               setShowUpdate(true);
+              console.log('✅ New service worker installed! Update notification shown.');
             }
           });
         });
 
         // Listen for controller change (when new SW takes over)
         navigator.serviceWorker.addEventListener('controllerchange', () => {
+          console.log('🔄 New service worker activated! Reloading page...');
           // Reload the page to load the new version
           window.location.reload();
         });
 
       } catch (error) {
-        console.error('Error checking for updates:', error);
+        console.error('❌ Error checking for updates:', error);
       }
     };
 
     checkForUpdates();
 
-    // Check for updates periodically (every 60 seconds)
+    // Check for updates more frequently (every 30 seconds)
     const interval = setInterval(() => {
       navigator.serviceWorker.getRegistration().then(registration => {
         if (registration) {
           registration.update();
         }
       });
-    }, 60000);
+    }, 30000); // 30 seconds
 
     return () => clearInterval(interval);
   }, []);

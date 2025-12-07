@@ -1,6 +1,11 @@
 // Service Worker for DineQR PWA
-const CACHE_NAME = 'dineqr-v1';
-const RUNTIME_CACHE = 'dineqr-runtime-v1';
+// IMPORTANT: Update this version number when deploying new changes
+const VERSION = '2025.12.08.0255'; // Increment this on each deployment
+const BUILD_TIME = '2025-12-07T18:55:09.412Z';
+const CACHE_NAME = `dineqr-v${VERSION}`;
+const RUNTIME_CACHE = `dineqr-runtime-v${VERSION}`;
+
+console.log(`[Service Worker] Version ${VERSION} - Built at ${BUILD_TIME}`);
 
 // Assets to cache on install
 const STATIC_ASSETS = [
