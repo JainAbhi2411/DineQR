@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import { restaurantApi } from '@/db/api';
 import { Restaurant } from '@/types/types';
+import { supabase } from '@/db/supabase';
 
 interface RestaurantContextType {
   restaurant: Restaurant | null;
@@ -41,6 +42,36 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     loadRestaurant();
+  }, [profile?.id]);
+
+  // Real-time subscription for restaurant changes
+  useEffect(() => {
+    if (!profile?.id) return;
+
+    console.log('[RestaurantContext] Setting up real-time subscription for owner:', profile.id);
+
+    const channel = supabase
+      .channel(`restaurants-${profile.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'restaurants',
+          filter: `owner_id=eq.${profile.id}`,
+        },
+        (payload) => {
+          console.log('[RestaurantContext] Restaurant change detected:', payload);
+          // Reload restaurant data when changes occur
+          loadRestaurant();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('[RestaurantContext] Cleaning up real-time subscription');
+      supabase.removeChannel(channel);
+    };
   }, [profile?.id]);
 
   const refreshRestaurant = async () => {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRestaurant } from '@/contexts/RestaurantContext';
 import { restaurantApi } from '@/db/api';
 import { Restaurant, RestaurantType } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +18,7 @@ import OwnerLayout from '@/components/owner/OwnerLayout';
 export default function RestaurantForm() {
   const { id } = useParams();
   const { profile } = useAuth();
+  const { refreshRestaurant } = useRestaurant();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -118,6 +120,8 @@ export default function RestaurantForm() {
           title: 'Success',
           description: 'Restaurant updated successfully',
         });
+        // Refresh restaurant context after update
+        await refreshRestaurant();
       } else {
         await restaurantApi.createRestaurant({
           ...restaurantData,
@@ -130,6 +134,8 @@ export default function RestaurantForm() {
           title: 'Success',
           description: 'Restaurant created successfully',
         });
+        // Refresh restaurant context after creation
+        await refreshRestaurant();
       }
       navigate('/owner/restaurants');
     } catch (error: any) {
