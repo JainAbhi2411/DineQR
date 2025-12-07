@@ -1,446 +1,497 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete E-Bill Generation & Download System with Comprehensive Order Information + Enhanced Image Upload Functionality + Native Mobile Applications)
+# DineQR - Progressive Web App (PWA) Requirements Document
 
 ## 1. Application Overview
 
 ### 1.1 Application Name
-DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
+DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform (Progressive Web App)
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. **The system is available as a responsive web application, progressive web app (PWA), and native mobile applications for iOS and Android.** Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, advanced image upload system supporting computer upload, cloud drive integration (Google Drive, Dropbox), and direct URL insertion, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, comprehensive e-bill generation system with professional formatting and multiple download options (PDF, print-ready format), personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), advanced marketing and promotions system with Swiggy-style real-time customer-facing offers display featuring prominent banner placement, horizontal scrollable offer cards, automatic real-time synchronization via WebSocket, automatic discount application, and promo code redemption, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates, table updates, and promotions to customer dashboards without page refresh, Add-On Order feature allowing customers to add items to their active order without creating a new order or bill, and revolutionary NLP-powered Natural Language Ordering via AI Chatbot enabling customers to place orders using conversational text (e.g., 'I want to order 1daal tadka, 4 roti, 1 margherita pizza') with automatic cart creation and intelligent menu item recognition - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface with Swiggy-inspired offer presentation. All data displayed across the platform is real-time and dynamically calculated from the live database. **Native mobile applications provide optimized performance, offline capabilities, push notifications, and device-specific features for enhanced user experience on iOS and Android devices.**
+A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **Progressive Web App (PWA)** with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. **The system is delivered as a single Progressive Web App that works seamlessly across all devices (desktop, tablet, mobile) with native app-like capabilities including offline functionality, push notifications, home screen installation, and optimized performance.** Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, advanced image upload system supporting computer upload, cloud drive integration (Google Drive, Dropbox), and direct URL insertion, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, comprehensive e-bill generation system with professional formatting and multiple download options (PDF, print-ready format), personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), advanced marketing and promotions system with Swiggy-style real-time customer-facing offers display featuring prominent banner placement, horizontal scrollable offer cards, automatic real-time synchronization via WebSocket, automatic discount application, and promo code redemption, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality available on all mobile devices via PWA camera access, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates, table updates, and promotions to customer dashboards without page refresh, Add-On Order feature allowing customers to add items to their active order without creating a new order or bill, and revolutionary NLP-powered Natural Language Ordering via AI Chatbot enabling customers to place orders using conversational text (e.g., 'I want to order 1daal tadka, 4 roti, 1 margherita pizza') with automatic cart creation and intelligent menu item recognition - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface with Swiggy-inspired offer presentation. All data displayed across the platform is real-time and dynamically calculated from the live database. **As a PWA, the application provides native app-like experience with offline capabilities, push notifications, home screen installation, fast loading, and works seamlessly across all platforms without requiring separate app store downloads.**
 
 ---
 
-## 2. Platform Availability
+## 2. Progressive Web App (PWA) Architecture
 
-### 2.1 Web Application
-- **Responsive Web App**: Accessible via modern web browsers (Chrome, Firefox, Safari, Edge) on desktop, tablet, and mobile devices
-- **Progressive Web App (PWA)**: Installable web app with offline capabilities, push notifications, and app-like experience
-- **URL**: https://dineqr.com
+### 2.1 PWA Core Features
 
-### 2.2 Native Mobile Applications
-\n#### 2.2.1 iOS Application
-- **Platform**: iOS 14.0 and above
-- **Devices**: iPhone, iPad\n- **Distribution**: Apple App Store
-- **App Name**: DineQR - Smart Restaurant Manager (for owners/waiters), DineQR - Order & Dine (for customers)
-- **Features**: Native iOS UI with SwiftUI, optimized performance, offline mode, push notifications, Face ID/Touch ID authentication, Apple Pay integration, camera access for QR scanning, photo library access for image uploads, iCloud integration for cloud drive imports\n\n#### 2.2.2 Android Application
-- **Platform**: Android 8.0 (API level 26) and above
-- **Devices**: Android smartphones and tablets
-- **Distribution**: Google Play Store
-- **App Name**: DineQR - Smart Restaurant Manager (for owners/waiters), DineQR - Order & Dine (for customers)
-- **Features**: Native Android UI with Jetpack Compose, optimized performance, offline mode, push notifications, fingerprint/face unlock authentication, Google Pay integration, camera access for QR scanning, photo library access for image uploads, Google Drive integration for cloud drive imports
-\n---
+#### 2.1.1 Installability
+- **Add to Home Screen**: Users can install DineQR PWA to their device home screen (iOS, Android, desktop) with a single tap
+- **App-Like Experience**: Once installed, PWA launches in standalone mode without browser UI (no address bar, no browser tabs)
+- **Custom App Icon**: DineQR branded app icon appears on home screen alongside native apps
+- **Splash Screen**: Custom splash screen with DineQR logo and futuristic animation during app launch
+- **Installation Prompt**: Smart installation banner appears after user engagement (e.g., after browsing menu, placing order)\n- **Cross-Platform**: Single PWA works on iOS (Safari), Android (Chrome), Windows (Edge), macOS (Safari/Chrome), Linux (Chrome/Firefox)
 
-## 3. Native Mobile Application Features
-
-### 3.1 Common Features (iOS & Android)
-
-#### 3.1.1 Enhanced User Experience
-- **Native UI Components**: Platform-specific UI elements (iOS: SwiftUI, Android: Jetpack Compose) for familiar and intuitive user experience
-- **Optimized Performance**: Faster load times, smooth animations, and responsive interactions compared to web app
-- **Offline Mode**: Core features available offline with automatic sync when connection restored (view menu, browse order history, access saved items, view e-bills)
-- **Push Notifications**: Real-time push notifications for order updates, waiter assignments, promotions, NLP order confirmations, e-bill ready alerts, and more
-- **Biometric Authentication**: Face ID/Touch ID (iOS) and fingerprint/face unlock (Android) for secure and quick login
-- **Native Camera Integration**: Seamless QR code scanning with device camera, optimized for speed and accuracy
-- **Native Payment Integration**: Apple Pay (iOS) and Google Pay (Android) for fast and secure payments
-- **Haptic Feedback**: Tactile feedback for button presses, notifications, and interactions (iOS: Taptic Engine, Android: Vibration API)
-- **Dark Mode Support**: Automatic dark mode based on device settings, with manual toggle option
-- **Gesture Navigation**: Native gesture support (swipe, pinch-to-zoom, long-press) for intuitive navigation
-
-#### 3.1.2 Offline Capabilities
+#### 2.1.2 Offline Functionality
+- **Service Worker**: Advanced service worker implementation for offline capabilities and caching strategies
 - **Offline Menu Browsing**: View restaurant menu, item details, images, and portions without internet connection (cached data)
 - **Offline Order History**: Access past orders, order details, and e-bills offline
 - **Offline Favorites**: View saved favorite items and restaurants offline
-- **Offline E-Bill Access**: Download and view e-bills offline (stored locally on device)
-- **Automatic Sync**: When connection restored, app automatically syncs offline actions (e.g., favorited items, viewed orders) with server
-- **Offline Indicator**: Clear visual indicator when app is in offline mode
+- **Offline E-Bill Access**: Download and view e-bills offline (stored in IndexedDB)
+- **Background Sync**: Queue actions performed offline (e.g., favoriting items, viewing orders) and sync automatically when connection restored
+- **Offline Indicator**: Clear visual indicator (banner or toast) when app is in offline mode
+- **Cache-First Strategy**: Static assets (CSS, JS, images, fonts) served from cache for instant loading
+- **Network-First Strategy**: Dynamic data (menu, orders, promotions) fetched from network with cache fallback
+- **Stale-While-Revalidate**: Show cached data immediately while fetching fresh data in background
 
-#### 3.1.3 Push Notifications
-- **Order Status Updates**: Real-time push notifications for order status changes (Accepted, Preparing, Ready, Completed)\n- **Waiter Assignment Notifications**: Instant notification when waiter assigned or reassigned to customer's order
+#### 2.1.3 Push Notifications
+- **Web Push API**: Native push notifications via Web Push API (works on Android, Windows, macOS; limited on iOS)
+- **Order Status Updates**: Real-time push notifications for order status changes (Accepted, Preparing, Ready, Completed)
+- **Waiter Assignment Notifications**: Instant notification when waiter assigned or reassigned to customer's order
 - **Promotion Alerts**: Push notifications for new promotions, expiring offers, and personalized deals
 - **NLP Order Confirmations**: Notification when NLP chatbot successfully processes order
 - **E-Bill Ready Alerts**: Notification when e-bill is generated and ready for download
 - **Add-On Order Notifications**: Notification when add-on items added to active order
 - **Chat Messages**: Push notifications for new messages from restaurant or waiter
 - **Loyalty Rewards**: Notifications for earned loyalty points and available rewards
+- **Notification Permissions**: Request notification permissions with clear explanation of benefits
 - **Notification Settings**: Granular control over notification types and frequency in app settings
+- **iOS Fallback**: For iOS devices (where Web Push is limited), use in-app notifications and WebSocket-based real-time updates
 
-#### 3.1.4 Device-Specific Features
-\n**iOS-Specific Features**:\n- **Face ID/Touch ID**: Biometric authentication for secure login and payment authorization
-- **Apple Pay**: Native Apple Pay integration for fast checkout\n- **iCloud Integration**: Sync favorites, order history, and settings across iOS devices via iCloud
-- **Siri Shortcuts**: Voice commands for quick actions (e.g.,'Order my usual', 'Check order status')
-- **Widgets**: Home screen widgets displaying active orders, recent restaurants, and promotions
-- **App Clips**: Lightweight app experience for quick QR code scanning without full app installation
-- **Haptic Feedback**: Taptic Engine for rich haptic feedback on interactions
-- **3D Touch/Haptic Touch**: Quick actions from home screen icon (Scan QR, View Orders, Browse Offers)
+#### 2.1.4 Performance Optimization
+- **Fast Loading**: Target< 3 seconds initial load time on3G networks
+- **Lazy Loading**: Load images, components, and routes on-demand to reduce initial bundle size
+- **Code Splitting**: Split JavaScript bundles by route and feature for faster loading
+- **Image Optimization**: Serve responsive images (WebP format with JPEG fallback), lazy load images below the fold
+- **Minification & Compression**: Minify CSS/JS, enable Gzip/Brotli compression
+- **Critical CSS**: Inline critical CSS for above-the-fold content
+- **Preloading**: Preload critical resources (fonts, hero images) for faster rendering
+- **Resource Hints**: Use dns-prefetch, preconnect for faster API calls
+- **Lighthouse Score**: Target 90+ score on Performance, Accessibility, Best Practices, SEO
 
-**Android-Specific Features**:
-- **Fingerprint/Face Unlock**: Biometric authentication for secure login and payment authorization
-- **Google Pay**: Native Google Pay integration for fast checkout
-- **Google Drive Integration**: Direct access to Google Drive for cloud image imports\n- **Google Assistant Integration**: Voice commands for quick actions (e.g., 'Order from DineQR', 'Show my orders')
-- **Widgets**: Home screen widgets displaying active orders, recent restaurants, and promotions
-- **App Shortcuts**: Long-press app icon for quick actions (Scan QR, View Orders, Browse Offers)
-- **Adaptive Icons**: Dynamic app icon that adapts to device theme and launcher
-- **Split Screen Support**: Use DineQR alongside other apps in split-screen mode on tablets
+#### 2.1.5 Responsive Design
+- **Mobile-First Approach**: Design and develop for mobile devices first, then scale up to tablets and desktops
+- **Adaptive Layouts**: Layouts adapt seamlessly to different screen sizes (320px to 4K)
+- **Touch-Friendly UI**: Large touch targets (minimum 44x44px), swipe gestures, pull-to-refresh
+- **Collapsible Sidebar**: Sidebar navigation collapses to hamburger menu on mobile
+- **Responsive Typography**: Fluid typography scales based on viewport size
+- **Responsive Images**: Serve appropriately sized images based on device resolution and screen size
+- **Orientation Support**: Support both portrait and landscape orientations
+\n#### 2.1.6 Device Integration
+- **Camera Access**: Access device camera for QR code scanning via Web APIs (getUserMedia)
+- **Geolocation**: Access device location for nearby restaurant recommendations (with user permission)
+- **File System Access**: Access device file system for image uploads (File API)
+- **Clipboard Access**: Copy promo codes, order IDs, e-bill links to clipboard
+- **Share API**: Native share functionality to share menu items, promotions, e-bills via device share sheet
+- **Payment Request API**: Streamlined checkout with Payment Request API (supports Google Pay, Apple Pay, saved cards)
+- **Vibration API**: Haptic feedback for button presses and notifications (on supported devices)
+- **Screen Wake Lock**: Keep screen awake during order tracking or QR code scanning
 
 ---
-\n### 3.2 Mobile App Architecture
 
-#### 3.2.1 iOS Application Architecture
-- **UI Framework**: SwiftUI for declarative UI development\n- **Architecture Pattern**: MVVM (Model-View-ViewModel) with Combine for reactive programming
-- **Networking**: URLSession with async/await for API calls
-- **Local Storage**: Core Data for offline data persistence, UserDefaults for settings
-- **Image Caching**: Kingfisher or SDWebImage for efficient image loading and caching
-- **Push Notifications**: Firebase Cloud Messaging (FCM) or Apple Push Notification Service (APNs)\n- **Authentication**: Firebase Authentication or custom JWT-based auth
-- **Payment Integration**: PassKit for Apple Pay\n- **Camera**: AVFoundation for QR code scanning
-- **Biometric Auth**: LocalAuthentication framework for Face ID/Touch ID
-- **Cloud Storage**: CloudKit for iCloud integration
-\n#### 3.2.2 Android Application Architecture
-- **UI Framework**: Jetpack Compose for declarative UI development
-- **Architecture Pattern**: MVVM (Model-View-ViewModel) with Kotlin Coroutines and Flow for reactive programming
-- **Networking**: Retrofit with OkHttp for API calls
-- **Local Storage**: Room Database for offline data persistence, SharedPreferences for settings
-- **Image Caching**: Coil or Glide for efficient image loading and caching
-- **Push Notifications**: Firebase Cloud Messaging (FCM)\n- **Authentication**: Firebase Authentication or custom JWT-based auth
-- **Payment Integration**: Google Pay API
-- **Camera**: CameraX for QR code scanning\n- **Biometric Auth**: BiometricPrompt API for fingerprint/face unlock
-- **Cloud Storage**: Google Drive API for cloud drive integration
+### 2.2 PWA Technical Implementation
 
----\n
-### 3.3 Mobile App User Flows
+#### 2.2.1 Service Worker Strategy
+- **Registration**: Register service worker on app load, handle updates gracefully
+- **Caching Strategies**:
+  - **Cache-First**: Static assets (CSS, JS, fonts, images)\n  - **Network-First**: Dynamic data (menu, orders, promotions) with cache fallback
+  - **Stale-While-Revalidate**: User profile, settings, order history
+  - **Network-Only**: Payment processing, authentication\n- **Cache Management**: Implement cache versioning, automatic cache cleanup for old versions
+- **Background Sync**: Queue failed API requests (e.g., order placement, favorite item) and retry when connection restored
+- **Periodic Background Sync**: Fetch fresh menu data, promotions in background (when app is closed)
+- **Update Strategy**: Prompt user to refresh when new version available, skip waiting for critical updates
 
-#### 3.3.1 Customer Mobile App Flow
-\n**Onboarding & Authentication**:
-1. Launch app → Splash screen with DineQR logo and futuristic animation
-2. First-time users: Onboarding screens explaining key features (QR scanning, NLP ordering, promotions, e-bills)
-3. Sign Up/Login → Email/Password, Google OAuth (Android), Apple Sign-In (iOS), Phone OTP\n4. Enable biometric authentication (Face ID/Touch ID on iOS, fingerprint/face unlock on Android)
-5. Grant permissions: Camera (for QR scanning), Notifications (for push alerts), Location (optional, for nearby restaurants)
-6. Navigate to Customer Home\n
-**Home Screen**:
-- **Top Navigation**: DineQR logo, search bar, NLP chatbot icon, notification bell, profile icon
+#### 2.2.2 Manifest Configuration
+- **Web App Manifest**: Comprehensive manifest.json with app metadata\n- **App Name**: 'DineQR - Smart Restaurant Manager' (for owners/waiters), 'DineQR - Order & Dine' (for customers)
+- **Short Name**: 'DineQR'\n- **Description**: 'Enterprise-grade smart restaurant management and customer engagement platform'
+- **Icons**: Multiple icon sizes (72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512) in PNG format
+- **Start URL**: '/' with query parameter to track PWA installs
+- **Display Mode**: 'standalone' (app-like experience without browser UI)
+- **Orientation**: 'portrait-primary' (default), support 'landscape' for tablets
+- **Theme Color**: Deep charcoal grey (#1a1a2e) to match futuristic dark theme
+- **Background Color**: Deep charcoal grey (#1a1a2e) for splash screen
+- **Scope**: '/' to define navigation scope\n- **Categories**: ['food', 'business', 'productivity']
+\n#### 2.2.3Offline Data Storage
+- **IndexedDB**: Store large datasets (menu items, order history, e-bills, images) for offline access
+- **LocalStorage**: Store small data (user preferences, settings, auth tokens)
+- **Cache API**: Store static assets and API responses via service worker
+- **Data Sync**: Sync offline data with server when connection restored, handle conflicts gracefully
+- **Storage Quota**: Monitor storage usage, request persistent storage for critical data
+
+#### 2.2.4 Push Notification Implementation
+- **Subscription**: Request notification permissions, subscribe to push notifications via Push API
+- **Server Integration**: Send push notifications from backend via Web Push protocol (VAPID keys)
+- **Notification Payload**: Include title, body, icon, badge, actions (e.g., 'View Order', 'Dismiss')
+- **Notification Click Handling**: Open relevant page when notification clicked (e.g., order details page)
+- **iOS Fallback**: For iOS devices, use WebSocket-based real-time updates and in-app notifications (banner/toast)
+\n---
+
+### 2.3 PWA User Experience
+
+#### 2.3.1 Installation Flow
+1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)\n2. **Browse & Engage**: User browses menu, places order, or views promotions
+3. **Installation Prompt**: After engagement, browser shows'Add to Home Screen' prompt (or custom in-app prompt)
+4. **Install**: User taps 'Add' → PWA installed to home screen
+5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode (no browser UI)
+6. **Splash Screen**: Custom splash screen with DineQR logo appears during launch
+7. **App Experience**: User experiences native app-like interface with offline capabilities and push notifications
+
+#### 2.3.2 Offline Experience
+1. **Connection Lost**: User loses internet connection (airplane mode, poor network)
+2. **Offline Indicator**: Banner appears at top: 'You are offline. Some features may be limited.'
+3. **Cached Content**: User can still browse cached menu, view order history, access e-bills
+4. **Offline Actions**: User favorites an item → Action queued for background sync
+5. **Connection Restored**: Banner updates: 'You are back online!' → Queued actions sync automatically
+6. **Fresh Data**: App fetches fresh data in background, updates UI seamlessly
+
+#### 2.3.3 Push Notification Experience
+1. **Permission Request**: After first order, app requests notification permissions with clear explanation
+2. **User Grants Permission**: User taps 'Allow' → Subscribed to push notifications
+3. **Order Update**: Restaurant updates order status to 'Preparing'\n4. **Push Notification**: User receives push notification: 'Your order #1234 is being prepared!'
+5. **Notification Click**: User taps notification → PWA opens to order tracking page
+6. **Real-Time Updates**: Order timeline updates in real-time via WebSocket
+
+---
+
+## 3. User Roles & Dashboards (PWA)
+
+### 3.1 Customer Dashboard (PWA)
+
+**Home Screen**:\n- **Top Navigation**: DineQR logo, search bar, NLP chatbot icon, notification bell, profile icon
 - **Swiggy-Style Promotions Carousel**: Horizontal scrollable promotion cards with real-time updates
 - **NLP Quick Order Section**: 'Order with AI' button, example queries\n- **Active Orders Section**: Display active orders with waiter info, promotion badges, order source indicators,'Download E-Bill' button for completed orders
 - **Recently Scanned Restaurants**: Thumbnail grid with'View Menu' buttons
 - **Recommended Items**: Personalized item recommendations with promotion badges
-- **Bottom Navigation Bar** (Android) or **Tab Bar** (iOS): Home, Browse, Offers, Orders, Profile
+- **Bottom Navigation Bar** (Mobile) or **Sidebar** (Desktop): Home, Browse, Offers, Orders, Profile
+- **Install Prompt** (if not installed): 'Install DineQR for faster access and offline features' with 'Install' button
 
-**QR Code Scanning**:
-1. Tap 'Scan QR Code' button (floating action button or tab bar item)
-2. Camera opens with QR code scanner overlay (native camera integration)
-3. Scan restaurant table QR code → Table number auto-detected
-4. Navigate to restaurant menu page
+**QR Code Scanning** (Mobile PWA):
+1. Tap 'Scan QR Code' button (floating action button)
+2. PWA requests camera permission → User grants permission
+3. Camera opens with QR code scanner overlay (using getUserMedia API and QR code library)
+4. Scan restaurant table QR code → Table number auto-detected
+5. Navigate to restaurant menu page
 \n**Menu Browsing**:
 - **Menu Header**: Restaurant name, restaurant type badge, NLP chatbot floating button
 - **Swiggy-Style Promotions Banner**: Horizontal scrollable offer cards\n- **Category Navigation**: Horizontal tabs for menu categories
-- **Menu Items Grid**: Item cards with primary image, name, price, portion options, promotion badges
+- **Menu Items Grid**: Item cards with primary image (lazy loaded), name, price, portion options, promotion badges
 - **Item Details**: Tap item card → Full-screen modal with image carousel, description, portion selection, quantity selector, 'Add to Cart' button
-- **NLP Ordering**: Tap NLP chatbot button → Full-screen chatbot modal, type order in natural language, chatbot processes and displays order summary, tap 'Add to Cart'\n
-**Cart & Checkout**:
+- **NLP Ordering**: Tap NLP chatbot button → Full-screen chatbot modal, type order in natural language, chatbot processes and displays order summary, tap 'Add to Cart'\n\n**Cart & Checkout**:
 1. Review cart → Edit quantities/portions, apply promotions (Swiggy-style promo code section)
 2. Proceed to checkout → Enter customer details, select order type, review order summary
-3. Payment → Select payment method (Apple Pay/Google Pay, Card, UPI, Cash), complete payment
-4. Order confirmation → View order details, waiter assignment status, 'Download E-Bill' button\n\n**Order Tracking**:
-- **Order Tracking Page**: Order ID, order source badge, applied promotion section, assigned waiter info section (with real-time updates), order details, order timeline, e-bill download section
-- **Real-Time Updates**: Push notifications for status changes, waiter assignments, e-bill ready\n- **Chat with Waiter**: Tap 'Chat with Waiter' button → Real-time chat interface\n\n**Order History & E-Bills**:
-- **Order History**: List of past orders with search/filter options
-- **Order Details**: Tap order → View full order details, waiter info, promotion details, order source\n- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device, view in app, print, share, email
-\n**Offers & Promotions**:
-- **Offers Page**: Grid of promotion cards with real-time updates, search/filter options
+3. Payment → Select payment method (Payment Request API for Google Pay/Apple Pay, Card, UPI, Cash), complete payment
+4. Order confirmation → View order details, waiter assignment status, 'Download E-Bill' button\n
+**Order Tracking**:
+- **Order Tracking Page**: Order ID, order source badge, applied promotion section, assigned waiter info section (with real-time updates via WebSocket), order details, order timeline, e-bill download section
+- **Real-Time Updates**: Push notifications (if enabled) or in-app notifications for status changes, waiter assignments, e-bill ready\n- **Chat with Waiter**: Tap 'Chat with Waiter' button → Real-time chat interface (WebSocket)\n\n**Order History & E-Bills**:
+- **Order History**: List of past orders with search/filter options (cached for offline access)
+- **Order Details**: Tap order → View full order details, waiter info, promotion details, order source\n- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device (stored in IndexedDB for offline access), view in app, print, share via Share API, email\n\n**Offers & Promotions**:
+- **Offers Page**: Grid of promotion cards with real-time updates (WebSocket), search/filter options
 - **Promotion Details**: Tap card → Full-screen modal with discount details, promo code, eligibility, validity, terms & conditions
-- **Apply Offer**: Tap 'Apply Offer' → System validates and applies to cart
-\n**Profile & Settings**:
-- **Profile**: View/edit profile info, change password, biometric auth settings
-- **Settings**: Notification preferences, language, theme (light/dark/auto), privacy settings
+- **Apply Offer**: Tap 'Apply Offer' → System validates and applies to cart\n\n**Profile & Settings**:
+- **Profile**: View/edit profile info, change password\n- **Settings**: Notification preferences (push notifications toggle), language, theme (light/dark/auto), privacy settings
+- **Install PWA** (if not installed): 'Install DineQR App' button with instructions
 - **Logout**: Tap logout → Confirm → Return to login screen
 
-#### 3.3.2 Owner Mobile App Flow
+---
+
+### 3.2 Owner Dashboard (PWA)
 
 **Dashboard**:
-- **Top Metrics Cards**: Today's revenue, active orders, total orders, customer satisfaction, active promotions, NLP orders
+- **Top Metrics Cards**: Today's revenue, active orders, total orders, customer satisfaction, active promotions, NLP orders (real-time data)
 - **Recent Orders Section**: Last 5 orders with waiter assignment info, promotion badges, order source indicators, 'View E-Bill' button
 - **Quick Actions Grid**: Add Menu Item, Create Promotion, Generate QR Code, View Analytics, Manage Staff, Settings
 - **Active Promotions Section**: Display currently active promotions with quick view cards
 \n**Menu Management**:
 - **Menu Items List**: Grid/list view with search/filter options
 - **Add/Edit Menu Item**: Multi-tab form (Basic Info, Image Upload, Pricing & Portions, Inventory, Additional Details, Promotions, NLP Aliases)
-- **Image Upload**: Computer upload (photo library access), cloud drive import (Google Drive/Dropbox), direct URL\n- **Real-Time Sync**: Menu changes sync to customer apps instantly via WebSocket
+- **Image Upload**: \n  - **Computer Upload**: File input with drag-and-drop support (File API)
+  - **Cloud Drive Import**: Integrate with Google Drive Picker API, Dropbox Chooser API
+  - **Direct URL**: Input field for image URL
+  - **Image Preview**: Show preview before upload, crop/resize options
+- **Real-Time Sync**: Menu changes sync to customer PWAs instantly via WebSocket
 \n**Order Management**:
-- **Order Dashboard**: Order cards grid with filters (Unassigned, Orders with Promotions, NLP Orders)\n- **Order Details**: Full-screen modal with order summary, items, timeline, payment info, waiter assignment section, promotion details, order source,'Download E-Bill' button
-- **Assign Waiter**: Tap 'Assign Waiter' → Modal displays only free waiters, select waiter, confirm assignment
-- **Real-Time Updates**: Push notifications for new orders, promotion applications, NLP orders, e-bill generation
+- **Order Dashboard**: Order cards grid with filters (Unassigned, Orders with Promotions, NLP Orders)\n- **Order Details**: Full-screen modal with order summary, items, timeline, payment info, waiter assignment section, promotion details, order source,'Download E-Bill' button\n- **Assign Waiter**: Tap 'Assign Waiter' → Modal displays only free waiters, select waiter, confirm assignment
+- **Real-Time Updates**: Push notifications (if enabled) or in-app notifications for new orders, promotion applications, NLP orders, e-bill generation
 
 **Promotions Management**:
-- **Marketing Dashboard**: Active promotions, scheduled promotions, expired promotions\n- **Create Promotion**: Multi-step form (Basic Info, Discount Details, Eligibility, Validity, Preview)\n- **Real-Time Sync**: Promotion changes sync to customer apps instantly via WebSocket
+- **Marketing Dashboard**: Active promotions, scheduled promotions, expired promotions\n- **Create Promotion**: Multi-step form (Basic Info, Discount Details, Eligibility, Validity, Preview)\n- **Real-Time Sync**: Promotion changes sync to customer PWAs instantly via WebSocket
 \n**Staff Management**:
 - **Free Waiters Section**: Display free waiters with avatar, name, workload, 'Assign to Order' button
 - **All Staff Section**: List of all staff with filters (All, Waiters, Free, Busy, Offline)
 - **Add/Edit Staff**: Form with name, role, contact info, workload threshold\n\n**E-Bill Management**:
 - **E-Bill Settings**: Configure branding, layout, content, footer, download format, auto-generate, email/SMS delivery
-- **View E-Bills**: Access e-bills for all orders, download, print, share, regenerate
-- **Bulk Download**: Select multiple orders, download e-bills as ZIP file
+- **View E-Bills**: Access e-bills for all orders, download, print, share via Share API, regenerate\n- **Bulk Download**: Select multiple orders, download e-bills as ZIP file
 
 **Analytics**:
 - **Analytics Dashboard**: Revenue trends, order analytics, menu performance, customer analytics, staff analytics, promotion analytics, NLP analytics, e-bill analytics
 - **Custom Reports**: Generate and export reports as PDF/CSV
 \n**Settings**:
-- **Restaurant Profile**: Edit restaurant info, restaurant type, currency, timezone\n- **Operational Settings**: Configure order settings, payment settings, notification settings
-- **Waiter Assignment Settings**: Enable auto-assignment, set workload threshold
-- **Promotion Settings**: Enable promotions, configure stacking, auto-apply\n- **NLP Settings**: Enable NLP ordering, configure recognition threshold, customize messages
+- **Restaurant Profile**: Edit restaurant info, restaurant type, currency, timezone
+- **Operational Settings**: Configure order settings, payment settings, notification settings
+- **Waiter Assignment Settings**: Enable auto-assignment, set workload threshold\n- **Promotion Settings**: Enable promotions, configure stacking, auto-apply\n- **NLP Settings**: Enable NLP ordering, configure recognition threshold, customize messages
 - **E-Bill Settings**: Configure branding, layout, content, download format\n- **Image Upload Settings**: Configure max file size, compression, cloud drive integrations
 
-#### 3.3.3 Waiter Mobile App Flow
-\n**Dashboard**:
+---
+
+### 3.3 Waiter Dashboard (PWA)
+
+**Dashboard**:
 - **Metrics Cards**: Orders assigned today, orders with promotions, NLP orders\n- **Assigned Orders Section**: Display only orders assigned to this waiter with order details, promotion badges, order source indicators, 'View E-Bill' button
 - **Clock In/Out**: Tap button to clock in/out, status changes to Free/Offline
 \n**Order Management**:
 - **Order Details**: Full-screen modal with order summary, items, timeline, waiter assignment info, promotion details, order source, 'View E-Bill' button
-- **Update Status**: Tap status button → Select new status (Accept, Preparing, Ready, Completed)
-- **Chat with Customer**: Tap 'Chat with Customer' → Real-time chat interface\n
-**E-Bill Access**:
-- **View E-Bill**: Tap 'View E-Bill' button → Full-screen e-bill view, download, print, share options
-- **Share with Customer**: Tap 'Share E-Bill with Customer' → Send e-bill link via SMS or email
+- **Update Status**: Tap status button → Select new status (Accept, Preparing, Ready, Completed)\n- **Chat with Customer**: Tap 'Chat with Customer' → Real-time chat interface (WebSocket)
+\n**E-Bill Access**:
+- **View E-Bill**: Tap 'View E-Bill' button → Full-screen e-bill view, download, print, share via Share API\n- **Share with Customer**: Tap 'Share E-Bill with Customer' → Send e-bill link via Share API (SMS, email, WhatsApp)
 \n**Profile & Attendance**:
 - **Profile**: View/edit profile info, performance metrics (orders handled, ratings, availability rate)
 - **Attendance**: View attendance history, clock in/out logs\n\n---
 
-### 3.4 Mobile App Design System
+## 4. PWA-Specific Features
 
-#### 3.4.1 iOS Design Guidelines
-- **Design Language**: Follow Apple Human Interface Guidelines (HIG)
-- **UI Components**: Native iOS components (Navigation Bar, Tab Bar, List, Card, Button, TextField, etc.)
-- **Typography**: SF Pro (system font) for consistency with iOS ecosystem
-- **Color Scheme**: Adapt futuristic dark theme to iOS design patterns, use iOS system colors for standard elements
-- **Spacing**: Use iOS standard spacing (8pt grid system)\n- **Animations**: Use iOS native animations (spring animations, fade transitions, slide transitions)
-- **Gestures**: Support iOS standard gestures (swipe to go back, pull to refresh, long-press for context menu)
-- **Accessibility**: Support Dynamic Type, VoiceOver, Reduce Motion, Increase Contrast
+### 4.1 Installation & Onboarding
 
-#### 3.4.2 Android Design Guidelines
-- **Design Language**: Follow Material Design 3 guidelines
-- **UI Components**: Material Design components (Top App Bar, Bottom Navigation Bar, Card, Button, TextField, etc.)\n- **Typography**: Roboto (system font) for consistency with Android ecosystem
-- **Color Scheme**: Adapt futuristic dark theme to Material Design patterns, use Material You dynamic color system
-- **Spacing**: Use Material Design spacing (4dp/8dp grid system)
-- **Animations**: Use Material Motion animations (shared element transitions, fade through, container transform)
-- **Gestures**: Support Android standard gestures (swipe to dismiss, pull to refresh, long-press for context menu)
-- **Accessibility**: Support TalkBack, font scaling, high contrast mode\n
-#### 3.4.3 Cross-Platform Consistency
-- **Brand Identity**: Maintain DineQR brand colors (neon cyan, vibrant magenta, electric blue, neon purple) across both platforms
-- **Core Features**: Ensure feature parity between iOS and Android apps
-- **User Experience**: Adapt UI to platform conventions while maintaining consistent user flows
-- **Visual Design**: Use platform-specific UI components but maintain consistent visual hierarchy and information architecture
+#### 4.1.1 Installation Prompt
+- **Trigger**: Show installation prompt after user engagement (e.g., after browsing menu, placing order, viewing3+ pages)
+- **Custom Prompt**: Custom in-app banner with DineQR branding: 'Install DineQR for faster access, offline features, and push notifications' with 'Install' and 'Not Now' buttons
+- **Browser Prompt**: Trigger native browser 'Add to Home Screen' prompt when user taps 'Install'
+- **Defer Prompt**: If user taps 'Not Now', defer prompt and show again after 7 days or after next order
+- **Installation Success**: Show success message: 'DineQR installed! You can now access it from your home screen.'
 
----
-\n### 3.5 Mobile App Technical Stack
-
-#### 3.5.1 iOS Technology Stack
-- **Language**: Swift 5.9+\n- **UI Framework**: SwiftUI\n- **Architecture**: MVVM with Combine\n- **Networking**: URLSession with async/await, Alamofire (optional)
-- **Local Database**: Core Data or Realm
-- **Image Caching**: Kingfisher or SDWebImage
-- **Push Notifications**: Firebase Cloud Messaging (FCM) or APNs
-- **Authentication**: Firebase Auth or custom JWT
-- **Payment**: PassKit (Apple Pay)\n- **Camera**: AVFoundation (QR scanning)
-- **Biometric Auth**: LocalAuthentication
-- **Cloud Storage**: CloudKit (iCloud)
-- **Analytics**: Firebase Analytics or Mixpanel
-- **Crash Reporting**: Firebase Crashlytics or Sentry
-- **Dependency Management**: Swift Package Manager (SPM) or CocoaPods
-
-#### 3.5.2 Android Technology Stack
-- **Language**: Kotlin 1.9+\n- **UI Framework**: Jetpack Compose
-- **Architecture**: MVVM with Kotlin Coroutines and Flow
-- **Networking**: Retrofit with OkHttp\n- **Local Database**: Room Database
-- **Image Caching**: Coil or Glide
-- **Push Notifications**: Firebase Cloud Messaging (FCM)
-- **Authentication**: Firebase Auth or custom JWT
-- **Payment**: Google Pay API
-- **Camera**: CameraX (QR scanning)
-- **Biometric Auth**: BiometricPrompt API
-- **Cloud Storage**: Google Drive API
-- **Analytics**: Firebase Analytics or Mixpanel
-- **Crash Reporting**: Firebase Crashlytics or Sentry
-- **Dependency Management**: Gradle with Kotlin DSL
-
-#### 3.5.3 Backend Integration
-- **API**: RESTful API with JSON responses
-- **WebSocket**: Socket.io or native WebSocket for real-time updates
-- **Authentication**: JWT tokens with refresh token mechanism
-- **Push Notifications**: Firebase Cloud Messaging (FCM) for both iOS and Android
-- **Image Storage**: AWS S3, Google Cloud Storage, or Cloudinary
-- **E-Bill Storage**: Cloud storage with secure access control
+#### 4.1.2 Onboarding (First Launch)
+1. **Splash Screen**: Custom splash screen with DineQR logo and futuristic animation (2-3 seconds)
+2. **Welcome Screen**: 'Welcome to DineQR!' with brief description and 'Get Started' button
+3. **Feature Highlights**: Swipeable carousel highlighting key features (QR Scanning, NLP Ordering, Promotions, E-Bills, Offline Access)
+4. **Permission Requests**: \n   - **Notifications**: 'Enable notifications to get real-time order updates' with 'Enable' and 'Skip' buttons
+   - **Camera** (if customer): 'Allow camera access to scan QR codes' with 'Allow' and 'Skip' buttons
+   - **Location** (optional): 'Allow location access to find nearby restaurants' with 'Allow' and 'Skip' buttons
+5. **Sign Up/Login**: Navigate to authentication screen
 \n---
 
-### 3.6 Mobile App Development Phases
+### 4.2 Offline Features
 
-#### Phase 1: MVP (Minimum Viable Product)
-- **Core Features**: Authentication, QR scanning, menu browsing, order placement, order tracking, push notifications
-- **Platforms**: iOS and Android
-- **Timeline**: 3-4 months
-\n#### Phase 2: Enhanced Features
-- **Additional Features**: NLP ordering, promotions, e-bill download, offline mode, biometric auth, native payments
-- **Timeline**: 2-3 months
+#### 4.2.1 Offline Menu Browsing
+- **Cache Strategy**: Cache menu data (items, images, portions, promotions) when user visits restaurant menu page
+- **Offline Access**: When offline, user can browse cached menu, view item details, see portions and prices\n- **Offline Indicator**: Banner at top: 'You are offline. Viewing cached menu. Some features may be unavailable.'
+- **Limitations**: Cannot add to cart, place order, or see real-time promotions when offline
+- **Sync on Reconnect**: When connection restored, fetch fresh menu data in background, update UI if changes detected
 
-#### Phase 3: Advanced Features\n- **Additional Features**: Waiter assignment, add-on orders, image upload, loyalty rewards, analytics
-- **Timeline**: 2-3 months
+#### 4.2.2 Offline Order History
+- **Cache Strategy**: Cache order history data (orders, items, waiter info, e-bills) when user views order history page
+- **Offline Access**: When offline, user can view cached order history, order details, and downloaded e-bills
+- **Offline E-Bills**: E-bills stored in IndexedDB, accessible offline for viewing and printing
+- **Sync on Reconnect**: When connection restored, fetch fresh order data in background, update UI if changes detected
 
-#### Phase 4: Optimization & Polish
-- **Focus**: Performance optimization, UI/UX refinement, bug fixes, user feedback implementation
-- **Timeline**: 1-2 months
-
----
-
-### 3.7 Mobile App Testing Strategy\n
-#### 3.7.1 Testing Types
-- **Unit Testing**: Test individual components and functions (XCTest for iOS, JUnit for Android)
-- **Integration Testing**: Test API integration, database operations, WebSocket connections
-- **UI Testing**: Test user flows and UI interactions (XCUITest for iOS, Espresso for Android)
-- **Performance Testing**: Test app performance, memory usage, battery consumption
-- **Accessibility Testing**: Test VoiceOver/TalkBack, Dynamic Type, color contrast
-- **Device Testing**: Test on multiple devices (iPhone models, Android devices from different manufacturers)
-- **Beta Testing**: TestFlight (iOS) and Google Play Beta (Android) for user feedback
-
-#### 3.7.2 Testing Tools
-- **iOS**: XCTest, XCUITest, Instruments (performance profiling), TestFlight (beta testing)
-- **Android**: JUnit, Espresso, Android Profiler (performance profiling), Firebase Test Lab (device testing), Google Play Beta (beta testing)
-- **Cross-Platform**: Firebase Crashlytics (crash reporting), Firebase Analytics (user behavior tracking)\n
----
-
-### 3.8 Mobile App Deployment\n
-#### 3.8.1 iOS Deployment
-- **App Store Submission**: Submit app to Apple App Store via App Store Connect
-- **Review Process**: Apple review (typically 1-3 days)
-- **App Store Optimization (ASO)**: Optimize app title, description, keywords, screenshots, preview video
-- **Release Strategy**: Phased release or full release\n- **Updates**: Regular updates with bug fixes, new features, performance improvements
-
-#### 3.8.2 Android Deployment
-- **Play Store Submission**: Submit app to Google Play Store via Google Play Console
-- **Review Process**: Google review (typically 1-3 days)
-- **App Store Optimization (ASO)**: Optimize app title, description, keywords, screenshots, preview video
-- **Release Strategy**: Staged rollout (release to percentage of users first) or full release
-- **Updates**: Regular updates with bug fixes, new features, performance improvements
+#### 4.2.3 Background Sync
+- **Queue Actions**: When offline, queue actions like favoriting items, viewing orders, updating profile
+- **Sync on Reconnect**: When connection restored, service worker automatically syncs queued actions with server
+- **Conflict Resolution**: If conflicts detected (e.g., item removed from menu), show notification to user
 
 ---
+\n### 4.3 Push Notifications
 
-### 3.9 Mobile App Maintenance & Support
+#### 4.3.1 Notification Types
+- **Order Status Updates**: 'Your order #1234 is being prepared!' (with'View Order' action)
+- **Waiter Assignment**: 'John has been assigned to your order #1234' (with 'View Order' action)
+- **Promotion Alerts**: 'New offer: 20% off on all pizzas!' (with 'View Offer' action)
+- **NLP Order Confirmation**: 'Your AI order has been added to cart!' (with 'View Cart' action)
+- **E-Bill Ready**: 'Your e-bill for order #1234 is ready!' (with 'Download E-Bill' action)
+- **Add-On Order**: '2 items added to your active order #1234' (with 'View Order' action)
+- **Chat Messages**: 'New message from John (Waiter)' (with 'Open Chat' action)
+- **Loyalty Rewards**: 'You earned 50 points! Redeem now.' (with 'View Rewards' action)
 
-#### 3.9.1 Ongoing Maintenance
-- **Bug Fixes**: Regular bug fixes based on user feedback and crash reports
-- **Performance Optimization**: Continuous performance monitoring and optimization
-- **OS Updates**: Update app to support latest iOS and Android versions
-- **Security Updates**: Regular security patches and updates
-- **Feature Updates**: Add new features based on user feedback and business requirements
+#### 4.3.2 Notification Handling
+- **Click Action**: When user clicks notification, PWA opens to relevant page (order details, offer page, chat, etc.)
+- **Action Buttons**: Notifications include action buttons (e.g., 'View Order', 'Dismiss')
+- **Badge Count**: Update PWA badge count (on app icon) with unread notifications count
+- **Notification History**: Store notification history in app, accessible from notification bell icon
 
-#### 3.9.2 User Support
-- **In-App Help**: Help center with FAQs, tutorials, contact support
-- **Customer Support**: Email support, live chat, phone support
-- **Feedback Mechanism**: In-app feedback form, app store reviews monitoring
-- **Analytics Monitoring**: Monitor user behavior, crash reports, performance metrics
+#### 4.3.3 iOS Fallback
+- **Web Push Limitation**: iOS Safari has limited Web Push support (requires iOS 16.4+, only works when PWA installed)
+- **Fallback Strategy**: For iOS users, use WebSocket-based real-time updates and in-app notifications (banner/toast)
+- **In-App Notifications**: Show banner at top of screen for order updates, waiter assignments, promotions\n- **Notification Bell**: Notification bell icon shows unread count, taps opens notification history
+
+---
+\n### 4.4 Device Integration
+
+#### 4.4.1 Camera Access (QR Scanning)
+- **Permission Request**: Request camera permission when user taps 'Scan QR Code' button
+- **Camera UI**: Full-screen camera view with QR code scanner overlay,'Cancel' button\n- **QR Detection**: Use QR code detection library (e.g., jsQR, qr-scanner) to detect QR codes in camera feed
+- **Auto-Scan**: Automatically detect and process QR code when in view
+- **Fallback**: If camera access denied, show 'Upload QR Code Image' option (File API)
+
+#### 4.4.2 Share API
+- **Share Menu Items**: Tap 'Share' button on item details page → Native share sheet opens → Share item name, image, link via SMS, email, WhatsApp, etc.
+- **Share Promotions**: Tap 'Share' button on promotion card → Share promotion details and promo code
+- **Share E-Bills**: Tap 'Share E-Bill' button → Share e-bill PDF or link
+- **Share Restaurant**: Tap 'Share' button on restaurant page → Share restaurant name, menu link\n
+#### 4.4.3 Payment Request API
+- **Streamlined Checkout**: Use Payment Request API for fast checkout with saved payment methods
+- **Supported Methods**: Google Pay, Apple Pay (on iOS), saved credit/debit cards\n- **Autofill**: Automatically fill shipping/billing address, contact info from browser autofill
+- **Fallback**: If Payment Request API not supported, show traditional payment form
+
+#### 4.4.4 Clipboard API
+- **Copy Promo Codes**: Tap 'Copy Code' button on promotion card → Promo code copied to clipboard, show toast: 'Promo code copied!'
+- **Copy Order ID**: Tap 'Copy Order ID' button on order details page → Order ID copied to clipboard\n- **Copy E-Bill Link**: Tap 'Copy Link' button on e-bill page → E-bill link copied to clipboard
+
+#### 4.4.5 Geolocation API
+- **Nearby Restaurants**: Request location permission → Fetch user's location → Show nearby restaurants on browse page
+- **Distance Display**: Show distance from user's location to each restaurant
+- **Optional**: Location permission is optional, users can browse all restaurants without granting permission
+
+---
+\n## 5. Technical Stack (PWA)
+
+### 5.1 Frontend Technologies
+- **Framework**: React.js 18+ with Next.js 14+ (for SSR, SSG, and optimized PWA support)
+- **UI Library**: Tailwind CSS for styling, Framer Motion for animations
+- **State Management**: Redux Toolkit or Zustand for global state\n- **PWA Framework**: next-pwa plugin for Next.js (service worker generation, manifest configuration)
+- **Service Worker**: Workbox for advanced caching strategies and background sync
+- **Push Notifications**: Web Push API with VAPID keys\n- **QR Code Scanning**: jsQR or qr-scanner library with getUserMedia API
+- **Image Optimization**: Next.js Image component with WebP format, lazy loading\n- **Offline Storage**: IndexedDB (via idb library) for large datasets, LocalStorage for small data
+- **Real-Time Communication**: Socket.io client for WebSocket connections
+- **Payment Integration**: Payment Request API, Stripe.js, Razorpay SDK
+- **PDF Generation**: jsPDF or PDFKit for e-bill generation
+- **Cloud Drive Integration**: Google Drive Picker API, Dropbox Chooser API
+- **NLP Integration**: Axios for API calls to NLP backend
+\n### 5.2 Backend Technologies
+- **Server**: Node.js with Express.js or Django\n- **Database**: PostgreSQL or MongoDB
+- **Authentication**: JWT tokens with refresh token mechanism, OAuth 2.0 (Google, Apple)
+- **WebSocket**: Socket.io server for real-time updates
+- **Push Notifications**: Web Push library (web-push npm package) with VAPID keys
+- **Payment Gateway**: Stripe, Razorpay, PayPal APIs
+- **Cloud Storage**: AWS S3, Google Cloud Storage, or Cloudinary for image storage
+- **Email Service**: SendGrid, Mailgun, or AWS SES\n- **SMS Service**: Twilio or AWS SNS
+- **NLP Engine**: Python with spaCy, NLTK, or Hugging Face Transformers
+- **Image Processing**: Sharp or Jimp for image compression and resizing
+\n### 5.3 Hosting & Deployment
+- **Frontend Hosting**: Vercel (optimized for Next.js PWAs), Netlify, or AWS Amplify
+- **Backend Hosting**: AWS EC2, Google Cloud Run, or Heroku\n- **Database Hosting**: AWS RDS (PostgreSQL), MongoDB Atlas\n- **CDN**: Cloudflare or AWS CloudFront for static asset delivery
+- **SSL Certificate**: Let's Encrypt or AWS Certificate Manager (HTTPS required for PWA)
+- **Domain**: https://dineqr.com\n
+---
+
+## 6. PWA Compliance & Best Practices
+
+### 6.1 PWA Checklist
+-✅ **HTTPS**: Serve app over HTTPS (required for service workers and PWA features)
+- ✅ **Service Worker**: Register service worker for offline functionality and caching
+- ✅ **Web App Manifest**: Include manifest.json with app metadata, icons, theme colors
+- ✅ **Installable**: App meets installability criteria (HTTPS, manifest, service worker, engagement heuristics)
+- ✅ **Responsive Design**: App works on all screen sizes (mobile, tablet, desktop)
+- ✅ **Fast Loading**: Initial load < 3 seconds on3G networks
+- ✅ **Offline Functionality**: Core features work offline (menu browsing, order history, e-bills)
+- ✅ **Push Notifications**: Implement Web Push API for real-time notifications
+- ✅ **App-Like Experience**: Standalone display mode, no browser UI
+- ✅ **Accessibility**: WCAG 2.1 AA compliance, keyboard navigation, screen reader support\n- ✅ **SEO**: Meta tags, structured data, sitemap, robots.txt
+- ✅ **Performance**: Lighthouse score90+ on Performance, Accessibility, Best Practices, SEO
+
+### 6.2 Lighthouse Optimization
+- **Performance**: \n  - Minimize JavaScript bundle size (code splitting, tree shaking)
+  - Optimize images (WebP format, responsive images, lazy loading)
+  - Enable compression (Gzip/Brotli)
+  - Use CDN for static assets
+  - Implement caching strategies (service worker)\n- **Accessibility**: 
+  - Semantic HTML (headings, landmarks, lists)
+  - ARIA labels for interactive elements
+  - Keyboard navigation support
+  - Color contrast ratio4.5:1 minimum
+  - Focus indicators for interactive elements
+- **Best Practices**: 
+  - HTTPS only\n  - No console errors
+  - Secure authentication (JWT, OAuth)
+  - Content Security Policy (CSP) headers
+- **SEO**: 
+  - Meta tags (title, description, Open Graph, Twitter Card)
+  - Structured data (JSON-LD for restaurants, menu items)
+  - Sitemap.xml and robots.txt
+  - Canonical URLs
 \n---
 
-## 4. Updated User Flows (Including Mobile App)
+## 7. User Flows (PWA)
 
-### 4.1 Customer Flow (Web + Mobile App)
+### 7.1 Customer Flow
+\n1. **First Visit**: User visits https://dineqr.com via mobile browser
+2. **Browse**: User browses menu, views promotions\n3. **Installation Prompt**: After engagement, custom banner appears: 'Install DineQR for faster access and offline features'
+4. **Install**: User taps 'Install' → Browser shows'Add to Home Screen' prompt → User confirms
+5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode
+6. **Onboarding**: Welcome screen, feature highlights, permission requests (notifications, camera)\n7. **Sign Up/Login**: User creates account or logs in
+8. **QR Scanning**: User taps 'Scan QR Code' → Camera opens → Scans table QR code → Navigates to menu
+9. **Menu Browsing**: User browses menu, views items, portions, promotions
+10. **NLP Ordering** (optional): User taps NLP chatbot → Types order in natural language → Chatbot processes and adds to cart
+11. **Checkout**: User reviews cart, applies promotions, enters details, selects payment method (Payment Request API for Google Pay/Apple Pay)
+12. **Order Confirmation**: User views order details, waiter assignment status
+13. **Order Tracking**: User receives push notifications for status updates, views order timeline, chats with waiter
+14. **E-Bill Download**: When order completed, user taps 'Download E-Bill' → E-bill downloaded to device (stored in IndexedDB)
+15. **Offline Access**: User goes offline → Can still view cached menu, order history, downloaded e-bills
+16. **Reorder**: User views order history → Taps 'Reorder' → Items added to cart
+\n### 7.2 Owner Flow
 
-1. **Sign Up/Login** → Web or Mobile App → Email/Password, Google OAuth, Apple Sign-In (iOS), Phone OTP\n2. **Enable Biometric Auth** (Mobile App only) → Face ID/Touch ID (iOS), Fingerprint/Face Unlock (Android)
-3. **Customer Home** → View promotions carousel, NLP quick order section, active orders, recently scanned restaurants
-4. **QR Code Scanning** (Mobile App preferred) → Scan table QR code → Navigate to menu\n5. **Menu Browsing** → View menu items with images, portions, promotions → Add to cart (manual or NLP)\n6. **Checkout** → Apply promotions, enter details, select payment method (Apple Pay/Google Pay on mobile)\n7. **Order Confirmation** → View order details, waiter assignment status, download e-bill
-8. **Order Tracking** → Real-time updates via push notifications (mobile) or WebSocket (web), view waiter info, download e-bill
-9. **Order History** → View past orders, download e-bills, reorder
-10. **Offers & Promotions** → Browse offers, apply to cart\n11. **Profile & Settings** → Edit profile, configure notifications, biometric auth (mobile)\n\n### 4.2 Owner Flow (Web + Mobile App)
+1. **Login**: Owner visits https://dineqr.com/owner via browser or installed PWA
+2. **Dashboard**: Owner views metrics, recent orders, quick actions
+3. **Menu Management**: Owner adds/edits menu items with image upload (computer, cloud drive, URL), portions, NLP aliases
+4. **Order Management**: Owner views orders, assigns waiters (from free waiters list), tracks orders
+5. **Promotions Management**: Owner creates/edits promotions, real-time sync to customer PWAs
+6. **Staff Management**: Owner manages waiters, views free waiters, tracks availability
+7. **E-Bill Management**: Owner configures e-bill settings, views/downloads e-bills
+8. **Analytics**: Owner views revenue, order, menu, staff, promotion, NLP, e-bill analytics
+9. **Settings**: Owner configures restaurant profile, operational settings, waiter assignment, promotions, NLP, e-bills
+10. **Push Notifications**: Owner receives push notifications for new orders, promotion applications, NLP orders
+\n### 7.3 Waiter Flow
 
-1. **Login** → Web or Mobile App → Owner Dashboard\n2. **Menu Management** → Add/edit menu items with image upload (computer, cloud drive, URL), portions, NLP aliases
-3. **Order Management** → View orders, assign waiters (from free waiters list), track orders, view e-bills
-4. **Promotions Management** → Create/edit promotions, real-time sync to customer apps
-5. **Staff Management** → Manage waiters, view free waiters, track availability
-6. **E-Bill Management** → Configure e-bill settings, view/download e-bills, bulk download
-7. **Analytics** → View revenue, order, menu, staff, promotion, NLP, e-bill analytics
-8. **Settings** → Configure restaurant profile, operational settings, waiter assignment, promotions, NLP, e-bills, image upload
+1. **Login**: Waiter visits https://dineqr.com/waiter via browser or installed PWA
+2. **Clock In**: Waiter taps 'Clock In' → Status changes to Free\n3. **Dashboard**: Waiter views assigned orders, metrics\n4. **Order Management**: Waiter views order details, updates status (Accept, Preparing, Ready, Completed)
+5. **Chat with Customer**: Waiter taps 'Chat with Customer' → Real-time chat interface\n6. **E-Bill Access**: Waiter views e-bill, shares with customer via Share API
+7. **Clock Out**: Waiter taps 'Clock Out' → Status changes to Offline
+8. **Push Notifications**: Waiter receives push notifications for new assigned orders, customer messages
 
-### 4.3 Waiter Flow (Web + Mobile App)
-\n1. **Login** → Web or Mobile App → Waiter Dashboard
-2. **Clock In** (Mobile App preferred) → Status changes to Free\n3. **View Assigned Orders** → Orders assigned by owner, with promotion info, order source, e-bill access
-4. **Update Order Status** → Accept, Preparing, Ready, Completed\n5. **Chat with Customer** → Real-time chat interface
-6. **View/Share E-Bill** → Download, print, share e-bill with customer
-7. **Clock Out** → Status changes to Offline
-\n---
+---
 
-## 5. Updated Technical Considerations
+## 8. Design Style (PWA)
 
-### 5.1 Technology Stack (Complete)
+**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan #00d9ff, vibrant magenta #ff006e, electric blue #3a86ff, neon purple #8338ec), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects. **PWA design is optimized for touch interactions, responsive layouts, and fast loading.**
 
-- **Frontend (Web)**: React.js or Next.js, Tailwind CSS, Framer Motion
-- **Frontend (iOS)**: Swift, SwiftUI, Combine\n- **Frontend (Android)**: Kotlin, Jetpack Compose, Coroutines, Flow
-- **Backend**: Node.js with Express.js or Django, WebSocket (Socket.io)
-- **Database**: PostgreSQL or MongoDB\n- **Authentication**: JWT tokens, OAuth 2.0, Firebase Auth
-- **Payment Gateway**: Stripe, Razorpay, PayPal, Apple Pay, Google Pay
-- **Cloud Storage**: AWS S3, Google Cloud Storage, Cloudinary
-- **Push Notifications**: Firebase Cloud Messaging (FCM), Apple Push Notification Service (APNs)
-- **NLP Engine**: Python with spaCy, NLTK, Hugging Face Transformers
-- **PDF Generation**: jsPDF, PDFKit, Puppeteer\n- **Email Service**: SendGrid, Mailgun, AWS SES
-- **SMS Service**: Twilio, AWS SNS
-- **Image Processing**: Sharp, Jimp\n- **Hosting**: AWS, Google Cloud, Vercel (web), App Store (iOS), Play Store (Android)
+**Typography**: \n- **Headings**: Orbitron Bold or Exo 2 Bold (futuristic, tech-inspired)
+- **Body Text**: Poppins Regular or Inter Regular (clean, readable)
+- **Font Loading**: Use font-display: swap for faster initial render, preload critical fonts
+\n**Color Palette**: 
+- **Background**: Deep charcoal grey (#1a1a2e) or dark blue (#0f0f1e)
+- **Accents**: Electric cyan (#00d9ff), vibrant magenta (#ff006e), electric blue (#3a86ff), neon purple (#8338ec)
+- **Status Colors**: Neon green (#39ff14) for success, neon yellow (#ffea00) for warning, neon red (#ff073a) for error
+- **Text**: White (#ffffff) or light grey (#e0e0e0)
+\n**UI Components**: 
+- **Cards**: Glassmorphism cards with neon gradient borders (2px), backdrop blur, subtle shadows
+- **Buttons**: Futuristic buttons with neon gradients, hover effects (glow, scale), active states (press animation)
+- **Inputs**: Dark input fields with neon borders on focus, floating labels\n- **Modals**: Full-screen modals with slide-up animation, glassmorphism background
+- **Navigation**: Bottom navigation bar (mobile) with neon active state, sidebar (desktop) with collapsible sections
+- **Notifications**: Toast notifications with neon borders, slide-in animation
+\n**Animations**: 
+- **Page Transitions**: Fade-in, slide-in animations for page navigation
+- **Loading**: Pulsing glow animation for loading states, skeleton screens for content loading
+- **Interactions**: Ripple effect on button press, shake animation for errors, scale animation on hover
+- **Real-Time Updates**: Smooth fade-in animation for new orders, promotions, notifications
 
-### 5.2 Cross-Platform Synchronization
-
-- **Real-Time Sync**: WebSocket connections for instant updates across web and mobile apps
-- **Offline Sync**: Mobile apps cache data locally, sync with server when connection restored
-- **Push Notifications**: FCM for Android and web, APNs for iOS
-- **Data Consistency**: Ensure data consistency across all platforms (web, iOS, Android)
-
-### 5.3 Security (Mobile-Specific)
-
-- **Biometric Authentication**: Secure storage of biometric data on device (Secure Enclave on iOS, Keystore on Android)
-- **Secure Storage**: Use Keychain (iOS) and Keystore (Android) for storing sensitive data (tokens, passwords)
-- **Certificate Pinning**: Prevent man-in-the-middle attacks by pinning SSL certificates
-- **Code Obfuscation**: Obfuscate app code to prevent reverse engineering
-- **Jailbreak/Root Detection**: Detect jailbroken (iOS) or rooted (Android) devices and restrict functionality
-
-### 5.4 Performance Optimization (Mobile-Specific)
-
-- **Native Performance**: Native apps provide faster performance compared to web apps
-- **Image Optimization**: Use native image caching libraries (Kingfisher, Coil) for efficient image loading
-- **Lazy Loading**: Load data and images on-demand to reduce initial load time
-- **Background Sync**: Sync data in background when app is not active
-- **Battery Optimization**: Optimize network requests, reduce background activity to conserve battery
-
----\n
-## 6. Updated Design Style (Including Mobile App)
-
-**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue, neon purple), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects. **Mobile apps adapt futuristic design to platform-specific guidelines (iOS HIG, Android Material Design) while maintaining brand identity.**
-
-**Typography**: \n- **Web**: Orbitron Bold/Exo 2 Bold for headings, Poppins Regular/Inter Regular for body text
-- **iOS**: SF Pro (system font) for consistency with iOS ecosystem, custom fonts for branding elements
-- **Android**: Roboto (system font) for consistency with Android ecosystem, custom fonts for branding elements
-\n**Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue, neon purple accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. **Mobile apps use platform-specific color systems (iOS system colors, Android Material You dynamic colors) while maintaining brand colors for key elements.**
-
-**UI Components**: 
-- **Web**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects\n- **iOS**: Native iOS components (Navigation Bar, Tab Bar, List, Card, Button) with DineQR brand colors and neon accents
-- **Android**: Material Design components (Top App Bar, Bottom Navigation Bar, Card, Button) with DineQR brand colors and neon accents
-
-**Animations**: 
-- **Web**: Slide-in, pulsing glow, shake, ripple effect, smooth transitions, loading animations
-- **iOS**: Spring animations, fade transitions, slide transitions, shared element transitions\n- **Android**: Material Motion animations (fade through, container transform, shared axis)\n
 **Responsive Design**: 
-- **Web**: Mobile-first approach, collapsible sidebar, adaptive grids, touch-friendly buttons
-- **iOS**: Adaptive layouts for iPhone and iPad, support for different screen sizes and orientations
-- **Android**: Responsive layouts for phones and tablets, support for different screen sizes and orientations
+- **Mobile-First**: Design for mobile (320px+) first, scale up to tablet (768px+) and desktop (1024px+)
+- **Breakpoints**: 320px (small mobile), 375px (mobile), 768px (tablet), 1024px (desktop), 1440px (large desktop)
+- **Touch Targets**: Minimum 44x44px for touch targets (buttons, links, icons)
+- **Gestures**: Swipe gestures for navigation (swipe left/right for tabs, swipe down for refresh)
 
----
+**Accessibility**: 
+- **Color Contrast**: Minimum 4.5:1 contrast ratio for text, 3:1 for large text and UI components
+- **Keyboard Navigation**: Full keyboard support (Tab, Enter, Escape, Arrow keys)
+- **Screen Reader**: ARIA labels, semantic HTML, focus management
+- **Focus Indicators**: Visible focus indicators (neon outline) for interactive elements
+\n---
 
-## 7. Future Enhancements (Including Mobile App)
+## 9. Future Enhancements (PWA)
 
-- **AI-Powered Recommendations**: Personalized menu recommendations, promotion suggestions, NLP improvements
-- **Voice Ordering**: Voice commands for ordering via Siri (iOS) and Google Assistant (Android)
-- **Augmented Reality Menu**: AR view of menu items using ARKit (iOS) and ARCore (Android)
-- **Wearable Support**: Apple Watch app for order tracking, Android Wear app for notifications
-- **Tablet Optimization**: Optimized UI for iPad and Android tablets with split-screen support
-- **Multi-Language Support**: Support for multiple languages in web and mobile apps
+- **Advanced Offline Mode**: Full offline ordering with queue and sync when connection restored
+- **Voice Ordering**: Voice commands for ordering via Web Speech API
+- **Augmented Reality Menu**: AR view of menu items using WebXR API (experimental)
+- **Wearable Support**: Smartwatch notifications via Web Bluetooth API (experimental)
+- **Multi-Language Support**: Support for multiple languages with i18n
 - **Advanced Analytics**: Detailed analytics dashboard with AI-powered insights
-- **Integration with Delivery Platforms**: Integrate with Uber Eats, DoorDash, Swiggy, Zomato\n- **Table Reservation System**: Book tables via web or mobile app
-- **Kitchen Display System (KDS)**: Dedicated KDS app for kitchen staff
+- **Integration with Delivery Platforms**: Integrate with Uber Eats, DoorDash, Swiggy, Zomato
+- **Table Reservation System**: Book tables via PWA\n- **Kitchen Display System (KDS)**: Dedicated KDS PWA for kitchen staff
 - **Customer Feedback Analysis**: AI-powered sentiment analysis of customer feedback
-- **Gamification**: Loyalty points, badges, leaderboards\n- **AI-Powered Waiter Assignment**: Machine learning algorithm for optimal waiter assignment
+- **Gamification**: Loyalty points, badges, leaderboards
+- **AI-Powered Waiter Assignment**: Machine learning algorithm for optimal waiter assignment
 - **Dynamic Pricing with Promotions**: AI adjusts promotion values in real-time
 - **Advanced NLP Features**: Contextual understanding, multi-turn conversations, sentiment analysis
 - **Advanced E-Bill Features**: Multiple templates, multi-language e-bills, digital signatures
 - **Advanced Image Upload Features**: AI-powered image tagging, quality analysis, background removal
-\n---
+- **Progressive Enhancement**: Gradually enhance PWA with new Web APIs as they become available (Web Bluetooth, WebXR, Web NFC, etc.)
 
+---\n
 **End of Requirements Document**

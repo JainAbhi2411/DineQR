@@ -5,6 +5,8 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/common/Header';
 import Chatbot from './components/common/Chatbot';
+import InstallPWA from './components/common/InstallPWA';
+import OfflineIndicator from './components/common/OfflineIndicator';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import routes from './routes';
 
@@ -50,6 +52,8 @@ function AppContent() {
       </main>
       <Toaster />
       <Chatbot />
+      <InstallPWA />
+      <OfflineIndicator />
     </div>
   );
 }
