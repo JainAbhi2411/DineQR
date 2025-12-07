@@ -156,7 +156,7 @@ export default function CustomerDashboard() {
             <CardHeader className="p-4 xl:p-6 relative z-10">
               <CardTitle className="text-lg xl:text-xl flex items-center gap-2">
                 <Scan className="w-5 h-5 xl:w-6 xl:h-6 text-primary" />
-                Scan QR Code
+                Scan Q'R Code
               </CardTitle>
               <CardDescription className="text-xs xl:text-sm">Use your camera to scan the table QR code</CardDescription>
             </CardHeader>
