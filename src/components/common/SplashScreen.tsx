@@ -1,19 +1,4 @@
-import { useEffect, useState } from 'react';
-
 export default function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    // Hide splash screen after 2 seconds
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isVisible) return null;
-
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#0D1B2A] via-[#1A1A1A] to-[#0D1B2A] animate-fade-in">
       {/* Animated background particles */}

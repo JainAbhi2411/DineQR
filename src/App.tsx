@@ -14,21 +14,6 @@ import routes from './routes';
 
 function AppContent() {
   const { loading } = useAuth();
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    // Hide splash screen after 2 seconds
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show splash screen on first load
-  if (showSplash) {
-    return <SplashScreen />;
-  }
 
   if (loading) {
     return (
@@ -76,6 +61,36 @@ function AppContent() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [isAppReady, setIsAppReady] = useState(false);
+
+  useEffect(() => {
+    // Show splash screen for 2.5 seconds on initial load
+    const splashTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500);
+
+    // Mark app as ready after a short delay
+    const readyTimer = setTimeout(() => {
+      setIsAppReady(true);
+    }, 100);
+
+    return () => {
+      clearTimeout(splashTimer);
+      clearTimeout(readyTimer);
+    };
+  }, []);
+
+  // Show splash screen during initial load
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
+  // Don't render app content until ready
+  if (!isAppReady) {
+    return null;
+  }
+
   return (
     <BrowserRouter>
       <AuthProvider>
