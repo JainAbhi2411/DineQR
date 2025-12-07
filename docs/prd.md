@@ -26,13 +26,13 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
     + Animated QR code pattern particles floating and assembling into logo
     + Electric cyan and magenta gradient waves flowing across background
     + Smooth fade-in of logo followed by fade-out transition to main app
-    + Loading progress indicator (circular neon ring) at bottom\n  - **Background**: Deep charcoal grey (#1a1a2e) with subtle animated gradient overlay
+    + Loading progress indicator (circular neon ring) at bottom
+  - **Background**: Deep charcoal grey (#1a1a2e) with subtle animated gradient overlay
   - **Logo**: High-resolution DineQR logo (SVG format) with neon outline effect
   - **Tagline**: 'Smart Dining Experience' appears below logo with fade-in animation
   - **Responsive Design**: Splash screen adapts to different screen sizes and orientations
 - **Installation Prompt**: Smart installation banner appears after user engagement (e.g., after browsing menu, placing order)\n- **Cross-Platform**: Single PWA works on iOS (Safari), Android (Chrome), Windows (Edge), macOS (Safari/Chrome), Linux (Chrome/Firefox)
-
-#### 2.1.2 Offline Functionality
+\n#### 2.1.2 Offline Functionality
 - **Service Worker**: Advanced service worker implementation for offline capabilities and caching strategies
 - **Offline Menu Browsing**: View restaurant menu, item details, images, and portions without internet connection (cached data)
 - **Offline Order History**: Access past orders, order details, and e-bills offline
@@ -63,7 +63,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Lazy Loading**: Load images, components, and routes on-demand to reduce initial bundle size
 - **Code Splitting**: Split JavaScript bundles by route and feature for faster loading
 - **Image Optimization**: Serve responsive images (WebP format with JPEG fallback), lazy load images below the fold
-- **Minification & Compression**: Minify CSS/JS, enable Gzip/Brotli compression\n- **Critical CSS**: Inline critical CSS for above-the-fold content
+- **Minification & Compression**: Minify CSS/JS, enable Gzip/Brotli compression
+- **Critical CSS**: Inline critical CSS for above-the-fold content
 - **Preloading**: Preload critical resources (fonts, hero images) for faster rendering
 - **Resource Hints**: Use dns-prefetch, preconnect for faster API calls
 - **Lighthouse Score**: Target 90+ score on Performance, Accessibility, Best Practices, SEO
@@ -110,7 +111,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Purpose**: 'any maskable' for adaptive icon support
 - **Start URL**: '/' with query parameter to track PWA installs
 - **Display Mode**: 'standalone' (app-like experience without browser UI)
-- **Orientation**: 'portrait-primary' (default), support 'landscape' for tablets
+- **Orientation**: 'portrait-primary' (default), support'landscape' for tablets
 - **Theme Color**: Deep charcoal grey (#1a1a2e) to match futuristic dark theme
 - **Background Color**: Deep charcoal grey (#1a1a2e) for splash screen background
 - **Splash Screen Configuration**:
@@ -118,7 +119,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Icon**:512x512 icon displayed at center of splash screen
   - **Custom Splash Screen**: Implement custom animated splash screen using HTML/CSS/JS for enhanced visual experience (overrides default browser splash screen)
 - **Scope**: '/' to define navigation scope\n- **Categories**: ['food', 'business', 'productivity']
-\n#### 2.2.3Offline Data Storage
+\n#### 2.2.3 Offline Data Storage
 - **IndexedDB**: Store large datasets (menu items, order history, e-bills, images) for offline access
 - **LocalStorage**: Store small data (user preferences, settings, auth tokens)
 - **Cache API**: Store static assets and API responses via service worker
@@ -136,8 +137,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 ### 2.3 PWA User Experience
 
 #### 2.3.1 Installation Flow
-1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)
-2. **Browse & Engage**: User browses menu, places order, or views promotions
+1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)\n2. **Browse & Engage**: User browses menu, places order, or views promotions
 3. **Installation Prompt**: After engagement, browser shows'Add to Home Screen' prompt (or custom in-app prompt)
 4. **Install**: User taps 'Add' → PWA installed to home screen with custom DineQR icon
 5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode (no browser UI)
@@ -373,18 +373,20 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Animation Library**: Framer Motion for flash screen animations, GSAP for advanced animations
 
 ### 5.2 Backend Technologies
-- **Server**: Node.js with Express.js or Django\n- **Database**: PostgreSQL or MongoDB
-- **Authentication**: JWT tokens with refresh token mechanism, OAuth 2.0 (Google, Apple)
-- **WebSocket**: Socket.io server for real-time updates
+- **Server**: Node.js with Express.js or Django\n- **Database**: Supabase (PostgreSQL with real-time capabilities) or MongoDB
+- **Authentication**: Supabase Auth (JWT tokens, OAuth 2.0 for Google/Apple), or custom JWT implementation
+- **WebSocket**: Socket.io server for real-time updates, or Supabase Realtime for database changes
 - **Push Notifications**: Web Push library (web-push npm package) with VAPID keys
 - **Payment Gateway**: Stripe, Razorpay, PayPal APIs
-- **Cloud Storage**: AWS S3, Google Cloud Storage, or Cloudinary for image storage
+- **Cloud Storage**: Supabase Storage, AWS S3, Google Cloud Storage, or Cloudinary for image storage
 - **Email Service**: SendGrid, Mailgun, or AWS SES\n- **SMS Service**: Twilio or AWS SNS
 - **NLP Engine**: Python with spaCy, NLTK, or Hugging Face Transformers
 - **Image Processing**: Sharp or Jimp for image compression and resizing
 \n### 5.3 Hosting & Deployment
 - **Frontend Hosting**: Vercel (optimized for Next.js PWAs), Netlify, or AWS Amplify
-- **Backend Hosting**: AWS EC2, Google Cloud Run, or Heroku\n- **Database Hosting**: AWS RDS (PostgreSQL), MongoDB Atlas\n- **CDN**: Cloudflare or AWS CloudFront for static asset delivery
+- **Backend Hosting**: Supabase (managed backend), AWS EC2, Google Cloud Run, or Heroku
+- **Database Hosting**: Supabase (managed PostgreSQL with real-time), AWS RDS (PostgreSQL), MongoDB Atlas
+- **CDN**: Cloudflare or AWS CloudFront for static asset delivery
 - **SSL Certificate**: Let's Encrypt or AWS Certificate Manager (HTTPS required for PWA)
 - **Domain**: https://dineqr.com\n
 ---
@@ -499,8 +501,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 **Typography**: \n- **Headings**: Orbitron Bold or Exo 2 Bold (futuristic, tech-inspired)
 - **Body Text**: Poppins Regular or Inter Regular (clean, readable)
 - **Font Loading**: Use font-display: swap for faster initial render, preload critical fonts
-
-**Color Palette**: 
+\n**Color Palette**: 
 - **Background**: Deep charcoal grey (#1a1a2e) or dark blue (#0f0f1e)
 - **Accents**: Electric cyan (#00d9ff), vibrant magenta (#ff006e), electric blue (#3a86ff), neon purple (#8338ec)
 - **Status Colors**: Neon green (#39ff14) for success, neon yellow (#ffea00) for warning, neon red (#ff073a) for error
@@ -541,6 +542,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Git**: Latest version for version control
 - **Code Editor**: VS Code (recommended) or any preferred editor
 - **Browser**: Chrome, Firefox, or Edge (latest version) for testing PWA features
+- **Supabase Account**: Sign up at https://supabase.com (if using Supabase as backend)
 
 #### 9.1.2 Project Structure
 ```
@@ -558,10 +560,11 @@ dineqr-pwa/
 │   ├── store/              # Redux/Zustand store
 │   ├── services/           # API services
 │   └── workers/            # Service worker files
-├── .env.local              # Environment variables (local)\n├── .env.production         # Environment variables (production)
+├── .env.local# Environment variables (local)\n├── .env.production         # Environment variables (production)
 ├── next.config.js          # Next.js configuration
 ├── tailwind.config.js      # Tailwind CSS configuration
-├── package.json            # Dependencies\n└── README.md               # Project documentation
+├── package.json            # Dependencies
+└── README.md               # Project documentation
 ```
 
 #### 9.1.3 Installation Steps
@@ -579,24 +582,22 @@ npm install
 **Step 3: Configure Environment Variables**
 \nCreate `.env.local` file in root directory:
 ```env
-# API Configuration
+# Supabase Configuration (if using Supabase)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co\nNEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key\nSUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+\n# API Configuration (if using custom backend)
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:5000\n
-# Authentication
-NEXT_PUBLIC_JWT_SECRET=your-jwt-secret-key
+# Authentication\nNEXT_PUBLIC_JWT_SECRET=your-jwt-secret-key
 NEXT_PUBLIC_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id
 NEXT_PUBLIC_OAUTH_APPLE_CLIENT_ID=your-apple-client-id
-
-# Payment Gateways
+\n# Payment Gateways
 NEXT_PUBLIC_STRIPE_PUBLIC_KEY=your-stripe-public-key
 NEXT_PUBLIC_RAZORPAY_KEY_ID=your-razorpay-key-id
-
-# Push Notifications (VAPID Keys)
+\n# Push Notifications (VAPID Keys)
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-vapid-public-key
 VAPID_PRIVATE_KEY=your-vapid-private-key
 \n# Cloud Storage
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name\nNEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
 
 # Google Drive API
 NEXT_PUBLIC_GOOGLE_DRIVE_API_KEY=your-google-drive-api-key
@@ -605,9 +606,9 @@ NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID=your-google-drive-client-id
 # Dropbox API
 NEXT_PUBLIC_DROPBOX_APP_KEY=your-dropbox-app-key
 
-# NLP Backend
-NEXT_PUBLIC_NLP_API_URL=http://localhost:8000/nlp
-\n# Email Service
+# NLP Backend\nNEXT_PUBLIC_NLP_API_URL=http://localhost:8000/nlp
+
+# Email Service
 SENDGRID_API_KEY=your-sendgrid-api-key
 
 # SMS Service
@@ -621,10 +622,12 @@ npx web-push generate-vapid-keys
 ```
 Copy the generated public and private keys to `.env.local`\n
 **Step 5: Start Development Server**
-```bash\nnpm run dev
-```\nApp will be available at `http://localhost:3000`
+```bash
+npm run dev
+```
+App will be available at `http://localhost:3000`
 
-**Step 6: Start Backend Server (Separate Terminal)**
+**Step 6: Start Backend Server (if using custom backend, skip if using Supabase)**
 ```bash
 cd backend
 npm install
@@ -637,13 +640,16 @@ Backend API will be available at `http://localhost:5000`
 cd nlp-service
 pip install -r requirements.txt
 python app.py
-```\nNLP API will be available at `http://localhost:8000`
+```
+NLP API will be available at `http://localhost:8000`
 
 #### 9.1.4 Testing PWA Features Locally
 
 **Enable HTTPS for Local Development** (required for PWA features):
-\n**Option 1: Using mkcert (Recommended)**
-```bash\n# Install mkcert\nbrew install mkcert  # macOS
+\n**Option1: Using mkcert (Recommended)**
+```bash
+# Install mkcert
+brew install mkcert  # macOS
 choco install mkcert # Windows
 
 # Create local CA
@@ -685,31 +691,723 @@ curl -X POST http://localhost:5000/api/notifications/send \
 
 ---
 
-### 9.2 Deployment to Netlify
+### 9.2 Supabase Setup Guide
 
-#### 9.2.1 Prerequisites
+#### 9.2.1 What is Supabase?
+\nSupabase is an open-source Firebase alternative that provides:\n- **PostgreSQL Database**: Managed PostgreSQL database with real-time capabilities
+- **Authentication**: Built-in authentication with JWT tokens, OAuth (Google, Apple, GitHub, etc.), magic links
+- **Real-Time Subscriptions**: Listen to database changes in real-time via WebSocket
+- **Storage**: File storage with CDN for images, videos, documents
+- **Edge Functions**: Serverless functions for backend logic
+- **Auto-Generated APIs**: RESTful and GraphQL APIs auto-generated from database schema
+
+**Why Supabase for DineQR?**
+- **Real-Time Features**: Perfect for real-time order updates, waiter assignments, promotions sync
+- **Built-In Auth**: Simplifies authentication with OAuth support for Google/Apple login
+- **File Storage**: Easy image upload for menu items with CDN delivery
+- **Scalable**: Handles high traffic with auto-scaling\n- **Free Tier**: Generous free tier for development and small-scale production
+
+---
+
+#### 9.2.2 Create Supabase Project
+
+**Step 1: Sign Up for Supabase**
+1. Go to https://supabase.com\n2. Click 'Start your project' → Sign up with GitHub, Google, or email
+3. Verify your email address
+\n**Step 2: Create New Project**
+1. Click 'New Project' in Supabase Dashboard
+2. Fill in project details:
+   - **Organization**: Select or create organization (e.g., 'DineQR')
+   - **Project Name**: 'dineqr-production' (or 'dineqr-dev' for development)
+   - **Database Password**: Generate strong password (save it securely)
+   - **Region**: Select region closest to your users (e.g., 'US East', 'Europe West', 'Asia Southeast')
+   - **Pricing Plan**: Select 'Free' for development or 'Pro' for production
+3. Click 'Create new project'
+4. Wait 2-3 minutes for project provisioning
+
+**Step 3: Get API Keys**
+1. Once project is ready, go to 'Settings' → 'API'\n2. Copy the following keys:
+   - **Project URL**: `https://your-project.supabase.co`
+   - **anon public key**: Public key for client-side requests (safe to expose)
+   - **service_role key**: Secret key for server-side requests (keep secure, never expose)
+3. Add these keys to `.env.local`:\n```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+---
+
+#### 9.2.3 Database Schema Setup
+
+**Step 1: Open SQL Editor**
+1. Go to Supabase Dashboard → 'SQL Editor'
+2. Click 'New query'
+\n**Step 2: Create Database Tables**
+\nRun the following SQL to create tables for DineQR:
+
+```sql
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
+
+-- Users table (extends Supabase auth.users)
+CREATE TABLE public.users (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('customer', 'owner', 'waiter')),
+  full_name TEXT,
+  phone TEXT,
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Restaurants table
+CREATE TABLE public.restaurants (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  owner_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  description TEXT,\n  restaurant_type TEXT CHECK (restaurant_type IN ('veg', 'non-veg', 'both')),
+  address TEXT,
+  phone TEXT,
+  currency TEXT DEFAULT 'USD',
+  timezone TEXT DEFAULT 'UTC',
+  logo_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+\n-- Menu items table
+CREATE TABLE public.menu_items (\n  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  restaurant_id UUID REFERENCES public.restaurants(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  description TEXT,\n  category TEXT,
+  base_price DECIMAL(10, 2) NOT NULL,
+  image_url TEXT,
+  is_available BOOLEAN DEFAULT TRUE,
+  nlp_aliases TEXT[],
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Portions table (for portion variants)
+CREATE TABLE public.portions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  menu_item_id UUID REFERENCES public.menu_items(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  is_default BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Promotions table
+CREATE TABLE public.promotions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),\n  restaurant_id UUID REFERENCES public.restaurants(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT,
+  discount_type TEXT CHECK (discount_type IN ('percentage', 'fixed')),
+  discount_value DECIMAL(10, 2) NOT NULL,
+  promo_code TEXT UNIQUE,
+  valid_from TIMESTAMP WITH TIME ZONE,
+  valid_until TIMESTAMP WITH TIME ZONE,\n  is_active BOOLEAN DEFAULT TRUE,\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Waiters table
+CREATE TABLE public.waiters (
+  id UUID PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
+  restaurant_id UUID REFERENCES public.restaurants(id) ON DELETE CASCADE,
+  status TEXT CHECK (status IN ('free', 'busy', 'offline')) DEFAULT 'offline',
+  workload_count INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Orders table
+CREATE TABLE public.orders (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),\n  restaurant_id UUID REFERENCES public.restaurants(id) ON DELETE CASCADE,\n  customer_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  waiter_id UUID REFERENCES public.waiters(id) ON DELETE SET NULL,
+  table_number TEXT,
+  order_type TEXT CHECK (order_type IN ('dine-in', 'takeaway', 'delivery')),
+  order_source TEXT CHECK (order_source IN ('manual', 'nlp')) DEFAULT 'manual',
+  status TEXT CHECK (status IN ('pending', 'accepted', 'preparing', 'ready', 'completed', 'cancelled')) DEFAULT 'pending',
+  subtotal DECIMAL(10, 2) NOT NULL,
+  discount_amount DECIMAL(10, 2) DEFAULT 0,
+  total_amount DECIMAL(10, 2) NOT NULL,
+  promotion_id UUID REFERENCES public.promotions(id) ON DELETE SET NULL,
+  payment_method TEXT,
+  payment_status TEXT CHECK (payment_status IN ('pending', 'completed', 'failed')) DEFAULT 'pending',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Order items table
+CREATE TABLE public.order_items (\n  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE,
+  menu_item_id UUID REFERENCES public.menu_items(id) ON DELETE SET NULL,
+  portion_id UUID REFERENCES public.portions(id) ON DELETE SET NULL,
+  quantity INTEGER NOT NULL,
+  unit_price DECIMAL(10, 2) NOT NULL,
+  total_price DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Order timeline table (for tracking order status changes)
+CREATE TABLE public.order_timeline (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE,\n  status TEXT NOT NULL,
+  notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- E-bills table
+CREATE TABLE public.ebills (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE,
+  bill_number TEXT UNIQUE NOT NULL,
+  pdf_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Chat messages table
+CREATE TABLE public.chat_messages (\n  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE,
+  sender_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes for better query performance
+CREATE INDEX idx_menu_items_restaurant ON public.menu_items(restaurant_id);
+CREATE INDEX idx_orders_restaurant ON public.orders(restaurant_id);
+CREATE INDEX idx_orders_customer ON public.orders(customer_id);
+CREATE INDEX idx_orders_waiter ON public.orders(waiter_id);\nCREATE INDEX idx_orders_status ON public.orders(status);\nCREATE INDEX idx_promotions_restaurant ON public.promotions(restaurant_id);
+CREATE INDEX idx_waiters_restaurant ON public.waiters(restaurant_id);
+CREATE INDEX idx_chat_messages_order ON public.chat_messages(order_id);\n
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;\nALTER TABLE public.restaurants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.menu_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.portions ENABLE ROW LEVEL SECURITY;\nALTER TABLE public.promotions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.waiters ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.order_timeline ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ebills ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.chat_messages ENABLE ROW LEVEL SECURITY;
+\n-- RLS Policies (examples - customize based on your requirements)
+\n-- Users: Users can read their own data
+CREATE POLICY \"Users can view own data\" ON public.users\n  FOR SELECT USING (auth.uid() = id);
+\n-- Restaurants: Owners can manage their restaurants
+CREATE POLICY \"Owners can manage restaurants\" ON public.restaurants
+  FOR ALL USING (auth.uid() = owner_id);
+
+-- Menu items: Public can view, owners can manage
+CREATE POLICY \"Public can view menu items\" ON public.menu_items
+  FOR SELECT USING (TRUE);
+
+CREATE POLICY \"Owners can manage menu items\" ON public.menu_items
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM public.restaurants\n      WHERE restaurants.id = menu_items.restaurant_id
+AND restaurants.owner_id = auth.uid()
+    )
+  );
+
+-- Orders: Customers can view their orders, owners/waiters can manage
+CREATE POLICY \"Customers can view own orders\" ON public.orders
+  FOR SELECT USING (auth.uid() = customer_id);\n
+CREATE POLICY \"Owners can manage restaurant orders\" ON public.orders
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM public.restaurants
+      WHERE restaurants.id = orders.restaurant_id
+      AND restaurants.owner_id = auth.uid()
+    )
+  );
+
+CREATE POLICY \"Waiters can view assigned orders\" ON public.orders
+  FOR SELECT USING (auth.uid() = waiter_id);
+
+-- Add more RLS policies as needed for other tables
+```
+
+**Step 3: Run SQL Query**
+1. Click 'Run' to execute the SQL\n2. Verify tables created: Go to 'Table Editor' → You should see all tables listed
+\n---
+
+#### 9.2.4 Authentication Setup
+
+**Step 1: Enable Authentication Providers**
+1. Go to 'Authentication' → 'Providers'
+2. Enable desired providers:
+   - **Email**: Already enabled by default
+   - **Google OAuth**: \n     - Toggle'Enable'\n     - Enter Google OAuth Client ID and Client Secret (get from Google Cloud Console)
+     - Add authorized redirect URI: `https://your-project.supabase.co/auth/v1/callback`
+   - **Apple OAuth**: 
+     - Toggle 'Enable'
+     - Enter Apple OAuth credentials (get from Apple Developer Console)
+   - **Magic Link**: Already enabled by default (passwordless email login)
+\n**Step 2: Configure Email Templates (Optional)**
+1. Go to 'Authentication' → 'Email Templates'
+2. Customize email templates for:
+   - Confirmation email (sign up)
+   - Magic link email (passwordless login)
+   - Password reset email
+   - Email change confirmation
+
+**Step 3: Configure Authentication Settings**
+1. Go to 'Authentication' → 'Settings'\n2. Configure:
+   - **Site URL**: `https://dineqr.com` (your production domain)
+   - **Redirect URLs**: Add allowed redirect URLs (e.g., `https://dineqr.com/auth/callback`, `http://localhost:3000/auth/callback` for development)
+   - **JWT Expiry**: Default 3600 seconds (1 hour)\n   - **Refresh Token Rotation**: Enable for better security
+\n---
+
+#### 9.2.5 Storage Setup (for Image Uploads)
+
+**Step 1: Create Storage Bucket**
+1. Go to 'Storage' → Click 'Create a new bucket'
+2. Fill in bucket details:
+   - **Name**: 'menu-images' (for menu item images)
+   - **Public bucket**: Toggle ON (images need to be publicly accessible)
+   - **File size limit**: 5 MB (adjust as needed)
+   - **Allowed MIME types**: image/jpeg, image/png, image/webp
+3. Click 'Create bucket'
+4. Repeat for other buckets:\n   - 'restaurant-logos' (for restaurant logos)
+   - 'user-avatars' (for user profile pictures)
+   - 'ebills' (for e-bill PDFs, set as private)
+
+**Step 2: Configure Storage Policies**
+1. Go to 'Storage' → Select bucket (e.g., 'menu-images') → 'Policies'
+2. Create policies:
+\n**Policy 1: Public Read Access**
+```sql
+CREATE POLICY \"Public can view images\"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'menu-images');
+```
+
+**Policy 2: Authenticated Users Can Upload**
+```sql
+CREATE POLICY \"Authenticated users can upload images\"
+ON storage.objects FOR INSERT
+WITH CHECK(
+  bucket_id = 'menu-images'\n  AND auth.role() = 'authenticated'
+);
+```
+
+**Policy 3: Users Can Delete Own Uploads**
+```sql
+CREATE POLICY \"Users can delete own images\"
+ON storage.objects FOR DELETE
+USING (
+  bucket_id = 'menu-images'
+  AND auth.uid() = owner\n);
+```
+\n3. Click 'Review' → 'Save policy'
+\n---
+
+#### 9.2.6 Real-Time Subscriptions Setup
+
+**Step 1: Enable Real-Time for Tables**
+1. Go to 'Database' → 'Replication'
+2. Enable real-time for tables that need live updates:
+   - ✅ `orders` (for real-time order updates)
+   - ✅ `order_timeline` (for order status changes)
+   - ✅ `waiters` (for waiter availability status)
+   - ✅ `promotions` (for real-time promotion updates)
+   - ✅ `chat_messages` (for real-time chat)\n3. Click 'Save'
+
+**Step 2: Configure Real-Time Policies**
+\nReal-time subscriptions respect Row Level Security (RLS) policies. Ensure RLS policies allow users to read data they should receive real-time updates for.
+
+**Example: Subscribe to Order Updates (Frontend)**
+```javascript
+import { createClient } from '@supabase/supabase-js'\n
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
+
+// Subscribe to order updates for specific order\nconst subscription = supabase
+  .channel('order-updates')
+  .on(\n    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'orders',
+      filter: `id=eq.${orderId}`
+    },
+    (payload) => {
+      console.log('Order updated:', payload.new)\n      // Update UI with new order data
+    }
+  )
+  .subscribe()
+\n// Unsubscribe when component unmounts
+return () => {
+  subscription.unsubscribe()
+}
+```
+
+---
+
+#### 9.2.7 Edge Functions Setup (Optional)
+
+Edge Functions are serverless functions for backend logic (e.g., payment processing, e-bill generation, NLP processing).
+
+**Step 1: Install Supabase CLI**
+```bash
+npm install -g supabase\n```
+
+**Step 2: Login to Supabase CLI**
+```bash
+supabase login
+```
+
+**Step 3: Initialize Supabase Project**
+```bash
+supabase init
+```\n
+**Step 4: Create Edge Function**
+```bash
+supabase functions new generate-ebill
+```
+
+This creates a new function at `supabase/functions/generate-ebill/index.ts`
+
+**Step 5: Write Function Code**
+\nExample: E-Bill Generation Function
+```typescript
+// supabase/functions/generate-ebill/index.ts\nimport { serve } from 'https://deno.land/std@0.168.0/http/server.ts'\nimport { createClient } from 'https://esm.sh/@supabase/supabase-js@2'\n
+serve(async (req) => {
+  try {
+    const { orderId } = await req.json()
+\n    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
+    // Fetch order data
+    const { data: order, error } = await supabaseClient
+      .from('orders')
+      .select('*, order_items(*, menu_items(*)), restaurants(*)')
+      .eq('id', orderId)
+      .single()
+
+    if (error) throw error
+
+    // Generate PDF (use jsPDF or similar library)
+    // ... PDF generation logic ...
+
+    // Upload PDF to Supabase Storage
+    const pdfBuffer = generatePDF(order) // Your PDF generation function
+    const fileName = `ebill-${orderId}.pdf`
+    \n    const { data: uploadData, error: uploadError } = await supabaseClient
+      .storage
+      .from('ebills')
+      .upload(fileName, pdfBuffer, {
+        contentType: 'application/pdf',
+        upsert: true
+      })
+
+    if (uploadError) throw uploadError
+\n    // Get public URL\n    const { data: urlData } = supabaseClient\n      .storage
+      .from('ebills')
+      .getPublicUrl(fileName)\n
+    // Save e-bill record
+    await supabaseClient
+      .from('ebills')
+      .insert({
+        order_id: orderId,
+        bill_number: `BILL-${Date.now()}`,
+        pdf_url: urlData.publicUrl\n      })
+
+    return new Response(\n      JSON.stringify({ success: true, pdfUrl: urlData.publicUrl }),
+      { headers: { 'Content-Type': 'application/json' } }
+    )
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    )
+  }
+})
+```\n
+**Step 6: Deploy Edge Function**
+```bash
+supabase functions deploy generate-ebill
+```
+
+**Step 7: Invoke Function from Frontend**
+```javascript
+const { data, error } = await supabase.functions.invoke('generate-ebill', {
+  body: { orderId: '123' }\n})
+```
+\n---
+
+#### 9.2.8 Connect Frontend to Supabase
+
+**Step 1: Install Supabase Client**
+```bash\nnpm install @supabase/supabase-js
+```
+
+**Step 2: Create Supabase Client**
+\nCreate `src/lib/supabase.js`:
+```javascript
+import { createClient } from '@supabase/supabase-js'\n
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY\n
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+```
+
+**Step 3: Use Supabase in Components**
+
+**Example: Fetch Menu Items**
+```javascript
+import { supabase } from '@/lib/supabase'
+
+const fetchMenuItems = async (restaurantId) => {
+  const { data, error } = await supabase
+    .from('menu_items')
+    .select('*, portions(*)')
+    .eq('restaurant_id', restaurantId)\n    .eq('is_available', true)
+\n  if (error) {\n    console.error('Error fetching menu items:', error)
+    return []
+  }
+
+  return data
+}
+```
+
+**Example: User Authentication**
+```javascript
+import { supabase } from '@/lib/supabase'
+\n// Sign up with email
+const signUp = async (email, password, fullName) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+        role: 'customer'
+      }
+    }
+  })
+
+  if (error) throw error
+  return data
+}
+
+// Sign in with email
+const signIn = async (email, password) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password\n  })
+
+  if (error) throw error
+  return data
+}
+\n// Sign in with Google OAuth
+const signInWithGoogle = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`
+    }
+  })
+
+  if (error) throw error
+}\n\n// Sign out
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+  if (error) throw error
+}
+\n// Get current user
+const getCurrentUser = async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
+}
+```
+
+**Example: Upload Image to Storage**
+```javascript
+import { supabase } from '@/lib/supabase'
+\nconst uploadMenuImage = async (file, menuItemId) => {
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${menuItemId}-${Date.now()}.${fileExt}`\n  const filePath = `menu-images/${fileName}`
+\n  // Upload file\n  const { data, error } = await supabase.storage\n    .from('menu-images')
+    .upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false
+    })
+
+  if (error) throw error
+\n  // Get public URL
+  const { data: urlData } = supabase.storage
+    .from('menu-images')
+    .getPublicUrl(filePath)
+
+  return urlData.publicUrl
+}
+```
+
+**Example: Real-Time Order Updates**
+```javascript
+import { supabase } from '@/lib/supabase'
+import { useEffect, useState } from 'react'
+
+const OrderTracking = ({ orderId }) => {
+  const [order, setOrder] = useState(null)
+\n  useEffect(() => {\n    // Fetch initial order data
+    const fetchOrder = async () => {\n      const { data } = await supabase
+        .from('orders')
+        .select('*, order_timeline(*)')
+        .eq('id', orderId)
+        .single()
+      
+      setOrder(data)
+    }\n\n    fetchOrder()
+\n    // Subscribe to real-time updates
+    const subscription = supabase
+      .channel(`order-${orderId}`)
+      .on(\n        'postgres_changes',\n        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `id=eq.${orderId}`
+        },
+        (payload) => {
+          setOrder(payload.new)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'order_timeline',
+          filter: `order_id=eq.${orderId}`
+        },
+        (payload) => {
+          setOrder(prev => ({\n            ...prev,
+            order_timeline: [...prev.order_timeline, payload.new]
+          }))
+        }
+      )
+      .subscribe()
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [orderId])
+
+  return (
+    <div>\n      <h2>Order #{order?.id}</h2>
+      <p>Status: {order?.status}</p>
+      {/* Display order timeline */}
+    </div>
+  )
+}
+```
+
+---
+
+#### 9.2.9 Supabase Environment Variables
+
+Add Supabase credentials to your environment variables:
+
+**Local Development (`.env.local`)**
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+**Production (Netlify Environment Variables)**
+1. Go to Netlify Dashboard → Site settings → Environment variables
+2. Add:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (for server-side operations)
+
+---
+\n#### 9.2.10 Supabase Best Practices
+
+**1. Security**
+- **Never expose service_role key** in client-side code (use only in server-side functions)
+- **Enable Row Level Security (RLS)** on all tables
+- **Write specific RLS policies** for each user role (customer, owner, waiter)
+- **Use anon key** for client-side requests (respects RLS policies)
+
+**2. Performance**
+- **Create indexes** on frequently queried columns (restaurant_id, customer_id, status)
+- **Use select() with specific columns** instead of selecting all columns
+- **Implement pagination** for large datasets (use `.range()` method)
+- **Cache frequently accessed data** (menu items, promotions) in client-side storage
+
+**3. Real-Time**
+- **Subscribe only to necessary tables** to reduce WebSocket connections
+- **Unsubscribe when component unmounts** to prevent memory leaks
+- **Use filters** in subscriptions to receive only relevant updates
+
+**4. Storage**
+- **Optimize images** before upload (compress, resize, convert to WebP)
+- **Set file size limits** in storage bucket settings
+- **Use CDN URLs** from Supabase Storage for fast image delivery
+- **Implement image lazy loading** in frontend
+
+**5. Database**
+- **Use transactions** for operations that modify multiple tables
+- **Implement soft deletes** (add `deleted_at` column) instead of hard deletes for important data
+- **Regular backups**: Supabase Pro plan includes automatic daily backups
+- **Monitor database usage**: Check'Database' → 'Usage' in Supabase Dashboard
+
+---
+\n#### 9.2.11 Supabase Pricing & Limits
+
+**Free Tier**
+- 500 MB database space
+- 1 GB file storage
+- 2 GB bandwidth
+- 50,000 monthly active users
+- Unlimited API requests
+- Community support
+
+**Pro Tier ($25/month)**
+- 8 GB database space
+- 100 GB file storage
+- 250 GB bandwidth
+- 100,000 monthly active users
+- Daily backups
+- Email support
+- No pausing (free tier projects pause after 1 week of inactivity)
+
+**For DineQR**: Start with Free tier for development, upgrade to Pro for production when you have active users.
+
+---
+
+### 9.3 Deployment to Netlify
+
+#### 9.3.1 Prerequisites
 - **Netlify Account**: Sign up at https://www.netlify.com\n- **GitHub Repository**: Push code to GitHub repository
-- **Environment Variables**: Prepare production environment variables
-
-#### 9.2.2 Deployment Steps
+- **Environment Variables**: Prepare production environment variables (including Supabase credentials)
+\n#### 9.3.2 Deployment Steps
 
 **Method 1: Deploy via Netlify Dashboard (Recommended for First Deployment)**
-
-**Step 1: Connect Repository**
+\n**Step 1: Connect Repository**
 1. Log in to Netlify Dashboard
-2. Click 'Add new site' → 'Import an existing project'
+2. Click'Add new site' → 'Import an existing project'
 3. Select 'GitHub' → Authorize Netlify to access your repositories
 4. Select `dineqr-pwa` repository
 \n**Step 2: Configure Build Settings**
 - **Base directory**: Leave empty (root)\n- **Build command**: `npm run build`
 - **Publish directory**: `.next`
 - **Functions directory**: `netlify/functions` (if using Netlify Functions)
-
-**Step 3: Add Environment Variables**
+\n**Step 3: Add Environment Variables**
 1. Go to 'Site settings' → 'Environment variables'
 2. Click 'Add a variable' and add all production environment variables:\n```
-NEXT_PUBLIC_API_URL=https://api.dineqr.com/api
-NEXT_PUBLIC_WEBSOCKET_URL=wss://api.dineqr.com\nNEXT_PUBLIC_VAPID_PUBLIC_KEY=your-production-vapid-public-key\nVAPID_PRIVATE_KEY=your-production-vapid-private-key
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-production-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-production-service-role-key\nNEXT_PUBLIC_VAPID_PUBLIC_KEY=your-production-vapid-public-key\nVAPID_PRIVATE_KEY=your-production-vapid-private-key
 ... (add all other variables from .env.local)
 ```
 
@@ -744,28 +1442,29 @@ NEXT_PUBLIC_WEBSOCKET_URL=wss://api.dineqr.com\nNEXT_PUBLIC_VAPID_PUBLIC_KEY=you
     X-Frame-Options = \"DENY\"
     X-Content-Type-Options = \"nosniff\"
     X-XSS-Protection = \"1; mode=block\"
-    Referrer-Policy = \"strict-origin-when-cross-origin\"\n    Content-Security-Policy = \"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.dineqr.com wss://api.dineqr.com;\"
+    Referrer-Policy = \"strict-origin-when-cross-origin\"\n    Content-Security-Policy = \"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co;\"
 \n[[headers]]
   for = \"/manifest.json\"
   [headers.values]
     Content-Type = \"application/manifest+json\"
 \n[[headers]]
-  for = \"/sw.js\"
-  [headers.values]
+  for = \"/sw.js\"\n  [headers.values]
     Cache-Control = \"public, max-age=0, must-revalidate\"
 Service-Worker-Allowed = \"/\"
 ```
-\nCommit and push `netlify.toml` to trigger redeployment.\n
+\nCommit and push `netlify.toml` to trigger redeployment.
+
 **Step 8: Verify PWA Deployment**
 1. Open deployed app in Chrome/Edge
 2. Open DevTools → Lighthouse → Run audit
 3. Verify PWA score is 90+ (should show 'Installable' badge)
-4. Test installation: Click browser's install button\n5. Test offline: Enable offline mode in DevTools, verify cached content loads
+4. Test installation: Click browser's install button
+5. Test offline: Enable offline mode in DevTools, verify cached content loads
 6. Test push notifications: Grant permissions, send test notification from backend
+7. Test Supabase integration: Verify authentication, database queries, real-time updates, storage uploads work correctly
 
 ---
-
-**Method 2: Deploy via Netlify CLI**
+\n**Method 2: Deploy via Netlify CLI**
 
 **Step 1: Install Netlify CLI**\n```bash
 npm install -g netlify-cli
@@ -785,15 +1484,17 @@ Follow prompts:\n- Create & configure a new site
 - Build command: `npm run build`\n- Publish directory: `.next`
 
 **Step 4: Add Environment Variables**
-```bash\nnetlify env:set NEXT_PUBLIC_API_URL https://api.dineqr.com/api
-netlify env:set NEXT_PUBLIC_WEBSOCKET_URL wss://api.dineqr.com
+```bash\nnetlify env:set NEXT_PUBLIC_SUPABASE_URL https://your-project.supabase.co
+netlify env:set NEXT_PUBLIC_SUPABASE_ANON_KEY your-anon-key
+netlify env:set SUPABASE_SERVICE_ROLE_KEY your-service-role-key
 ... (add all other variables)\n```
 
 **Step 5: Deploy**
 ```bash
 # Deploy to production
 netlify deploy --prod
-\n# Or deploy to preview (draft)\nnetlify deploy\n```
+
+# Or deploy to preview (draft)\nnetlify deploy\n```
 
 **Step 6: Open Deployed Site**
 ```bash
@@ -802,7 +1503,7 @@ netlify open:site
 
 ---
 
-#### 9.2.3 Continuous Deployment (Auto-Deploy on Git Push)
+#### 9.3.3 Continuous Deployment (Auto-Deploy on Git Push)
 
 Netlify automatically sets up continuous deployment when you connect your GitHub repository.
 
@@ -828,7 +1529,7 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
 
 ---
 
-#### 9.2.4 Post-Deployment Checklist
+#### 9.3.4 Post-Deployment Checklist
 
 -✅ **HTTPS Enabled**: Verify SSL certificate active, all requests use HTTPS
 - ✅ **PWA Installable**: Test installation on mobile (Android, iOS) and desktop
@@ -840,18 +1541,17 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
 - ✅ **Splash Screen**: Test splash screen on mobile installation
 - ✅ **Performance**: Run Lighthouse audit, verify 90+ score on all metrics
 - ✅ **SEO**: Verify meta tags, structured data, sitemap, robots.txt
-- ✅ **Analytics**: Set up analytics (Google Analytics, Mixpanel) to track PWA installs, usage
-- ✅ **Error Monitoring**: Set up error monitoring (Sentry, LogRocket) to track errors
+- ✅ **Analytics**: Set up analytics (Google Analytics, Mixpanel) to track PWA installs, usage\n- ✅ **Error Monitoring**: Set up error monitoring (Sentry, LogRocket) to track errors
 - ✅ **Custom Domain**: Configure custom domain (if applicable), verify DNS records
 - ✅ **Environment Variables**: Verify all production environment variables set correctly
-- ✅ **API Endpoints**: Test all API endpoints, verify backend connectivity
+- ✅ **Supabase Integration**: Test authentication, database queries, real-time subscriptions, storage uploads
 - ✅ **Payment Gateway**: Test payment flows (Stripe, Razorpay) in production
-- ✅ **Real-Time Features**: Test WebSocket connections, real-time updates
+- ✅ **Real-Time Features**: Test WebSocket connections (Supabase Realtime), real-time updates
 - ✅ **Cross-Browser Testing**: Test on Chrome, Firefox, Safari, Edge
 - ✅ **Cross-Device Testing**: Test on mobile (Android, iOS), tablet, desktop
 \n---
 
-#### 9.2.5 Troubleshooting Common Issues
+#### 9.3.5 Troubleshooting Common Issues
 \n**Issue 1: Service Worker Not Registering**
 - **Cause**: HTTPS not enabled or service worker file not found
 - **Solution**: \n  - Verify HTTPS is enabled (check for padlock icon in browser)
@@ -889,17 +1589,34 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
   - Verify environment variables set correctly
   - Test build locally: `npm run build`
 
-**Issue 6: API Requests Failing**
-- **Cause**: CORS issues, incorrect API URL, or backend not deployed
+**Issue 6: Supabase Connection Fails**
+- **Cause**: Incorrect Supabase URL/keys, CORS issues, or RLS policies blocking requests
 - **Solution**: 
-  - Verify API URL in environment variables
-  - Check backend CORS configuration (allow Netlify domain)
-  - Verify backend deployed and accessible
-  - Test API endpoints with Postman/curl
+  - Verify Supabase URL and keys in environment variables
+  - Check Supabase Dashboard → Settings → API for correct credentials
+  - Verify RLS policies allow access for authenticated users
+  - Check browser console for CORS errors
+  - Test Supabase connection with simple query (e.g., fetch menu items)
+
+**Issue 7: Real-Time Subscriptions Not Working**
+- **Cause**: Real-time not enabled for table, RLS policies blocking, or WebSocket connection failed
+- **Solution**: 
+  - Verify real-time enabled: Supabase Dashboard → Database → Replication
+  - Check RLS policies allow SELECT access for subscribed table
+  - Verify WebSocket connection in browser DevTools → Network → WS tab
+  - Test with simple subscription (e.g., subscribe to orders table)
+
+**Issue 8: Image Upload Fails**
+- **Cause**: Storage bucket not created, storage policies missing, or file size exceeds limit
+- **Solution**: 
+  - Verify storage bucket exists: Supabase Dashboard → Storage\n  - Check storage policies allow INSERT for authenticated users
+  - Verify file size within bucket limit (default 5MB)
+  - Check browser console for upload errors
+  - Test with small image file first
 
 ---
 
-#### 9.2.6 Performance Optimization for Production
+#### 9.3.6 Performance Optimization for Production
 
 **1. Enable Netlify CDN**
 - Netlify automatically serves static assets via global CDN
@@ -910,8 +1627,7 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
   - **Minify JS**: Minify JavaScript files
   - **Compress images**: Optimize images automatically
   - **Pretty URLs**: Remove `.html` extensions
-
-**3. Configure Caching Headers**
+\n**3. Configure Caching Headers**
 - Add caching headers in `netlify.toml`:
 ```toml
 [[headers]]\n  for = \"/static/*\"
@@ -925,7 +1641,8 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
 [[headers]]
   for = \"/*.css\"
   [headers.values]
-    Cache-Control = \"public, max-age=31536000, immutable\"\n```
+    Cache-Control = \"public, max-age=31536000, immutable\"
+```
 
 **4. Enable Brotli Compression**
 - Netlify automatically enables Brotli compression for supported browsers
@@ -936,6 +1653,7 @@ Netlify automatically sets up continuous deployment when you connect your GitHub
 - Serve images in WebP format with JPEG fallback
 - Use responsive images (srcset) for different screen sizes
 - Lazy load images below the fold
+- Use Supabase Storage CDN for fast image delivery
 
 **6. Code Splitting**
 - Next.js automatically code-splits by route
@@ -951,79 +1669,7 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 - Run Lighthouse audits regularly
 - Monitor Core Web Vitals (LCP, FID, CLS)
 - Use Netlify's built-in performance monitoring
-
----
-
-### 9.3 Backend Deployment
-
-**Backend Hosting Options**:\n1. **AWS EC2**: Full control, scalable, requires server management
-2. **Heroku**: Easy deployment, auto-scaling, free tier available
-3. **Google Cloud Run**: Serverless, auto-scaling, pay-per-use
-4. **DigitalOcean App Platform**: Simple deployment, managed infrastructure
-\n**Recommended: Heroku (for quick deployment)**
-
-**Step 1: Install Heroku CLI**
-```bash
-npm install -g heroku
-```
-\n**Step 2: Login to Heroku**
-```bash
-heroku login
-```
-
-**Step 3: Create Heroku App**
-```bash
-cd backend
-heroku create dineqr-api
-```
-
-**Step 4: Add Environment Variables**
-```bash\nheroku config:set DATABASE_URL=your-database-url
-heroku config:set JWT_SECRET=your-jwt-secret
-heroku config:set VAPID_PRIVATE_KEY=your-vapid-private-key
-... (add all backend environment variables)
-```
-
-**Step 5: Deploy Backend**
-```bash
-git push heroku main
-```
-
-**Step 6: Update Frontend API URL**
-- Update `NEXT_PUBLIC_API_URL` in Netlify environment variables to Heroku app URL
-- Redeploy frontend on Netlify
-
----
-
-### 9.4 Database Setup
-
-**Database Hosting Options**:
-1. **AWS RDS (PostgreSQL)**: Managed, scalable, high availability
-2. **MongoDB Atlas**: Managed MongoDB, free tier available
-3. **Heroku Postgres**: Managed PostgreSQL, easy integration with Heroku
-\n**Recommended: MongoDB Atlas (for quick setup)**
-
-**Step 1: Create MongoDB Atlas Account**
-- Sign up at https://www.mongodb.com/cloud/atlas
-\n**Step 2: Create Cluster**
-- Create free tier cluster (M0)\n- Select region closest to your users
-\n**Step 3: Create Database User**
-- Go to 'Database Access' → 'Add New Database User'
-- Create user with read/write permissions
-\n**Step 4: Whitelist IP Addresses**
-- Go to 'Network Access' → 'Add IP Address'
-- Add `0.0.0.0/0` (allow access from anywhere) or specific IPs
-
-**Step 5: Get Connection String**
-- Go to 'Clusters' → 'Connect' → 'Connect your application'
-- Copy connection string
-- Replace `<password>` with your database user password
-
-**Step 6: Update Backend Environment Variables**
-```bash
-heroku config:set DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dineqr
-```
-
+- Monitor Supabase usage: Dashboard → Usage\n
 ---
 
 ## 10. Future Enhancements (PWA)\n
@@ -1031,7 +1677,8 @@ heroku config:set DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.n
 - **Voice Ordering**: Voice commands for ordering via Web Speech API
 - **Augmented Reality Menu**: AR view of menu items using WebXR API (experimental)
 - **Wearable Support**: Smartwatch notifications via Web Bluetooth API (experimental)
-- **Multi-Language Support**: Support for multiple languages with i18n\n- **Advanced Analytics**: Detailed analytics dashboard with AI-powered insights
+- **Multi-Language Support**: Support for multiple languages with i18n
+- **Advanced Analytics**: Detailed analytics dashboard with AI-powered insights
 - **Integration with Delivery Platforms**: Integrate with Uber Eats, DoorDash, Swiggy, Zomato
 - **Table Reservation System**: Book tables via PWA\n- **Kitchen Display System (KDS)**: Dedicated KDS PWA for kitchen staff
 - **Customer Feedback Analysis**: AI-powered sentiment analysis of customer feedback
@@ -1043,6 +1690,8 @@ heroku config:set DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.n
 - **Advanced Image Upload Features**: AI-powered image tagging, quality analysis, background removal
 - **Progressive Enhancement**: Gradually enhance PWA with new Web APIs as they become available (Web Bluetooth, WebXR, Web NFC, etc.)
 - **Animated Icon**: Explore animated app icon for supported platforms (Android)\n- **Dynamic Flash Screen**: Personalized flash screen based on user role (customer/owner/waiter)
+- **Supabase Edge Functions**: Expand use of Edge Functions for complex backend logic (payment processing, advanced analytics, AI integrations)
+- **Supabase Realtime Presence**: Track online/offline status of waiters and customers in real-time
 \n---
 
 **End of Requirements Document**

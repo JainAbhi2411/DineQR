@@ -105,6 +105,7 @@ For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUI
 
 ## 📚 Documentation
 
+- [SUPABASE_SETUP_GUIDE.md](./SUPABASE_SETUP_GUIDE.md) - Complete Supabase backend setup
 - [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Local setup and Netlify deployment
 - [PWA_GUIDE.md](./PWA_GUIDE.md) - PWA features and capabilities
 - [PWA_ICON_SPLASH_GUIDE.md](./PWA_ICON_SPLASH_GUIDE.md) - Custom icons and splash screen

@@ -72,24 +72,57 @@ npm install
 
 ### Step 3: Environment Setup
 
-The project uses environment variables for configuration. Check if `.env` file exists:
+The project uses environment variables for configuration.
+
+#### 3.1 Set Up Supabase Backend
+
+**IMPORTANT**: Before running the app, you need to set up Supabase backend.
+
+Follow the complete guide: [SUPABASE_SETUP_GUIDE.md](./SUPABASE_SETUP_GUIDE.md)
+
+Quick steps:
+1. Create Supabase account at https://supabase.com
+2. Create new project
+3. Get API credentials (URL and anon key)
+4. Run database migrations
+5. Configure authentication
+
+#### 3.2 Create .env File
+
+Create `.env` file in project root:
 
 ```bash
-# View environment variables (if any)
-cat .env
+# Create .env file
+touch .env
 ```
 
-**Default Environment Variables** (if needed):
+#### 3.3 Add Environment Variables
+
+Open `.env` and add your Supabase credentials:
 
 ```env
-# Supabase Configuration (if using backend features)
+# Supabase Configuration
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # App Configuration
-VITE_APP_ID=your_app_id
+VITE_APP_ID=dineqr
 VITE_API_ENV=development
 ```
+
+**Replace**:
+- `your_supabase_url` with your Supabase project URL
+- `your_supabase_anon_key` with your Supabase anon public key
+
+**Example**:
+```env
+VITE_SUPABASE_URL=https://abcdefghijklmnop.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_APP_ID=dineqr
+VITE_API_ENV=development
+```
+
+**Note**: See [SUPABASE_SETUP_GUIDE.md](./SUPABASE_SETUP_GUIDE.md) for detailed instructions on getting these credentials.
 
 ### Step 4: Start Development Server
 
