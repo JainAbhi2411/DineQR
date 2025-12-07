@@ -306,7 +306,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-white">
             <Camera className="w-5 h-5" />
-            <span className="font-medium">Scan QR Code</span>
+            <span className="font-medium">Scan Q'R Code</span>
             {permissionState === 'granted' && (
               <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
                 Camera Active
