@@ -1,92 +1,231 @@
-# Welcome to Your Miaoda Project
+# 🍽️ DineQR - Smart Restaurant Menu System
 
-## Project Info
+A comprehensive Progressive Web App (PWA) for restaurant menu management and customer ordering, featuring a futuristic dark theme with neon accents.
 
-## Project Directory
+---
 
-```
-├── README.md # Documentation
-├── components.json # Component library configuration
-├── eslint.config.js # ESLint configuration
-├── index.html # Entry file
-├── package.json # Package management
-├── postcss.config.js # PostCSS configuration
-├── public # Static resources directory
-│   ├── favicon.png # Icon
-│   └── images # Image resources
-├── src # Source code directory
-│   ├── App.tsx # Entry file
-│   ├── components # Components directory
-│   ├── context # Context directory
-│   ├── db # Database configuration directory
-│   ├── hooks # Common hooks directory
-│   ├── index.css # Global styles
-│   ├── layout # Layout directory
-│   ├── lib # Utility library directory
-│   ├── main.tsx # Entry file
-│   ├── routes.tsx # Routing configuration
-│   ├── pages # Pages directory
-│   ├── services # Database interaction directory
-│   ├── types # Type definitions directory
-├── tsconfig.app.json # TypeScript frontend configuration file
-├── tsconfig.json # TypeScript configuration file
-├── tsconfig.node.json # TypeScript Node.js configuration file
-└── vite.config.ts # Vite configuration file
-```
+## ✨ Features
 
-## Tech Stack
+### For Restaurant Owners
+- 🏪 Restaurant profile management
+- 📋 Menu management with categories
+- 💰 Price and availability control
+- 📱 QR code generation for tables
+- 📊 Order management and tracking
+- 💵 Bill generation
+- 📈 Analytics and reports
 
-Vite, TypeScript, React, Supabase
+### For Customers
+- 👤 User account management
+- 📷 QR code scanner
+- 🍽️ Menu browsing with images
+- 🛒 Order placement
+- 💳 Payment integration
+- 📍 Order tracking
+- ⚙️ Profile management
 
-## Development Guidelines
+### PWA Features
+- 📱 Installable on all devices
+- 🔄 Automatic update notifications
+- 🌐 Offline mode support
+- ⚡ Fast loading with service workers
+- 🎨 Animated splash screen
+- 🔔 Real-time notifications
+- 🎯 App shortcuts
 
-### How to edit code locally?
+---
 
-You can choose [VSCode](https://code.visualstudio.com/Download) or any IDE you prefer. The only requirement is to have Node.js and npm installed.
+## 🛠️ Tech Stack
 
-### Environment Requirements
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **PWA**: Service Workers, Web App Manifest
+- **Routing**: React Router
+- **Icons**: Lucide React
 
-```
-# Node.js ≥ 20
-# npm ≥ 10
-Example:
-# node -v   # v20.18.3
-# npm -v    # 10.8.2
-```
+---
 
-### Installing Node.js on Windows
+## 🚀 Quick Start
 
-```
-# Step 1: Visit the Node.js official website: https://nodejs.org/, click download. The website will automatically suggest a suitable version (32-bit or 64-bit) for your system.
-# Step 2: Run the installer: Double-click the downloaded installer to run it.
-# Step 3: Complete the installation: Follow the installation wizard to complete the process.
-# Step 4: Verify installation: Open Command Prompt (cmd) or your IDE terminal, and type `node -v` and `npm -v` to check if Node.js and npm are installed correctly.
-```
+### Prerequisites
 
-### Installing Node.js on macOS
+- Node.js 18.x or higher
+- pnpm 8.x or higher (or npm)
 
-```
-# Step 1: Using Homebrew (Recommended method): Open Terminal. Type the command `brew install node` and press Enter. If Homebrew is not installed, you need to install it first by running the following command in Terminal:
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-Alternatively, use the official installer: Visit the Node.js official website. Download the macOS .pkg installer. Open the downloaded .pkg file and follow the prompts to complete the installation.
-# Step 2: Verify installation: Open Command Prompt (cmd) or your IDE terminal, and type `node -v` and `npm -v` to check if Node.js and npm are installed correctly.
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repository-url>
+cd app-7x1ojvae4075
+
+# Install dependencies
+pnpm install
+
+# Set up environment variables
+# Create .env file with your Supabase credentials
+
+# Start development server
+pnpm run dev
 ```
 
-### After installation, follow these steps:
+Open `http://localhost:5173/` in your browser.
+
+### Available Scripts
+
+```bash
+pnpm run dev          # Start development server
+pnpm run build        # Build for production
+pnpm run preview      # Preview production build
+pnpm run lint         # Run linter
+```
+
+---
+
+## 🌐 Deployment
+
+### Deploy to Netlify
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login to Netlify
+netlify login
+
+# Initialize and deploy
+netlify init
+netlify deploy --prod
+```
+
+For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md).
+
+---
+
+## 📚 Documentation
+
+- [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Local setup and Netlify deployment
+- [PWA_GUIDE.md](./PWA_GUIDE.md) - PWA features and capabilities
+- [PWA_ICON_SPLASH_GUIDE.md](./PWA_ICON_SPLASH_GUIDE.md) - Custom icons and splash screen
+- [UPDATE_NOTIFICATION_GUIDE.md](./UPDATE_NOTIFICATION_GUIDE.md) - Update notification system
+- [SPLASH_SCREEN_TEST.md](./SPLASH_SCREEN_TEST.md) - Splash screen testing
+
+---
+
+## 📁 Project Structure
 
 ```
-# Step 1: Download the code package
-# Step 2: Extract the code package
-# Step 3: Open the code package with your IDE and navigate into the code directory
-# Step 4: In the IDE terminal, run the command to install dependencies: npm i
-# Step 5: In the IDE terminal, run the command to start the development server: npm run dev -- --host 127.0.0.1
-# Step 6: if step 5 failed, try this command to start the development server: npx vite --host 127.0.0.1
+app-7x1ojvae4075/
+├── public/                      # Static assets
+│   ├── icons/                   # PWA icons
+│   ├── manifest.json            # PWA manifest
+│   └── sw.js                    # Service worker
+├── src/
+│   ├── components/              # React components
+│   ├── contexts/                # React contexts
+│   ├── db/                      # Database layer
+│   ├── pages/                   # Page components
+│   ├── types/                   # TypeScript types
+│   ├── utils/                   # Utility functions
+│   └── App.tsx                  # Main app component
+├── supabase/
+│   └── migrations/              # Database migrations
+├── netlify.toml                 # Netlify configuration
+└── README.md                    # This file
 ```
 
-### How to develop backend services?
+---
 
-Configure environment variables and install relevant dependencies.If you need to use a database, please use the official version of Supabase.
+## 🎨 Design System
 
-## Learn More
+**Futuristic Dark Theme**:
+- Background: `#0D1B2A` (Deep charcoal blue)
+- Primary Accent: `#00F0FF` (Electric cyan)
+- Secondary Accent: `#FF006E` (Vibrant magenta)
+- Typography: Poppins, Exo 2, Orbitron
 
-You can also check the help documentation: Download and Building the app（ [https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en](https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en)）to learn more detailed content.
+---
+
+## 🔒 Security
+
+- Supabase Auth for user management
+- Row Level Security (RLS)
+- HTTPS-only communication
+- Security headers configured
+- Environment variable protection
+
+---
+
+## 📱 PWA Features
+
+### Installation
+Install on desktop (Chrome, Edge, Safari) and mobile (Android, iOS)
+
+### Offline Support
+- Full offline functionality
+- Cached menu data
+- Automatic sync when online
+
+### Update Notifications
+- Automatic update detection
+- One-click updates
+- No data loss
+
+### Splash Screen
+- Animated splash screen
+- Futuristic dark theme
+- 2.5-second display
+
+---
+
+## 🧪 Testing
+
+### Lighthouse Scores (Target)
+- Performance: > 90
+- Accessibility: > 95
+- Best Practices: > 95
+- SEO: > 90
+- PWA: 100
+
+---
+
+## 🗺️ Roadmap
+
+### Version 1.0 (Current)
+- ✅ Restaurant and customer management
+- ✅ Menu management
+- ✅ QR code generation
+- ✅ Order management
+- ✅ PWA features
+- ✅ Offline support
+- ✅ Update notifications
+
+### Version 1.1 (Planned)
+- [ ] Push notifications
+- [ ] Advanced analytics
+- [ ] Multi-language support
+- [ ] Table reservation system
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Supabase](https://supabase.com/) - Backend infrastructure
+- [Netlify](https://www.netlify.com/) - Hosting
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+
+---
+
+**Made with ❤️ by the DineQR Team**
+
+**Last Updated**: December 7, 2025  
+**Version**: 1.0.0  
+**Status**: Production Ready

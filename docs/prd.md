@@ -10,7 +10,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 
 ---
 
-## 2. Progressive Web App (PWA) Architecture\n
+## 2. Progressive Web App (PWA) Architecture
+
 ### 2.1 PWA Core Features
 
 #### 2.1.1 Installability
@@ -20,12 +21,12 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Icon Design**: Modern futuristic icon featuring a stylized QR code pattern integrated with a fork and knife silhouette, set against a gradient background transitioning from electric cyan (#00d9ff) to vibrant magenta (#ff006e)\n  - **Icon Variations**: Multiple icon sizes optimized for different devices and contexts
   - **Maskable Icon**: Adaptive icon with safe zone for Android maskable icon support, ensuring icon looks great on all Android launchers
 - **Flash Screen (Splash Screen)**: Custom animated flash screen displayed during app launch
-  - **Duration**: 2-3 seconds animated splash screen\n  - **Animation**: Futuristic loading animation featuring:\n    + DineQR logo with neon glow effect pulsing from center
+  - **Duration**: 2-3 seconds animated splash screen
+  - **Animation**: Futuristic loading animation featuring:\n    + DineQR logo with neon glow effect pulsing from center
     + Animated QR code pattern particles floating and assembling into logo
     + Electric cyan and magenta gradient waves flowing across background
     + Smooth fade-in of logo followed by fade-out transition to main app
-    + Loading progress indicator (circular neon ring) at bottom
-  - **Background**: Deep charcoal grey (#1a1a2e) with subtle animated gradient overlay
+    + Loading progress indicator (circular neon ring) at bottom\n  - **Background**: Deep charcoal grey (#1a1a2e) with subtle animated gradient overlay
   - **Logo**: High-resolution DineQR logo (SVG format) with neon outline effect
   - **Tagline**: 'Smart Dining Experience' appears below logo with fade-in animation
   - **Responsive Design**: Splash screen adapts to different screen sizes and orientations
@@ -62,8 +63,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Lazy Loading**: Load images, components, and routes on-demand to reduce initial bundle size
 - **Code Splitting**: Split JavaScript bundles by route and feature for faster loading
 - **Image Optimization**: Serve responsive images (WebP format with JPEG fallback), lazy load images below the fold
-- **Minification & Compression**: Minify CSS/JS, enable Gzip/Brotli compression
-- **Critical CSS**: Inline critical CSS for above-the-fold content
+- **Minification & Compression**: Minify CSS/JS, enable Gzip/Brotli compression\n- **Critical CSS**: Inline critical CSS for above-the-fold content
 - **Preloading**: Preload critical resources (fonts, hero images) for faster rendering
 - **Resource Hints**: Use dns-prefetch, preconnect for faster API calls
 - **Lighthouse Score**: Target 90+ score on Performance, Accessibility, Best Practices, SEO
@@ -110,7 +110,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Purpose**: 'any maskable' for adaptive icon support
 - **Start URL**: '/' with query parameter to track PWA installs
 - **Display Mode**: 'standalone' (app-like experience without browser UI)
-- **Orientation**: 'portrait-primary' (default), support'landscape' for tablets
+- **Orientation**: 'portrait-primary' (default), support 'landscape' for tablets
 - **Theme Color**: Deep charcoal grey (#1a1a2e) to match futuristic dark theme
 - **Background Color**: Deep charcoal grey (#1a1a2e) for splash screen background
 - **Splash Screen Configuration**:
@@ -118,7 +118,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
   - **Icon**:512x512 icon displayed at center of splash screen
   - **Custom Splash Screen**: Implement custom animated splash screen using HTML/CSS/JS for enhanced visual experience (overrides default browser splash screen)
 - **Scope**: '/' to define navigation scope\n- **Categories**: ['food', 'business', 'productivity']
-\n#### 2.2.3 Offline Data Storage
+\n#### 2.2.3Offline Data Storage
 - **IndexedDB**: Store large datasets (menu items, order history, e-bills, images) for offline access
 - **LocalStorage**: Store small data (user preferences, settings, auth tokens)
 - **Cache API**: Store static assets and API responses via service worker
@@ -136,7 +136,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 ### 2.3 PWA User Experience
 
 #### 2.3.1 Installation Flow
-1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)\n2. **Browse & Engage**: User browses menu, places order, or views promotions
+1. **First Visit**: User visits DineQR PWA via browser (https://dineqr.com)
+2. **Browse & Engage**: User browses menu, places order, or views promotions
 3. **Installation Prompt**: After engagement, browser shows'Add to Home Screen' prompt (or custom in-app prompt)
 4. **Install**: User taps 'Add' → PWA installed to home screen with custom DineQR icon
 5. **Launch**: User taps DineQR icon on home screen → PWA launches in standalone mode (no browser UI)
@@ -195,7 +196,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Real-Time Updates**: Push notifications (if enabled) or in-app notifications for status changes, waiter assignments, e-bill ready\n- **Chat with Waiter**: Tap 'Chat with Waiter' button → Real-time chat interface (WebSocket)\n\n**Order History & E-Bills**:
 - **Order History**: List of past orders with search/filter options (cached for offline access)
 - **Order Details**: Tap order → View full order details, waiter info, promotion details, order source
-- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device (stored in IndexedDB for offline access), view in app, print, share via Share API, email\n\n**Offers & Promotions**:
+- **E-Bill Download**: Tap 'Download E-Bill' → Download PDF to device (stored in IndexedDB for offline access), view in app, print, share via Share API, email\n
+**Offers & Promotions**:
 - **Offers Page**: Grid of promotion cards with real-time updates (WebSocket), search/filter options
 - **Promotion Details**: Tap card → Full-screen modal with discount details, promo code, eligibility, validity, terms & conditions
 - **Apply Offer**: Tap 'Apply Offer' → System validates and applies to cart\n\n**Profile & Settings**:
@@ -271,9 +273,8 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 
 #### 4.1.2 Onboarding (First Launch)
 1. **Flash Screen**: Custom animated flash screen (2-3 seconds) featuring:
-   - DineQR logo with neon glow pulsing animation
-   - Animated QR code particles assembling into logo
-   - Electric cyan and magenta gradient waves flowing across deep charcoal grey background
+   - DineQR logo with neon glow pulsing from center
+   - Animated QR code particles assembling into logo\n   - Electric cyan and magenta gradient waves flowing across deep charcoal grey background
    - Circular neon loading progress indicator at bottom
    - 'Smart Dining Experience' tagline fade-in below logo
    - Smooth fade-out transition to welcome screen
@@ -368,8 +369,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Real-Time Communication**: Socket.io client for WebSocket connections
 - **Payment Integration**: Payment Request API, Stripe.js, Razorpay SDK
 - **PDF Generation**: jsPDF or PDFKit for e-bill generation
-- **Cloud Drive Integration**: Google Drive Picker API, Dropbox Chooser API
-- **NLP Integration**: Axios for API calls to NLP backend
+- **Cloud Drive Integration**: Google Drive Picker API, Dropbox Chooser API\n- **NLP Integration**: Axios for API calls to NLP backend
 - **Animation Library**: Framer Motion for flash screen animations, GSAP for advanced animations
 
 ### 5.2 Backend Technologies
@@ -436,8 +436,7 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 6. **Flash Screen**: Animated flash screen displays (2-3 seconds):
    - DineQR logo with neon glow pulsing from center
    - QR code particles floating and assembling into logo
-   - Electric cyan and magenta gradient waves
-   - Circular neon loading indicator
+   - Electric cyan and magenta gradient waves\n   - Circular neon loading indicator
    - 'Smart Dining Experience' tagline fade-in
 7. **Onboarding**: Welcome screen, feature highlights, permission requests (notifications, camera)\n8. **Sign Up/Login**: User creates account or logs in
 9. **QR Scanning**: User taps 'Scan QR Code' → Camera opens → Scans table QR code → Navigates to menu
@@ -532,14 +531,507 @@ A comprehensive, enterprise-level digital restaurant ecosystem delivered as a **
 - **Focus Indicators**: Visible focus indicators (neon outline) for interactive elements
 \n---
 
-## 9. Future Enhancements (PWA)
+## 9. Setup & Deployment Guide
 
+### 9.1 Local Development Setup
+
+#### 9.1.1 Prerequisites
+- **Node.js**: Version 18.x or higher (LTS recommended)
+- **npm**: Version 9.x or higher (comes with Node.js)
+- **Git**: Latest version for version control
+- **Code Editor**: VS Code (recommended) or any preferred editor
+- **Browser**: Chrome, Firefox, or Edge (latest version) for testing PWA features
+
+#### 9.1.2 Project Structure
+```
+dineqr-pwa/
+├── public/
+│   ├── icons/              # PWA icons (72x72 to 512x512)
+│   ├── manifest.json       # Web App Manifest
+│   ├── robots.txt          # SEO robots file
+│   └── sitemap.xml         # SEO sitemap
+├── src/
+│   ├── components/         # React components
+│   ├── pages/              # Next.js pages\n│   ├── styles/             # Tailwind CSS styles
+│   ├── utils/              # Utility functions
+│   ├── hooks/              # Custom React hooks
+│   ├── store/              # Redux/Zustand store
+│   ├── services/           # API services
+│   └── workers/            # Service worker files
+├── .env.local              # Environment variables (local)\n├── .env.production         # Environment variables (production)
+├── next.config.js          # Next.js configuration
+├── tailwind.config.js      # Tailwind CSS configuration
+├── package.json            # Dependencies\n└── README.md               # Project documentation
+```
+
+#### 9.1.3 Installation Steps
+
+**Step 1: Clone Repository**
+```bash
+git clone https://github.com/your-username/dineqr-pwa.git
+cd dineqr-pwa
+```
+
+**Step 2: Install Dependencies**\n```bash
+npm install
+```
+
+**Step 3: Configure Environment Variables**
+\nCreate `.env.local` file in root directory:
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:5000\n
+# Authentication
+NEXT_PUBLIC_JWT_SECRET=your-jwt-secret-key
+NEXT_PUBLIC_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id
+NEXT_PUBLIC_OAUTH_APPLE_CLIENT_ID=your-apple-client-id
+
+# Payment Gateways
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=your-stripe-public-key
+NEXT_PUBLIC_RAZORPAY_KEY_ID=your-razorpay-key-id
+
+# Push Notifications (VAPID Keys)
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-vapid-public-key
+VAPID_PRIVATE_KEY=your-vapid-private-key
+\n# Cloud Storage
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
+
+# Google Drive API
+NEXT_PUBLIC_GOOGLE_DRIVE_API_KEY=your-google-drive-api-key
+NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID=your-google-drive-client-id
+
+# Dropbox API
+NEXT_PUBLIC_DROPBOX_APP_KEY=your-dropbox-app-key
+
+# NLP Backend
+NEXT_PUBLIC_NLP_API_URL=http://localhost:8000/nlp
+\n# Email Service
+SENDGRID_API_KEY=your-sendgrid-api-key
+
+# SMS Service
+TWILIO_ACCOUNT_SID=your-twilio-account-sid
+TWILIO_AUTH_TOKEN=your-twilio-auth-token
+```
+
+**Step 4: Generate VAPID Keys (for Push Notifications)**
+```bash
+npx web-push generate-vapid-keys
+```
+Copy the generated public and private keys to `.env.local`\n
+**Step 5: Start Development Server**
+```bash\nnpm run dev
+```\nApp will be available at `http://localhost:3000`
+
+**Step 6: Start Backend Server (Separate Terminal)**
+```bash
+cd backend
+npm install
+npm run dev
+```
+Backend API will be available at `http://localhost:5000`
+
+**Step 7: Start NLP Service (Separate Terminal)**
+```bash
+cd nlp-service
+pip install -r requirements.txt
+python app.py
+```\nNLP API will be available at `http://localhost:8000`
+
+#### 9.1.4 Testing PWA Features Locally
+
+**Enable HTTPS for Local Development** (required for PWA features):
+\n**Option 1: Using mkcert (Recommended)**
+```bash\n# Install mkcert\nbrew install mkcert  # macOS
+choco install mkcert # Windows
+
+# Create local CA
+mkcert -install
+
+# Generate certificate for localhost
+mkcert localhost127.0.0.1 ::1\n
+# Update next.config.js to use HTTPS
+```
+
+**Option 2: Using ngrok**
+```bash
+# Install ngrok\nnpm install -g ngrok\n
+# Start ngrok tunnel
+ngrok http 3000
+
+# Access app via HTTPS URL provided by ngrok
+```
+
+**Test PWA Installation**:\n1. Open app in Chrome/Edge (HTTPS required)
+2. Open DevTools → Application → Manifest (verify manifest.json loaded)
+3. Open DevTools → Application → Service Workers (verify service worker registered)
+4. Click browser's install button (+ icon in address bar) or custom install prompt
+5. Verify app installed to home screen/desktop
+
+**Test Offline Functionality**:
+1. Open app, browse menu, view orders
+2. Open DevTools → Network → Check'Offline' checkbox
+3. Refresh page → Verify cached content loads
+4. Uncheck 'Offline' → Verify fresh data fetched
+
+**Test Push Notifications**:
+1. Grant notification permissions when prompted
+2. Use backend API or DevTools to send test notification:\n```bash
+curl -X POST http://localhost:5000/api/notifications/send \
+  -H 'Content-Type: application/json' \
+  -d '{\"userId\": \"123\", \"title\": \"Test\", \"body\": \"Test notification\"}'\n```
+3. Verify notification appears on device
+
+---
+
+### 9.2 Deployment to Netlify
+
+#### 9.2.1 Prerequisites
+- **Netlify Account**: Sign up at https://www.netlify.com\n- **GitHub Repository**: Push code to GitHub repository
+- **Environment Variables**: Prepare production environment variables
+
+#### 9.2.2 Deployment Steps
+
+**Method 1: Deploy via Netlify Dashboard (Recommended for First Deployment)**
+
+**Step 1: Connect Repository**
+1. Log in to Netlify Dashboard
+2. Click 'Add new site' → 'Import an existing project'
+3. Select 'GitHub' → Authorize Netlify to access your repositories
+4. Select `dineqr-pwa` repository
+\n**Step 2: Configure Build Settings**
+- **Base directory**: Leave empty (root)\n- **Build command**: `npm run build`
+- **Publish directory**: `.next`
+- **Functions directory**: `netlify/functions` (if using Netlify Functions)
+
+**Step 3: Add Environment Variables**
+1. Go to 'Site settings' → 'Environment variables'
+2. Click 'Add a variable' and add all production environment variables:\n```
+NEXT_PUBLIC_API_URL=https://api.dineqr.com/api
+NEXT_PUBLIC_WEBSOCKET_URL=wss://api.dineqr.com\nNEXT_PUBLIC_VAPID_PUBLIC_KEY=your-production-vapid-public-key\nVAPID_PRIVATE_KEY=your-production-vapid-private-key
+... (add all other variables from .env.local)
+```
+
+**Step 4: Deploy**
+1. Click 'Deploy site'\n2. Netlify will build and deploy your app
+3. Once deployed, you'll get a URL like `https://dineqr-pwa.netlify.app`
+
+**Step 5: Configure Custom Domain (Optional)**
+1. Go to 'Domain settings' → 'Add custom domain'
+2. Enter your domain (e.g., `dineqr.com`)
+3. Follow instructions to configure DNS records
+4. Netlify will automatically provision SSL certificate (HTTPS)
+
+**Step 6: Enable HTTPS**
+- Netlify automatically provisions SSL certificate via Let's Encrypt
+- Verify HTTPS is enabled: Go to 'Domain settings' → 'HTTPS' → Should show 'Certificate active'
+
+**Step 7: Configure Redirects & Headers**
+\nCreate `netlify.toml` in root directory:
+```toml
+[build]
+  command = \"npm run build\"
+  publish = \".next\"
+
+[[redirects]]
+  from = \"/*\"
+  to = \"/index.html\"
+  status = 200
+\n[[headers]]
+  for = \"/*\"
+  [headers.values]
+    X-Frame-Options = \"DENY\"
+    X-Content-Type-Options = \"nosniff\"
+    X-XSS-Protection = \"1; mode=block\"
+    Referrer-Policy = \"strict-origin-when-cross-origin\"\n    Content-Security-Policy = \"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.dineqr.com wss://api.dineqr.com;\"
+\n[[headers]]
+  for = \"/manifest.json\"
+  [headers.values]
+    Content-Type = \"application/manifest+json\"
+\n[[headers]]
+  for = \"/sw.js\"
+  [headers.values]
+    Cache-Control = \"public, max-age=0, must-revalidate\"
+Service-Worker-Allowed = \"/\"
+```
+\nCommit and push `netlify.toml` to trigger redeployment.\n
+**Step 8: Verify PWA Deployment**
+1. Open deployed app in Chrome/Edge
+2. Open DevTools → Lighthouse → Run audit
+3. Verify PWA score is 90+ (should show 'Installable' badge)
+4. Test installation: Click browser's install button\n5. Test offline: Enable offline mode in DevTools, verify cached content loads
+6. Test push notifications: Grant permissions, send test notification from backend
+
+---
+
+**Method 2: Deploy via Netlify CLI**
+
+**Step 1: Install Netlify CLI**\n```bash
+npm install -g netlify-cli
+```
+
+**Step 2: Login to Netlify**
+```bash
+netlify login
+```
+
+**Step 3: Initialize Netlify Site**
+```bash
+netlify init
+```
+Follow prompts:\n- Create & configure a new site
+- Select team\n- Enter site name (e.g., `dineqr-pwa`)
+- Build command: `npm run build`\n- Publish directory: `.next`
+
+**Step 4: Add Environment Variables**
+```bash\nnetlify env:set NEXT_PUBLIC_API_URL https://api.dineqr.com/api
+netlify env:set NEXT_PUBLIC_WEBSOCKET_URL wss://api.dineqr.com
+... (add all other variables)\n```
+
+**Step 5: Deploy**
+```bash
+# Deploy to production
+netlify deploy --prod
+\n# Or deploy to preview (draft)\nnetlify deploy\n```
+
+**Step 6: Open Deployed Site**
+```bash
+netlify open:site
+```
+
+---
+
+#### 9.2.3 Continuous Deployment (Auto-Deploy on Git Push)
+
+Netlify automatically sets up continuous deployment when you connect your GitHub repository.
+
+**How it works**:
+1. Push code to GitHub repository
+2. Netlify detects changes and triggers build
+3. App is automatically built and deployed
+4. Deployment URL remains the same
+
+**Configure Branch Deploys**:
+1. Go to 'Site settings' → 'Build & deploy' → 'Deploy contexts'
+2. Configure which branches trigger deployments:\n   - **Production branch**: `main` (deploys to production URL)
+   - **Branch deploys**: `develop`, `staging` (deploys to preview URLs)
+   - **Deploy previews**: Enable for pull requests
+
+**Deploy Notifications**:
+1. Go to 'Site settings' → 'Build & deploy' → 'Deploy notifications'
+2. Add notifications for:
+   - Deploy started
+   - Deploy succeeded
+   - Deploy failed
+3. Configure notification channels (Email, Slack, Webhook)
+
+---
+
+#### 9.2.4 Post-Deployment Checklist
+
+-✅ **HTTPS Enabled**: Verify SSL certificate active, all requests use HTTPS
+- ✅ **PWA Installable**: Test installation on mobile (Android, iOS) and desktop
+- ✅ **Service Worker Registered**: Check DevTools → Application → Service Workers
+- ✅ **Offline Functionality**: Test offline mode, verify cached content loads
+- ✅ **Push Notifications**: Test push notifications on Android, desktop (iOS fallback)
+- ✅ **Manifest Valid**: Check DevTools → Application → Manifest, verify all fields correct
+- ✅ **Icons Loaded**: Verify all icon sizes (72x72 to 512x512) load correctly
+- ✅ **Splash Screen**: Test splash screen on mobile installation
+- ✅ **Performance**: Run Lighthouse audit, verify 90+ score on all metrics
+- ✅ **SEO**: Verify meta tags, structured data, sitemap, robots.txt
+- ✅ **Analytics**: Set up analytics (Google Analytics, Mixpanel) to track PWA installs, usage
+- ✅ **Error Monitoring**: Set up error monitoring (Sentry, LogRocket) to track errors
+- ✅ **Custom Domain**: Configure custom domain (if applicable), verify DNS records
+- ✅ **Environment Variables**: Verify all production environment variables set correctly
+- ✅ **API Endpoints**: Test all API endpoints, verify backend connectivity
+- ✅ **Payment Gateway**: Test payment flows (Stripe, Razorpay) in production
+- ✅ **Real-Time Features**: Test WebSocket connections, real-time updates
+- ✅ **Cross-Browser Testing**: Test on Chrome, Firefox, Safari, Edge
+- ✅ **Cross-Device Testing**: Test on mobile (Android, iOS), tablet, desktop
+\n---
+
+#### 9.2.5 Troubleshooting Common Issues
+\n**Issue 1: Service Worker Not Registering**
+- **Cause**: HTTPS not enabled or service worker file not found
+- **Solution**: \n  - Verify HTTPS is enabled (check for padlock icon in browser)
+  - Check service worker file path in `next.config.js`
+  - Clear browser cache and reload
+
+**Issue 2: PWA Not Installable**
+- **Cause**: Manifest missing, invalid, or service worker not registered
+- **Solution**: \n  - Check DevTools → Application → Manifest for errors
+  - Verify manifest.json includes all required fields (name, icons, start_url, display)\n  - Verify service worker registered successfully
+  - Run Lighthouse audit to identify issues
+
+**Issue 3: Push Notifications Not Working**
+- **Cause**: VAPID keys missing, notification permissions denied, or iOS limitations
+- **Solution**: 
+  - Verify VAPID keys set in environment variables
+  - Check notification permissions in browser settings
+  - For iOS: Use WebSocket fallback for real-time updates
+  - Test on Android/desktop first (better Web Push support)
+
+**Issue 4: Offline Mode Not Working**
+- **Cause**: Service worker caching strategy misconfigured
+- **Solution**: 
+  - Check service worker caching strategies in Workbox config
+  - Verify static assets cached correctly
+  - Test with DevTools → Network → Offline mode
+  - Clear cache and re-cache assets
+
+**Issue 5: Build Fails on Netlify**
+- **Cause**: Missing dependencies, environment variables, or build command incorrect
+- **Solution**: 
+  - Check build logs in Netlify dashboard for errors
+  - Verify all dependencies in `package.json`
+  - Verify build command is `npm run build`
+  - Verify environment variables set correctly
+  - Test build locally: `npm run build`
+
+**Issue 6: API Requests Failing**
+- **Cause**: CORS issues, incorrect API URL, or backend not deployed
+- **Solution**: 
+  - Verify API URL in environment variables
+  - Check backend CORS configuration (allow Netlify domain)
+  - Verify backend deployed and accessible
+  - Test API endpoints with Postman/curl
+
+---
+
+#### 9.2.6 Performance Optimization for Production
+
+**1. Enable Netlify CDN**
+- Netlify automatically serves static assets via global CDN
+- Verify CDN headers: Check response headers for `x-nf-request-id`
+\n**2. Enable Asset Optimization**
+- Go to 'Site settings' → 'Build & deploy' → 'Post processing'
+- Enable:\n  - **Bundle CSS**: Minify CSS files
+  - **Minify JS**: Minify JavaScript files
+  - **Compress images**: Optimize images automatically
+  - **Pretty URLs**: Remove `.html` extensions
+
+**3. Configure Caching Headers**
+- Add caching headers in `netlify.toml`:
+```toml
+[[headers]]\n  for = \"/static/*\"
+  [headers.values]
+    Cache-Control = \"public, max-age=31536000, immutable\"
+\n[[headers]]
+  for = \"/*.js\"
+  [headers.values]
+    Cache-Control = \"public, max-age=31536000, immutable\"
+
+[[headers]]
+  for = \"/*.css\"
+  [headers.values]
+    Cache-Control = \"public, max-age=31536000, immutable\"\n```
+
+**4. Enable Brotli Compression**
+- Netlify automatically enables Brotli compression for supported browsers
+- Verify compression: Check response headers for `content-encoding: br`
+
+**5. Optimize Images**
+- Use Next.js Image component for automatic optimization
+- Serve images in WebP format with JPEG fallback
+- Use responsive images (srcset) for different screen sizes
+- Lazy load images below the fold
+
+**6. Code Splitting**
+- Next.js automatically code-splits by route
+- Use dynamic imports for large components:\n```javascript
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <LoadingSpinner />,
+  ssr: false
+});
+```
+
+**7. Monitor Performance**
+- Set up Netlify Analytics to track performance metrics
+- Run Lighthouse audits regularly
+- Monitor Core Web Vitals (LCP, FID, CLS)
+- Use Netlify's built-in performance monitoring
+
+---
+
+### 9.3 Backend Deployment
+
+**Backend Hosting Options**:\n1. **AWS EC2**: Full control, scalable, requires server management
+2. **Heroku**: Easy deployment, auto-scaling, free tier available
+3. **Google Cloud Run**: Serverless, auto-scaling, pay-per-use
+4. **DigitalOcean App Platform**: Simple deployment, managed infrastructure
+\n**Recommended: Heroku (for quick deployment)**
+
+**Step 1: Install Heroku CLI**
+```bash
+npm install -g heroku
+```
+\n**Step 2: Login to Heroku**
+```bash
+heroku login
+```
+
+**Step 3: Create Heroku App**
+```bash
+cd backend
+heroku create dineqr-api
+```
+
+**Step 4: Add Environment Variables**
+```bash\nheroku config:set DATABASE_URL=your-database-url
+heroku config:set JWT_SECRET=your-jwt-secret
+heroku config:set VAPID_PRIVATE_KEY=your-vapid-private-key
+... (add all backend environment variables)
+```
+
+**Step 5: Deploy Backend**
+```bash
+git push heroku main
+```
+
+**Step 6: Update Frontend API URL**
+- Update `NEXT_PUBLIC_API_URL` in Netlify environment variables to Heroku app URL
+- Redeploy frontend on Netlify
+
+---
+
+### 9.4 Database Setup
+
+**Database Hosting Options**:
+1. **AWS RDS (PostgreSQL)**: Managed, scalable, high availability
+2. **MongoDB Atlas**: Managed MongoDB, free tier available
+3. **Heroku Postgres**: Managed PostgreSQL, easy integration with Heroku
+\n**Recommended: MongoDB Atlas (for quick setup)**
+
+**Step 1: Create MongoDB Atlas Account**
+- Sign up at https://www.mongodb.com/cloud/atlas
+\n**Step 2: Create Cluster**
+- Create free tier cluster (M0)\n- Select region closest to your users
+\n**Step 3: Create Database User**
+- Go to 'Database Access' → 'Add New Database User'
+- Create user with read/write permissions
+\n**Step 4: Whitelist IP Addresses**
+- Go to 'Network Access' → 'Add IP Address'
+- Add `0.0.0.0/0` (allow access from anywhere) or specific IPs
+
+**Step 5: Get Connection String**
+- Go to 'Clusters' → 'Connect' → 'Connect your application'
+- Copy connection string
+- Replace `<password>` with your database user password
+
+**Step 6: Update Backend Environment Variables**
+```bash
+heroku config:set DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dineqr
+```
+
+---
+
+## 10. Future Enhancements (PWA)\n
 - **Advanced Offline Mode**: Full offline ordering with queue and sync when connection restored
 - **Voice Ordering**: Voice commands for ordering via Web Speech API
 - **Augmented Reality Menu**: AR view of menu items using WebXR API (experimental)
 - **Wearable Support**: Smartwatch notifications via Web Bluetooth API (experimental)
-- **Multi-Language Support**: Support for multiple languages with i18n
-- **Advanced Analytics**: Detailed analytics dashboard with AI-powered insights
+- **Multi-Language Support**: Support for multiple languages with i18n\n- **Advanced Analytics**: Detailed analytics dashboard with AI-powered insights
 - **Integration with Delivery Platforms**: Integrate with Uber Eats, DoorDash, Swiggy, Zomato
 - **Table Reservation System**: Book tables via PWA\n- **Kitchen Display System (KDS)**: Dedicated KDS PWA for kitchen staff
 - **Customer Feedback Analysis**: AI-powered sentiment analysis of customer feedback
