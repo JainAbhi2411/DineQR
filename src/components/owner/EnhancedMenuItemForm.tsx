@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useFormatters } from '@/hooks/useFormatters';
 import { Plus, X, Star } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 interface EnhancedMenuItemFormProps {
   open: boolean;
@@ -260,15 +261,12 @@ export default function EnhancedMenuItemForm({
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="image_url">Image URL</Label>
-                <Input
-                  id="image_url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
+              <ImageUpload
+                restaurantId={restaurantId}
+                currentImageUrl={formData.image_url}
+                onImageUploaded={(url) => setFormData({ ...formData, image_url: url })}
+                onImageRemoved={() => setFormData({ ...formData, image_url: '' })}
+              />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">

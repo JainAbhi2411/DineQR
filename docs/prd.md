@@ -1,4 +1,4 @@
-# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete E-Bill Generation & Download System with Comprehensive Order Information)
+# DineQR - Advanced Restaurant Digital Menu & Order Management System Requirements Document (Updated - Complete E-Bill Generation & Download System with Comprehensive Order Information + Enhanced Image Upload Functionality)
 
 ## 1. Application Overview
 
@@ -6,16 +6,12 @@
 DineQR - Enterprise-Grade Smart Restaurant Management & Customer Engagement Platform
 
 ### 1.2 Application Description
-A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, **comprehensive e-bill generation system with professional formatting and multiple download options (PDF, print-ready format)**, personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), advanced marketing and promotions system with Swiggy-style real-time customer-facing offers display featuring prominent banner placement, horizontal scrollable offer cards, automatic real-time synchronization via WebSocket, automatic discount application, and promo code redemption, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates, table updates, and promotions to customer dashboards without page refresh, Add-On Order feature allowing customers to add items to their active order without creating a new order or bill, and revolutionary NLP-powered Natural Language Ordering via AI Chatbot enabling customers to place orders using conversational text (e.g., 'I want to order 1daal tadka, 4 roti, 1 margherita pizza') with automatic cart creation and intelligent menu item recognition - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface with Swiggy-inspired offer presentation. All data displayed across the platform is real-time and dynamically calculated from the live database.\n
+A comprehensive, enterprise-level digital restaurant ecosystem with a cutting-edge futuristic UI that revolutionizes the complete dining experience. The platform provides advanced authentication, real-time notifications with automatic page updates, real-time communication, intelligent order management, and seamless coordination between restaurant owners, staff (waiters/agents), and customers. Features include multi-level user authentication with role-based conditional homepage/dashboard rendering, dynamic menu management with enhanced database-driven portion selection UI featuring Full Portion as default (original item price) and additional price variants stored in database with custom names and prices, **advanced image upload system supporting computer upload, cloud drive integration (Google Drive, Dropbox), and direct URL insertion**, AI-powered recommendations, real-time chat system, mandatory waiter assignment for every order by restaurant owner with intelligent free waiter filtering and real-time synchronization to customer dashboard displaying assigned waiter name and information, advanced inventory tracking, integrated payment processing, instant order notifications without page refresh, automatic real-time order timeline updates on both customer and owner dashboards, detailed order tracking with complete timelines, comprehensive e-bill generation system with professional formatting and multiple download options (PDF, print-ready format), personalized restaurant dashboard for quick reordering, complete staff management with attendance tracking, performance analytics, and real-time waiter availability status (Free/Busy/Offline), advanced marketing and promotions system with Swiggy-style real-time customer-facing offers display featuring prominent banner placement, horizontal scrollable offer cards, automatic real-time synchronization via WebSocket, automatic discount application, and promo code redemption, comprehensive settings module for restaurant configuration with automatic currency and timezone application across the entire platform, restaurant type classification (Veg/Non-Veg/Both) with prominent display in browse restaurants and menu pages, QR code scanning functionality exclusively available on mobile devices, fully functional sidebar navigation with complete features for all menu items including browse restaurants functionality, real-time synchronization of menu updates, table updates, and promotions to customer dashboards without page refresh, Add-On Order feature allowing customers to add items to their active order without creating a new order or bill, and revolutionary NLP-powered Natural Language Ordering via AI Chatbot enabling customers to place orders using conversational text (e.g., 'I want to order 1daal tadka, 4 roti, 1 margherita pizza') with automatic cart creation and intelligent menu item recognition - creating a unified platform that manages every aspect from customer arrival to post-dining feedback, all wrapped in a sleek, modern, futuristic interface with Swiggy-inspired offer presentation. All data displayed across the platform is real-time and dynamically calculated from the live database.\n
 ## 2. Advanced Authentication System
 
 ### 2.1 Multi-Level User Authentication
-\n**User Roles**:\n- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings, mandatory waiter assignment for all orders with free waiter visibility, promotions and offers management, **e-bill management and customization**
-- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management, **view and share e-bills with customers**
-- **Customer**: Access to menu browsing, ordering, order tracking, real-time waiter assignment information display, chat with restaurant, payment, order history, browse previously scanned restaurants, real-time view and apply promotions and offers with Swiggy-style UI, NLP-powered natural language ordering via AI chatbot, **download and share e-bills**
-
-**Authentication Flow**:
-1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
+\n**User Roles**:\n- **Restaurant Owner**: Full administrative access to restaurant management, menu, orders, staff, inventory, analytics, settings, mandatory waiter assignment for all orders with free waiter visibility, promotions and offers management, e-bill management and customization\n- **Waiter/Agent**: Access to assigned orders, customer communication, order status updates, table management, view and share e-bills with customers\n- **Customer**: Access to menu browsing, ordering, order tracking, real-time waiter assignment information display, chat with restaurant, payment, order history, browse previously scanned restaurants, real-time view and apply promotions and offers with Swiggy-style UI, NLP-powered natural language ordering via AI chatbot, download and share e-bills\n
+**Authentication Flow**:\n1. **Landing Page**: Welcome screen with 'Sign In' and 'Sign Up' buttons
 2. **Sign Up Options**:
    - Email/Password registration with role selection (Owner/Waiter/Customer)
    - Google OAuth integration (using OSS Google login method)
@@ -81,8 +77,7 @@ The Owner Home Screen serves as the central command center, displaying real-time
 - Interactive chart showing revenue trends\n\n**Popular Menu Items Section**:
 - Top 5 selling items\n\n**Active Promotions Section**:
 - Display currently active promotions with quick view cards
-- Each card shows: Promotion name, discount type, validity period, usage count
--'View All Promotions' button\n
+- Each card shows: Promotion name, discount type, validity period, usage count\n-'View All Promotions' button\n
 **D. Real-Time Notification System**
 - Notification bell with badge count
 - Dropdown panel with recent notifications
@@ -93,26 +88,279 @@ The Owner Home Screen serves as the central command center, displaying real-time
 
 ---
 
-#### 3.1.2 Advanced Menu Management System with Database-Driven Portion Selection and Real-Time Customer Synchronization
+#### 3.1.2 Advanced Menu Management System with Database-Driven Portion Selection, Real-Time Customer Synchronization, and Enhanced Image Upload Functionality
 
 **Overview**:
-Comprehensive menu management interface with database-driven portion selection featuring Full Portion as default and additional price variants.\n
+Comprehensive menu management interface with database-driven portion selection featuring Full Portion as default and additional price variants, **plus advanced image upload system supporting multiple sources (computer, cloud drives, direct URL).**
+
 **Key Features**:
 
 **A. Menu Item Management Interface**
 - Action buttons for adding items and viewing menu
 - Menu categories section\n- Menu items grid/list view
-\n**B. Add/Edit Menu Item Modal with Database-Driven Portion Selection**
-- Basic Information Tab
-- Pricing & Portions Tab (Full Portion as default, optional additional variants)
-- Inventory & Availability Tab\n- Additional Details Tab
-- **Promotions Tab**: Link menu items to active promotions (optional)
-- **NLP Aliases Tab**: Add alternative names and common misspellings for NLP recognition (e.g., 'Daal Tadka' aliases: 'dal tadka', 'daal fry', 'yellow dal', 'tadka dal')
+\n**B. Add/Edit Menu Item Modal with Database-Driven Portion Selection and Enhanced Image Upload**
+\n**Modal Layout**:
+- Multi-tab interface with following tabs:
+  1. Basic Information Tab
+  2. **Image Upload Tab** (new enhanced tab)
+  3. Pricing & Portions Tab
+  4. Inventory & Availability Tab
+  5. Additional Details Tab
+  6. Promotions Tab
+  7. NLP Aliases Tab
+\n**Tab1: Basic Information**
+- **Item Name**: Text input (required) - e.g., 'Daal Tadka', 'Margherita Pizza'
+- **Category**: Dropdown (required) - Select from existing categories or create new
+- **Description**: Textarea (optional) - Brief description of the item
+- **Restaurant Type**: Radio buttons (required) - Veg, Non-Veg, Both
+- **Tags**: Multi-select input (optional) - e.g., 'Spicy', 'Gluten-Free', 'Chef Special'
+\n**Tab 2: Image Upload (Enhanced with Multiple Upload Options)**
+\n**Overview**:
+Advanced image upload system allowing restaurant owners to add menu item images from multiple sources: computer upload, cloud drive integration (Google Drive, Dropbox), and direct URL insertion.
+
+**Image Upload Section Layout**:
+
+**A. Upload Method Selection**
+- **Section Heading**: 'Add Menu Item Images' (medium bold text, neon cyan color)
+- **Subheading**: 'Choose your preferred upload method' (small text, light grey)
+- **Upload Method Tabs** (horizontal tab navigation):
+  1. **Computer Upload** (default active tab, icon: computer/upload icon)
+  2. **Cloud Drive** (icon: cloud icon)
+  3. **Direct URL** (icon: link icon)
+
+**B. Computer Upload Tab**
+\n**Features**:
+- **Drag & Drop Zone**:\n  - Large rectangular area withdashed neon cyan border (300px height on desktop, 200px on mobile)
+  - Glassmorphism effect with semi-transparent dark background
+  - Center icon: Upload cloud icon (neon cyan color, large size)
+  - Text: 'Drag and drop images here' (medium text, white color)
+  - Subtext: 'or click to browse' (small text, light grey)
+- Supported formats displayed: 'Supported formats: JPG, PNG, WEBP, SVG' (small text, light grey)
+  - Maximum file size displayed: 'Max file size: 5MB per image' (small text, light grey)
+  - Hover effect: Border color changes to vibrant magenta, background slightly lighter
+- **Browse Button**: 'Browse Files' (secondary button, outline style, neon cyan border, positioned below drag & drop zone)
+- **Multiple Image Upload**: Support for uploading multiple images simultaneously (up to 5 images per item)
+- **Upload Progress**:
+  - Progress bar for each uploading image (neon gradient fill, percentage display)
+  - File name and size displayed next to progress bar
+  - Cancel button (small, neon red,'X' icon) to cancel individual upload
+- **Image Preview Grid** (after upload):
+  - Grid layout displaying uploaded images (3 columns on desktop, 2 columns on mobile)
+  - Each image card shows:\n    - Image thumbnail (150px x 150px, rounded corners, glassmorphism border)
+    - Image file name (small text, truncated if too long)
+    - Image file size (small text, light grey)\n    - 'Set as Primary' button (small, secondary, outline) - designates image as main menu item image
+    - 'Delete' button (small, neon red, trash icon) - removes image\n  - Primary image card highlighted with neon green border and 'Primary' badge
+- **Image Optimization**:
+  - Automatic image compression to optimize file size without significant quality loss
+  - Automatic image resizing to standard dimensions (e.g., 800px x 800px for menu item images)
+  - Format conversion to WEBP for better performance (optional, configurable in settings)
+\n**C. Cloud Drive Tab**
+
+**Features**:\n- **Cloud Drive Selection**:
+  - Section heading: 'Select Cloud Drive' (medium bold text, neon cyan color)
+  - Cloud drive options displayed as large clickable cards (glassmorphism effect, neon gradient border on hover):
+    1. **Google Drive Card**:\n       - Google Drive logo (large, centered)
+       - Text: 'Google Drive' (bold, white text)
+       - 'Connect' button (primary, neon gradient) - initiates OAuth authentication
+    2. **Dropbox Card**:
+       - Dropbox logo (large, centered)
+       - Text: 'Dropbox' (bold, white text)
+       - 'Connect' button (primary, neon gradient) - initiates OAuth authentication
+  - Cards arranged horizontally (2 columns on desktop, 1 column on mobile)
+- **Authentication Flow**:
+  - Clicking 'Connect' button opens OAuth popup window for selected cloud drive
+  - User logs in to cloud drive account and grants DineQR access to files
+  - After successful authentication, popup closes and user returns to image upload tab
+  - Success toast notification: 'Connected to [Cloud Drive Name] successfully!'
+  - Cloud drive card updates to show 'Connected' status (neon green badge) and 'Disconnect' button
+- **File Picker Interface** (after authentication):
+  - **Cloud Drive File Browser**:
+    - Section heading: 'Select Images from [Cloud Drive Name]' (medium bold text, neon cyan color)
+    - Breadcrumb navigation showing current folder path (e.g., 'My Drive > Restaurant Images > Menu Items')
+    - Folder and file list displayed in grid or list view (toggle button to switch views)
+    - Each folder/file card shows:
+      - Folder/file icon (folder icon for folders, image thumbnail for image files)
+      - Folder/file name (medium text, white color, truncated if too long)
+      - File size (for files only, small text, light grey)
+      - Checkbox for selection (for image files only)\n    - Navigation: Click folder to open, click breadcrumb to navigate back
+    - Search bar:'Search files in [Cloud Drive Name]' (with search icon, dark background, neon border on focus)
+    - Filter options: 'All Files', 'Images Only', 'Recent', 'Starred'\n  - **Image Selection**:
+    - User selects image files by clicking checkboxes (multiple selection supported)
+    - Selected images highlighted with neon cyan border\n    - Selection counter displayed: 'X images selected' (small text, neon cyan color)
+    - 'Select All' button (small, secondary, outline) - selects all images in current folder
+    - 'Clear Selection' button (small, secondary, outline) - deselects all images
+  - **Import Button**: 'Import Selected Images' (primary, neon gradient, positioned at bottom of file picker)
+    - Clicking button imports selected images from cloud drive to DineQR
+    - Import progress displayed with progress bar and file names
+    - After import, images appear in Image Preview Grid (same as Computer Upload tab)
+    - Success toast notification: 'X images imported successfully!'
+- **Cloud Drive Disconnection**:
+  - 'Disconnect' button (secondary, outline, neon red border) available on connected cloud drive card
+  - Clicking button revokes DineQR access to cloud drive
+  - Confirmation modal: 'Are you sure you want to disconnect [Cloud Drive Name]? You will need to reconnect to import images again.'
+  - After disconnection, cloud drive card returns to 'Connect' state\n\n**D. Direct URL Tab**
+
+**Features**:\n- **URL Input Section**:
+  - Section heading: 'Add Image from URL' (medium bold text, neon cyan color)
+  - Subheading: 'Paste the direct link to the image file' (small text, light grey)\n  - **URL Input Field**:
+    - Large text input with placeholder: 'https://example.com/image.jpg' (dark background, neon border on focus)
+    - Input validation: Checks if URL is valid and points to an image file (JPG, PNG, WEBP, SVG)
+    - Error message displayed below input if URL is invalid: 'Invalid URL or unsupported image format' (neon red color)
+  - **Add URL Button**: 'Add Image' (primary, neon gradient, positioned to right of input field)
+    - Clicking button fetches image from URL and displays preview
+    - Loading spinner displayed while fetching image
+    - If image fetch fails, error message displayed: 'Failed to load image from URL. Please check the link and try again.' (neon red color)
+- **Multiple URL Input**:
+  - After adding first image, 'Add Another URL' button appears (secondary, outline, neon cyan border)
+  - Clicking button adds new URL input field below previous one (up to 5 URL inputs)
+  - Each URL input has its own 'Add Image' button and 'Remove' button (small, neon red, 'X' icon)
+- **Image Preview** (after adding URL):
+  - Image fetched from URL displayed in preview card (same format as Computer Upload tab)
+  - Image card shows:
+    - Image thumbnail (150px x 150px, rounded corners, glassmorphism border)\n    - Image URL (small text, truncated, with tooltip showing full URL on hover)
+    - 'Set as Primary' button (small, secondary, outline)\n    - 'Delete' button (small, neon red, trash icon)
+  - Images added via URL appear in same Image Preview Grid as computer uploads and cloud drive imports
+- **URL Validation**:
+  - System checks if URL is accessible and points to valid image file
+  - Supported protocols: HTTP, HTTPS\n  - Supported formats: JPG, PNG, WEBP, SVG
+  - If URL requires authentication or is behind firewall, error message displayed: 'Unable to access image. URL may require authentication or be restricted.'
+\n**E. Image Preview Grid (Unified for All Upload Methods)**
+
+**Features**:
+- **Grid Layout**: Displays all uploaded/imported images from all three upload methods (Computer, Cloud Drive, Direct URL) in single unified grid
+- **Grid Columns**: 3 columns on desktop, 2 columns on tablet, 1 column on mobile\n- **Image Card Design**:
+  - Glassmorphism effect with neon gradient border
+  - Image thumbnail (150px x 150px, rounded corners, object-fit: cover)
+  - Image source indicator badge (top-right corner, small pill-shaped badge):\n    - 'Computer' badge (neon cyan background) for computer uploads
+    - 'Google Drive' badge (neon blue background) for Google Drive imports
+    - 'Dropbox' badge (neon blue background) for Dropbox imports\n    - 'URL' badge (neon magenta background) for direct URL images
+  - Image file name or URL (small text, truncated, tooltip on hover)
+  - Image file size (small text, light grey) - displayed for computer uploads and cloud imports,'N/A' for URL images
+  - **Primary Image Indicator**: Primary image card highlighted with neon green border and 'Primary' badge (top-left corner, neon green background, white text)
+  - **Action Buttons** (displayed on hover or always visible on mobile):
+    - 'Set as Primary' button (small, secondary, outline, neon cyan border) - designates image as main menu item image (only one primary image allowed)
+    - 'Delete' button (small, neon red, trash icon) - removes image from grid
+  - **Drag & Drop Reordering**: Images can be reordered by dragging and dropping within grid (visual feedback: dragged image scales up, drop zone highlighted)
+- **Primary Image Selection**:
+  - First uploaded/imported image automatically set as primary
+  - Owner can change primary image by clicking 'Set as Primary' button on any image card
+  - When new primary image selected, previous primary image loses'Primary' badge and neon green border
+  - Primary image displayed prominently on menu item card in customer-facing menu
+- **Image Deletion**:
+  - Clicking 'Delete' button opens confirmation modal: 'Are you sure you want to delete this image?'
+  - After confirmation, image removed from grid with fade-out animation
+  - If deleted image was primary, next image in grid automatically becomes primary
+  - If all images deleted, Image Preview Grid displays empty state: 'No images added yet. Upload images using one of the methods above.'
+- **Image Count Limit**: Maximum 5 images per menu item (configurable in settings)
+- When limit reached, upload/import buttons disabled and message displayed: 'Maximum 5 images allowed per item. Delete an image to add more.'
+
+**F. Image Storage & Management**
+
+**Storage Options**:
+1. **Computer Uploads**: Images uploaded to DineQR cloud storage (AWS S3, Google Cloud Storage, or Cloudinary)
+2. **Cloud Drive Imports**: Images copied from cloud drive to DineQR cloud storage (original files remain in cloud drive)
+3. **Direct URL Images**: Image URLs stored in database, images fetched from original URL when displayed (no copy stored in DineQR cloud storage)
+
+**Image URL Structure**:
+- **Computer Uploads & Cloud Imports**: Stored in DineQR cloud storage with URL format: `https://storage.dineqr.com/menu-items/{restaurant_id}/{item_id}/{image_id}.webp`
+- **Direct URL Images**: Original URL stored in database as-is
+
+**Database Schema**:
+- **menu_item_images table**:
+  - image_id (primary key, unique identifier)
+  - item_id (foreign key, links to menu_items table)
+  - image_source (enum: 'computer', 'google_drive', 'dropbox', 'url')
+  - image_url (text, full URL to image file)
+  - original_filename (text, original file name for computer uploads and cloud imports)
+  - file_size (integer, file size in bytes, null for URL images)
+  - is_primary (boolean, true if primary image)
+  - display_order (integer, order in which images are displayed)
+  - upload_timestamp (datetime, timestamp of upload/import)
+  - uploaded_by (foreign key, user ID of owner who uploaded image)
+\n**Image Optimization & Processing**:
+- **Automatic Compression**: Images uploaded from computer or imported from cloud drive automatically compressed to reduce file size (quality: 85%, configurable)
+- **Automatic Resizing**: Images resized to standard dimensions (800px x 800px for menu item images, maintains aspect ratio)
+- **Format Conversion**: Images converted to WEBP format for better performance (optional, configurable in settings)
+- **Thumbnail Generation**: Thumbnails (150px x 150px) automatically generated for faster loading in grid view
+- **Lazy Loading**: Images loaded on-demand as user scrolls (improves page load performance)
+\n**Image Security & Validation**:
+- **File Type Validation**: Only image files (JPG, PNG, WEBP, SVG) allowed
+- **File Size Validation**: Maximum file size 5MB per image (configurable in settings)
+- **Malware Scanning**: Uploaded images scanned for malware before storage (using third-party service likeVirusTotal or ClamAV)
+- **URL Validation**: Direct URLs validated to ensure they point to accessible image files
+- **Access Control**: Images stored in DineQR cloud storage accessible only via authenticated requests (prevents unauthorized access)
+
+**G. Image Display in Customer-Facing Menu**
+
+**Menu Item Card (Customer View)**:
+- **Primary Image**: Displayed prominently at top of menu item card (full-width, aspect ratio 16:9 or 1:1, rounded corners)\n- **Image Gallery**: If multiple images available, small thumbnail indicators displayed below primary image (dots or small thumbnails)
+- **Image Carousel**: Customer can swipe/click to view all images in carousel (smooth transition animation)
+- **Image Zoom**: Clicking primary image opens full-screen image viewer with zoom functionality (pinch-to-zoom on mobile, scroll-to-zoom on desktop)
+- **Image Loading**: Lazy loading with skeleton screen placeholder while image loads
+- **Image Fallback**: If image fails to load (e.g., URL image no longer accessible), placeholder image displayed with message: 'Image unavailable'\n\n**H. Image Management in Menu Item List**
+
+**Menu Item Grid/List View (Owner Dashboard)**:
+- Each menu item card displays primary image thumbnail (small, 80px x 80px, rounded corners)\n- Hover effect: Thumbnail scales up slightly and displays overlay with 'View Images' button
+- Clicking 'View Images' button opens image gallery modal showing all images for that item
+- Image count badge displayed on thumbnail: 'X images' (small, neon cyan background, white text)
+\n**I. Bulk Image Upload (Future Enhancement)**
+
+**Features** (optional, can be implemented in future updates):
+- Upload multiple images for multiple menu items simultaneously
+- CSV import with image URLs for bulk menu item creation
+- Automatic image assignment based on file naming convention (e.g., `item-name-1.jpg`, `item-name-2.jpg`)
+\n**Tab3: Pricing & Portions**
+- **Full Portion (Default)**:
+  - Label: 'Full Portion' (bold, neon magenta color)
+  - Price input: Number field (required) - e.g., '₹150'
+  - Note: 'This is the default portion and price for this item.' (small text, light grey)
+- **Additional Portion Variants** (optional):
+  - Section heading: 'Add Additional Portions' (medium bold text, neon cyan color)\n  - 'Add Portion' button (secondary, outline, neon cyan border)\n  - Clicking button adds new portion variant input group:\n    - Portion Name: Text input (required) - e.g., 'Half Plate', 'Large', 'Family Size'
+    - Portion Price: Number input (required) - e.g., '₹80'
+    - 'Remove' button (small, neon red, trash icon) - removes this portion variant
+  - Multiple portion variants can be added (up to 5 variants per item)
+  - Each variant stored in database with custom name and price
+- **Portion Display Preview**:
+  - Live preview of how portion selection will appear to customers
+  - Shows portion cards with names and prices in glassmorphism style
+\n**Tab 4: Inventory & Availability**
+- **Stock Status**: Radio buttons - In Stock, Out of Stock, Limited Stock
+- **Available Quantity**: Number input (optional) - for limited stock items
+- **Availability Schedule**: Time range inputs for specific availability hours
+- **Dietary Information**: Checkboxes - Vegetarian, Vegan, Gluten-Free, Dairy-Free, Nut-Free, etc.
+\n**Tab 5: Additional Details**
+- **Preparation Time**: Number input (minutes) - estimated time to prepare item
+- **Spice Level**: Dropdown - Mild, Medium, Hot, Extra Hot
+- **Calories**: Number input (optional) - calorie count per serving
+- **Allergen Information**: Multi-select - Common allergens (nuts, dairy, gluten, etc.)
+- **Chef's Notes**: Textarea (optional) - special notes or recommendations
+\n**Tab 6: Promotions**
+- **Link to Promotions**: Multi-select dropdown showing active promotions
+- **Applicable Promotions**: List of promotions that can be applied to this item
+- **Promotion Preview**: Shows how promotion badge will appear on menu item card
+
+**Tab 7: NLP Aliases**
+- **Section Heading**: 'Add Alternative Names for AI Recognition' (medium bold text, neon purple color)
+- **Description**: 'Help the AI chatbot recognize this item by adding common alternative names, misspellings, and regional variations.' (small text, light grey)
+- **Alias Input**:
+  - Text input field with placeholder: 'e.g., dal tadka, daal fry, yellow dal' (dark background, neon purple border on focus)
+  - 'Add Alias' button (primary, neon purple gradient, positioned to right of input)\n  - Aliases displayed as pills below input (neon purple background, white text,'X' icon to remove)
+- **Example Aliases**:
+  - For 'Daal Tadka': 'dal tadka', 'daal fry', 'yellow dal', 'tadka dal', 'tarka dal'
+  - For 'Margherita Pizza': 'margherita', 'cheese pizza', 'plain pizza', 'margarita pizza'
+- **Alias Suggestions**: System suggests common aliases based on item name (powered by NLP engine)
+
+**Modal Footer**:
+- 'Cancel' button (secondary, outline)\n- 'Save as Draft' button (secondary, outline) - saves item without publishing
+- 'Save & Publish' button (primary, neon gradient) - saves and publishes item to menu
+\n**After Saving**:
+- Success toast notification: 'Menu item [Name] saved successfully!'
+- Item card appears in menu items grid with primary image thumbnail
+- Real-time WebSocket event'menu_item_created' or 'menu_item_updated' sent to customers
+- Customer menus automatically update without page refresh
 
 **C. Zomato-Style Menu View**
-- Full-screen menu display
-- Category navigation
-- Item cards with portion indicators
+- Full-screen menu display\n- Category navigation\n- Item cards with portion indicators and primary image
 - **Promotion badges on eligible items** (e.g., '20% OFF', 'Buy 1 Get 1')
 \n**D. Bulk Actions**
 - Select multiple items for bulk operations
@@ -121,11 +369,13 @@ Comprehensive menu management interface with database-driven portion selection f
 - Revenue by category and portion type
 - **Items with highest promotion redemption**
 - **Most ordered items via NLP chatbot**
-\n**F. Category Management with Real-Time Synchronization**
+
+**F. Category Management with Real-Time Synchronization**
 - Add/edit/delete categories with instant sync
 \n---
 
-#### 3.1.3 Advanced Inventory Management\n
+#### 3.1.3 Advanced Inventory Management
+
 **Overview**:
 Complete inventory tracking system with real-time stock monitoring and alerts.
 
@@ -139,8 +389,9 @@ Complete inventory tracking system with real-time stock monitoring and alerts.
 #### 3.1.4 Enhanced QR Code Management with Real-Time Table Synchronization
 
 **Overview**:
-Generate and manage QR codes for tables with real-time synchronization.\n
-**Key Features**:\n- QR Code Dashboard
+Generate and manage QR codes for tables with real-time synchronization.
+\n**Key Features**:
+- QR Code Dashboard
 - Generate QR Code
 - QR Code Actions (view, edit, download, print, activate/deactivate, delete)
 - QR Code Analytics
@@ -150,20 +401,21 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 #### 3.1.5 Advanced Order Management Dashboard with Mandatory Waiter Assignment and Real-Time Auto-Refresh
 
 **Overview**:\nCentralized order management interface with real-time updates, detailed order information, and mandatory waiter assignment for every order with intelligent free waiter filtering and instant synchronization to customer dashboard.
-\n**Key Features**:
-\n**A. Order Dashboard Layout**
-- Top filters and search\n- Order cards grid\n- Filter option: 'Unassigned Orders' (shows orders without waiter assignment, highlighted in neon yellow)
+
+**Key Features**:
+\n**A. Order Dashboard Layout**\n- Top filters and search\n- Order cards grid\n- Filter option: 'Unassigned Orders' (shows orders without waiter assignment, highlighted in neon yellow)
 - **Filter option: 'Orders with Promotions Applied' (shows orders with applied discounts)**
 - **Filter option: 'NLP Chatbot Orders' (shows orders placed via natural language chatbot)**
 \n**B. Enhanced Order Card Design**
 - Card header with order ID, timestamp, status badge, waiter assignment status badge, **promotion badge (if applied)**, **order source badge ('Manual' or 'NLP Chatbot' with robot icon)**
 - Card body with customer info, order items (with portion names), **discount amount (if promotion applied)**, order total, assigned waiter info (name, avatar, or'Unassigned' badge in neon yellow)
-- Card footer with action buttons including 'Assign Waiter' button (primary, neon gradient) for unassigned orders, **'View E-Bill' button (secondary, outline, neon cyan border)**
+- Card footer with action buttons including'Assign Waiter' button (primary, neon gradient) for unassigned orders, **'View E-Bill' button (secondary, outline, neon cyan border)**
 
 **C. Real-Time Auto-Refresh & Notifications**
 - WebSocket integration for instant updates
 - New order notifications with'Assign Waiter' prompt
-- Order status updates\n- Timeline auto-updates\n- Waiter assignment notifications
+- Order status updates\n- Timeline auto-updates
+- Waiter assignment notifications
 - **Promotion application notifications**: 'Promotion [Name] applied to Order #ORD-1234'\n- **NLP order notifications**: 'New NLP Order #ORD-1234 placed via chatbot'
 
 **D. Order Details Modal with Waiter Assignment and Promotion Information**
@@ -171,10 +423,8 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 - **Promotion Details Section**:
   - **If Promotion Applied**:
     - Heading: 'Applied Promotion' (neon cyan color)
-    - Display: Promotion name, discount type, discount amount, promo code (if used)\n    - Discount breakdown: Original total, discount amount, final total
-  - **If No Promotion Applied**:
-    - Display: 'No promotion applied to this order'
-- **Waiter Assignment Section**:
+    - Display: Promotion name, discount type, discount amount, promo code (if used)\n    - Discount breakdown: Original total, discount amount, final total\n  - **If No Promotion Applied**:
+    - Display: 'No promotion applied to this order'\n- **Waiter Assignment Section**:
   - **If Unassigned**:
     - Heading: 'Assign Waiter' (neon magenta color)
     - Dropdown: List of active and free waiters only with name, avatar, current workload (number of active orders)
@@ -187,7 +437,8 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 - **Modal Layout**:
   - Heading: 'Assign Waiter to Order #ORD-1234'
   - Subheading: 'Select a free waiter to handle this order'
-  - **Waiter Selection List (Active and Free Waiters Only)**:\n    - **Filtering Logic**: Display only waiters with status 'Active' AND availability 'Free' (workload below threshold)
+  - **Waiter Selection List (Active and Free Waiters Only)**:
+    - **Filtering Logic**: Display only waiters with status 'Active' AND availability 'Free' (workload below threshold)
     - Display filtered waiters in card format
     - Each card shows:\n      - Waiter avatar (circular, neon border)
       - Waiter name (bold, white text)
@@ -197,14 +448,15 @@ Generate and manage QR codes for tables with real-time synchronization.\n
     - Cards arranged in grid (2-3 columns on desktop, 1 column on mobile)
     - Selected card highlights with neon gradient border and scale animation
   - **Search & Filter**:
-    - Search bar: 'Search waiter by name'\n    - **Note**: Filter automatically applied to show only active and free waiters
+    - Search bar:'Search waiter by name'\n    - **Note**: Filter automatically applied to show only active and free waiters
   - **Action Buttons**:
     - 'Cancel' (secondary, outline)
     - 'Assign Waiter' (primary, neon gradient, disabled until waiter selected)
   - **Empty State**: If no free waiters available, display message: 'No free waiters available at the moment. All waiters are currently busy. Please wait or check Staff Management to add more waiters.'
 
 **F. Waiter Assignment Confirmation and Real-Time Customer Dashboard Update**
-\n- **After Assignment**:
+
+- **After Assignment**:
   - Success toast notification: 'Waiter [Name] assigned to Order #ORD-1234'
   - Order card updates to show assigned waiter info
   - Order details modal updates waiter assignment section
@@ -220,7 +472,7 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 - **Triggered by**: Clicking 'Reassign Waiter' button in order details modal
 - **Reassignment Modal**:
   - Similar to assignment modal\n  - Heading: 'Reassign Waiter for Order #ORD-1234'
-  - Display current waiter info at top with label 'Currently Assigned'\n  - Waiter selection list shows only active and free waiters (excludes current waiter)
+  - Display current waiter info at top with label'Currently Assigned'\n  - Waiter selection list shows only active and free waiters (excludes current waiter)
   - Confirmation prompt: 'Are you sure you want to reassign this order? The current waiter will be notified.'
 - **After Reassignment**:
   - Success toast: 'Order #ORD-1234 reassigned to [New Waiter Name]'
@@ -240,11 +492,11 @@ Generate and manage QR codes for tables with real-time synchronization.\n
 
 #### 3.1.6 Enhanced Payment Management for Restaurant Owners
 
-**Overview**:
-Comprehensive payment tracking and management system.\n
+**Overview**:\nComprehensive payment tracking and management system.\n
 **Key Features**:\n- Payment Dashboard (includes promotion discount tracking)
 - Payment Details Modal (displays applied promotion and discount amount)
-- Refund Processing\n- Payment Method Analytics
+- Refund Processing
+- Payment Method Analytics
 - Financial Reports (includes promotion impact on revenue)
 - Payment Settings\n
 ---
@@ -338,9 +590,9 @@ Centralized messaging system for communication between owner, waiters, and custo
 - Broadcast Messages
 - Quick Replies
 - Notification Settings
+\n---
 
----
-\n#### 3.1.9 Advanced Analytics & Reports with Real-Time Data\n
+#### 3.1.9 Advanced Analytics & Reports with Real-Time Data\n
 **Overview**:
 Comprehensive analytics dashboard with real-time data visualization, including waiter performance analytics and availability metrics, promotion performance analytics, and NLP chatbot order analytics.
 
@@ -370,9 +622,8 @@ Comprehensive staff management module with waiter assignment tracking and real-t
     - Filter options: 'All Staff', 'Waiters', 'Kitchen Staff', 'Managers', etc.
     - **Waiter Status Filter**: 'All Waiters', 'Free', 'Busy', 'Offline'
     - Each waiter card displays: Avatar, name, role, status badge (Free/Busy/Offline), current workload, performance metrics
-    - Action buttons: 'View Details', 'Edit', 'Deactivate'
-- **Add/Edit Staff Member**:
-  - Form fields: Name, role (dropdown with 'Waiter' option), contact info, employment details
+    - Action buttons: 'View Details', 'Edit', 'Deactivate'\n- **Add/Edit Staff Member**:
+  - Form fields: Name, role (dropdown with'Waiter' option), contact info, employment details
   - **For Waiters**: Additional field for'Workload Threshold' (default: 5 active orders)
   - 'Add Waiter' button in Free Waiters section opens this form with role pre-selected as 'Waiter'
 - **Attendance Tracking**:
@@ -390,8 +641,7 @@ Comprehensive staff management module with waiter assignment tracking and real-t
 Advanced marketing module for creating, managing, and distributing promotions and offers to customers with real-time WebSocket synchronization and automatic discount application. Customer-facing UI follows Swiggy-style design with prominent banner placement, horizontal scrollable offer cards, and instant real-time updates.
 
 **Key Features**:
-\n**A. Marketing Dashboard**
-- **Top Metrics Cards**:
+\n**A. Marketing Dashboard**\n- **Top Metrics Cards**:
   1. Active Promotions Count
   2. Total Promotions Created
   3. Redemption Rate (percentage of orders with promotions applied)
@@ -432,7 +682,7 @@ Advanced marketing module for creating, managing, and distributing promotions an
   - **For Flat Discount**:
     - Discount Amount: Number input (required) - e.g., '₹100'
   - **For Buy X Get Y**:
-    - Buy Quantity: Number input (required) - e.g., 'Buy 2'\n    - Get Quantity: Number input (required) - e.g., 'Get 1Free'
+    - Buy Quantity: Number input (required) - e.g., 'Buy 2'\n    - Get Quantity: Number input (required) - e.g., 'Get 1 Free'
     - Applicable Items: Multi-select dropdown (required) - Select menu items eligible for this offer
   - **For Free Item**:
     - Free Item: Dropdown (required) - Select menu item to be given free\n    - Condition: Text input (optional) - e.g., 'With purchase of any main course'
@@ -543,14 +793,13 @@ Advanced marketing module for creating, managing, and distributing promotions an
 
 **I. Promotion Settings (in Settings Module)**
 - **Toggle**:'Enable Promotions & Offers' (on/off) - Master switch to enable/disable entire promotions system
-- **Toggle**: 'Allow Customers to Stack Promotions' (on/off) - If enabled, customers can apply multiple promotions to a single order (subject to eligibility)
-- **Toggle**: 'Auto-Apply Best Promotion' (on/off) - If enabled, system automatically applies the best available promotion to customer's order (highest discount)\n- **Toggle**: 'Display Promotions on Menu Items' (on/off) - If enabled, promotion badges appear on eligible menu items
+- **Toggle**: 'Allow Customers to Stack Promotions' (on/off) - If enabled, customers can apply multiple promotions to a single order (subject to eligibility)\n- **Toggle**: 'Auto-Apply Best Promotion' (on/off) - If enabled, system automatically applies the best available promotion to customer's order (highest discount)\n- **Toggle**: 'Display Promotions on Menu Items' (on/off) - If enabled, promotion badges appear on eligible menu items
 - **Input**: 'Maximum Promotions Per Order' (number) - Limit number of promotions that can be applied to a single order (default: 1)
 \n---
 
 #### 3.1.12 Complete Settings Module with Auto-Application\n
 **Overview**:
-Comprehensive settings module for restaurant configuration, including waiter assignment settings and availability threshold configuration, promotion system settings, NLP chatbot settings, **and e-bill customization settings**.
+Comprehensive settings module for restaurant configuration, including waiter assignment settings and availability threshold configuration, promotion system settings, NLP chatbot settings, and e-bill customization settings.
 
 **Key Features**:
 - Settings Dashboard\n- Restaurant Profile (including restaurant type: Veg/Non-Veg/Both)
@@ -596,14 +845,13 @@ Comprehensive settings module for restaurant configuration, including waiter ass
     - Toggle: 'Display Social Media Links' (on/off, default: off) - Facebook, Instagram, Twitter links
     - Toggle: 'Display Thank You Message' (on/off, default: on)\n    - Input: 'Custom Thank You Message' (textarea, default: 'Thank you for dining with us! We hope to see you again soon.')
     - Toggle: 'Display Terms & Conditions' (on/off, default: off)
-    - Input: 'Terms & Conditions Text' (textarea, optional)
-  - **E-Bill Content Settings**:
+    - Input: 'Terms & Conditions Text' (textarea, optional)\n  - **E-Bill Content Settings**:
     - Toggle: 'Display Waiter Name on E-Bill' (on/off, default: on)
     - Toggle: 'Display Order Source on E-Bill' (on/off, default: on) - Shows'Manual Order' or 'NLP Chatbot Order'\n    - Toggle: 'Display Portion Names on E-Bill' (on/off, default: on)\n    - Toggle: 'Display Applied Promotions on E-Bill' (on/off, default: on)
     - Toggle: 'Display Add-On Items Separately' (on/off, default: on) - If enabled, add-on items displayed in separate section
-    - Toggle: 'Display Item-Wise Tax Breakdown' (on/off, default: off)\n    - Toggle: 'Display Payment Method on E-Bill' (on/off, default: on)
-- **E-Bill Footer Settings**:
-    - Input: 'Footer Text' (textarea, optional) - e.g., 'Visit us again!', 'Follow us on social media'\n    - Toggle: 'Display Restaurant Registration Number' (on/off, default: off)
+    - Toggle: 'Display Item-Wise Tax Breakdown' (on/off, default: off)\n    - Toggle: 'Display Payment Method on E-Bill' (on/off, default: on)\n  - **E-Bill Footer Settings**:
+    - Input: 'Footer Text' (textarea, optional) - e.g., 'Visit us again!', 'Follow us on social media'
+    - Toggle: 'Display Restaurant Registration Number' (on/off, default: off)
     - Input: 'Registration Number' (text input, optional) - e.g., 'GSTIN: 29XXXXX1234X1ZX'
     - Toggle: 'Display FSSAI License Number' (on/off, default: off)
     - Input: 'FSSAI License Number' (text input, optional)\n  - **E-Bill Download Settings**:
@@ -611,11 +859,33 @@ Comprehensive settings module for restaurant configuration, including waiter ass
     - Toggle: 'Auto-Generate E-Bill on Order Completion' (on/off, default: on) - If enabled, e-bill automatically generated when order status changes to 'Completed'
     - Toggle: 'Send E-Bill via Email' (on/off, default: off) - If enabled, e-bill automatically sent to customer email after order completion
     - Toggle: 'Send E-Bill via SMS' (on/off, default: off) - If enabled, SMS with e-bill download link sent to customer after order completion
+- **Image Upload Settings** (new section):
+  - **Computer Upload Settings**:
+    - Input: 'Maximum File Size' (number, default: 5MB) - Maximum file size per image for computer uploads
+    - Toggle: 'Enable Automatic Image Compression' (on/off, default: on) - If enabled, images automatically compressed to optimize file size
+    - Input: 'Compression Quality' (percentage, default: 85%) - Image compression quality (1-100%)
+    - Toggle: 'Enable Automatic Image Resizing' (on/off, default: on) - If enabled, images automatically resized to standard dimensions
+    - Input: 'Standard Image Width' (number, default: 800px) - Standard width for menu item images
+    - Input: 'Standard Image Height' (number, default: 800px) - Standard height for menu item images
+    - Toggle: 'Convert Images to WEBP' (on/off, default: off) - If enabled, images converted to WEBP format for better performance
+  - **Cloud Drive Settings**:
+    - Toggle: 'Enable Google Drive Integration' (on/off, default: on) - Master switch to enable/disable Google Drive integration
+    - Toggle: 'Enable Dropbox Integration' (on/off, default: on) - Master switch to enable/disable Dropbox integration
+    - Input: 'Maximum Images Per Import' (number, default: 5) - Maximum number of images that can be imported from cloud drive at once
+  - **Direct URL Settings**:
+    - Toggle: 'Enable Direct URL Image Upload' (on/off, default: on) - Master switch to enable/disable direct URL image upload
+    - Input: 'Maximum URL Inputs' (number, default: 5) - Maximum number of URL inputs allowed per menu item
+    - Toggle: 'Validate URL Accessibility' (on/off, default: on) - If enabled, system checks if URL is accessible before adding image
+  - **General Image Settings**:
+    - Input: 'Maximum Images Per Menu Item' (number, default: 5) - Maximum number of images allowed per menu item
+    - Toggle: 'Enable Malware Scanning' (on/off, default: on) - If enabled, uploaded images scanned for malware
+    - Toggle: 'Enable Lazy Loading' (on/off, default: on) - If enabled, images loaded on-demand as user scrolls
 \n---
 
-#### 3.1.13 Comprehensive E-Bill Generation & Management System (New Feature)
+#### 3.1.13 Comprehensive E-Bill Generation & Management System
 
-**Overview**:\nAdvanced e-bill generation system that creates professional, detailed, and downloadable bills for every completed order. E-bills include all order information (items, portions, quantities, prices, applied promotions, discounts, taxes, payment details, waiter info, order source, add-on items, restaurant branding, and customizable content). E-bills are available in multiple formats (PDF, print-ready PDF) and can be downloaded by customers, waiters, and owners. System supports automatic e-bill generation on order completion, email/SMS delivery, and customizable bill templates.
+**Overview**:
+Advanced e-bill generation system that creates professional, detailed, and downloadable bills for every completed order. E-bills include all order information (items, portions, quantities, prices, applied promotions, discounts, taxes, payment details, waiter info, order source, add-on items, restaurant branding, and customizable content). E-bills are available in multiple formats (PDF, print-ready PDF) and can be downloaded by customers, waiters, and owners. System supports automatic e-bill generation on order completion, email/SMS delivery, and customizable bill templates.
 
 **Key Features**:
 \n**A. E-Bill Generation Trigger Points**
@@ -728,8 +998,7 @@ E-bill is a professionally formatted document with the following sections:
 
 **Visual Design**:
 - **Page Size**: A4 (210mm x 297mm) for PDF, optimized for print
-- **Margins**: 20mm on all sides
-- **Font Family**: Poppins or Inter for body text, Orbitron for headings
+- **Margins**: 20mm on all sides\n- **Font Family**: Poppins or Inter for body text, Orbitron for headings
 - **Font Sizes**:
   - Restaurant Name: 24px, bold
   - E-Bill Title: 20px, bold, neon cyan color
@@ -814,7 +1083,7 @@ E-bill is a professionally formatted document with the following sections:
   - Order tracking page (after order completion)
   - Order history page (for all completed orders)
 - 'Download E-Bill' button (primary, neon gradient) available on all pages
-- 'Print E-Bill' button (secondary, outline) available on all pages\n- 'Share E-Bill' button (secondary, outline) available on all pages
+-'Print E-Bill' button (secondary, outline) available on all pages\n- 'Share E-Bill' button (secondary, outline) available on all pages
 
 **2. Waiter Access**:
 - Waiters can view and download e-bills for orders assigned to them
@@ -911,7 +1180,8 @@ E-bill is a professionally formatted document with the following sections:
 - Compliance with data privacy regulations (GDPR, CCPA, etc.)
 
 **3. Audit Trail**:\n- All e-bill generation, download, email, and SMS events logged in database
-- Audit trail includes: Event type, timestamp, user ID, order ID, bill ID, IP address\n- Audit logs retained for configurable period (default: 2 years)
+- Audit trail includes: Event type, timestamp, user ID, order ID, bill ID, IP address
+- Audit logs retained for configurable period (default: 2 years)
 - Owner can view audit logs in Settings Module
 
 **K. E-Bill Error Handling**
@@ -983,7 +1253,8 @@ Customer-facing home screen with access to all features, real-time waiter assign
 - Help & Support
 
 **C. Main Dashboard Content Area**
-\n**Welcome Banner**\n- Personalized greeting:'Welcome back, [Customer Name]!'
+\n**Welcome Banner**
+- Personalized greeting:'Welcome back, [Customer Name]!'
 - Quick stats: Active orders count, loyalty points balance\n\n**Swiggy-Style Promotions & Offers Section** (Prominent Display at Top)
 - **Section Heading**: 'Exclusive Offers for You' (large bold text, neon cyan color with subtle glow)
 - **Horizontal Scrollable Carousel** (Swiggy-style):
@@ -1017,7 +1288,7 @@ Customer-facing home screen with access to all features, real-time waiter assign
           - Label: 'Use Code:' (small text, light grey, 12px)\n          - Promo code (medium bold text, white color, dashed border, 14px)\n          - Example: 'SUMMER20'\n          - Copy icon (clickable, neon cyan color)
           - Clicking copy icon copies code to clipboard and displays success toast: 'Code copied!'
         - Validity period (small text, light grey, 12px)
-        - Example: 'Valid till 31 Dec 2025'
+        - Example: 'Valid till31 Dec 2025'
       - **Action Buttons**:
         - 'Apply Offer' button (primary, neon gradient background, white text, bold, rounded corners)
         - 'View Details' button (secondary, outline style, neon cyan border, neon cyan text)
@@ -1054,7 +1325,8 @@ Customer-facing home screen with access to all features, real-time waiter assign
     - **Assigned Waiter Section**:
       - **If waiter assigned**:
         - Waiter avatar (circular, 48px diameter, neon border)\n        - Waiter name (bold, white text, 14px)\n        - 'Your Waiter' label (small text, light grey, 12px)
-        - 'Chat with Waiter' button (secondary, outline, neon cyan border)\n      - **If waiter not yet assigned**:
+        - 'Chat with Waiter' button (secondary, outline, neon cyan border)
+      - **If waiter not yet assigned**:
         - 'Waiter assignment pending' badge (neon yellow background, white text, pulsing glow animation)
         - Message: 'Your order is being assigned to a waiter' (small text, light grey)
     - Order total (with discount breakdown if promotion applied)
@@ -1184,7 +1456,7 @@ Customer-facing home screen with access to all features, real-time waiter assign
       - Message: 'Hi [Customer Name]! I am your AI order assistant. Simply tell me what you would like to order, and I will add it to your cart instantly. For example, you can say: I want 1 daal tadka, 4 roti, and 1 margherita pizza.' (white text, glassmorphism bubble)
     - **Example Queries** (quick reply buttons below welcome message):
       - 'I want 2 butter chicken with naan'
-      - 'Get me 1 large pepperoni pizza'\n      - 'Order 1daal tadka and 4 roti'
+      - 'Get me 1 large pepperoni pizza'\n      - 'Order 1 daal tadka and 4 roti'
       - Buttons have neon purple outline, clicking pre-fills input field
     - **Message Thread**:
       - Customer messages: Right-aligned, neon cyan bubble, white text
@@ -1195,8 +1467,7 @@ Customer-facing home screen with access to all features, real-time waiter assign
     - **Send Button**: Primary button with neon purple gradient, paper plane icon, positioned to right of input field
     - **Voice Input Button** (optional): Microphone icon button for voice-to-text input (neon purple outline)
 \n**B. NLP Order Processing Flow**
-
-**Step 1: Customer Input**
+\n**Step 1: Customer Input**
 - Customer types order in natural language (e.g., 'I want to order 1 daal tadka, 4 roti, 1 margherita pizza')\n- Customer clicks 'Send' button or presses Enter key
 - Customer message appears in chat thread (right-aligned, neon cyan bubble)\n
 **Step 2: NLP Processing & Menu Item Recognition**
@@ -1316,8 +1587,7 @@ Customer-facing home screen with access to all features, real-time waiter assign
 - 'Browse Menu' button opens menu page in same window or new tab
 \n**D. NLP Chatbot UI/UX Design**
 
-**Visual Design**:
-- **Chatbot Window**: Glassmorphism card with neon purple gradient border, rounded corners (16px), subtle box shadow with neon glow
+**Visual Design**:\n- **Chatbot Window**: Glassmorphism card with neon purple gradient border, rounded corners (16px), subtle box shadow with neon glow
 - **Chat Bubbles**:
   - Customer messages: Right-aligned, neon cyan background, white text, rounded corners
   - Chatbot messages: Left-aligned, glassmorphism effect with neon purple border, white text, rounded corners
@@ -1384,8 +1654,7 @@ Streamlined checkout process with customer information collection, Swiggy-style 
 **STEP 1: Cart Review & Proceed to Checkout**
 - Cart sidebar/page with item list (showing portion names, applied promotions, **and order source indicator:'Added via Manual' or 'Added via NLP Chatbot' with robot icon**), price breakdown (subtotal, discount, taxes, total), action buttons\n\n**STEP 2: Checkout Page - Customer Information, Order Details, and Swiggy-Style Promotion Application**
 - Customer information section\n- Order type & delivery details (with table number entry logic and real-time table synchronization)
-- **Swiggy-Style Promo Code Section**:
-  - **Section Heading**: 'Apply Promo Code' (medium bold text, neon cyan color)
+- **Swiggy-Style Promo Code Section**:\n  - **Section Heading**: 'Apply Promo Code' (medium bold text, neon cyan color)
   - **Available Offers Display** (Swiggy-inspired expandable section):
     - **Collapsed State**:
       - Button: 'View Available Offers' (secondary, outline, neon cyan border, icon: chevron-down)
@@ -1393,7 +1662,7 @@ Streamlined checkout process with customer information collection, Swiggy-style 
     - **Expanded State** (when button clicked):
       - Button icon changes to chevron-up
       - Promotion cards slide down with smooth animation (slide-down + fade-in, duration 0.3s)
-      - **Promotion Cards Grid** (2columns on desktop, 1 column on mobile):
+      - **Promotion Cards Grid** (2 columns on desktop, 1 column on mobile):
         - Each card displays:\n          - Glassmorphism effect with neon gradient border
           - Promotion type badge (top-left, pill-shaped, neon background)
           - Promotion name (bold, large white text)
@@ -1423,8 +1692,7 @@ Streamlined checkout process with customer information collection, Swiggy-style 
 - Action buttons\n- Payment processing flow\n\n**STEP 4: Order Confirmation Page**
 - Success message\n- Order details card (including table number, portion names, applied promotions, discount amount, **order source: 'Placed via Manual' or 'NLP Chatbot'**, waiter assignment status: 'Your order is being assigned to a waiter')
 - Order summary (with discount breakdown)
-- **'Download E-Bill' button (primary, neon gradient)** - Available immediately after order completion (if auto-generate enabled) or after e-bill generation
-- Action buttons
+- **'Download E-Bill' button (primary, neon gradient)** - Available immediately after order completion (if auto-generate enabled) or after e-bill generation\n- Action buttons
 - Additional information\n- Post-order actions\n
 **STEP 5: Transition to Order Tracking**
 - Automatic redirect or manual navigation\n- Order tracking page\n\n**Additional Checkout Features**:
@@ -1487,7 +1755,8 @@ Customers track orders in real-time with automatic status updates, assigned wait
   - Status badge changes to 'Handling Your Order' (neon green)
   - Timeline adds new step: 'Waiter Assigned: [Waiter Name]' with timestamp
   - In-app notification displays: 'Your order has been assigned to [Waiter Name]. They will assist you shortly.'
-  - Notification bell badge increments\n
+  - Notification bell badge increments
+
 **C. Real-Time Waiter Reassignment Update**
 - WebSocket Event Listener: Customer dashboard listens for 'waiter_reassigned' event
 - Event Payload: Contains order_id, new_waiter_name, new_waiter_avatar, new_waiter_contact\n- Automatic UI Update:
@@ -1573,13 +1842,14 @@ View past orders with detailed information, including assigned waiter info, appl
   - 'Email E-Bill' button (secondary, outline, neon cyan border, email icon)
 \n---
 
-#### 3.2.8 Favorites & Saved Items\n
-**Overview**:
-Save favorite menu items and restaurants.\n
+#### 3.2.8 Favorites & Saved Items
+
+**Overview**:\nSave favorite menu items and restaurants.\n
 **Key Features**:\n- Favorites page with tabs for items and restaurants
 - Add to favorites\n\n---
 
-#### 3.2.9 Loyalty & Rewards\n
+#### 3.2.9 Loyalty & Rewards
+
 **Overview**:
 View loyalty points and redeem rewards.
 
@@ -1615,8 +1885,7 @@ Dedicated page displaying all available promotions and offers with detailed info
     - Glassmorphism effect with semi-transparent dark background (rgba(26, 26, 26, 0.7))
     - Neon gradient border (color based on promotion type)
     - Subtle box shadow with neon glow (04px 20px rgba(0, 240, 255, 0.3))
-    - Hover effect: Card scales up (1.05) and glow intensifies\n  - **Card Content**:
-    - **Card Header**:
+    - Hover effect: Card scales up (1.05) and glow intensifies\n  - **Card Content**:\n    - **Card Header**:
       - Promotion type badge (top-left corner, pill-shaped, neon background, white text, icon)
       - Example: 'FLAT DEAL' badge with discount icon
     - **Card Body**:
@@ -1678,7 +1947,8 @@ Dedicated page displaying all available promotions and offers with detailed info
   2. **If cart is empty**:
      - Display message: 'Your cart is empty. Add items to your cart to apply this offer.'
      - 'Browse Menu' button (primary, neon gradient) - navigates to menu page
-     - **'Order with AI' button (secondary, neon purple gradient, robot icon)** - opens NLP chatbot\n  3. **If cart has items**:
+     - **'Order with AI' button (secondary, neon purple gradient, robot icon)** - opens NLP chatbot
+  3. **If cart has items**:
      - System validates promotion eligibility:\n       - Check if customer meets eligibility criteria (new customer, loyalty member, etc.)
        - Check if cart items are eligible for promotion
        - Check if minimum order value is met (if applicable)
@@ -1807,15 +2077,39 @@ Access help resources and contact support.
 
 ## 4. Complete User Flows
 
-### 4.1 Restaurant Owner Flow (Updated with Promotions Management, NLP Order Handling, and E-Bill Management)
+### 4.1 Restaurant Owner Flow (Updated with Promotions Management, NLP Order Handling, E-Bill Management, and Enhanced Image Upload)
 
-1. Sign Up/Login → Owner Dashboard\n2. Setup Restaurant Profile (including restaurant type)\n3. Add Menu Items with Database-Driven Portions and NLP Aliases
+1. Sign Up/Login → Owner Dashboard\n2. Setup Restaurant Profile (including restaurant type)\n3. **Add Menu Items with Database-Driven Portions, NLP Aliases, and Enhanced Image Upload**:\n   - Navigate to Menu Management → Click 'Add Menu Item'
+   - Fill in Basic Information (name, category, description, restaurant type, tags)\n   - **Upload Menu Item Images**:
+     - **Option A: Computer Upload**:\n       - Drag and drop images into upload zone or click 'Browse Files'
+       - Select multiple images (up to 5 per item)
+       - Images automatically uploaded, compressed, and resized
+       - Images appear in Image Preview Grid with thumbnails
+       - Set primary image by clicking 'Set as Primary' button
+     - **Option B: Cloud Drive Import**:
+       - Click 'Cloud Drive' tab
+       - Connect to Google Drive or Dropbox (OAuth authentication)
+       - Browse folders and select image files
+       - Click 'Import Selected Images'\n       - Images copied to DineQR cloud storage and appear in Image Preview Grid
+     - **Option C: Direct URL**:
+       - Click 'Direct URL' tab
+       - Paste image URL in input field
+       - Click 'Add Image'\n       - Image fetched from URL and displayed in Image Preview Grid
+     - **Manage Images**:
+       - Reorder images by dragging and dropping within grid
+       - Delete images by clicking trash icon
+       - Change primary image by clicking 'Set as Primary' on any image
+   - Fill in Pricing & Portions (Full Portion as default, add additional variants)
+   - Fill in Inventory & Availability\n   - Fill in Additional Details\n   - Link to Promotions (optional)
+   - Add NLP Aliases for AI recognition
+   - Click 'Save & Publish'
+   - Item card appears in menu items grid with primary image thumbnail
+   - Real-time WebSocket event sent to customers, menus update automatically
 4. Edit/Delete Menu Items (real-time sync to customers)
 5. Add/Edit/Delete Categories (real-time sync)\n6. Generate/Edit/Delete QR Codes (real-time table sync)
 7. Add Waiters in Staff Management → Waiters appear in 'Free Waiters' section when clocked in and available
 8. **Create Promotion**:
-   - Navigate to Marketing → Click 'Create Promotion'
-   - Fill in promotion details (name, type, discount, eligibility, validity)\n   - Preview and create promotion
+   - Navigate to Marketing → Click 'Create Promotion'\n   - Fill in promotion details (name, type, discount, eligibility, validity)\n   - Preview and create promotion
    - Promotion activates and syncs to customer dashboards in real-time via WebSocket
    - Customer Home displays new promotion in Swiggy-style carousel with slide-in animation
    - Offers & Promotions page displays new promotion card with slide-in animation
@@ -1833,38 +2127,44 @@ Access help resources and contact support.
     - Set default download format (PDF or Print-Ready PDF)
     - Enable/disable auto-generate e-bill on order completion
     - Enable/disable email/SMS delivery of e-bills
-12. Receive Order → Order status: 'Pending - Awaiting Waiter Assignment'
+12. **Configure Image Upload Settings**:
+    - Navigate to Settings → Image Upload Settings
+    - Configure maximum file size, compression quality, image dimensions
+    - Enable/disable cloud drive integrations (Google Drive, Dropbox)
+    - Enable/disable direct URL image upload
+    - Set maximum images per menu item\n13. Receive Order → Order status: 'Pending - Awaiting Waiter Assignment'
     - **If NLP order**: Order card displays 'NLP Chatbot Order' badge with robot icon
-13. **Assign Waiter (Mandatory)**:
+14. **Assign Waiter (Mandatory)**:
     - Open order details or click 'Assign Waiter' on order card
     - Assignment modal displays only active and free waiters
     - Select waiter from filtered list
     - Confirm assignment
     - Waiter status automatically updates from 'Free' to 'Busy' in Staff Management
     - System updates order status to 'Pending - Waiter Assigned'
-    - Real-time WebSocket event'waiter_assigned' sent to customer
+    - Real-time WebSocket event 'waiter_assigned' sent to customer
     - Customer dashboard automatically updates to display assigned waiter name, avatar, and contact info
-    - Waiter receives notification\n14. **Receive Notification: 'Promotion [Name] applied to Order #ORD-1234'** (if customer applied promotion)
-15. **Receive Notification: 'NLP Order #ORD-1234 placed via chatbot'** (if NLP order)
-16. Track Order (including promotion details, order source, **and e-bill status**)
-17. **Order Completion**:
+    - Waiter receives notification\n15. **Receive Notification: 'Promotion [Name] applied to Order #ORD-1234'** (if customer applied promotion)
+16. **Receive Notification: 'NLP Order #ORD-1234 placed via chatbot'** (if NLP order)
+17. Track Order (including promotion details, order source, **and e-bill status**)
+18. **Order Completion**:
     - When order status changes to 'Completed', system automatically generates e-bill (if auto-generate enabled)
     - E-bill stored in database and cloud storage
     - If'Send E-Bill via Email' enabled, e-bill PDF sent to customer email
     - If 'Send E-Bill via SMS' enabled, SMS with e-bill download link sent to customer phone
     - Owner receives notification: 'E-bill for Order #ORD-1234 generated successfully'
-18. **View and Download E-Bills**:
+19. **View and Download E-Bills**:
     - Navigate to order details modal → Click 'View E-Bill' button
     - E-bill displayed in modal with download, print, and share options
     - Owner can download e-bill as PDF, print e-bill, or share e-bill link
     - Owner can regenerate e-bill if corrections needed
-19. **Bulk E-Bill Download**:
-    - Navigate to Analytics & Reports → Select multiple orders\n    - Click 'Bulk Download E-Bills' button
+20. **Bulk E-Bill Download**:
+    - Navigate to Analytics & Reports → Select multiple orders
+    - Click 'Bulk Download E-Bills' button
     - System generates ZIP file with all selected e-bills
     - ZIP file downloaded to owner's device
-20. Manage Staff (including waiter assignment tracking and free waiter visibility)
-21. View Analytics (including waiter performance metrics, availability rate, promotion performance analytics, **NLP chatbot performance analytics, and e-bill analytics**)
-22. Configure Settings (including waiter assignment settings, workload threshold, promotion settings, **NLP chatbot settings, and e-bill customization settings**)
+21. Manage Staff (including waiter assignment tracking and free waiter visibility)
+22. View Analytics (including waiter performance metrics, availability rate, promotion performance analytics, **NLP chatbot performance analytics, and e-bill analytics**)
+23. Configure Settings (including waiter assignment settings, workload threshold, promotion settings, **NLP chatbot settings, e-bill customization settings, and image upload settings**)
 \n### 4.2 Customer Flow (Complete Checkout Flow with Add-On Order Feature, Waiter Assignment Display, Swiggy-Style Promotion Application, NLP Natural Language Ordering, and E-Bill Download)
 
 1. Sign Up/Login → Customer Home with Swiggy-style promotions carousel, NLP Quick Order section, **and e-bill download access for completed orders**
@@ -1879,9 +2179,8 @@ Access help resources and contact support.
      - Deactivated promotions fade out and slide out
 3. **Option A: Manual Menu Browsing**:
    - Scan QR Code (Mobile-Only) → Menu displayed with restaurant type badge, Swiggy-style promotions banner, and NLP chatbot button → Table number auto-detected
-   - Browse Menu → Real-time menu updates → **View Swiggy-style promotion banner with horizontal scrollable offer cards** → **View promotion badges on eligible menu items**
-   - Select Item with Database-Driven Portion → Choose portion → **View applicable promotions** → Add to Cart
-   - Review Cart → Edit quantities/portions → **Apply Promotion (Swiggy-Style)**:\n     - View available offers in cart (expandable section with Swiggy-style promotion cards)
+   - Browse Menu → Real-time menu updates → **View Swiggy-style promotion banner with horizontal scrollable offer cards** → **View promotion badges on eligible menu items** → **View menu item images (primary image displayed prominently, image carousel for multiple images)**
+   - Select Item with Database-Driven Portion → **View item images in full-screen gallery** → Choose portion → **View applicable promotions** → Add to Cart\n   - Review Cart → Edit quantities/portions → **Apply Promotion (Swiggy-Style)**:\n     - View available offers in cart (expandable section with Swiggy-style promotion cards)
      - Click 'Apply' on promotion card or enter promo code in input field
      - System validates and applies promotion
      - Cart updates with discount breakdown
@@ -1902,7 +2201,8 @@ Access help resources and contact support.
    - **Scenario B: Some Items Not Recognized**:
      - Chatbot displays recognized items and unrecognized items with suggestions
      - Customer clicks suggestions or rephrases order
-     - Customer clicks 'Add Recognized Items to Cart' or 'Try Again'\n   - **Scenario C: No Items Recognized**:
+     - Customer clicks 'Add Recognized Items to Cart' or 'Try Again'
+   - **Scenario C: No Items Recognized**:
      - Chatbot displays error message with suggestions
      - Customer clicks 'Browse Menu' or 'Try Again'\n5. Proceed to Checkout\n6. Checkout Page → Enter customer details → Select order type → **Apply/Review Promo Code (Swiggy-Style)** → Review order summary (with discount breakdown and order source: 'Manual' or 'NLP Chatbot') → Proceed to Payment
 7. Payment Page → Select payment method → Enter payment details → Place Order & Pay
@@ -1950,7 +2250,7 @@ Access help resources and contact support.
     - PDF file named as'E-Bill_[Order ID]_[Date].pdf'\n    - PDF file automatically downloaded to customer's device
     - Success toast notification: 'E-bill downloaded successfully!'
     - Customer can also print e-bill, share e-bill link, or email e-bill
-16. Receive Order → Rate Order (including waiter rating)\n17. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu (with Swiggy-style promotion banner, badges, and NLP chatbot button) → Add items (via manual browsing or NLP chatbot) → **Apply promotions** → Complete order → **Download e-bill**
+16. Receive Order → Rate Order (including waiter rating)\n17. Browse Restaurants → View previously scanned restaurants → Select restaurant → View menu (with Swiggy-style promotion banner, badges, NLP chatbot button, **and menu item images**) → Add items (via manual browsing or NLP chatbot) → **Apply promotions** → Complete order → **Download e-bill**
 18. Reorder → Previous portion names and promotions auto-selected (if still valid) → **Option to reorder via NLP chatbot: 'Reorder with AI' button opens chatbot with pre-filled order** → **Download e-bill for reorder**
 19. View Loyalty Points\n20. **Browse Offers & Promotions Page (Real-Time)** → View all available offers with Swiggy-style cards → Real-time updates via WebSocket → Apply offers to cart or order via NLP chatbot\n21. **View Order History** → View past orders with e-bill download buttons → Download, print, share, or email e-bills for completed orders
 \n### 4.3 Waiter Flow (Updated with Promotion Information, NLP Order Indicators, and E-Bill Access)
@@ -2005,16 +2305,18 @@ Access help resources and contact support.
 - **Promotion Badges**: Percentage Discount (electric cyan #00F0FF), Flat Discount (vibrant magenta #FF006E), Buy X Get Y (electric blue #3A86FF), Free Item (neon green #39FF14), Minimum Order Discount (neon yellow #FFFF00), First Order Discount (neon red #FF073A), Loyalty Discount (neon purple #BF40BF)
 - **NLP Order Badges**: 'NLP Chatbot Order' badge (neon purple #BF40BF background, white text, robot icon)
 - **E-Bill Badges**: 'E-Bill Ready' badge (neon cyan #00F0FF background, white text, document icon)
-\n### 5.4 UI Components
+- **Image Upload Source Badges**: 'Computer' badge (neon cyan #00F0FF background), 'Google Drive' badge (neon blue #3A86FF background), 'Dropbox' badge (neon blue #3A86FF background), 'URL' badge (vibrant magenta #FF006E background)
+
+### 5.4 UI Components
 
 - **Cards**: Glassmorphism effect with neon gradient borders, rounded corners, subtle shadows with neon glow
-- **Buttons**: Neon gradient backgrounds, rounded corners, bold text, hover effects\n- **Inputs**: Dark background with neon border on focus\n- **Badges**: Small circular or pill-shaped elements with neon background\n- **Portion Selection Cards**: Large card-style radio buttons with glassmorphism, neon borders, checkmark icons
+- **Buttons**: Neon gradient backgrounds, rounded corners, bold text, hover effects
+- **Inputs**: Dark background with neon border on focus\n- **Badges**: Small circular or pill-shaped elements with neon background\n- **Portion Selection Cards**: Large card-style radio buttons with glassmorphism, neon borders, checkmark icons
 - **Add-On Order Banner**: Neon cyan background with white text, prominent display at top of menu page
 - **Add-On Items Section**: Highlighted with neon magenta border and 'ADD-ON' label in cart and order details
 - **Waiter Assignment Modal**: Glassmorphism card with neon gradient border, waiter cards display only active and free waiters with avatar, name, workload, 'Free' status badge (neon green)\n- **Free Waiters Section (Staff Management)**: Dedicated section at top with neon green heading, card grid displaying free waiters with avatar, name,'Free' badge, current workload, 'Assign to Order' button
 - **Waiter Status Badges**: Pill-shaped badges with rounded corners, bold text, icon (Free: neon green with checkmark icon, Busy: neon yellow with clock icon, Offline: grey with offline icon)
-- **Waiter Info Section (Customer Dashboard)**: Large glassmorphism card with neon gradient border, waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green),'Chat with Waiter' button (primary, neon gradient)
-- **Waiter Assignment Pending Section**: Glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), message text (medium, white)\n- **Swiggy-Style Promotion Cards (Customer-Facing)**:
+- **Waiter Info Section (Customer Dashboard)**: Large glassmorphism card with neon gradient border, waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green),'Chat with Waiter' button (primary, neon gradient)\n- **Waiter Assignment Pending Section**: Glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), message text (medium, white)\n- **Swiggy-Style Promotion Cards (Customer-Facing)**:
   - **Carousel Cards (Customer Home)**:
     - Large rectangular cards (320px x 180px on desktop, 280px x 160px on mobile)
     - Glassmorphism effect with semi-transparent dark background (rgba(26, 26, 26, 0.7))
@@ -2101,13 +2403,23 @@ Access help resources and contact support.
   - Add-on items section (if applicable) with 'ADD-ON' badge and source indicator
   - Pricing breakdown section with subtotal, applied promotions, discounts, taxes, grand total
   - Payment information section with payment method, status, transaction ID\n  - Order timeline section (optional)\n  - Footer section with thank you message, QR code for feedback, social media links, registration numbers, terms & conditions
+- **Image Upload Components (Menu Management)**:
+  - **Upload Method Tabs**: Horizontal tab navigation with three tabs ('Computer Upload', 'Cloud Drive', 'Direct URL'), active tab highlighted with neon cyan underline
+  - **Drag & Drop Zone**: Large rectangular area (300px height on desktop, 200px on mobile) withdashed neon cyan border, glassmorphism effect, center upload cloud icon (neon cyan, large), text'Drag and drop images here' (medium, white), subtext 'or click to browse' (small, light grey), supported formats and max file size displayed (small, light grey), hover effect (border changes to vibrant magenta, background slightly lighter)
+  - **Browse Button**: 'Browse Files' (secondary, outline, neon cyan border, positioned below drag & drop zone)
+  - **Upload Progress Bar**: Neon gradient fill, percentage display, file name and size displayed next to bar, cancel button (small, neon red,'X' icon)
+  - **Image Preview Grid**: Grid layout (3 columns on desktop, 2 columns on mobile), each image card displays thumbnail (150px x 150px, rounded corners, glassmorphism border), image source badge (top-right corner, small pill-shaped badge with neon background), file name or URL (small text, truncated, tooltip on hover), file size (small text, light grey), primary image indicator (neon green border and 'Primary' badge for primary image), action buttons ('Set as Primary' button with secondary outline and neon cyan border, 'Delete' button with small neon red trash icon), drag & drop reordering enabled (visual feedback: dragged image scales up, drop zone highlighted)\n  - **Cloud Drive Cards**: Large clickable cards (glassmorphism effect, neon gradient border on hover) displaying cloud drive logo (large, centered), cloud drive name (bold, white text),'Connect' button (primary, neon gradient) or 'Connected' status (neon green badge) with 'Disconnect' button\n  - **Cloud Drive File Browser**: Breadcrumb navigation (current folder path), folder and file list (grid or list view with toggle button), each folder/file card shows icon (folder icon or image thumbnail), name (medium text, white, truncated), file size (small text, light grey), checkbox for selection (for image files), search bar ('Search files in [Cloud Drive Name]' with search icon, dark background, neon border on focus), filter options ('All Files', 'Images Only', 'Recent', 'Starred')
+  - **Import Button**: 'Import Selected Images' (primary, neon gradient, positioned at bottom of file picker)
+  - **URL Input Field**: Large text input with placeholder 'https://example.com/image.jpg' (dark background, neon border on focus), input validation (checks if URL is valid and points to image file), error message displayed below input if invalid (neon red color)
+  - **Add URL Button**: 'Add Image' (primary, neon gradient, positioned to right of input field)
+  - **Add Another URL Button**: 'Add Another URL' (secondary, outline, neon cyan border, appears after adding first image)
+  - **Image Count Limit Message**: 'Maximum 5 images allowed per item. Delete an image to add more.' (displayed when limit reached, neon yellow color)
+\n### 5.5 Animations
 
-### 5.5 Animations\n
-- **Slide-in**: New order cards, menu items, add-on items, assigned orders, waiter info card, free waiter cards, promotion cards, **NLP chatbot messages, and e-bill download buttons** slide in with bounce animation
-- **Pulsing Glow**: Notification badges, updated items, add-on indicators, unassigned order badges, waiter assignment pending badge, 'Free' status badges, promotion badges on menu items, **NLP chatbot button, NLP order badges, and 'E-Bill Ready' badges** have pulsing glow\n- **Shake**: Notification bell shakes on new notification (including waiter assignment notifications, promotion notifications, **NLP order notifications, and e-bill ready notifications**)
-- **Ripple Effect**: Button clicks trigger ripple effect\n- **Smooth Transitions**: All state changes use ease-in-out transitions
-- **Loading Animations**: Neon spinners or skeleton screens
-- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition (Free↔ Busy ↔ Offline), promotion cards slide in when new promotions created (slide-down + fade-in, duration 0.5s), promotion cards fade out when deactivated (fade-out + slide-up, duration 0.5s), updated promotion cards highlight with neon glow animation (duration 1s), **NLP chatbot messages slide in from right (customer) or left (chatbot) with fade-in animation (duration 0.3s), e-bill download buttons appear with fade-in animation when e-bill ready**
+- **Slide-in**: New order cards, menu items, add-on items, assigned orders, waiter info card, free waiter cards, promotion cards, **NLP chatbot messages, e-bill download buttons, and image upload progress bars** slide in with bounce animation
+- **Pulsing Glow**: Notification badges, updated items, add-on indicators, unassigned order badges, waiter assignment pending badge, 'Free' status badges, promotion badges on menu items, **NLP chatbot button, NLP order badges, 'E-Bill Ready' badges, and primary image indicators** have pulsing glow\n- **Shake**: Notification bell shakes on new notification (including waiter assignment notifications, promotion notifications, **NLP order notifications, and e-bill ready notifications**)
+- **Ripple Effect**: Button clicks trigger ripple effect\n- **Smooth Transitions**: All state changes use ease-in-out transitions\n- **Loading Animations**: Neon spinners or skeleton screens
+- **Page Transitions**: Smooth fade or slide transitions\n- **Real-Time Update Animations**: New items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight animation, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition (Free↔ Busy ↔ Offline), promotion cards slide in when new promotions created (slide-down + fade-in, duration 0.5s), promotion cards fade out when deactivated (fade-out + slide-up, duration 0.5s), updated promotion cards highlight with neon glow animation (duration 1s), **NLP chatbot messages slide in from right (customer) or left (chatbot) with fade-in animation (duration 0.3s), e-bill download buttons appear with fade-in animation when e-bill ready, uploaded images appear in preview grid with fade-in and scale animation (duration 0.3s)**
 - **Portion Selection Animations**: Selected cards scale up and glow\n- **Waiter Assignment Animations**: Selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy\n- **Promotion Application Animations**:
   - When promotion applied: Success checkmark animation, discount amount highlights with neon green glow\n  - When promotion removed: Fade-out animation\n  - Promo code copy: Copy icon animates with scale and rotation, success toast appears\n- **Promotion Card Hover**: Card scales up slightly (1.05), neon glow intensifies, subtle rotation effect
 - **Swiggy-Style Carousel Animations**:
@@ -2119,11 +2431,20 @@ Access help resources and contact support.
   - **Order Summary Card**: Slides down with fade-in animation (duration 0.5s)
   - **Button Hover**: Scale up (1.05) and glow intensifies
   - **Success Checkmark**: Checkmark icon animates with scale and rotation (duration 0.5s)
-  - **Chatbot Modal Open**: Modal fades in with scale animation (duration 0.3s)
-  - **Chatbot Modal Close**: Modal fades out with scale animation (duration 0.3s)
+  - **Chatbot Modal Open**: Modal fades in with scale animation (duration 0.3s)\n  - **Chatbot Modal Close**: Modal fades out with scale animation (duration 0.3s)
 - **E-Bill Download Animations**:
   - **E-Bill Ready**: 'Download E-Bill' button appears with fade-in and scale animation (duration 0.5s)
-  - **Download Success**: Success checkmark animation, success toast appears\n  - **E-Bill Preview Thumbnail**: Thumbnail fades in with scale animation when e-bill generated\n  - **E-Bill View Modal Open**: Modal fades in with scale animation (duration 0.3s)\n  - **E-Bill View Modal Close**: Modal fades out with scale animation (duration 0.3s)
+  - **Download Success**: Success checkmark animation, success toast appears
+  - **E-Bill Preview Thumbnail**: Thumbnail fades in with scale animation when e-bill generated\n  - **E-Bill View Modal Open**: Modal fades in with scale animation (duration 0.3s)\n  - **E-Bill View Modal Close**: Modal fades out with scale animation (duration 0.3s)
+- **Image Upload Animations**:
+  - **Drag & Drop Hover**: Border color changes to vibrant magenta, background slightly lighter, scale up (1.02)\n  - **Upload Progress**: Progress bar fills with neon gradient animation, percentage updates smoothly
+  - **Image Preview Appear**: Uploaded images appear in preview grid with fade-in and scale animation (duration 0.3s)
+  - **Image Delete**: Image card fades out and scales down (duration 0.3s) before removal
+  - **Primary Image Change**: Previous primary image border fades from neon green to default, new primary image border fades to neon green (duration 0.3s)
+  - **Drag & Drop Reorder**: Dragged image scales up (1.1), drop zone highlights with neon cyan border, smooth position transition when dropped
+  - **Cloud Drive Connect**: OAuth popup opens with slide-in animation, success toast appears after connection
+  - **Import Progress**: Import progress bar with neon gradient fill, file names displayed as they import
+  - **URL Image Load**: Loading spinner displayed while fetching image, image fades in when loaded
 \n### 5.6 Responsive Design
 
 - **Mobile-First Approach**: Optimized for mobile devices first\n- **Breakpoints**: Mobile (<768px), Tablet (768px-1024px), Desktop (>1024px)
@@ -2136,19 +2457,25 @@ Access help resources and contact support.
 - **Waiter Info Section on Mobile**: Card displays full-width, waiter avatar and info stack vertically,'Chat with Waiter' button full-width
 - **Swiggy-Style Promotion Cards on Mobile**:
   - **Carousel (Customer Home)**: Horizontal scroll with snap points, cards280px x 160px, touch/swipe enabled
-  - **Grid (Offers & Promotions Page)**: Cards stack vertically in single column, full-width, height auto (min 180px)
+  - **Grid (Offers & Promotions Page)**: Cards stack vertically in single column, full-width, height auto (min180px)
   - **Banner (Menu Page)**: Horizontal scroll with snap points, compact cards 240px x 100px\n  - Filter options display as horizontal scrollable pills
   - Promo code section displays full-width with large copy button
   - 'Apply Offer' and 'View Details' buttons stack vertically or display full-width
   - Promotion details modal displays full-screen\n- **NLP Chatbot on Mobile**:
   - Full-screen chatbot modal\n  - Input area fixed at bottom\n  - Chat area scrollable\n  - Touch-friendly buttons and input fields (minimum 44px height)
-  - Example queries display as horizontal scrollable pills
-  - Order summary card displays full-width
+  - Example queries display as horizontal scrollable pills\n  - Order summary card displays full-width
   - Buttons stack vertically or display full-width
 - **E-Bill Download Section on Mobile**:
   - Section displays full-width\n  - Action buttons stack vertically or display full-width (minimum 44px height)
   - E-bill preview thumbnail displays full-width (max 300px)
   - E-bill view modal displays full-screen
+- **Image Upload on Mobile**:
+  - **Upload Method Tabs**: Full-width tabs, horizontal scroll if needed
+  - **Drag & Drop Zone**: Reduced height (200px), full-width, tap to browse
+  - **Image Preview Grid**: Single column layout, full-width image cards
+  - **Cloud Drive File Browser**: Full-screen modal, single column file list, large touch-friendly checkboxes
+  - **URL Input**: Full-width input field, 'Add Image' button below input (full-width)
+  - **Action Buttons**: Full-width buttons (minimum 44px height)
 \n### 5.7 Accessibility
 
 - **Keyboard Navigation**: All interactive elements accessible via keyboard
@@ -2172,8 +2499,7 @@ Access help resources and contact support.
   - Keyboard navigation: Arrow keys to navigate between cards
   - Screen reader announces current card position (e.g., 'Card 1 of 5')
   - Auto-scroll pauses on hover or focus
-- **NLP Chatbot Accessibility**:
-  - **Keyboard Navigation**: Tab key to navigate buttons, Enter key to send message, Escape key to close chatbot
+- **NLP Chatbot Accessibility**:\n  - **Keyboard Navigation**: Tab key to navigate buttons, Enter key to send message, Escape key to close chatbot
   - **Screen Reader Support**: ARIA labels for chatbot messages, buttons, input field, order summary card
   - **Focus Indicators**: Clear focus outlines on input field, buttons, and interactive elements
   - **Message Announcements**: Screen reader announces new chatbot messages when received
@@ -2186,6 +2512,15 @@ Access help resources and contact support.
   - **Screen Reader Support**: ARIA labels for e-bill status, action buttons, e-bill preview thumbnail\n  - **Focus Indicators**: Clear focus outlines on action buttons\n  - **Button Labels**: Clear ARIA labels for 'Download E-Bill', 'Print E-Bill', 'Share E-Bill', 'Email E-Bill' buttons
   - **E-Bill View Modal Accessibility**: Modal has ARIA role'dialog', focus trapped within modal, Escape key closes modal
   - **E-Bill Content Accessibility**: E-bill content has semantic HTML structure (headings, tables, lists), screen reader announces all sections and data
+- **Image Upload Accessibility**:
+  - **Keyboard Navigation**: Tab key to navigate tabs, buttons, and input fields, Enter key to trigger actions, Arrow keys to navigate file browser
+  - **Screen Reader Support**: ARIA labels for upload method tabs, drag & drop zone, browse button, upload progress, image preview cards, cloud drive cards, file browser, URL input\n  - **Focus Indicators**: Clear focus outlines on all interactive elements
+  - **Drag & Drop Zone**: ARIA label'Drag and drop images here or click to browse', screen reader announces supported formats and max file size
+  - **Upload Progress**: Screen reader announces upload progress percentage and file name
+  - **Image Preview Cards**: ARIA labels for image source, file name, file size, primary status, action buttons ('Set as Primary', 'Delete')
+  - **Cloud Drive Cards**: ARIA labels for cloud drive name, connection status, 'Connect' or 'Disconnect' button
+  - **File Browser**: ARIA labels for breadcrumb navigation, folder/file names, checkboxes, search bar, filter options\n  - **URL Input**: ARIA label 'Enter image URL', error messages announced by screen reader
+  - **Empty State**: Screen reader announces 'No images added yet. Upload images using one of the methods above.'
 
 ---
 
@@ -2195,9 +2530,8 @@ Access help resources and contact support.
 
 - **Frontend**: React.js or Next.js, Tailwind CSS, Framer Motion
 - **Backend**: Node.js with Express.js or Django, WebSocket (Socket.io)
-- **Database**: PostgreSQL or MongoDB (with restaurant_type field, menu_items table with price field and nlp_aliases field, price_variants table, orders table with assigned_waiter_id field, add_on_items field, and order_source field ('manual' or 'nlp_chatbot'), waiters table with current_workload field, availability_status field (Free/Busy/Offline), and workload_threshold field, promotions table with promotion_id, promotion_name, promotion_type, discount_value, promo_code, eligibility_criteria, applicable_items, validity_period, usage_limits, status fields, order_promotions table linking orders to applied promotions, **nlp_orders table with nlp_order_id, order_id, customer_input, recognized_items, unrecognized_items, confidence_scores, processing_status, timestamp fields, e_bills table with bill_id, order_id, bill_content, bill_pdf_url, generation_timestamp, generated_by, email_sent, sms_sent, download_count, last_accessed fields**)
-- **Authentication**: JWT tokens, OAuth 2.0 (OSS Google login), OTP via Twilio or Firebase
-- **Payment Gateway**: Stripe, Razorpay, or PayPal\n- **Cloud Storage**: AWS S3 or Cloudinary (for storing e-bill PDF files)
+- **Database**: PostgreSQL or MongoDB (with restaurant_type field, menu_items table with price field and nlp_aliases field, price_variants table, menu_item_images table with image_id, item_id, image_source, image_url, original_filename, file_size, is_primary, display_order, upload_timestamp, uploaded_by fields, orders table with assigned_waiter_id field, add_on_items field, and order_source field ('manual' or 'nlp_chatbot'), waiters table with current_workload field, availability_status field (Free/Busy/Offline), and workload_threshold field, promotions table with promotion_id, promotion_name, promotion_type, discount_value, promo_code, eligibility_criteria, applicable_items, validity_period, usage_limits, status fields, order_promotions table linking orders to applied promotions, **nlp_orders table with nlp_order_id, order_id, customer_input, recognized_items, unrecognized_items, confidence_scores, processing_status, timestamp fields, e_bills table with bill_id, order_id, bill_content, bill_pdf_url, generation_timestamp, generated_by, email_sent, sms_sent, download_count, last_accessed fields**)\n- **Authentication**: JWT tokens, OAuth 2.0 (OSS Google login), OTP via Twilio or Firebase
+- **Payment Gateway**: Stripe, Razorpay, or PayPal\n- **Cloud Storage**: AWS S3, Google Cloud Storage, or Cloudinary (for storing menu item images and e-bill PDF files)
 - **Hosting**: AWS, Google Cloud, or Vercel\n- **Device Detection**: User agent parsing or screen size detection
 - **NLP Engine**: Python with spaCy, NLTK, or Hugging Face Transformers for natural language processing
 - **Fuzzy Matching**: FuzzyWuzzy or RapidFuzz library for fuzzy string matching
@@ -2205,16 +2539,20 @@ Access help resources and contact support.
 - **PDF Generation**: jsPDF, PDFKit, or Puppeteer for generating e-bill PDF files
 - **Email Service**: SendGrid, Mailgun, or AWS SES for sending e-bill emails
 - **SMS Service**: Twilio or AWS SNS for sending e-bill SMS links
+- **Image Processing**: Sharp or Jimp library for image compression, resizing, and format conversion
+- **Cloud Drive Integration**: Google Drive API, Dropbox API for OAuth authentication and file access
+- **Malware Scanning**: VirusTotal API or ClamAV for scanning uploaded images
 \n### 6.2 Real-Time Features with WebSocket Implementation
 
-- **WebSocket Connection**: Persistent connection for instant updates (orders, notifications, chat, menu, categories, tables, add-on orders, waiter assignments, waiter availability status, promotions, **NLP chatbot messages, e-bill generation status**)
+- **WebSocket Connection**: Persistent connection for instant updates (orders, notifications, chat, menu, categories, tables, add-on orders, waiter assignments, waiter availability status, promotions, **NLP chatbot messages, e-bill generation status, image uploads**)
 - **Event-Driven Architecture**: Backend emits events, frontend listens and updates UI
 - **Optimistic UI Updates**: UI updates immediately, syncs with backend in background
 - **Real-Time Menu Synchronization**: Events for item and category changes
 - **Real-Time Table Synchronization**: Events for table changes\n- **Real-Time Add-On Order Updates**: Events for add-on items added to orders
 - **Real-Time Waiter Assignment Updates**: Events for waiter assignment and reassignment
 - **Real-Time Waiter Availability Updates**: Events for waiter status changes (Free ↔ Busy ↔ Offline)
-- **Real-Time Promotion Updates**: Events for promotion creation, update, activation, deactivation\n- **Real-Time NLP Chatbot Updates**: Events for NLP order processing status, recognized items, unrecognized items\n- **Real-Time E-Bill Updates**: Events for e-bill generation status, e-bill ready for download\n- **Event Types**:
+- **Real-Time Promotion Updates**: Events for promotion creation, update, activation, deactivation\n- **Real-Time NLP Chatbot Updates**: Events for NLP order processing status, recognized items, unrecognized items\n- **Real-Time E-Bill Updates**: Events for e-bill generation status, e-bill ready for download\n- **Real-Time Image Upload Updates**: Events for image upload progress, upload completion, upload errors
+- **Event Types**:
   - **'waiter_assigned'**: Emitted when owner assigns waiter to order
     - Payload: { order_id, waiter_id, waiter_name, waiter_avatar, waiter_contact, timestamp }
     - Recipients: Customer (order owner), Assigned Waiter, Restaurant Owner
@@ -2225,7 +2563,8 @@ Access help resources and contact support.
     - Recipients: Restaurant Owner, Staff Management Dashboard
   - **'promotion_created'**: Emitted when owner creates new promotion
     - Payload: { promotion_id, promotion_name, promotion_type, discount_type, discount_value, promo_code, validity_period, applicable_items, eligibility_criteria, timestamp }
-    - Recipients: All Customers (broadcast)\n    - **Customer Dashboard Action**: New promotion card slides into carousel on Customer Home (slide-in + fade-in animation, duration 0.5s), promotion card slides into grid on Offers & Promotions page (slide-down + fade-in animation, duration 0.5s), in-app notification displays, notification bell shakes and badge increments\n  - **'promotion_updated'**: Emitted when owner edits promotion
+    - Recipients: All Customers (broadcast)\n    - **Customer Dashboard Action**: New promotion card slides into carousel on Customer Home (slide-in + fade-in animation, duration 0.5s), promotion card slides into grid on Offers & Promotions page (slide-down + fade-in animation, duration 0.5s), in-app notification displays, notification bell shakes and badge increments
+  - **'promotion_updated'**: Emitted when owner edits promotion
     - Payload: { promotion_id, updated_fields, timestamp }
     - Recipients: All Customers (broadcast)
     - **Customer Dashboard Action**: Existing promotion card updates with fade animation (fade-out, update content, fade-in, duration 0.3s), updated card highlights with neon glow animation (duration 1s)\n  - **'promotion_activated'**: Emitted when owner activates or reactivates promotion
@@ -2249,8 +2588,7 @@ Access help resources and contact support.
     - **Customer Dashboard Action**: Chatbot displays clarification message with unrecognized items and suggestions
   - **'nlp_order_placed'**: Emitted when customer confirms NLP order and adds to cart
     - Payload: { order_id, customer_id, recognized_items, order_total, order_source: 'nlp_chatbot', timestamp }\n    - Recipients: Restaurant Owner, Customer (order owner)
-    - **Owner Dashboard Action**: New order card slides into order list with'NLP Chatbot Order' badge, notification displays: 'New NLP Order #ORD-1234 placed via chatbot'
-  - **'ebill_generation_started'**: Emitted when e-bill generation process starts
+    - **Owner Dashboard Action**: New order card slides into order list with'NLP Chatbot Order' badge, notification displays: 'New NLP Order #ORD-1234 placed via chatbot'\n  - **'ebill_generation_started'**: Emitted when e-bill generation process starts
     - Payload: { order_id, bill_id, timestamp }
     - Recipients: Customer (order owner), Restaurant Owner, Assigned Waiter (if assigned)
     - **Customer Dashboard Action**: E-bill status displays 'Your e-bill is being generated...' with loading spinner
@@ -2259,7 +2597,18 @@ Access help resources and contact support.
     - Recipients: Customer (order owner), Restaurant Owner, Assigned Waiter (if assigned)
     - **Customer Dashboard Action**: E-bill status changes to 'Your e-bill is ready for download!' with checkmark icon,'Download E-Bill' button appears with fade-in animation, in-app notification displays: 'Your e-bill for order #[Order ID] is ready for download!', notification bell shakes and badge increments\n  - **'ebill_generation_failed'**: Emitted when e-bill generation fails
     - Payload: { order_id, error_message, timestamp }
-    - Recipients: Customer (order owner), Restaurant Owner\n    - **Customer Dashboard Action**: E-bill status displays error message: 'Failed to generate e-bill. Please try again or contact support.','Retry' button appears\n- **Event Payload Structure**: Includes restaurant_id, item_id, order_id, add_on_items, assigned_waiter_id, waiter_availability_status, promotion_id, nlp_order_id, customer_input, recognized_items, unrecognized_items, confidence_scores, order_source, bill_id, bill_pdf_url, etc.
+    - Recipients: Customer (order owner), Restaurant Owner\n    - **Customer Dashboard Action**: E-bill status displays error message: 'Failed to generate e-bill. Please try again or contact support.','Retry' button appears\n  - **'image_upload_progress'**: Emitted during image upload to show progress
+    - Payload: { upload_id, file_name, progress_percentage, timestamp }
+    - Recipients: Restaurant Owner (uploader)
+    - **Owner Dashboard Action**: Upload progress bar updates with progress percentage
+  - **'image_upload_complete'**: Emitted when image upload completes successfully
+    - Payload: { upload_id, image_id, image_url, file_name, file_size, timestamp }
+    - Recipients: Restaurant Owner (uploader)
+    - **Owner Dashboard Action**: Uploaded image appears in Image Preview Grid with fade-in and scale animation (duration 0.3s), success toast displays: 'Image uploaded successfully!'\n  - **'image_upload_failed'**: Emitted when image upload fails
+    - Payload: { upload_id, file_name, error_message, timestamp }
+    - Recipients: Restaurant Owner (uploader)
+    - **Owner Dashboard Action**: Error toast displays: 'Failed to upload [File Name]. [Error Message]', upload progress bar displays error state (neon red color)
+- **Event Payload Structure**: Includes restaurant_id, item_id, order_id, add_on_items, assigned_waiter_id, waiter_availability_status, promotion_id, nlp_order_id, customer_input, recognized_items, unrecognized_items, confidence_scores, order_source, bill_id, bill_pdf_url, upload_id, image_id, image_url, etc.
 - **Customer Dashboard WebSocket Listeners**:
   - Listen for 'waiter_assigned' event → Update active order card and order tracking page with waiter info
   - Listen for 'waiter_reassigned' event → Update waiter info section with new waiter details
@@ -2276,43 +2625,51 @@ Access help resources and contact support.
 - **Owner Dashboard WebSocket Listeners**:
   - Listen for 'waiter_status_changed' event → Update Free Waiters section and Staff Management dashboard\n  - Listen for 'new_order' event → Display notification and update order list
   - Listen for 'promotion_applied' event → Display notification and update order card with promotion badge
-  - **Listen for 'nlp_order_placed' event → Display notification and update order list with'NLP Chatbot Order' badge**
+  - **Listen for 'nlp_order_placed' event → Display notification and update order list with 'NLP Chatbot Order' badge**
   - **Listen for 'ebill_ready' event → Display notification: 'E-bill for Order #ORD-1234 generated successfully'**
   - **Listen for 'ebill_generation_failed' event → Display error notification and log error**
+  - **Listen for 'image_upload_progress' event → Update upload progress bar**
+  - **Listen for 'image_upload_complete' event → Display uploaded image in Image Preview Grid with animation, show success toast**
+  - **Listen for 'image_upload_failed' event → Display error toast and update progress bar to error state**
 
 ### 6.3 Security\n
-- **Data Encryption**: HTTPS, encrypted storage\n- **Input Validation**: Server-side validation (including promo code validation, **NLP input sanitization, e-bill data validation**)
-- **Rate Limiting**: Prevent abuse (including rate limiting on promo code application to prevent brute-force attacks, **rate limiting on NLP chatbot requests to prevent spam, rate limiting on e-bill download requests to prevent abuse**)
+- **Data Encryption**: HTTPS, encrypted storage\n- **Input Validation**: Server-side validation (including promo code validation, **NLP input sanitization, e-bill data validation, image file validation**)
+- **Rate Limiting**: Prevent abuse (including rate limiting on promo code application to prevent brute-force attacks, **rate limiting on NLP chatbot requests to prevent spam, rate limiting on e-bill download requests to prevent abuse, rate limiting on image upload requests to prevent spam**)
 - **Secure Authentication**: Password hashing, secure token storage\n- **Promo Code Security**: Unique code generation, usage limit enforcement, expiration validation
 - **NLP Security**: Input sanitization to prevent injection attacks, rate limiting on NLP requests, validation of recognized items against menu database
 - **E-Bill Security**: Access control (e-bills accessible only by authorized users), authentication token required for e-bill URLs, shareable e-bill links expire after configurable period, e-bill data encrypted in database and during transmission (HTTPS), e-bill PDF files stored securely on cloud storage with access control, compliance with data privacy regulations (GDPR, CCPA, etc.)
+- **Image Upload Security**: File type validation (only image files allowed), file size validation (max 5MB per image, configurable), malware scanning (uploaded images scanned for malware before storage), secure cloud storage (images stored with access control), URL validation (direct URLs validated to ensure they point to accessible image files), OAuth security (cloud drive integrations use secure OAuth 2.0 authentication)
 \n### 6.4 Performance Optimization
 
-- **Lazy Loading**: Load images and components on demand (including promotion cards, **NLP chatbot modal, e-bill preview thumbnails**)
-- **Code Splitting**: Split JavaScript bundles\n- **Caching**: Cache static assets and API responses (including promotion data, **NLP aliases, menu item data, e-bill PDF files**)
-- **Database Indexing**: Optimize queries with proper indexing (including index on assigned_waiter_id, add_on_items, availability_status, current_workload, promotion_id, promo_code, validity_period, status fields, **nlp_aliases field, order_source field, bill_id, order_id in e_bills table**)
-- **CDN**: Use CDN for static assets (including e-bill PDF files)
+- **Lazy Loading**: Load images and components on demand (including promotion cards, **NLP chatbot modal, e-bill preview thumbnails, menu item images**)
+- **Code Splitting**: Split JavaScript bundles\n- **Caching**: Cache static assets and API responses (including promotion data, **NLP aliases, menu item data, e-bill PDF files, menu item images**)
+- **Database Indexing**: Optimize queries with proper indexing (including index on assigned_waiter_id, add_on_items, availability_status, current_workload, promotion_id, promo_code, validity_period, status fields, **nlp_aliases field, order_source field, bill_id, order_id in e_bills table, image_id, item_id, image_source, is_primary, display_order in menu_item_images table**)
+- **CDN**: Use CDN for static assets (including e-bill PDF files and menu item images)
 - **WebSocket Connection Management**: Efficient connection pooling, automatic reconnection, heartbeat mechanism
 - **NLP Engine Optimization**: Use pre-trained models for faster inference, cache frequently recognized items, optimize fuzzy matching algorithm
 - **E-Bill Generation Optimization**: Use efficient PDF generation library, cache e-bill templates, generate e-bills asynchronously in background, compress PDF files for faster download
+- **Image Optimization**: Automatic image compression to reduce file size (quality: 85%, configurable), automatic image resizing to standard dimensions (800px x 800px, maintains aspect ratio), format conversion to WEBP for better performance (optional, configurable), thumbnail generation (150px x 150px) for faster loading in grid view, lazy loading of images (images loaded on-demand as user scrolls), CDN delivery for faster image loading
 \n### 6.5 Scalability
 
-- **Microservices Architecture**: Separate services for orders, payments, notifications, menu management, waiter assignment, waiter availability tracking, promotions management, **NLP processing, e-bill generation**
+- **Microservices Architecture**: Separate services for orders, payments, notifications, menu management, waiter assignment, waiter availability tracking, promotions management, **NLP processing, e-bill generation, image upload and processing**
 - **Load Balancing**: Distribute traffic across servers
 - **Database Sharding**: Partition database for horizontal scaling
-- **Auto-Scaling**: Automatically scale resources\n- **WebSocket Scaling**: Use Redis pub/sub for broadcasting events (including promotion events, **NLP chatbot events, e-bill generation events**)\n- **NLP Engine Scaling**: Deploy NLP engine as separate microservice, use message queue (e.g., RabbitMQ, Kafka) for asynchronous processing, scale NLP workers based on demand
+- **Auto-Scaling**: Automatically scale resources\n- **WebSocket Scaling**: Use Redis pub/sub for broadcasting events (including promotion events, **NLP chatbot events, e-bill generation events, image upload events**)
+- **NLP Engine Scaling**: Deploy NLP engine as separate microservice, use message queue (e.g., RabbitMQ, Kafka) for asynchronous processing, scale NLP workers based on demand
 - **E-Bill Generation Scaling**: Deploy e-bill generation service as separate microservice, use message queue for asynchronous e-bill generation, scale e-bill generation workers based on demand, use cloud storage with auto-scaling for storing e-bill PDF files
+- **Image Upload Scaling**: Deploy image upload service as separate microservice, use message queue for asynchronous image processing (compression, resizing, format conversion), scale image processing workers based on demand, use cloud storage with auto-scaling for storing menu item images, implement CDN for faster image delivery
 \n---
 
 ## 7. Future Enhancements
 
-- AI-Powered Recommendations (including portion type recommendations, personalized promotion recommendations, **NLP-based menu item recommendations, and personalized e-bill templates**)
+- AI-Powered Recommendations (including portion type recommendations, personalized promotion recommendations, **NLP-based menu item recommendations, personalized e-bill templates, and AI-powered image tagging and categorization**)
 - Voice Ordering with portion selection **and NLP chatbot integration**
-- Augmented Reality Menu with portion size visualization
-- Multi-Language Support **for NLP chatbot (multilingual NLP models) and e-bills (multi-language e-bill generation)**\n- Advanced Analytics (including add-on order analytics, waiter performance analytics, availability rate trends, promotion performance analytics, **NLP chatbot performance analytics with detailed recognition accuracy metrics, and e-bill analytics with download trends and customer engagement metrics**)
+- Augmented Reality Menu with portion size visualization **and AR image preview**
+- Multi-Language Support **for NLP chatbot (multilingual NLP models), e-bills (multi-language e-bill generation), and image alt text (auto-generated multilingual alt text for accessibility)**
+- Advanced Analytics (including add-on order analytics, waiter performance analytics, availability rate trends, promotion performance analytics, **NLP chatbot performance analytics with detailed recognition accuracy metrics, e-bill analytics with download trends and customer engagement metrics, and image analytics with most viewed images and image engagement metrics**)
 - Integration with Delivery Platforms\n- Table Reservation System
-- Kitchen Display System (KDS) with add-on item indicators, waiter assignment info, **and NLP order indicators**
-- Customer Feedback Analysis (including waiter ratings, **NLP chatbot satisfaction ratings, and e-bill feedback**)
+- Kitchen Display System (KDS) with add-on item indicators, waiter assignment info, **NLP order indicators, and image display for visual reference**
+- Customer Feedback Analysis (including waiter ratings, **NLP chatbot satisfaction ratings, e-bill feedback, and image quality feedback**)
 - Gamification\n- AI-Powered Waiter Assignment: Machine learning algorithm to optimize waiter assignment based on historical performance, customer preferences, real-time workload, and availability patterns
 - Predictive Waiter Availability: AI predicts when waiters will become free based on order preparation times and historical data
 - **AI-Powered Promotion Optimization**: Machine learning algorithm to suggest optimal promotion types, discount values, and target audiences based on historical data and customer behavior
@@ -2342,20 +2699,33 @@ Access help resources and contact support.
   - **E-Bill QR Code**: QR code on e-bill linking to order tracking page or feedback form
   - **E-Bill Watermark**: Optional watermark on e-bill for branding or security
   - **E-Bill Digital Signature**: Digital signature on e-bill for authenticity and legal compliance
-\n---
+- **Advanced Image Upload Features**:
+  - **AI-Powered Image Tagging**: Automatic image tagging and categorization using computer vision (e.g., 'food', 'dessert', 'beverage', 'spicy', 'vegetarian')
+  - **Image Quality Analysis**: AI analyzes image quality and suggests improvements (e.g., 'Image is too dark', 'Image is blurry')
+  - **Automatic Background Removal**: AI removes background from menu item images for cleaner presentation
+  - **Image Enhancement**: AI enhances image colors, brightness, and contrast for better visual appeal
+  - **Duplicate Image Detection**: System detects and prevents duplicate image uploads
+  - **Image Search**: Owner can search menu items by image (reverse image search)
+  - **Bulk Image Upload via CSV**: Upload multiple images for multiple menu items using CSV file with image URLs
+  - **Image Versioning**: Track image upload history and allow rollback to previous versions
+  - **Image Analytics**: Track most viewed images, image engagement metrics, and image performance
+  - **360-Degree Image Support**: Support for 360-degree product images with interactive viewer
+  - **Video Upload Support**: Allow owners to upload short videos of menu items (e.g., cooking process, plating)\n\n---
 
 ## 8. Design Style\n
-**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue, **neon purple for NLP elements**), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects.\n
+**Overall Aesthetic**: Dark-themed futuristic interface with neon accents (electric cyan, vibrant magenta, electric blue, **neon purple for NLP elements**), glassmorphism effects, smooth gradients, multi-layered UI, subtle shadows, and 3D effects.
+
 **Typography**: Orbitron Bold/Exo 2 Bold for headings, Poppins Regular/Inter Regular for body text, Orbitron Medium for buttons. Font colors: White or light grey on dark backgrounds, neon colors for emphasis.
 
-**Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue, **neon purple (for NLP chatbot elements)** accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. Restaurant type badges: Veg (bright green), Non-Veg (bright red), Both (bright orange). Portion badges: Full Portion (vibrant magenta), Additional Variants (electric cyan or electric blue). Add-On indicator: Neon yellow badge. Waiter assignment status: Unassigned (neon yellow), Assigned (neon green). Waiter availability status: Free (neon green), Busy (neon yellow), Offline (grey). Promotion badges: Percentage Discount (electric cyan), Flat Discount (vibrant magenta), Buy X Get Y (electric blue), Free Item (neon green), Minimum Order Discount (neon yellow), First Order Discount (neon red), Loyalty Discount (neon purple). **NLP Order Badges:'NLP Chatbot Order' badge (neon purple background, white text, robot icon). E-Bill Badges: 'E-Bill Ready' badge (neon cyan background, white text, document icon).**
+**Color Palette**: Deep charcoal grey or dark blue backgrounds, electric cyan, vibrant magenta, electric blue, **neon purple (for NLP chatbot elements)** accents, neon green (success), neon yellow (warning), neon red (error), white or light grey text. Restaurant type badges: Veg (bright green), Non-Veg (bright red), Both (bright orange). Portion badges: Full Portion (vibrant magenta), Additional Variants (electric cyan or electric blue). Add-On indicator: Neon yellow badge. Waiter assignment status: Unassigned (neon yellow), Assigned (neon green). Waiter availability status: Free (neon green), Busy (neon yellow), Offline (grey). Promotion badges: Percentage Discount (electric cyan), Flat Discount (vibrant magenta), Buy X Get Y (electric blue), Free Item (neon green), Minimum Order Discount (neon yellow), First Order Discount (neon red), Loyalty Discount (neon purple). **NLP Order Badges:'NLP Chatbot Order' badge (neon purple background, white text, robot icon). E-Bill Badges: 'E-Bill Ready' badge (neon cyan background, white text, document icon). Image Upload Source Badges: 'Computer' badge (neon cyan background), 'Google Drive' badge (neon blue background), 'Dropbox' badge (neon blue background), 'URL' badge (vibrant magenta background).**
 
-**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying only active and free waiters with avatar, name, workload, and 'Free' status badge (neon green). Free Waiters section (Staff Management) displays dedicated section at top with neon green heading, card grid showing free waiters with avatar, name, 'Free' badge, current workload, and 'Assign to Order' button. Waiter status badges are pill-shaped with rounded corners, bold text, and icon (Free: neon green with checkmark, Busy: neon yellow with clock, Offline: grey with offline icon). Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white). Swiggy-style promotion cards (customer-facing) feature glassmorphism effect with neon gradient border (color based on promotion type), promotion type badge at top-left corner with icon and neon color, promotion name (bold, large white text), discount details (medium text, neon cyan color), promo code section (if applicable) with code displayed withdashed border and copy icon, validity period (small text, light grey), 'Apply Offer' button (primary, neon gradient), 'View Details' button (secondary, outline), and hover effect (card scales up and glow intensifies). Promotion cards (owner dashboard) similar to customer-facing cards with additional elements: usage statistics, status indicator (Active/Scheduled/Expired/Deactivated), action buttons (Edit, Deactivate, View Analytics, Duplicate). Promotion badges on menu items are small pill-shaped badges positioned at top-right corner of menu item card with neon cyan background, white text, discount details, and pulsing glow animation. Applied promotion section (order tracking) displays glassmorphism card with neon cyan border, promotion name (bold, large white text), discount details (medium text, neon cyan color), and discount amount: 'You saved ₹X' (neon green color, bold). Promo code input (checkout) features dark background text input with neon border on focus, 'Apply' button (primary, neon gradient), and success/error messages with neon green/red color. Available offers section (checkout) displays expandable section with glassmorphism effect, promotion cards in grid layout, and 'Apply' button on each card. **NLP Chatbot Modal: Full-screen overlay with semi-transparent dark background and glassmorphism effect, chatbot window (centered glassmorphism card with neon purple gradient border, rounded corners, subtle box shadow with neon purple glow), header ('AI Order Assistant' heading in neon purple with robot icon, subheading in light grey, close button), chat area (scrollable message thread with customer messages in right-aligned neon cyan bubbles and chatbot messages in left-aligned glassmorphism bubbles with neon purple border), order summary card (glassmorphism effect with neon purple border, item list with icons, subtotal in bold neon cyan, applicable promotions section), input area (large textarea with dark background and neon purple border on focus, send button with neon purple gradient and paper plane icon, optional voice input button with microphone icon and neon purple outline), typing indicator (animated dots in glassmorphism bubble), success/error messages (neon green for success with checkmark icon, neon red for errors with exclamation icon). NLP Chatbot Button (Menu Page): Floating action button (bottom-right corner, neon purple gradient, robot icon, pulsing glow animation), button label'Order with AI' (small text, white). NLP Chatbot Icon (Top Navigation Bar): Robot icon with neon purple glow, positioned next to search bar. NLP Quick Order Section (Customer Home): Section heading'Order with AI Assistant' (medium bold text, neon purple color, robot icon), description text (small, light grey), 'Start Ordering with AI' button (large primary button, neon purple gradient, white text, bold, robot icon), example queries display (horizontal scrollable pills with glassmorphism effect and neon purple border). NLP Order Badges: 'NLP Chatbot Order' badge (pill-shaped badge with neon purple background, white text, robot icon, pulsing glow animation), displayed on order cards, order details modal, order tracking page, and order history. Order Source Indicators: 'Manual Order' badge (pill-shaped badge with neon cyan background, white text), 'NLP Chatbot Order' badge (pill-shaped badge with neon purple background, white text, robot icon), displayed on order cards, cart items, checkout page, order confirmation, order tracking, and order history. E-Bill Download Section (Order Tracking & Order History): Section heading 'Your E-Bill' (neon cyan color, document icon), e-bill status message ('Your e-bill is ready for download!' in neon green with checkmark icon or 'Your e-bill is being generated...' in neon yellow with loading spinner), action buttons ('Download E-Bill' button with primary neon gradient and download icon, 'Print E-Bill' button with secondary outline and print icon, 'Share E-Bill' button with secondary outline and share icon, 'Email E-Bill' button with secondary outline and email icon), e-bill preview thumbnail (optional, small image,200px width, glassmorphism border). E-Bill View Modal: Full-screen modal with e-bill content displayed in center, close button (top-right corner,'X' icon), action buttons at bottom ('Download PDF' button with primary neon gradient, 'Print' button with secondary outline, 'Share' button with secondary outline, 'Email' button with secondary outline). E-Bill PDF Design: Print-Ready Format (white background, black text, light grey borders, professional layout optimized for printing), Digital Format (dark grey background, white text, neon cyan borders, futuristic layout optimized for screen viewing), restaurant logo at top-left corner (max height 80px), e-bill title'TAX INVOICE' or 'BILL' (large bold text, centered, neon cyan color for digital format), order information section with order ID, date, table number, customer name, waiter name, order source badge, order items table with columns (Item Name, Portion, Quantity, Unit Price, Total Price), add-on items section (if applicable) with 'ADD-ON' badge and source indicator, pricing breakdown section with subtotal, applied promotions, discounts, taxes, grand total, payment information section with payment method, status, transaction ID, order timeline section (optional), footer section with thank you message, QR code for feedback, social media links, registration numbers, terms & conditions.**
+**UI Components**: Glassmorphism cards with neon gradient borders, futuristic buttons with neon gradients and hover effects, animated counters, smooth transitions, interactive elements with neon borders and glow. Restaurant type badges are pill-shaped with rounded corners, bold text, and icon. Portion badges are pill-shaped with rounded corners, medium text. Portion selection cards feature large card-style radio buttons with glassmorphism, neon borders, checkmark icons. Add-On order banner has neon cyan background with white text. Add-On items section highlighted with neon magenta border and 'ADD-ON' label. Waiter assignment modal features glassmorphism card with waiter selection cards displaying only active and free waiters with avatar, name, workload, and 'Free' status badge (neon green). Free Waiters section (Staff Management) displays dedicated section at top with neon green heading, card grid showing free waiters with avatar, name, 'Free' badge, current workload, and 'Assign to Order' button. Waiter status badges are pill-shaped with rounded corners, bold text, and icon (Free: neon green with checkmark, Busy: neon yellow with clock, Offline: grey with offline icon). Waiter info section (customer dashboard) displays large glassmorphism card with waiter avatar (large, circular, neon border), waiter name (bold, large white text), contact info (medium text, light grey), status badge ('Handling Your Order' in neon green), and 'Chat with Waiter' button (primary, neon gradient). Waiter assignment pending section displays glassmorphism card with waiter silhouette icon or loading spinner,'Assignment Pending' badge (neon yellow, pulsing glow animation), and message text (medium, white). Swiggy-style promotion cards (customer-facing) feature glassmorphism effect with neon gradient border (color based on promotion type), promotion type badge at top-left corner with icon and neon color, promotion name (bold, large white text), discount details (medium text, neon cyan color), promo code section (if applicable) with code displayed withdashed border and copy icon, validity period (small text, light grey), 'Apply Offer' button (primary, neon gradient), 'View Details' button (secondary, outline), and hover effect (card scales up and glow intensifies). Promotion cards (owner dashboard) similar to customer-facing cards with additional elements: usage statistics, status indicator (Active/Scheduled/Expired/Deactivated), action buttons (Edit, Deactivate, View Analytics, Duplicate). Promotion badges on menu items are small pill-shaped badges positioned at top-right corner of menu item card with neon cyan background, white text, discount details, and pulsing glow animation. Applied promotion section (order tracking) displays glassmorphism card with neon cyan border, promotion name (bold, large white text), discount details (medium text, neon cyan color), and discount amount: 'You saved ₹X' (neon green color, bold). Promo code input (checkout) features dark background text input with neon border on focus, 'Apply' button (primary, neon gradient), and success/error messages with neon green/red color. Available offers section (checkout) displays expandable section with glassmorphism effect, promotion cards in grid layout, and 'Apply' button on each card. **NLP Chatbot Modal: Full-screen overlay with semi-transparent dark background and glassmorphism effect, chatbot window (centered glassmorphism card with neon purple gradient border, rounded corners, subtle box shadow with neon purple glow), header ('AI Order Assistant' heading in neon purple with robot icon, subheading in light grey, close button), chat area (scrollable message thread with customer messages in right-aligned neon cyan bubbles and chatbot messages in left-aligned glassmorphism bubbles with neon purple border), order summary card (glassmorphism effect with neon purple border, item list with icons, subtotal in bold neon cyan, applicable promotions section), input area (large textarea with dark background and neon purple border on focus, send button with neon purple gradient and paper plane icon, optional voice input button with microphone icon and neon purple outline), typing indicator (animated dots in glassmorphism bubble), success/error messages (neon green for success with checkmark icon, neon red for errors with exclamation icon). NLP Chatbot Button (Menu Page): Floating action button (bottom-right corner, neon purple gradient, robot icon, pulsing glow animation), button label'Order with AI' (small text, white). NLP Chatbot Icon (Top Navigation Bar): Robot icon with neon purple glow, positioned next to search bar. NLP Quick Order Section (Customer Home): Section heading'Order with AI Assistant' (medium bold text, neon purple color, robot icon), description text (small, light grey), 'Start Ordering with AI' button (large primary button, neon purple gradient, white text, bold, robot icon), example queries display (horizontal scrollable pills with glassmorphism effect and neon purple border). NLP Order Badges: 'NLP Chatbot Order' badge (pill-shaped badge with neon purple background, white text, robot icon, pulsing glow animation), displayed on order cards, order details modal, order tracking page, and order history. Order Source Indicators: 'Manual Order' badge (pill-shaped badge with neon cyan background, white text), 'NLP Chatbot Order' badge (pill-shaped badge with neon purple background, white text, robot icon), displayed on order cards, cart items, checkout page, order confirmation, order tracking, and order history. E-Bill Download Section (Order Tracking & Order History): Section heading 'Your E-Bill' (neon cyan color, document icon), e-bill status message ('Your e-bill is ready for download!' in neon green with checkmark icon or 'Your e-bill is being generated...' in neon yellow with loading spinner), action buttons ('Download E-Bill' button with primary neon gradient and download icon, 'Print E-Bill' button with secondary outline and print icon, 'Share E-Bill' button with secondary outline and share icon, 'Email E-Bill' button with secondary outline and email icon), e-bill preview thumbnail (optional, small image,200px width, glassmorphism border). E-Bill View Modal: Full-screen modal with e-bill content displayed in center, close button (top-right corner,'X' icon), action buttons at bottom ('Download PDF' button with primary neon gradient, 'Print' button with secondary outline, 'Share' button with secondary outline, 'Email' button with secondary outline). E-Bill PDF Design: Print-Ready Format (white background, black text, light grey borders, professional layout optimized for printing), Digital Format (dark grey background, white text, neon cyan borders, futuristic layout optimized for screen viewing), restaurant logo at top-left corner (max height 80px), e-bill title'TAX INVOICE' or 'BILL' (large bold text, centered, neon cyan color for digital format), order information section with order ID, date, table number, customer name, waiter name, order source badge, order items table with columns (Item Name, Portion, Quantity, Unit Price, Total Price), add-on items section (if applicable) with 'ADD-ON' badge and source indicator, pricing breakdown section with subtotal, applied promotions, discounts, taxes, grand total, payment information section with payment method, status, transaction ID, order timeline section (optional), footer section with thank you message, QR code for feedback, social media links, registration numbers, terms & conditions. Image Upload Components (Menu Management): Upload Method Tabs (horizontal tab navigation with three tabs'Computer Upload', 'Cloud Drive', 'Direct URL', active tab highlighted with neon cyan underline), Drag & Drop Zone (large rectangular area 300px height on desktop, 200px on mobile,dashed neon cyan border, glassmorphism effect, center upload cloud icon neon cyan large, text'Drag and drop images here' medium white, subtext 'or click to browse' small light grey, supported formats and max file size displayed small light grey, hover effect border changes to vibrant magenta background slightly lighter), Browse Button ('Browse Files' secondary outline neon cyan border positioned below drag & drop zone), Upload Progress Bar (neon gradient fill, percentage display, file name and size displayed next to bar, cancel button small neon red 'X' icon), Image Preview Grid (grid layout 3 columns on desktop 2 columns on mobile, each image card displays thumbnail150px x 150px rounded corners glassmorphism border, image source badge top-right corner small pill-shaped badge with neon background, file name or URL small text truncated tooltip on hover, file size small text light grey, primary image indicator neon green border and 'Primary' badge for primary image, action buttons 'Set as Primary' button with secondary outline and neon cyan border'Delete' button with small neon red trash icon, drag & drop reordering enabled visual feedback dragged image scales up drop zone highlighted), Cloud Drive Cards (large clickable cards glassmorphism effect neon gradient border on hover displaying cloud drive logo large centered, cloud drive name bold white text, 'Connect' button primary neon gradient or 'Connected' status neon green badge with'Disconnect' button), Cloud Drive File Browser (breadcrumb navigation current folder path, folder and file list grid or list view with toggle button, each folder/file card shows icon folder icon or image thumbnail, name medium text white truncated, file size small text light grey, checkbox for selection for image files, search bar 'Search files in [Cloud Drive Name]' with search icon dark background neon border on focus, filter options'All Files' 'Images Only' 'Recent' 'Starred'), Import Button ('Import Selected Images' primary neon gradient positioned at bottom of file picker), URL Input Field (large text input with placeholder 'https://example.com/image.jpg' dark background neon border on focus, input validation checks if URL is valid and points to image file, error message displayed below input if invalid neon red color), Add URL Button ('Add Image' primary neon gradient positioned to right of input field), Add Another URL Button ('Add Another URL' secondary outline neon cyan border appears after adding first image), Image Count Limit Message ('Maximum 5 images allowed per item. Delete an image to add more.' displayed when limit reached neon yellow color).**
 
-**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, waiter info card, free waiter cards, promotion cards, **NLP chatbot messages, and e-bill download buttons**, pulsing glow for notification badges, updated items, unassigned order badges, waiter assignment pending badge, 'Free' status badges, promotion badges on menu items, **NLP chatbot button, NLP order badges, and 'E-Bill Ready' badges**, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition, promotion cards slide in when new promotions created with slide-down + fade-in animation (duration 0.5s), promotion cards fade out when deactivated with fade-out + slide-up animation (duration 0.5s), updated promotion cards highlight with neon glow animation (duration 1s), **NLP chatbot messages slide in from right (customer) or left (chatbot) with fade-in animation (duration 0.3s), e-bill download buttons appear with fade-in animation when e-bill ready**), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy), promotion application animations (when promotion applied: success checkmark animation, discount amount highlights with neon green glow; when promotion removed: fade-out animation; promo code copy: copy icon animates with scale and rotation, success toast appears), promotion card hover (card scales up slightly to1.05, neon glow intensifies, subtle rotation effect), Swiggy-style carousel animations (horizontal scroll with smooth snap points, auto-scroll every 5 seconds optional, navigation arrows fade in on hover on desktop, touch/swipe gestures on mobile), **NLP chatbot animations (message slide-in from right/left with fade-in (duration 0.3s), typing indicator with bouncing dots, order summary card slides down with fade-in (duration 0.5s), button hover with scale up (1.05) and glow intensifies, success checkmark animates with scale and rotation (duration 0.5s), chatbot modal open/close with fade and scale animation (duration 0.3s)), and e-bill download animations (e-bill ready:'Download E-Bill' button appears with fade-in and scale animation (duration 0.5s), download success: success checkmark animation and success toast appears, e-bill preview thumbnail fades in with scale animation when e-bill generated, e-bill view modal open/close with fade and scale animation (duration 0.3s)).**
+**Animations**: Slide-in animations for new orders, menu items, add-on items, assigned orders, waiter info card, free waiter cards, promotion cards, **NLP chatbot messages, e-bill download buttons, and image upload progress bars**, pulsing glow for notification badges, updated items, unassigned order badges, waiter assignment pending badge, 'Free' status badges, promotion badges on menu items, **NLP chatbot button, NLP order badges, 'E-Bill Ready' badges, and primary image indicators**, shake animation for notification bell, ripple effect for button clicks, smooth page transitions, loading animations with neon spinners, real-time update animations (new items slide in, edited items highlight, deleted items fade out, add-on items appear with highlight, assigned orders slide into waiter dashboard, waiter info section transitions from'Assignment Pending' to 'Your Waiter' with fade-in animation, waiter status badges change color with fade transition, promotion cards slide in when new promotions created with slide-down + fade-in animation duration0.5s, promotion cards fade out when deactivated with fade-out + slide-up animation duration 0.5s, updated promotion cards highlight with neon glow animation duration 1s, **NLP chatbot messages slide in from right customer or left chatbot with fade-in animation duration 0.3s, e-bill download buttons appear with fade-in animation when e-bill ready, uploaded images appear in preview grid with fade-in and scale animation duration 0.3s**), portion selection animations (selected cards scale up and glow), waiter assignment animations (selected waiter card scales up and glows, assignment confirmation with checkmark animation, waiter card slides into customer dashboard with bounce animation, waiter card slides out of Free Waiters section when status changes to Busy), promotion application animations (when promotion applied success checkmark animation discount amount highlights with neon green glow, when promotion removed fade-out animation, promo code copy copy icon animates with scale and rotation success toast appears), promotion card hover (card scales up slightly1.05neon glow intensifies subtle rotation effect), Swiggy-style carousel animations (horizontal scroll with smooth snap points, auto-scroll every 5 seconds optional, navigation arrows fade in on hover desktop, touch/swipe gestures on mobile), **NLP chatbot animations (message slide-in from right/left with fade-in duration 0.3s, typing indicator with bouncing dots, order summary card slides down with fade-in duration 0.5s, button hover with scale up1.05 and glow intensifies, success checkmark animates with scale and rotation duration 0.5s, chatbot modal open/close with fade and scale animation duration 0.3s), e-bill download animations (e-bill ready 'Download E-Bill' button appears with fade-in and scale animation duration 0.5s, download success success checkmark animation and success toast appears, e-bill preview thumbnail fades in with scale animation when e-bill generated, e-bill view modal open/close with fade and scale animation duration 0.3s), and image upload animations (drag & drop hover border color changes to vibrant magenta background slightly lighter scale up 1.02, upload progress progress bar fills with neon gradient animation percentage updates smoothly, image preview appear uploaded images appear in preview grid with fade-in and scale animation duration 0.3s, image delete image card fades out and scales down duration 0.3s before removal, primary image change previous primary image border fades from neon green to default new primary image border fades to neon green duration 0.3s, drag & drop reorder dragged image scales up 1.1 drop zone highlights with neon cyan border smooth position transition when dropped, cloud drive connect OAuth popup opens with slide-in animation success toast appears after connection, import progress import progress bar with neon gradient fill file names displayed as they import, URL image load loading spinner displayed while fetching image image fades in when loaded).**
 
-**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Free Waiters section on mobile displays cards stacked vertically with full-width layout. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button. Swiggy-style promotion cards on mobile: Carousel (Customer Home) uses horizontal scroll with snap points, cards280px x 160px, touch/swipe enabled; Grid (Offers & Promotions Page) displays cards stacked vertically in single column, full-width, height auto (min180px); Banner (Menu Page) uses horizontal scroll with snap points, compact cards240px x 100px. Filter options display as horizontal scrollable pills. Promo code section displays full-width with large copy button.'Apply Offer' and 'View Details' buttons stack vertically or display full-width. Promotion details modal displays full-screen. **NLP Chatbot on Mobile: Full-screen chatbot modal, input area fixed at bottom, chat area scrollable, touch-friendly buttons and input fields (minimum 44px height), example queries display as horizontal scrollable pills, order summary card displays full-width, buttons stack vertically or display full-width. E-Bill Download Section on Mobile: Section displays full-width, action buttons stack vertically or display full-width (minimum 44px height), e-bill preview thumbnail displays full-width (max 300px), e-bill view modal displays full-screen.**
+**Responsive Design**: Mobile-first approach, collapsible sidebar on mobile, adaptive grid layouts, touch-friendly buttons and inputs, optimized for all screen sizes. QR code scanning feature exclusively available on mobile devices. Portion selection cards stack vertically on mobile. Add-On order UI optimized for mobile view. Waiter assignment modal displays full-screen on mobile with vertically stacked waiter cards. Free Waiters section on mobile displays cards stacked vertically with full-width layout. Waiter info section on mobile displays full-width card with waiter avatar and info stacked vertically, and full-width 'Chat with Waiter' button. Swiggy-style promotion cards on mobile: Carousel (Customer Home) uses horizontal scroll with snap points, cards280px x 160px, touch/swipe enabled; Grid (Offers & Promotions Page) displays cards stacked vertically in single column, full-width, height auto (min180px); Banner (Menu Page) uses horizontal scroll with snap points, compact cards 240px x 100px. Filter options display as horizontal scrollable pills. Promo code section displays full-width with large copy button. 'Apply Offer' and 'View Details' buttons stack vertically or display full-width. Promotion details modal displays full-screen. **NLP Chatbot on Mobile: Full-screen chatbot modal, input area fixed at bottom, chat area scrollable, touch-friendly buttons and input fields (minimum 44px height), example queries display as horizontal scrollable pills, order summary card displays full-width, buttons stack vertically or display full-width. E-Bill Download Section on Mobile: Section displays full-width, action buttons stack vertically or display full-width (minimum 44px height), e-bill preview thumbnail displays full-width (max 300px), e-bill view modal displays full-screen. Image Upload on Mobile: Upload Method Tabs (full-width tabs, horizontal scroll if needed), Drag & Drop Zone (reduced height 200px, full-width, tap to browse), Image Preview Grid (single column layout, full-width image cards), Cloud Drive File Browser (full-screen modal, single column file list, large touch-friendly checkboxes), URL Input (full-width input field, 'Add Image' button below input full-width), Action Buttons (full-width buttons minimum 44px height).**
 
 ---
 
 **End of Requirements Document**
+}
